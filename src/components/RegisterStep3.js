@@ -71,55 +71,57 @@ class RegisterStep3 extends Component{
                     <Text style={styles.registerTitleTextStyle}>ข้อมูลบัญชีของคุณ</Text>
                     <Text style={styles.directionTextStyle}>กรุณากอรกข้อมูลบัญชีส่วนตัว เพื่อใช้ในการเข้าใช้งานแอพพลิเคชั่น</Text>
                 </View>
-                <View style={styles.userDetailContainerStyle}>
-                    <TextInputIcon
-                        value={this.state.userEmail}
-                        leftLabelText='อีเมล/เบอร์โทรศัพท์'
-                        iconUri={require('./../source/icons/iconMail.png')}
-                        containerStyle={styles.inputContainerStyle}
-                        secondFlex={secondFlex}
-                        thirdFlex={thirdFlex}
-                        onChangeText={(userEmail)=> this.setState({userEmail})}
-                        keyboardType='email-address'
-                    />
-                    <TextInputIcon
-                        value={this.state.userPassword}
-                        leftLabelText='รหัสผ่าน'
-                        iconUri={require('./../source/icons/iconPass.png')}
-                        containerStyle={styles.inputContainerStyle}
-                        iconStyle={styles.iconStyle}
-                        secondFlex={secondFlex}
-                        thirdFlex={thirdFlex}
-                        secureTextEntry={true}
-                        onChangeText={(userPassword)=> this.setState({userPassword})}
-                        onEndEditing={this.onPasswordChange.bind(this)}
-                    />
-                    <TextInputIcon
-                        value={this.state.userConfirmPassword}
-                        leftLabelText='ยืนยันรหัสผ่าน'
-                        iconUri={require('./../source/icons/iconPass.png')}
-                        containerStyle={styles.inputContainerStyle}
-                        iconStyle={styles.iconStyle}
-                        secondFlex={secondFlex}
-                        thirdFlex={thirdFlex}
-                        secureTextEntry={true}
-                        onChangeText={(userConfirmPassword)=> this.setState({userConfirmPassword})}
-                        onEndEditing={this.onPasswordChange.bind(this)}
-                    />
-                    <Text style={styles.errorTextStyle}>{this.state.errorText}</Text>
-                    {this.isShowSubmit() && <View style={styles.submitButtonContainerStyle}>
-                        <MainSubmitButton
-                            buttonTitleText='ยืนยันข้อมูล'
-                            onPress={this.onSubmitButtonPress}
+                <ScrollView style={{flex: 1}}>
+                    <View style={styles.userDetailContainerStyle}>
+                        <TextInputIcon
+                            value={this.state.userEmail}
+                            leftLabelText='อีเมล/เบอร์โทรศัพท์'
+                            iconUri={require('./../source/icons/iconMail.png')}
+                            containerStyle={styles.inputContainerStyle}
+                            secondFlex={secondFlex}
+                            thirdFlex={thirdFlex}
+                            onChangeText={(userEmail)=> this.setState({userEmail})}
+                            keyboardType='email-address'
                         />
-                    </View>}
-                </View>
+                        <TextInputIcon
+                            value={this.state.userPassword}
+                            leftLabelText='รหัสผ่าน'
+                            iconUri={require('./../source/icons/iconPass.png')}
+                            containerStyle={styles.inputContainerStyle}
+                            iconStyle={styles.iconStyle}
+                            secondFlex={secondFlex}
+                            thirdFlex={thirdFlex}
+                            secureTextEntry={true}
+                            onChangeText={(userPassword)=> this.setState({userPassword})}
+                            onEndEditing={this.onPasswordChange.bind(this)}
+                        />
+                        <TextInputIcon
+                            value={this.state.userConfirmPassword}
+                            leftLabelText='ยืนยันรหัสผ่าน'
+                            iconUri={require('./../source/icons/iconPass.png')}
+                            containerStyle={styles.inputContainerStyle}
+                            iconStyle={styles.iconStyle}
+                            secondFlex={secondFlex}
+                            thirdFlex={thirdFlex}
+                            secureTextEntry={true}
+                            onChangeText={(userConfirmPassword)=> this.setState({userConfirmPassword})}
+                            onEndEditing={this.onPasswordChange.bind(this)}
+                        />
+                        <Text style={styles.errorTextStyle}>{this.state.errorText}</Text>
+                        {this.isShowSubmit() && <View style={styles.submitButtonContainerStyle}>
+                            <MainSubmitButton
+                                buttonTitleText='ยืนยันข้อมูล'
+                                onPress={this.onSubmitButtonPress}
+                            />
+                        </View>}
+                    </View>
+                </ScrollView>
             </View>
         )
     }
 }
 
-const secondFlex = 0.4,thirdFlex = 0.5
+const secondFlex = 0.4,thirdFlex = 0.9
 
 const styles={
     registerStep1ContainerStyle:{

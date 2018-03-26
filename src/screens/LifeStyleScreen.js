@@ -203,10 +203,6 @@ export default class LifeStyleScreen extends Component{
     render(){
         return(
             <View style={styles.lifestyleContainerStyle}>
-                <Headers
-                    headerTitleText='ไลฟ์ไตล์'
-                    //badgeText='2'
-                />
                 <View style={styles.lifestyleDirectionContainerStyle}>
                     <Text style={styles.lifestyleTitleTextStyle}>กรุณาเลือกไลฟ์ไตล์ที่ตรงกับคุณ (เลือกได้มากกว่า1 ข้อ)</Text>
                 </View>

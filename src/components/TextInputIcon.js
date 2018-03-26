@@ -47,6 +47,7 @@ class TextInputIcon extends Component{
                 {...this.props}
                 placeholder={this.props.leftLabelText}               
                 style={[styles.textInputStyle,{flex: this.props.thirdFlex}]}
+                underlineColorAndroid='transparent'
             />
             )
         }
@@ -58,6 +59,7 @@ class TextInputIcon extends Component{
                     ref={this.props.refs} 
                     {...this.props}               
                     style={[styles.textInputStyle,{flex: this.props.thirdFlex}]}
+                    underlineColorAndroid='transparent'
                 />
             )
         }

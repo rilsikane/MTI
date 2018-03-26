@@ -36,13 +36,15 @@ class RegisterStep2 extends Component{
     }
     render(){
         return(
-            <KeyboardAwareScrollView
-                resetScrollToCoords={{ x: 0, y: 0 }}
-                automaticallyAdjustContentInsets={false}
+            <ScrollView
+                // resetScrollToCoords={{ x: 0, y: 0 }}
+                // automaticallyAdjustContentInsets={false}
                 keyboardShouldPersistTaps='always'
-                enableOnAndroid={true}
-                contentContainerStyle={{flex: 1,}}
-                scrollEnabled={true}>
+                // enableOnAndroid={true}
+                //contentContainerStyle={{flex: 1,}}
+                style={{flex: 1}}
+                //scrollEnabled={true}
+                >
                 
             <View style={styles.registerStep1ContainerStyle}>
                 <View style={styles.registerDirectionContainerStyle}>
@@ -115,12 +117,12 @@ class RegisterStep2 extends Component{
                     </View>}
                 </View>
             </View>
-            </KeyboardAwareScrollView>
+            </ScrollView>
         )
     }
 }
 
-const secondFlex = 0.3,thirdFlex = 0.6
+const secondFlex = 0.3,thirdFlex = 0.9
 
 const styles={
     registerStep1ContainerStyle:{

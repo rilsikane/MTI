@@ -10,7 +10,7 @@ import {CheckBoxes} from './../components/CheckBoxes';
 import {MainSubmitButton} from './../components/MainSubmitButton';
 import store from 'react-native-simple-store';
 import {post,authen,get} from '../api'
-import { ifIphoneX } from 'react-native-iphone-x-helper'
+import { ifIphoneX,isIphoneX } from 'react-native-iphone-x-helper'
 import Spinner from 'react-native-loading-spinner-overlay';
 import app from '../stores/app';
 
@@ -73,14 +73,15 @@ export default class LoginScreen extends Component{
 
     render(){
         return(
-            <KeyboardAwareScrollView 
-                resetScrollToCoords={{ x: 0, y: 0 }}
-                //automaticallyAdjustContentInsets={false}
-                enableOnAndroid={true}
-                keyboardShouldPersistTaps='always'
-                contentContainerStyle={{flex: 1,}}
-                >
-                    {ifIphoneX && <View style={{height:40}}>
+            <ScrollView 
+                // resetScrollToCoords={{ x: 0, y: 0 }}
+                // automaticallyAdjustContentInsets={false}
+                // enableOnAndroid={true}
+                // keyboardShouldPersistTaps='always'
+                // contentContainerStyle={{flex: 1,}}
+                style={{flex: 1}}
+            >
+                    {isIphoneX() && <View style={{height:40}}>
                         <ImageBackground
                             source={require('./../source/images/bgGradient.png')}
                             style={styles.loginFormImageBackgroundStyle}
@@ -185,7 +186,7 @@ export default class LoginScreen extends Component{
                         </ImageBackground>
                     </View>
                     {this.app.isLoading && <Spinner visible={this.app.isLoading}  textStyle={{color: '#FFF'}} />}
-            </KeyboardAwareScrollView>
+            </ScrollView>
             
         )
     }

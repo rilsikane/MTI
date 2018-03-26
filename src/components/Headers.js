@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather'
 import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
-import { ifIphoneX } from 'react-native-iphone-x-helper'
+import { ifIphoneX,isIphoneX } from 'react-native-iphone-x-helper'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { observer, inject } from 'mobx-react';
 
@@ -76,7 +76,7 @@ class Headers extends Component{
             )
         }else{
             return(
-                <View/>
+                <View style={styles.headersBlankItemStyle}/>
             )
         }
     }
@@ -107,15 +107,15 @@ class Headers extends Component{
                     resizeMode='stretch'
                 >
                     <View style={styles.headerItemsContainerStyle}>
-                        <TouchableOpacity>
+                        <View>
                             {this.renderLeftButton()}
-                        </TouchableOpacity>
+                        </View>
                         <View>
                             {this.renderCenterItems()}
                         </View>
-                        <TouchableOpacity>
+                        <View>
                             {this.renderRightButton()}
-                        </TouchableOpacity>
+                        </View>
                     </View>
                     <View style={styles.bannerBottomLineStyle}/>
                 </ImageBackground>
@@ -124,11 +124,11 @@ class Headers extends Component{
     }
 }
 
-const padTop = Platform.OS === 'ios' ? ifIphoneX ? 50:20:30
+const padTop = Platform.OS === 'ios' ? isIphoneX() ? 50:20:30
 
 const styles={
     headerImageBackgroundStyle:{
-        height: ifIphoneX ? responsiveHeight(13) : responsiveHeight(9.85),
+        height: isIphoneX() ? responsiveHeight(13) : responsiveHeight(9.85),
         paddingTop: padTop,
         //paddingBottom: responsiveHeight(1),
 
@@ -182,6 +182,9 @@ const styles={
         opacity: 0.2,
         //alignSelf: 'flex-end'
     },
+    headersBlankItemStyle:{
+        width: responsiveWidth(4.53),
+    }
 }
 
 export {Headers}

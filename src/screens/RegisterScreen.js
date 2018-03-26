@@ -5,6 +5,7 @@ import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-nat
 import { Pages } from 'react-native-pages';
 import PopupDialog,{ SlideAnimation }  from 'react-native-popup-dialog';
 
+import LifeStyleScreen from './LifeStyleScreen';
 import {TextInputIcon} from './../components/TextInputIcon';
 import {MainSubmitButton} from './../components/MainSubmitButton';
 import {PageIndicators} from './../components/PageIndicators';
@@ -25,7 +26,7 @@ export default class RegisterScreen extends Component{
     constructor(props){
         super(props)
         this.state={
-            pageNumber: 1,
+            pageNumber: 0,
             enable:false
         }
         if(!this.props.registerStore.register){
@@ -197,7 +198,7 @@ export default class RegisterScreen extends Component{
     }
 
     onScrollEnd(index) {
-        if(index<4){
+        if(index<5&&index!=3){
             this.setState({pageNumber: index+1})
         }
       
@@ -221,9 +222,10 @@ export default class RegisterScreen extends Component{
                     leftIconName='cancel'
                     headerTitleText='ลงทะเบียนสมาชิก'
                     cancel={()=>this.props.navigator.pop()}
+                    //rightIconName='iconBell'
                 />
                 <PageIndicators
-                    pageNumber={this.state.pageNumber}
+                    pageNumber={this.state.pageNumber+1}
                 />
                 {this.props.registerStore.register && <Pages
                     ref={this.updateRef} 
@@ -241,6 +243,7 @@ export default class RegisterScreen extends Component{
                     <RegisterStep3
                         onSubmitRegister3Press={this._onSubmitRegister3Press.bind(this)}
                     />
+                    <LifeStyleScreen/>
                     <RegisterStep4_1
                         onSubmitRegister4_1Press={this._onSubmitRegister4_1Press.bind(this)}
                     />

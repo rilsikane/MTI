@@ -86,107 +86,107 @@ class RegisterStep1 extends Component{
 
     render(){
         return(
-            <KeyboardAvoidingView style={{flex:1}} behavior="padding">
-                    <View style={styles.registerStep1ContainerStyle}>
-                    
-          
-                        <Animated.Image
-                            source={require('./../source/images/mascot.png')}
-                            style={[styles.mascotImageStyle,{ height: this.imageHeight }]}
-                            resizeMode='contain'
-                        />
-                        <View style={styles.registerDirectionContainerStyle}>
-                            <Text style={styles.registerTitleTextStyle}>ยินดีต้อนรับเข้าสู่ เมืองไทย เฟรนด์ คลับ</Text>
-                            <Text style={styles.directionTextStyle}>กรุณากรอกเลขที่บัตรประชาชน และ วันเกิด เพื่อทำการตรวจสอบข้อมูลสถานะของสมาชิก</Text>
-                        </View>
-                        <View style={styles.userDetailContainerStyle}>
-                            <TextInputIcon
-                                inputType="mask"
-                                value={this.state.userIdNumber}
-                                mask={"[000] [000000] [000] [0]"}
-                                onChangeText={(userIdNumber)=>this.setState({userIdNumber})}
-                                leftLabelText='เลขที่บัตรประชาชน'
-                                iconUri={require('./../source/icons/iconAvatar.png')}
-                                containerStyle={styles.inputContainerStyle}
-                                secondFlex={secondFlex}
-                                thirdFlex={thirdFlex}
-                                keyboardType='numeric'
-                                returnKeyType = {"next"}
-                               
-                            />
-                            <TextInputIcon
-                                value={this.state.userFirstName}
-                                onChangeText={(userFirstName)=>this.setState({userFirstName})}
-                                leftLabelText='ชื่อ'
-                                iconUri={require('./../source/icons/iconAvatar.png')}
-                                containerStyle={styles.inputContainerStyle}
-                                secondFlex={secondFlex}
-                                thirdFlex={thirdFlex}
-                                returnKeyType = {"next"}
-                                onSubmitEditing={() => {
-                                    Keyboard.dismiss();
-                                    this.focusNextField('userLastName');
-                                }}
-                               
-                            />
-                            <TextInputIcon
-                                refs={ input => {
-                                    this.inputs['userLastName'] = input;
-                                 }}
-                                value={this.state.userLastName}
-                                onChangeText={(userLastName)=>this.setState({userLastName})}
-                                leftLabelText='นามสกุล'
-                                iconUri={require('./../source/icons/iconAvatar.png')}
-                                containerStyle={styles.inputContainerStyle}
-                                secondFlex={secondFlex}
-                                thirdFlex={thirdFlex}
-                                returnKeyType = {"next"}
-                                onSubmitEditing={() => {
-                                    Keyboard.dismiss();
-                                    this.inputs['userLastName'].blur();
-                                    setTimeout(()=>{
-                                        this.setState({ isDateTimePickerVisible: true })
-                                    },500)
-                                }}
-                            />
-
-                            <TouchableOpacity  onPress={this._showDateTimePicker}>
-                                <View pointerEvents={this.state.isDateTimePickerVisible ? 'auto' : 'none'}>
-                                    <TextInputIcon
-                                        value={""!=this.state.userBirthDate && moment(this.state.userBirthDate).locale("th",localization).format("DD MMMM YYYY")}
-                                        leftLabelText='วันเกิด'
-                                        iconUri={require('./../source/icons/iconBD.png')}
-                                        containerStyle={styles.inputContainerStyle}
-                                        editable={false}
-                                        secondFlex={secondFlex}
-                                        thirdFlex={thirdFlex}
-                                    />
-                                </View>
-                            </TouchableOpacity>
-                            {this.isShowSubmit() && <View style={styles.submitButtonContainerStyle}>
-                                <MainSubmitButton
-                                    buttonTitleText='ตรวจสอบข้อมูลสมาชิก'
-                                    onPress={this.onSubmit}
-                                />
-                            </View>}
-                            <DateTimePicker
-                                titleIOS='วันเกิด'
-                                titleStyle={styles.dateTitleTextStyle}
-                                isVisible={this.state.isDateTimePickerVisible}
-                                onConfirm={this._handleDatePicked}
-                                onCancel={this._hideDateTimePicker}
-                            />
-                        </View>
-                  
-           
+            <ScrollView 
+                style={{flex:1,}}
+                //contentContainerStyle={{flex: 1}}
+            >
+                <View style={styles.registerStep1ContainerStyle}>
+        
+                    <Animated.Image
+                        source={require('./../source/images/mascot.png')}
+                        style={[styles.mascotImageStyle,{ height: this.imageHeight }]}
+                        resizeMode='contain'
+                    />
+                    <View style={styles.registerDirectionContainerStyle}>
+                        <Text style={styles.registerTitleTextStyle}>ยินดีต้อนรับเข้าสู่ เมืองไทย เฟรนด์ คลับ</Text>
+                        <Text style={styles.directionTextStyle}>กรุณากรอกเลขที่บัตรประชาชน และ วันเกิด เพื่อทำการตรวจสอบข้อมูลสถานะของสมาชิก</Text>
                     </View>
-                    </KeyboardAvoidingView>
+                    <View style={styles.userDetailContainerStyle}>
+                        <TextInputIcon
+                            inputType="mask"
+                            value={this.state.userIdNumber}
+                            mask={"[000] [000000] [000] [0]"}
+                            onChangeText={(userIdNumber)=>this.setState({userIdNumber})}
+                            leftLabelText='เลขที่บัตรประชาชน'
+                            iconUri={require('./../source/icons/iconAvatar.png')}
+                            containerStyle={styles.inputContainerStyle}
+                            secondFlex={secondFlex}
+                            thirdFlex={thirdFlex}
+                            keyboardType='numeric'
+                            returnKeyType = {"next"}
+                        
+                        />
+                        <TextInputIcon
+                            value={this.state.userFirstName}
+                            onChangeText={(userFirstName)=>this.setState({userFirstName})}
+                            leftLabelText='ชื่อ'
+                            iconUri={require('./../source/icons/iconAvatar.png')}
+                            containerStyle={styles.inputContainerStyle}
+                            secondFlex={secondFlex}
+                            thirdFlex={thirdFlex}
+                            returnKeyType = {"next"}
+                            onSubmitEditing={() => {
+                                Keyboard.dismiss();
+                                this.focusNextField('userLastName');
+                            }}
+                        
+                        />
+                        <TextInputIcon
+                            refs={ input => {
+                                this.inputs['userLastName'] = input;
+                            }}
+                            value={this.state.userLastName}
+                            onChangeText={(userLastName)=>this.setState({userLastName})}
+                            leftLabelText='นามสกุล'
+                            iconUri={require('./../source/icons/iconAvatar.png')}
+                            containerStyle={styles.inputContainerStyle}
+                            secondFlex={secondFlex}
+                            thirdFlex={thirdFlex}
+                            returnKeyType = {"next"}
+                            onSubmitEditing={() => {
+                                Keyboard.dismiss();
+                                this.inputs['userLastName'].blur();
+                                setTimeout(()=>{
+                                    this.setState({ isDateTimePickerVisible: true })
+                                },500)
+                            }}
+                        />
+
+                        <TouchableOpacity  onPress={this._showDateTimePicker}>
+                            <View pointerEvents={this.state.isDateTimePickerVisible ? 'auto' : 'none'}>
+                                <TextInputIcon
+                                    value={""!=this.state.userBirthDate && moment(this.state.userBirthDate).locale("th",localization).format("DD MMMM YYYY")}
+                                    leftLabelText='วันเกิด'
+                                    iconUri={require('./../source/icons/iconBD.png')}
+                                    containerStyle={styles.inputContainerStyle}
+                                    editable={false}
+                                    secondFlex={secondFlex}
+                                    thirdFlex={thirdFlex}
+                                />
+                            </View>
+                        </TouchableOpacity>
+                        {this.isShowSubmit() && <View style={styles.submitButtonContainerStyle}>
+                            <MainSubmitButton
+                                buttonTitleText='ตรวจสอบข้อมูลสมาชิก'
+                                onPress={this.onSubmit}
+                            />
+                        </View>}
+                        <DateTimePicker
+                            titleIOS='วันเกิด'
+                            titleStyle={styles.dateTitleTextStyle}
+                            isVisible={this.state.isDateTimePickerVisible}
+                            onConfirm={this._handleDatePicked}
+                            onCancel={this._hideDateTimePicker}
+                        />
+                    </View>
+                </View>
+            </ScrollView>
          
         )
     }
 }
 
-const secondFlex = 0.4,thirdFlex = 0.5
+const secondFlex = 0.4,thirdFlex = 0.9
 
 const styles={
     registerStep1ContainerStyle:{
@@ -228,6 +228,7 @@ const styles={
         flex: 1,
         justifyContent: 'center',
         borderRadius: 3,
+        marginTop: responsiveHeight(1),
     },
     dateTitleTextStyle:{
         fontSize: responsiveFontSize(2.64),

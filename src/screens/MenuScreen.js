@@ -2,7 +2,7 @@ import React,{Component} from 'react';
 import {Text,View,Image,ImageBackground,Platform,TouchableOpacity} from 'react-native';
 import PropTypes from "prop-types";
 import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
-import { ifIphoneX } from 'react-native-iphone-x-helper'
+import { ifIphoneX,isIphoneX } from 'react-native-iphone-x-helper'
 import { observer, inject } from 'mobx-react';
 
 @inject('naviStore')
@@ -29,7 +29,7 @@ export default class MenuScreen extends Component{
                     resizeMode='stretch'
                     style={styles.menuBackgroundImageStyle}
                 >
-                <View style={{paddingTop:ifIphoneX?20:0,flex:1}}>
+                <View style={{paddingTop:isIphoneX()?20:0,flex:1}}>
                     <View style={styles.userShortDetailContainerStyle}>
                         <View style={styles.userAvatarContainerStyle}>
                             <View style={styles.avatarBorderStyle}>
