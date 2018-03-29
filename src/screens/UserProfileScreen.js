@@ -468,7 +468,7 @@ export default class UserProfileScreen extends Component{
     }
 }
 
-const secondFlex = 0.3,thirdFlex = 0.6
+const secondFlex = 0.3,thirdFlex = 0.9
 
 const styles={
     userProfileScreenContainerStyle:{

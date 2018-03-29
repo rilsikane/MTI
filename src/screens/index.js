@@ -8,6 +8,9 @@ import WelcomeScreen from './WelcomeScreen';
 import DashboardScreen from './DashboardScreen';
 import MenuScreen from './MenuScreen';
 import ProfileScreen from './UserProfileScreen';
+import UserInsuranceListScreen from './UserInsuranceListScreen';
+import InsuranceDetailScreen from './InsuranceDetailScreen';
+
 import app from '../stores/app';
 
 // register all screens of the app (including internal ones)
@@ -19,6 +22,8 @@ export function registerScreens() {
   Navigation.registerComponent('mti.DashboardScreen', () => DashboardScreen, Store, Provider);
   Navigation.registerComponent('mti.MenuScreen', () => MenuScreen, Store, Provider);
   Navigation.registerComponent('mti.ProfileScreen', () => ProfileScreen, Store, Provider);
+  Navigation.registerComponent('mti.UserInsuranceListScreen', () => UserInsuranceListScreen, Store, Provider);
+  Navigation.registerComponent('mti.InsuranceDetailScreen', () => InsuranceDetailScreen, Store, Provider);
 }
 export function registerScreenVisibilityListener() {
   new ScreenVisibilityListener({
