@@ -10,6 +10,7 @@ import MenuScreen from './MenuScreen';
 import ProfileScreen from './UserProfileScreen';
 import UserInsuranceListScreen from './UserInsuranceListScreen';
 import InsuranceDetailScreen from './InsuranceDetailScreen';
+import ServicePolicyScreen from './ServicePolicyScreen';
 
 import app from '../stores/app';
 
@@ -24,6 +25,7 @@ export function registerScreens() {
   Navigation.registerComponent('mti.ProfileScreen', () => ProfileScreen, Store, Provider);
   Navigation.registerComponent('mti.UserInsuranceListScreen', () => UserInsuranceListScreen, Store, Provider);
   Navigation.registerComponent('mti.InsuranceDetailScreen', () => InsuranceDetailScreen, Store, Provider);
+  Navigation.registerComponent('mti.ServicePolicyScreen', () => ServicePolicyScreen, Store, Provider);
 }
 export function registerScreenVisibilityListener() {
   new ScreenVisibilityListener({
