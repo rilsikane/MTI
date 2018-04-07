@@ -56,7 +56,11 @@ export default class LoginScreen extends Component{
 			passProps: {}, // Object that will be passed as props to the pushed screen (optional)
 			animated: true, // does the push have transition animation or does it happen immediately (optional)
 			backButtonTitle: undefined, // override the back button title (optional)
-			backButtonHidden: false, // hide the back button altogether (optional)
+            backButtonHidden: false, // hide the back button altogether (optional)
+            navigatorStyle: {
+                drawUnderStatusBar: true,
+                statusBarColor: 'transparent',
+            },
 		});
     }
     gotoWelcome(){
@@ -67,7 +71,11 @@ export default class LoginScreen extends Component{
 			passProps: {}, // Object that will be passed as props to the pushed screen (optional)
 			animated: true, // does the push have transition animation or does it happen immediately (optional)
 			backButtonTitle: undefined, // override the back button title (optional)
-			backButtonHidden: false, // hide the back button altogether (optional)
+            backButtonHidden: false, // hide the back button altogether (optional)
+            navigatorStyle: {
+                drawUnderStatusBar: true,
+                statusBarColor: 'transparent',
+            },
 		});
     }
 

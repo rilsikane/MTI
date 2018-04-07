@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Text,View,Image,ImageBackground,Platform,TouchableOpacity} from 'react-native';
+import {Text,View,Image,ImageBackground,Platform,TouchableOpacity,StatusBar} from 'react-native';
 import PropTypes from "prop-types";
 import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
 import { ifIphoneX,isIphoneX } from 'react-native-iphone-x-helper'
@@ -18,6 +18,7 @@ class WelcomeScreen extends Component{
     render(){
         return(
             <View style={styles.welcomeScreenContainerStyle}>
+                <StatusBar/>
                  {isIphoneX() && <View style={{height:40}}>
                         <ImageBackground
                             source={require('./../source/images/bgGradient.png')}
