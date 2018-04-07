@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { Container, Header, Content, Item, Input, Icon,Card } from 'native-base';
 import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import PopupDialog,{ SlideAnimation }  from 'react-native-popup-dialog';
 
 import {TextInputIcon} from './../components/TextInputIcon';
 import {CheckBoxes} from './../components/CheckBoxes';
@@ -21,6 +22,7 @@ export default class LoginScreen extends Component{
         this.state={
             userEmail: '',
             userPassword: '',
+            forgotPasswordEmail: '',
             remember:false,
             isLoading:false
         }
@@ -77,6 +79,47 @@ export default class LoginScreen extends Component{
                 statusBarColor: 'transparent',
             },
 		});
+    }
+    renderForgotPasswordPopup(){
+        return(
+            <PopupDialog
+                ref={(popupDialog) => { this.popupDialog = popupDialog; }}
+                width={responsiveWidth(90)}
+                height={responsiveHeight(38)}
+                dialogStyle={styles.popupContainerStyle}
+                containerStyle={styles.popupLayoutContainerStyle}
+            >
+                <View>
+                    <TouchableOpacity onPress={()=> this.popupDialog.dismiss()}>
+                        <Image
+                            source={require('./../source/icons/btnClose.png')}
+                            style={styles.btnCloseImageStyle}
+                            resizeMode='contain'
+                        />
+                    </TouchableOpacity>
+                    <View>
+                        <Text style={styles.popupTitleTextStyle}>ลืมรหัสผ่าน</Text>
+                        <Text style={styles.popupDetailTextStyle}>กรุณากรอกอีเมลของคุณเพื่อขอรับรหัสผ่านใหม่</Text>
+                        <TextInputIcon
+                            value={this.state.forgotPasswordEmail}
+                            onChangeText={(forgotPasswordEmail)=>this.setState({forgotPasswordEmail})}
+                            leftLabelText='อีเมล'
+                            iconUri={require('../source/icons/iconMail.png')}
+                            containerStyle={styles.inputContainerStyle}
+                            secondFlex={secondFlex}
+                            thirdFlex={thirdFlex}
+                            keyboardType='email-address'
+                        />
+                    </View>
+                    <View style={styles.submitButtonContainerStyle}>
+                        <MainSubmitButton
+                            buttonTitleText='ตกลง'
+                            onPress={()=>alert('Submit')}
+                        />
+                    </View>
+                </View>
+            </PopupDialog>
+        )
     }
 
     render(){
@@ -158,7 +201,7 @@ export default class LoginScreen extends Component{
                                             this.login();
                                         }}
                                     />
-                                    <TouchableOpacity style={styles.forgotPasswordContainerStyle}> 
+                                    <TouchableOpacity onPress={()=>this.popupDialog.show()} style={styles.forgotPasswordContainerStyle}> 
                                         <Text style={styles.forgotPasswordTextStyle}>ลืมรหัสผ่าน ?</Text>
                                     </TouchableOpacity>
                                 </Item>
@@ -197,6 +240,7 @@ export default class LoginScreen extends Component{
                     </View>
                     {this.app.isLoading && <Spinner visible={this.app.isLoading}  textStyle={{color: '#FFF'}} />}
                 </ScrollView>
+                {this.renderForgotPasswordPopup()}
             </View>
         )
     }
@@ -204,6 +248,7 @@ export default class LoginScreen extends Component{
 
 const {height,width} = Dimensions.get('window')
 const textColor = '#81cae9'
+const secondFlex = 0.3,thirdFlex = 0.9
 
 const styles={
     loginContainerStyle:{
@@ -315,6 +360,42 @@ const styles={
     registerBottomTextStyle:{
         color: '#9fbfcf',
         fontSize: responsiveFontSize(2.93),
+
+    },
+    popupContainerStyle:{
+        borderRadius: 3,
+        padding: responsiveWidth(4),
+
+    },
+    popupLayoutContainerStyle:{
+        justifyContent: 'flex-start',
+        paddingTop: responsiveHeight(15)
+    },
+    btnCloseImageStyle:{
+        height: responsiveHeight(2.81),
+        alignSelf: 'flex-end'
+    },
+    popupTitleTextStyle:{
+        fontSize: responsiveFontSize(3.4),
+        color: '#1595d3',
+        textAlign: 'center',
+        marginTop: responsiveHeight(2.5),
+        marginBottom: responsiveHeight(2),
+
+    },
+    popupDetailTextStyle:{
+        fontSize: responsiveFontSize(2.2),
+        color: '#919195',
+        textAlign: 'center',
+    },
+    inputContainerStyle:{
+        borderBottomColor: '#C4C4C4',
+    },
+    submitButtonContainerStyle:{
+        marginLeft: responsiveWidth(2),
+        marginRight: responsiveWidth(2),
+        justifyContent: 'center',
+        marginTop: responsiveHeight(2),
 
     }
 }
