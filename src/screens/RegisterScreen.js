@@ -84,6 +84,75 @@ export default class RegisterScreen extends Component{
         )
     }
 
+    renderLeavingContactPopup(){
+        return(
+            <PopupDialog
+                ref={(leavingDialog) => { this.leavingDialog = leavingDialog; }}
+                width={responsiveWidth(90)}
+                height={responsiveHeight(60)}
+                dialogStyle={styles.popupContainerStyle}
+                containerStyle={styles.popupLayoutContainerStyle}
+            >
+                <View>
+                    <TouchableOpacity onPress={()=> this.leavingDialog.dismiss()}>
+                        <Image
+                            source={require('./../source/icons/btnClose.png')}
+                            style={styles.btnCloseImageStyle}
+                            resizeMode='contain'
+                        />
+                    </TouchableOpacity>
+                    <View>
+                        <Text style={styles.popupTitleTextStyle}>ฝากข้อมูลติดตต่อกลับ</Text>
+                        <Text style={styles.popupDetailTextStyle}>กรุณากรอกข้อมูลของคุณและรอการติดต่อกลับ</Text>
+                        <TextInputIcon
+                            value={this.props.registerStore.register.name}
+                            onChangeText={(userFirstName)=>this.props.registerStore.register.name=userFirstName}
+                            leftLabelText='ชื่อ'
+                            iconUri={require('./../source/icons/iconAvatar.png')}
+                            containerStyle={styles.inputContainerStyle}
+                            secondFlex={secondFlex}
+                            thirdFlex={thirdFlex}
+                        />
+                        <TextInputIcon
+                            value={this.props.registerStore.register.surname}
+                            onChangeText={(userLastName)=>this.props.registerStore.register.name=surname}
+                            leftLabelText='นามสกุล'
+                            iconUri={require('./../source/icons/iconAvatar.png')}
+                            containerStyle={styles.inputContainerStyle}
+                            secondFlex={secondFlex}
+                            thirdFlex={thirdFlex}
+                        />
+                        <TextInputIcon
+                            value={this.props.registerStore.register.tel}
+                            onChangeText={(userPhone)=>this.props.registerStore.register.tel=userPhone}
+                            leftLabelText='เบอร์โทรศัพท์'
+                            iconUri={require('./../source/icons/iconPhone.png')}
+                            containerStyle={styles.inputContainerStyle}
+                            secondFlex={secondFlex}
+                            thirdFlex={thirdFlex}
+                        />
+                        <TextInputIcon
+                            value={this.state.forgotPasswordEmail}
+                            onChangeText={(forgotPasswordEmail)=>this.setState({forgotPasswordEmail})}
+                            leftLabelText='อีเมล'
+                            iconUri={require('../source/icons/iconMail.png')}
+                            containerStyle={styles.inputContainerStyle}
+                            secondFlex={secondFlex}
+                            thirdFlex={thirdFlex}
+                            keyboardType='email-address'
+                        />
+                    </View>
+                    <View style={styles.submitButtonContainerStyle}>
+                        <MainSubmitButton
+                            buttonTitleText='ตกลง'
+                            onPress={()=>alert('Submit')}
+                        />
+                    </View>
+                </View>
+            </PopupDialog>
+        )
+    }
+
     async _onSubmitRegister1Press(param){
         if (this._pages) {
             let response = await postBasic("mti/checkinfo",param);
@@ -227,6 +296,7 @@ export default class RegisterScreen extends Component{
                 <PageIndicators
                     pageNumber={this.state.pageNumber+1}
                 />
+                <TouchableOpacity onPress={()=>this.leavingDialog.show()}><Text>Popup</Text></TouchableOpacity>
                 {this.props.registerStore.register && <Pages
                     ref={this.updateRef} 
                     indicatorPosition='none'
@@ -253,7 +323,7 @@ export default class RegisterScreen extends Component{
                     />
                         
                 </Pages>}
-
+                {this.renderLeavingContactPopup()}
                 {this.renderPopup()}
             </View>
             
@@ -261,15 +331,20 @@ export default class RegisterScreen extends Component{
     }
 }
 
+const secondFlex = 0.3,thirdFlex = 0.9
+
 const styles={
     registerScreenContainerStyle:{
         flex: 1,
-
     },
     popupContainerStyle:{
         borderRadius: 3,
         padding: responsiveWidth(4),
 
+    },
+    popupLayoutContainerStyle:{
+        justifyContent: 'flex-start',
+        paddingTop: responsiveHeight(10)
     },
     btnCloseImageStyle:{
         height: responsiveHeight(2.81),
@@ -288,7 +363,7 @@ const styles={
 
     },
     popupDetailTextStyle:{
-        fontSize: responsiveFontSize(2.6),
+        fontSize: responsiveFontSize(2.2),
         color: '#919195',
         textAlign: 'center',
         marginLeft: responsiveWidth(8),
@@ -306,5 +381,9 @@ const styles={
         justifyContent: 'center',
         marginTop: responsiveHeight(2),
 
-    }
+    },
+    inputContainerStyle:{
+        borderBottomColor: '#C4C4C4',
+        height: responsiveHeight(8),
+    },
 }
