@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Text,View,Image,Dimensions,ImageBackground,TextInput,TouchableOpacity,ScrollView,SafeAreaView} from 'react-native';
+import {Text,View,Image,Dimensions,ImageBackground,TextInput,TouchableOpacity,ScrollView,SafeAreaView,StatusBar} from 'react-native';
 import PropTypes from "prop-types";
 import { Container, Header, Content, Item, Input, Icon,Card } from 'native-base';
 import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
@@ -73,14 +73,16 @@ export default class LoginScreen extends Component{
 
     render(){
         return(
-            <ScrollView 
-                // resetScrollToCoords={{ x: 0, y: 0 }}
-                // automaticallyAdjustContentInsets={false}
-                // enableOnAndroid={true}
-                // keyboardShouldPersistTaps='always'
-                // contentContainerStyle={{flex: 1,}}
-                style={{flex: 1}}
-            >
+            <View style={styles.loginContainerStyle}>
+                <ScrollView 
+                    // resetScrollToCoords={{ x: 0, y: 0 }}
+                    // automaticallyAdjustContentInsets={false}
+                    // enableOnAndroid={true}
+                    // keyboardShouldPersistTaps='always'
+                    contentContainerStyle={{flex: 1,}}
+                    style={{flex: 1}}
+                >
+                    <StatusBar/>
                     {isIphoneX() && <View style={{height:40}}>
                         <ImageBackground
                             source={require('./../source/images/bgGradient.png')}
@@ -186,8 +188,8 @@ export default class LoginScreen extends Component{
                         </ImageBackground>
                     </View>
                     {this.app.isLoading && <Spinner visible={this.app.isLoading}  textStyle={{color: '#FFF'}} />}
-            </ScrollView>
-            
+                </ScrollView>
+            </View>
         )
     }
 }
