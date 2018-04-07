@@ -296,7 +296,6 @@ export default class RegisterScreen extends Component{
                 <PageIndicators
                     pageNumber={this.state.pageNumber+1}
                 />
-                <TouchableOpacity onPress={()=>this.leavingDialog.show()}><Text>Popup</Text></TouchableOpacity>
                 {this.props.registerStore.register && <Pages
                     ref={this.updateRef} 
                     indicatorPosition='none'
