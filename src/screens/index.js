@@ -13,6 +13,7 @@ import InsuranceDetailScreen from './InsuranceDetailScreen';
 import ServicePolicyScreen from './ServicePolicyScreen';
 import NotificationScreen from './NotificationScreen';
 import MyCardScreen from './MyCardScreen';
+import PrivilegeScreen from './PrivilegeScreen';
 
 import app from '../stores/app';
 
@@ -30,6 +31,7 @@ export function registerScreens() {
   Navigation.registerComponent('mti.ServicePolicyScreen', () => ServicePolicyScreen, Store, Provider);
   Navigation.registerComponent('mti.NotificationScreen', () => NotificationScreen, Store, Provider);
   Navigation.registerComponent('mti.MyCardScreen', () => MyCardScreen, Store, Provider);
+  Navigation.registerComponent('mti.PrivilegeScreen', () => PrivilegeScreen, Store, Provider);
 }
 export function registerScreenVisibilityListener() {
   new ScreenVisibilityListener({
