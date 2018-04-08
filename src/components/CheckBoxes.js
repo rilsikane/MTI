@@ -34,7 +34,7 @@ class CheckBoxes extends Component{
 
     render(){
         return(
-            <View style={styles.checkBoxMainContainerStyle}>
+            <View style={[styles.checkBoxMainContainerStyle,this.props.containerStyle]}>
                 <CheckBox
                     {...this.props} 
                     fontFamily={Platform.OS === 'android' ?'DBHelvethaicaX':'DBHelvethaicaX-Reg'}
@@ -54,12 +54,14 @@ const styles={
     checkBoxMainContainerStyle:{
         flexDirection: 'row',
         alignItems: 'center',
-        marginTop: responsiveHeight(1),
+        //marginTop: responsiveHeight(1),
     },
     checkBoxContainerStyle:{
         backgroundColor: 'transparent',
+        width: responsiveWidth(7),
         borderWidth: 0,
-        paddingRight: 0,
+        padding: 0,
+        margin: 0,
         marginRight: 0,
         borderColor: 'transparent',
 
