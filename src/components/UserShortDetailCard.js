@@ -2,12 +2,21 @@ import React,{Component} from 'react';
 import {Text,View,Image,TouchableOpacity} from 'react-native';
 import PropTypes from "prop-types";
 import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
-
+import store from 'react-native-simple-store';
 class UserShortDetailCard extends Component{
 
     constructor(props){
         super(props)
-
+        this.state = {user:{}};
+    }
+    async componentDidMount(){
+        let user = await store.get("user");
+        if(!user){
+            user = {};
+            user.name = "GUEST";
+            user.surname = "GUEST";
+        }
+        this.setState({user:user});
     }
 
     render(){
@@ -23,10 +32,17 @@ class UserShortDetailCard extends Component{
                     </View>
                 </View>
                 <View style={styles.userShortDetailContainerStyle}>
-                    <Text style={styles.userNameTextStyle}>ชรินทร์ทิพย์  บำรุงศักดิ์</Text>
+                    <Text style={styles.userNameTextStyle}>{`${this.state.user.name} ${this.state.user.surname}`}</Text>
                     <Text style={styles.userLevelTextStyle}>สมาชิกระดับ Silver</Text>
                     <View style={styles.seeUserDetailLinkContainerStyle}>
-                        <TouchableOpacity style={styles.seeUserDetailLinkSectionStyle}>
+                        <TouchableOpacity style={styles.seeUserDetailLinkSectionStyle} onPress={()=>this.props.navigator.push({
+                                    screen: 'mti.ProfileScreen', 
+                                    title: undefined, 
+                                    titsleImage: undefined, 
+                                    animated: false, 
+                                    backButtonTitle: undefined,
+                                    backButtonHidden: false, 
+                                })}>
                             <Image
                                 source={require('./../source/icons/iconAvatar.png')}
                                 style={styles.detailIconLinkImageStyle}

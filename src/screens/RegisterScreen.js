@@ -18,6 +18,8 @@ import {RegisterStep4_2} from './../components/RegisterStep4-2';
 import {postBasic} from '../api'
 import { observer, inject } from 'mobx-react';
 import { ifIphoneX } from 'react-native-iphone-x-helper'
+import app from '../stores/app';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 @inject('registerStore')
 @observer
@@ -34,6 +36,7 @@ export default class RegisterScreen extends Component{
         }
         this.updateRef = this.updateRef.bind(this);
         this.gotoWelcome = this.gotoWelcome.bind(this);
+        this.app = app;
     }
 
     updateRef(ref) {
@@ -86,7 +89,9 @@ export default class RegisterScreen extends Component{
 
     async _onSubmitRegister1Press(param){
         if (this._pages) {
-            let response = await postBasic("mti/checkinfo",param);
+            this.app.isLoading = true;
+            let response = await postBasic("mti/checkinfo",param,true);
+            this.app.isLoading = false;
             if(response){
                 if(!response.message){
                     this.props.registerStore.register = response;
@@ -95,9 +100,9 @@ export default class RegisterScreen extends Component{
                     this.setState({enable:true});
                     this._pages.scrollToPage(1);
                     this.setState({enable:false});
-                }else{
-                    this.popupDialog.show();
                 }
+            }else{
+                this.popupDialog.show();
             }
         }
     }
@@ -111,12 +116,26 @@ export default class RegisterScreen extends Component{
         }
     }
 
-    _onSubmitRegister3Press(){
+    async _onSubmitRegister3Press(){
         if (this._pages) {
+            let param = this.props.registerStore.register;
+            let response = await postBasic("member",param);
+            if(response){
+                if(!response.message){
+                    this.setState({enable:true});
+                    this._pages.scrollToPage(3);
+                    this.setState({enable:false});
+                }else{
+                    Alert.alert(
+                        'เกิดข้อผิดพลาด',
+                        response.message,
+                        [
+                        {text: 'OK', onPress: () => console.log('OK Pressed!')},
+                        ]
+                    )
+                }
+            }
            
-            this.setState({enable:true});
-            this._pages.scrollToPage(3);
-            this.setState({enable:false});
         }
     }
 
@@ -155,7 +174,7 @@ export default class RegisterScreen extends Component{
             if(!response.message){
                if(response.status=='ok'){
                 this.props.navigator.resetTo({
-                    screen: 'mti.LifeStyleScreen', // unique ID registered with Navigation.registerScreen
+                    screen: 'mti.WelcomeScreen', // unique ID registered with Navigation.registerScreen
                     title: undefined, // navigation bar title of the pushed screen (optional)
                     passProps: {}, // simple serializable object that will pass as props to the pushed screen (optional)
                     animated: true, // does the resetTo have transition animation or does it happen immediately (optional)
@@ -204,6 +223,7 @@ export default class RegisterScreen extends Component{
       
     }
     gotoWelcome(){
+
         this.props.navigator.resetTo({
 			screen: 'mti.WelcomeScreen', // unique ID registered with Navigation.registerScreen
 			title: undefined, // navigation bar title of the pushed screen (optional)
@@ -225,7 +245,7 @@ export default class RegisterScreen extends Component{
                     //rightIconName='iconBell'
                 />
                 <PageIndicators
-                    pageNumber={this.state.pageNumber+1}
+                    pageNumber={this.state.pageNumber}
                 />
                 {this.props.registerStore.register && <Pages
                     ref={this.updateRef} 
@@ -243,7 +263,6 @@ export default class RegisterScreen extends Component{
                     <RegisterStep3
                         onSubmitRegister3Press={this._onSubmitRegister3Press.bind(this)}
                     />
-                    <LifeStyleScreen/>
                     <RegisterStep4_1
                         onSubmitRegister4_1Press={this._onSubmitRegister4_1Press.bind(this)}
                     />
@@ -253,7 +272,7 @@ export default class RegisterScreen extends Component{
                     />
                         
                 </Pages>}
-
+                {this.app.isLoading && <Spinner visible={this.app.isLoading}  textStyle={{color: '#FFF'}} />}        
                 {this.renderPopup()}
             </View>
             

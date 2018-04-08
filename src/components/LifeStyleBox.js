@@ -64,8 +64,8 @@ const styles={
         
     },
     boxContainerStyle:{
-        width: responsiveHeight(15.49),
-        height: responsiveHeight(15.49),
+        width: responsiveHeight(13.49),
+        height: responsiveHeight(13.49),
         borderRadius: 4.8,
         borderStyle: "solid",
         borderWidth: 1,

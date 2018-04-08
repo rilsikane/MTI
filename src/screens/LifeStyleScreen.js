@@ -7,7 +7,10 @@ import {Headers} from './../components/Headers';
 import {MainSubmitButton} from './../components/MainSubmitButton';
 import {LifeStyleBox} from './../components/LifeStyleBox';
 import { observer, inject } from 'mobx-react';
-import {postBasic} from '../api'
+import {postBasic,authen} from '../api'
+import app from '../stores/app'
+import store from 'react-native-simple-store';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 @inject('registerStore')
 @observer
@@ -89,6 +92,7 @@ export default class LifeStyleScreen extends Component{
 
         }
         this.onSubmitOtpButtonPress = this.onSubmitOtpButtonPress.bind(this);
+        this.app = app;
     }
 
     componentDidMount(){
@@ -99,19 +103,13 @@ export default class LifeStyleScreen extends Component{
     }
 
     async onSubmitOtpButtonPress(){
+            this.app.isLoading = true
             let param = this.props.registerStore.register;
             let response = await postBasic("member",param);
             if(response){
                 if(!response.message){
-                    this.props.navigator.resetTo({
-                        screen: 'mti.WelcomeScreen', // unique ID registered with Navigation.registerScreen
-                        title: undefined, // navigation bar title of the pushed screen (optional)
-                        titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
-                        passProps: {}, // Object that will be passed as props to the pushed screen (optional)
-                        animated: true, // does the push have transition animation or does it happen immediately (optional)
-                        backButtonTitle: undefined, // override the back button title (optional)
-                        backButtonHidden: false, // hide the back button altogether (optional)
-                    });
+                    
+                    this.login();
                 }else{
                     Alert.alert(
                         'เกิดข้อผิดพลาด',
@@ -122,6 +120,28 @@ export default class LifeStyleScreen extends Component{
                     )
                 }
             }
+    }
+    async login(){
+        this.app.isLoading = true
+        let param = {};
+        param.username = this.props.registerStore.register.username;
+        param.password = this.props.registerStore.register.password;
+        let response = await authen(param);
+        if(response.first_logon=='N'){
+            let token = response.token;
+            store.save("token",token);
+            if(token){
+                let response = await get("me",{});
+                if(true){
+                    store.save("user",response);
+                    this.app.login();
+                }else{
+                    this.app.isLoading = false
+                }
+            }else{
+                this.app.isLoading = false
+            }
+        }
     }
 
     onLifeStylePress(index,list){
@@ -204,7 +224,7 @@ export default class LifeStyleScreen extends Component{
         return(
             <View style={styles.lifestyleContainerStyle}>
                 <View style={styles.lifestyleDirectionContainerStyle}>
-                    <Text style={styles.lifestyleTitleTextStyle}>กรุณาเลือกไลฟ์ไตล์ที่ตรงกับคุณ (เลือกได้มากกว่า1 ข้อ)</Text>
+                    <Text  style={styles.lifestyleTitleTextStyle}>{`กรุณาเลือกไลฟ์ไตล์ที่ตรงกับคุณ(เลือกได้มากกว่า1 ข้อ)`}</Text>
                 </View>
                 <View style={styles.lifestyleBoxContainerStyle}>
                     <View style={styles.lifestyleBoxList1ContainerStyle}>
@@ -220,6 +240,7 @@ export default class LifeStyleScreen extends Component{
                         />
                     </View>
                 </View>
+                {this.app.isLoading && <Spinner visible={this.app.isLoading}  textStyle={{color: '#FFF'}} />}
             </View>
         )
     }
@@ -230,18 +251,18 @@ const secondFlex = 0.3,thirdFlex = 0.6
 const styles={
     lifestyleContainerStyle:{
         flex: 1,
-
+        paddingTop:20,
     },
     lifestyleDirectionContainerStyle:{
         marginLeft: responsiveWidth(6),
         marginRight: responsiveWidth(6),
         marginTop: responsiveHeight(2),
-
+        alignItems: 'center',
     },
     lifestyleTitleTextStyle:{
         textAlign: 'center',
         color: '#1595d3',
-        fontSize: responsiveFontSize(3.5),
+        fontSize: responsiveFontSize(3),
         marginBottom: responsiveHeight(1),
 
     },

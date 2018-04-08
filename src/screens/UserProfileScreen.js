@@ -9,6 +9,9 @@ import {Headers} from './../components/Headers';
 import {TextInputIcon} from './../components/TextInputIcon';
 import {MainSubmitButton} from './../components/MainSubmitButton';
 import {LifeStyleBox} from './../components/LifeStyleBox';
+import store from 'react-native-simple-store';
+import moment from 'moment';
+import localization from 'moment/locale/th'
 
 export default class UserProfileScreen extends Component{
 
@@ -104,13 +107,22 @@ export default class UserProfileScreen extends Component{
             isDateTimePickerVisible: false,
 
         }
+        moment.locale("th");
     }
 
-    componentDidMount(){
+    async componentDidMount(){
         this.setState({
             filterLifeStyleImage1: this.state.lifeStyleImage1,
             filterLifeStyleImage2: this.state.lifeStyleImage2
         })
+        let user = await store.get("user");
+        if(!user){
+            user = {};
+            user.name = "GUEST";
+            user.surname = "GUEST";
+        }
+        this.setState({userFirstName:user.name,userLastName:user.surname,userEmail:user.email
+            ,userPhone:user.tel,userBirthDate:user.birthdate})
     }
 
     _showDateTimePicker = () => this.setState({ isDateTimePickerVisible: true })
@@ -313,7 +325,7 @@ export default class UserProfileScreen extends Component{
                                     </View>
                                 </ImageBackground>
                             </TouchableOpacity>
-                            <Text style={styles.userNameTextStyle}>ชรินทร์ทิพย์  บำรุงศักดิ์</Text>
+                            <Text style={styles.userNameTextStyle}>{`${this.state.userFirstName} ${this.state.userLastName}`}</Text>
                             <Text style={styles.userLevelTextStyle}>สมาชิกระดับ Silver</Text>
                         </View>
                     </View>
@@ -354,7 +366,7 @@ export default class UserProfileScreen extends Component{
                         <TouchableOpacity disabled={!this.state.canEditProfile} onPress={this._showDateTimePicker}>
                             <View pointerEvents={this.state.isDateTimePickerVisible ? 'auto' : 'none'}>
                                 <TextInputIcon
-                                    value={this.state.userBirthDate}
+                                    value={moment(this.state.userBirthDate).locale("th",localization).format("DD MMMM YYYY")}
                                     leftLabelText='วันเกิด'
                                     iconUri={require('./../source/icons/iconBD.png')}
                                     containerStyle={styles.inputContainerStyle}

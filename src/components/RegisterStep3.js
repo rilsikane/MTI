@@ -18,21 +18,36 @@ class RegisterStep3 extends Component{
             userEmail: '',
             userPassword: '',
             userConfirmPassword: '',
-            errorText: ''
+            errorText: '',
+            errorPassowrd:false,
+            userEmailErr:false
         }
         this.onSubmitButtonPress = this.onSubmitButtonPress.bind(this);
     }
-
+    componentDidMount(){
+      this.setState({userEmail:this.props.registerStore.register.tel})
+    };
+    
     onPasswordChange(){
+        if(this.state.userConfirmPassword!=''){
+            if(this.state.userPassword!=this.state.userConfirmPassword){
+                this.setState({
+                    errorText: 'รหัสผ่านไม่ตรงกัน',
+                    userConfirmPassword:''
+                })
+            }else{
 
-        if(this.state.userPassword!=this.state.userConfirmPassword){
-            this.setState({
-                errorText: 'รหัสผ่านไม่ตรงกัน'
-            })
+                this.setState({
+                    errorText: null
+                })
+            }
         }else{
-            this.setState({
-                errorText: null
-            })
+            var regex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$/
+            if(this.state.userPassword.length ==8 && regex.test(this.state.userPassword)){
+                this.setState({errorPassowrd:false})
+            }else{
+                this.setState({errorPassowrd:true})
+            }
         }
 
     }
@@ -41,7 +56,7 @@ class RegisterStep3 extends Component{
 
         if(this.state.userConfirmPassword!=this.state.userPassword){
             this.setState({
-                errorText: 'รหัสผ่านไม่ตรงกัน'
+                errorText: 'รหัสผ่านไม่ตรงกัน',
             })
         }else{
             this.setState({
@@ -82,32 +97,56 @@ class RegisterStep3 extends Component{
                             thirdFlex={thirdFlex}
                             onChangeText={(userEmail)=> this.setState({userEmail})}
                             keyboardType='email-address'
+                            returnKeyType='next'
+                            blurOnSubmit={true}
+                            onBlur={()=>{
+                                var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                                var telRex = /^[08|09|06|][0-9]+[0-9]$/
+                                if(re.test(this.state.userEmail) || telRex.test(this.state.userEmail)){
+                                    if(telRex.test(this.state.userEmail) && this.state.userEmail.length ==10){
+                                        this.setState({userEmailErr:false})
+                                    }else if(!telRex.test(this.state.userEmail)){
+                                         this.setState({userEmailErr:false})
+                                    }
+                                    
+                                }else{
+                                    this.setState({userEmailErr:true})
+                                }
+                            }}
                         />
+                        {this.state.userEmailErr && <Text style={styles.errorMsg}>อีเมล/เบอร์โทรศัพท์ ไม่ถูกรูปแบบ</Text>}
                         <TextInputIcon
                             value={this.state.userPassword}
                             leftLabelText='รหัสผ่าน'
                             iconUri={require('./../source/icons/iconPass.png')}
-                            containerStyle={styles.inputContainerStyle}
+                            containerStyle={!this.state.errorPassowrd ?styles.inputContainerStyle:styles.inputContainerErrStyle}
                             iconStyle={styles.iconStyle}
                             secondFlex={secondFlex}
                             thirdFlex={thirdFlex}
                             secureTextEntry={true}
                             onChangeText={(userPassword)=> this.setState({userPassword})}
                             onEndEditing={this.onPasswordChange.bind(this)}
+                            returnKeyType='next'
+                            blurOnSubmit={true}
+                            
                         />
+                        {this.state.errorPassowrd && <Text style={styles.errorMsg}>รหัสผ่านไม่ถูกรูปแบบ</Text>}
                         <TextInputIcon
                             value={this.state.userConfirmPassword}
                             leftLabelText='ยืนยันรหัสผ่าน'
                             iconUri={require('./../source/icons/iconPass.png')}
-                            containerStyle={styles.inputContainerStyle}
+                            containerStyle={!this.state.errorText ?styles.inputContainerStyle:styles.inputContainerErrStyle}
                             iconStyle={styles.iconStyle}
                             secondFlex={secondFlex}
                             thirdFlex={thirdFlex}
                             secureTextEntry={true}
                             onChangeText={(userConfirmPassword)=> this.setState({userConfirmPassword})}
                             onEndEditing={this.onPasswordChange.bind(this)}
+                            returnKeyType='next'
+                            blurOnSubmit={true}
                         />
                         <Text style={styles.errorTextStyle}>{this.state.errorText}</Text>
+                        <Text style={styles.directionTextStyle}>รหัสผ่านจะต้องมี 8 หลัก ประกอบไปด้วยตัวอักษรภาษาอังกฤษพิมพ์ใหญ่และตัวพิมพ์เล็กและตัวเลข</Text>
                         {this.isShowSubmit() && <View style={styles.submitButtonContainerStyle}>
                             <MainSubmitButton
                                 buttonTitleText='ยืนยันข้อมูล'
@@ -149,7 +188,7 @@ const styles={
         textAlign: 'center',
         color: "#919195",
         letterSpacing: 0,
-        fontSize: responsiveFontSize(2.4),
+        fontSize: responsiveFontSize(2.2),
     },
     userDetailContainerStyle:{
         flex: 1,
@@ -175,6 +214,15 @@ const styles={
     submitButtonContainerStyle:{
         flex: 1,
         justifyContent: 'center',
+    },
+    inputContainerErrStyle:{
+        borderBottomColor: 'red',
+        height: responsiveHeight(7)
+    },
+    errorMsg:{
+        fontSize:responsiveFontSize(2.2),
+        color:"red",
+        padding:2
     }
 
 }

@@ -22,13 +22,16 @@ class RegisterStep2 extends Component{
             userEmail: '',
             userPhone: '',
             checkBoxIsSelected: false,
+            emailErr:false,
+            phoneErr:false
         }
     }
 
     isShowSumbit(){
         if(''!=this.props.registerStore.register.name && ''!=this.props.registerStore.register.surname
             && ''!=this.props.registerStore.register.gender && ''!=this.props.registerStore.register.email
-            && ''!=this.props.registerStore.register.tel && this.state.checkBoxIsSelected){
+            && ''!=this.props.registerStore.register.tel && this.state.checkBoxIsSelected
+            && !this.state.emailErr && !this.state.telErr){
                 return true;
         }else{
             return false;
@@ -36,14 +39,14 @@ class RegisterStep2 extends Component{
     }
     render(){
         return(
-            <ScrollView
-                // resetScrollToCoords={{ x: 0, y: 0 }}
-                // automaticallyAdjustContentInsets={false}
-                keyboardShouldPersistTaps='always'
-                // enableOnAndroid={true}
-                //contentContainerStyle={{flex: 1,}}
-                style={{flex: 1}}
-                //scrollEnabled={true}
+            <KeyboardAwareScrollView
+                resetScrollToCoords={{ x: 0, y: 0 }}
+                automaticallyAdjustContentInsets={false}
+                //keyboardShouldPersistTaps='always'
+                enableOnAndroid={true}
+                contentContainerStyle={{flex: 1,}}
+                //style={{flex: 1}}
+                scrollEnabled={true}
                 >
                 
             <View style={styles.registerStep1ContainerStyle}>
@@ -63,7 +66,7 @@ class RegisterStep2 extends Component{
                     />
                     <TextInputIcon
                         value={this.props.registerStore.register.surname}
-                        onChangeText={(userLastName)=>this.props.registerStore.register.name=surname}
+                        onChangeText={(userLastName)=>this.props.registerStore.register.surname=userLastName}
                         leftLabelText='นามสกุล'
                         iconUri={require('./../source/icons/iconAvatar.png')}
                         containerStyle={styles.inputContainerStyle}
@@ -82,23 +85,43 @@ class RegisterStep2 extends Component{
                     />
                     <TextInputIcon
                         value={this.props.registerStore.register.email}
-                        onChangeText={(userEmail)=>this.props.registerStore.register.gender=email}
+                        onChangeText={(userEmail)=>this.props.registerStore.register.email=userEmail}
                         leftLabelText='อีเมล'
                         iconUri={require('./../source/icons/iconMail.png')}
-                        containerStyle={styles.inputContainerStyle}
+                        containerStyle={!this.state.emailErr ?styles.inputContainerStyle:styles.inputContainerErrStyle}
                         secondFlex={secondFlex}
                         thirdFlex={thirdFlex}
                         keyboardType='email-address'
+                        onBlur={()=>{
+                            var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                            if(re.test(this.props.registerStore.register.email)){
+                                this.setState({emailErr:false})
+                            }else{
+                                this.setState({emailErr:true})
+                            }
+                        }}
                     />
+                     {this.state.emailErr && <Text style={styles.errorMsg}>Email ไม่ถูกต้อง</Text>}
                     <TextInputIcon
                         value={this.props.registerStore.register.tel}
                         onChangeText={(userPhone)=>this.props.registerStore.register.tel=userPhone}
                         leftLabelText='โทรศัพท์'
                         iconUri={require('./../source/icons/iconPhone.png')}
-                        containerStyle={styles.inputContainerStyle}
+                        containerStyle={!this.state.telErr ?styles.inputContainerStyle:styles.inputContainerErrStyle}
                         secondFlex={secondFlex}
                         thirdFlex={thirdFlex}
+                        keyboardType='phone-pad'
+                        returnKeyType='done'
+                        onBlur={()=>{
+                            if(this.props.registerStore.register.tel.length!=10 && this.props.registerStore.register.tel.length!=12){
+                                this.setState({telErr:true})
+                            }else{
+                                this.setState({telErr:false})
+                            }
+                        }}
+                        blurOnSubmit={true}
                     />
+                    {this.state.telErr && <Text style={styles.errorMsg}>เบอร์โทรศัพท์ ไม่ถูกต้อง</Text>}
                     <CheckBoxes
                         checkBoxTitleText='ยอบรับ เงื่อนไขการให้บริการ'
                         checked={this.state.checkBoxIsSelected}
@@ -117,7 +140,7 @@ class RegisterStep2 extends Component{
                     </View>}
                 </View>
             </View>
-            </ScrollView>
+            </KeyboardAwareScrollView>
         )
     }
 }
@@ -168,6 +191,15 @@ const styles={
     submitButtonContainerStyle:{
         flex: 1,
         justifyContent: 'center',
+    },
+    inputContainerErrStyle:{
+        borderBottomColor: 'red',
+        height: responsiveHeight(7)
+    },
+    errorMsg:{
+        fontSize:responsiveFontSize(2.2),
+        color:"red",
+        padding:2
     }
 
 }

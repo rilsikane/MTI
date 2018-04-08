@@ -20,6 +20,9 @@ class AppStore {
   login() {
     this.root = 'after-login';
   }
+  logout() {
+    this.root = 'login';
+  }
  
 }
 

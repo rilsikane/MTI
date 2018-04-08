@@ -22,7 +22,8 @@ class RegisterStep1 extends Component{
             userLastName: '',
             userBirthDate: '',
             isDateTimePickerVisible: false,
-
+            keyboardShow : false,
+            idNumberError:false
         }
         this.focusNextField = this.focusNextField.bind(this); 
         this.inputs = {};
@@ -30,7 +31,7 @@ class RegisterStep1 extends Component{
         this.keyboardWillShowSub = Keyboard.addListener('keyboardWillShow', this.keyboardWillShow);
         this.keyboardWillHideSub = Keyboard.addListener('keyboardWillHide', this.keyboardWillHide);
         this.onSubmit = this.onSubmit.bind(this);
-       
+        this.scroll = {};
     }
     componentWillUnmount() {
         this.keyboardWillShowSub.remove();
@@ -53,14 +54,17 @@ class RegisterStep1 extends Component{
     focusNextField(key){
         this.inputs[key].focus();
     }
-    keyboardWillShow = (event) => {
-        Animated.timing(this.imageHeight, {
+    keyboardWillShow = async (event) => {
+        this.setState({keyboardShow:true});
+        await Animated.timing(this.imageHeight, {
           duration: event.duration,
-          toValue: responsiveHeight(10.51),
+          toValue: responsiveHeight(12.51),
         }).start();
+        this.scroll.scrollToEnd();
       };
     
       keyboardWillHide = (event) => {
+        this.setState({keyboardShow:false});
         Animated.timing(this.imageHeight, {
           duration: event.duration,
           toValue: responsiveHeight(20.51),
@@ -68,7 +72,7 @@ class RegisterStep1 extends Component{
       };
     isShowSubmit(){
         if(this.state.userIdNumber!=''&&this.state.userFirstName!=''&&this.state.userLastName!=''
-            &&this.state.userBirthDate!=''){
+            &&this.state.userBirthDate!='' && !this.state.idNumberError){
                 return true;
         }else{
             return false;
@@ -86,7 +90,7 @@ class RegisterStep1 extends Component{
 
     render(){
         return(
-            <ScrollView 
+            <ScrollView ref={(scroll) => {this.scroll = scroll;}}
                 style={{flex:1,}}
                 //contentContainerStyle={{flex: 1}}
             >
@@ -97,10 +101,10 @@ class RegisterStep1 extends Component{
                         style={[styles.mascotImageStyle,{ height: this.imageHeight }]}
                         resizeMode='contain'
                     />
-                    <View style={styles.registerDirectionContainerStyle}>
+                    {!this.state.keyboardShow &&<View style={styles.registerDirectionContainerStyle}>
                         <Text style={styles.registerTitleTextStyle}>ยินดีต้อนรับเข้าสู่ เมืองไทย เฟรนด์ คลับ</Text>
                         <Text style={styles.directionTextStyle}>กรุณากรอกเลขที่บัตรประชาชน และ วันเกิด เพื่อทำการตรวจสอบข้อมูลสถานะของสมาชิก</Text>
-                    </View>
+                    </View>}
                     <View style={styles.userDetailContainerStyle}>
                         <TextInputIcon
                             inputType="mask"
@@ -109,13 +113,20 @@ class RegisterStep1 extends Component{
                             onChangeText={(userIdNumber)=>this.setState({userIdNumber})}
                             leftLabelText='เลขที่บัตรประชาชน'
                             iconUri={require('./../source/icons/iconAvatar.png')}
-                            containerStyle={styles.inputContainerStyle}
+                            containerStyle={!this.state.idNumberError ?styles.inputContainerStyle:styles.inputContainerErrStyle}
                             secondFlex={secondFlex}
                             thirdFlex={thirdFlex}
                             keyboardType='numeric'
                             returnKeyType = {"next"}
-                        
+                            onBlur={()=>{
+                                if(this.state.userIdNumber.trim().length<13){
+                                    this.setState({idNumberError:true})
+                                }else{
+                                    this.setState({idNumberError:false})
+                                }
+                            }}
                         />
+                        {this.state.idNumberError && <Text style={styles.errorMsg}>เลขบัตรประชาชนต้องมี 13 ตำแหน่ง</Text>}
                         <TextInputIcon
                             value={this.state.userFirstName}
                             onChangeText={(userFirstName)=>this.setState({userFirstName})}
@@ -126,8 +137,9 @@ class RegisterStep1 extends Component{
                             thirdFlex={thirdFlex}
                             returnKeyType = {"next"}
                             onSubmitEditing={() => {
-                                Keyboard.dismiss();
+                                setTimeout(()=>{
                                 this.focusNextField('userLastName');
+                                },200);
                             }}
                         
                         />
@@ -224,6 +236,10 @@ const styles={
         borderBottomColor: '#C4C4C4',
         height: responsiveHeight(7)
     },
+    inputContainerErrStyle:{
+        borderBottomColor: 'red',
+        height: responsiveHeight(7)
+    },
     submitButtonContainerStyle:{
         flex: 1,
         justifyContent: 'center',
@@ -233,6 +249,11 @@ const styles={
     dateTitleTextStyle:{
         fontSize: responsiveFontSize(2.64),
         color: '#1595d3'
+    },
+    errorMsg:{
+        fontSize:responsiveFontSize(2.2),
+        color:"red",
+        padding:2
     }
 
 }

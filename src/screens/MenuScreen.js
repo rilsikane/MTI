@@ -1,17 +1,19 @@
 import React,{Component} from 'react';
-import {Text,View,Image,ImageBackground,Platform,TouchableOpacity} from 'react-native';
+import {Text,View,Image,ImageBackground,Platform,TouchableOpacity,Alert} from 'react-native';
 import PropTypes from "prop-types";
 import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
 import { ifIphoneX,isIphoneX } from 'react-native-iphone-x-helper'
 import { observer, inject } from 'mobx-react';
-
+import app from '../stores/app';
+import store from 'react-native-simple-store';
 @inject('naviStore')
 @observer
 export default class MenuScreen extends Component{
 
     constructor(props){
         super(props)
-
+        this.app = app;
+        this.state = {user:{}};
     }
     closeToggle(){
         this.props.naviStore.navigation.toggleDrawer({
@@ -19,6 +21,15 @@ export default class MenuScreen extends Component{
             animated: true, // does the toggle have transition animation or does it happen immediately (optional)
             to: 'close' // optional, 'open' = open the drawer, 'closed' = close it, missing = the opposite of current state
           });
+    }
+    async componentDidMount(){
+        let user = await store.get("user");
+        if(!user){
+            user = {};
+            user.name = "GUEST";
+            user.surname = "GUEST";
+        }
+        this.setState({user:user});
     }
 
     render(){
@@ -41,7 +52,7 @@ export default class MenuScreen extends Component{
                             </View>
                         </View>
                         <View style={styles.userShortDetailSectionStyle}>
-                            <Text style={styles.userNameTextStyle}>ชรินทร์ทิพย์  บำรุงศักดิ์</Text>
+                            <Text style={styles.userNameTextStyle}>{`${this.state.user.name} ${this.state.user.surname}`}</Text>
                             <TouchableOpacity onPress={()=>{
                                 this.props.naviStore.navigation.push({
                                     screen: 'mti.ProfileScreen', // unique ID registered with Navigation.registerScreen
@@ -161,7 +172,21 @@ export default class MenuScreen extends Component{
                         </View>
                         <View style={styles.subBorderStyle}/>
                         <View style={styles.menuSectionStyle}>        
-                            <TouchableOpacity style={styles.menuSubSectionStyle}>
+                            <TouchableOpacity onPress={()=>{
+                                 Alert.alert(
+                                    "คำเตือน",
+                                    "ยืนยันการออกจาจากระบบใช่หรือไหม่",
+                                    [
+                                    {text: "ยกเลิก"},
+                                    {text: "ออกจากระบบ", onPress: ()=> {
+                                        store.delete("user");
+                                        this.app.logout();
+                                    }},
+                                    ],
+                                    { cancelable: false }
+                                  )
+                            }}
+                            style={styles.menuSubSectionStyle}>
                                 <Image
                                     source={require('./../source/icons/iconLogoutWhite.png')}
                                     resizeMode='contain'

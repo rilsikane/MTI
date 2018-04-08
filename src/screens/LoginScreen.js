@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Text,View,Image,Dimensions,ImageBackground,TextInput,TouchableOpacity,ScrollView,SafeAreaView} from 'react-native';
+import {Text,View,Image,Dimensions,ImageBackground,TextInput,TouchableOpacity,ScrollView,SafeAreaView,Keyboard,Animated} from 'react-native';
 import PropTypes from "prop-types";
 import { Container, Header, Content, Item, Input, Icon,Card } from 'native-base';
 import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
@@ -22,30 +22,45 @@ export default class LoginScreen extends Component{
             userEmail: '',
             userPassword: '',
             remember:false,
-            isLoading:false
+            isLoading:false,
+            keyboardShow : false
         }
         this.login = this.login.bind(this);
         this.gotoRegister = this.gotoRegister.bind(this);
         this.gotoWelcome = this.gotoWelcome.bind(this);
         this.app = app;
+        this.keyboardWillShowSub = Keyboard.addListener('keyboardWillShow', this.keyboardWillShow);
+        this.keyboardWillHideSub = Keyboard.addListener('keyboardWillHide', this.keyboardWillHide);
+        this.scroll = {};
+        if(isIphoneX()){
+            this.imageHeight = new Animated.Value(responsiveHeight(32),);
+        }else{
+            this.imageHeight = new Animated.Value(responsiveHeight(35),);
+        }
     }
     async login(){
         this.setState({isLoading:true});
         let param = {};
         param.username = this.state.userEmail;
         param.password = this.state.userPassword;
-        let token = await authen(param);
-        if(token){
-            let response = await get("me",{});
-            if(response){
-                store.save("user",response);
-                this.gotoWelcome();
-                
+        let response = await authen(param);
+        if(response.first_logon=='N'){
+            let token = response.token;
+            store.save("token",token);
+            if(token){
+                let response = await get("me",{});
+                if(true){
+                    store.save("user",response);
+                    this.gotoWelcome();
+                    
+                }else{
+                    this.setState({isLoading:false});
+                }
             }else{
                 this.setState({isLoading:false});
             }
         }else{
-            this.setState({isLoading:false});
+            this.gotoRegister();
         }
     }
     gotoRegister(){
@@ -60,20 +75,37 @@ export default class LoginScreen extends Component{
 		});
     }
     gotoWelcome(){
-        this.props.navigator.resetTo({
-			screen: 'mti.WelcomeScreen', // unique ID registered with Navigation.registerScreen
-			title: undefined, // navigation bar title of the pushed screen (optional)
-			titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
-			passProps: {}, // Object that will be passed as props to the pushed screen (optional)
-			animated: true, // does the push have transition animation or does it happen immediately (optional)
-			backButtonTitle: undefined, // override the back button title (optional)
-			backButtonHidden: false, // hide the back button altogether (optional)
-		});
+        // this.props.navigator.resetTo({
+		// 	screen: 'mti.WelcomeScreen', // unique ID registered with Navigation.registerScreen
+		// 	title: undefined, // navigation bar title of the pushed screen (optional)
+		// 	titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
+		// 	passProps: {}, // Object that will be passed as props to the pushed screen (optional)
+		// 	animated: true, // does the push have transition animation or does it happen immediately (optional)
+		// 	backButtonTitle: undefined, // override the back button title (optional)
+		// 	backButtonHidden: false, // hide the back button altogether (optional)
+        // });
+        this.app.login();
     }
+    keyboardWillShow = async (event) => {
+        this.setState({keyboardShow:true});
+        await Animated.timing(this.imageHeight, {
+          duration: event.duration,
+          toValue: responsiveHeight(0),
+        }).start();
+        this.scroll.scrollToEnd();
+      };
+    
+      keyboardWillHide = (event) => {
+        this.setState({keyboardShow:false});
+        Animated.timing(this.imageHeight, {
+          duration: event.duration,
+          toValue: responsiveHeight(isIphoneX()?32:35),
+        }).start();
+      };
 
     render(){
         return(
-            <ScrollView 
+            <ScrollView ref={(scroll) => {this.scroll = scroll;}}
                 // resetScrollToCoords={{ x: 0, y: 0 }}
                 // automaticallyAdjustContentInsets={false}
                 // enableOnAndroid={true}
@@ -84,15 +116,15 @@ export default class LoginScreen extends Component{
                     {isIphoneX() && <View style={{height:40}}>
                         <ImageBackground
                             source={require('./../source/images/bgGradient.png')}
-                            style={styles.loginFormImageBackgroundStyle}
+                            style={[styles.loginFormImageBackgroundStyle]}
                             resizeMode='stretch'
                         />
                     </View>}
                     <View style={styles.bannerImageContainerStyle}>
-                        <Image
+                        <Animated.Image
                             source={require('./../source/images/bannerImg.png')}
                             resizeMode='stretch'
-                            style={styles.bannerImageStyle}  
+                            style={[styles.bannerImageStyle,{ height: this.imageHeight,width:null}]}  
                         />
                     </View> 
                     <View style={styles.loginFormContainerStyle}>
@@ -186,10 +218,16 @@ export default class LoginScreen extends Component{
                         </ImageBackground>
                     </View>
                     {this.app.isLoading && <Spinner visible={this.app.isLoading}  textStyle={{color: '#FFF'}} />}
+            
             </ScrollView>
+            
             
         )
     }
+    componentWillUnmount() {
+        this.keyboardWillShowSub.remove();
+        this.keyboardWillHideSub.remove();
+      }
 }
 
 const {height,width} = Dimensions.get('window')
@@ -213,11 +251,6 @@ const styles={
     },
     bannerImageStyle:{
         width: null,
-        ...ifIphoneX({
-            height: responsiveHeight(32)
-        }, {
-            height: responsiveHeight(35)
-        })
     },
     bannerBottomLineStyle:{
         height: responsiveHeight(0.35),
@@ -228,7 +261,7 @@ const styles={
         flex: 1,
     },
     loginFormImageBackgroundStyle:{
-        flex: 1,
+        height:responsiveHeight(65),
     },
     logoContainerStyle:{
         alignItems: 'center',

@@ -30,9 +30,8 @@ export async function authen(param){
           let response = await  axios.post(requestURL,param,{headers: {'Authorization':BasicAuth}});
           console.log(response);
           if(response.status==201 && response.data.status=='ok'){
-            let token = response.data.token;
-            store.save("token",token);
-            return token;
+            //let token = response.data;
+            return response.data;
           }else{
                 app.isLoading = false;
                 Alert.alert(
@@ -68,14 +67,14 @@ export async function post(path,param){
             let BasicAuth = 'Bearer ' + token;
   
             const response = await  axios.post(requestURL, param,{headers: {'Authorization':BasicAuth}});
-            if(response.status==200 && !response.message){
+            if(!response.data.message){
               console.log("postService"+JSON.stringify(response.data));
               return response.data;
             }else{
-                console.log(response.message);
+                console.log(response.data.message);
                 Alert.alert(
                     'เกิดข้อผิดพลาด',
-                    response.message,
+                    response.data.message,
                     [
                     {text: 'OK', onPress: () => console.log('OK Pressed!')},
                     ]
@@ -95,7 +94,7 @@ export async function post(path,param){
         }
   }
   
-export async function postBasic(path,param){
+export async function postBasic(path,param,customError){
   const token = await store.get("token");
   let requestURL = `${endpoint}${path}`;
   console.log("requestURLrequestURL"+requestURL);
@@ -105,17 +104,19 @@ export async function postBasic(path,param){
           let credentials = await base64.encode("mticonnect"+":"+"QaZwSxEdCrFv");
           let BasicAuth = 'Basic ' + credentials;
           let response = await  axios.post(requestURL,param,{headers: {'Authorization':BasicAuth}});
-          if(response.status==200){
+          if(!response.data.message){
             console.log("postService"+JSON.stringify(response.data));
             return response.data;
           }else{
-              Alert.alert(
-                  'เกิดข้อผิดพลาด',
-                  response.data.message,
-                  [
-                  {text: 'OK', onPress: () => console.log('OK Pressed!')},
-                  ]
-              )
+              if(!customError){
+                Alert.alert(
+                    'เกิดข้อผิดพลาด',
+                    response.data.message,
+                    [
+                    {text: 'OK', onPress: () => console.log('OK Pressed!')},
+                    ]
+                )
+              }
               return false;
           }
       }catch(e){
@@ -140,11 +141,11 @@ export async function get(path,param){
       try{
           let BasicAuth = 'bearer ' + token;
           const response = await axios.get(requestURL,config)
-          if(response.status==200){
+          if(!response.data.message){
             console.log("postService"+JSON.stringify(response));
             return response.data;
           }else{
-              console.log(response.message);
+              console.log(response.data.message);
               Alert.alert(
                   'เกิดข้อผิดพลาด',
                   response.message,

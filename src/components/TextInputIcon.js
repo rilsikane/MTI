@@ -48,12 +48,14 @@ class TextInputIcon extends Component{
                 placeholder={this.props.leftLabelText}               
                 style={[styles.textInputStyle,{flex: this.props.thirdFlex}]}
                 underlineColorAndroid='transparent'
+                
             />
             )
         }
         else{
             return(
                 <TextInput
+                    
                     placeholder={this.props.leftLabelText}
                     blurOnSubmit={ false }
                     ref={this.props.refs} 
@@ -68,7 +70,6 @@ class TextInputIcon extends Component{
     
     getPickerOptions() {
         return [
-            { value: "", label: 'เพศ'},
             { value: "Female", label: 'หญิง'},
             { value: "Male", label: 'ชาย'},
         ]
