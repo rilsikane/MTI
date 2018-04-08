@@ -65,14 +65,14 @@ class Headers extends Component{
     renderRightButton(){
         if(this.props.rightIconName=='iconBell'){
             return(
-                <View style={styles.rightIconContainerStyle}>
+                <TouchableOpacity style={styles.rightIconContainerStyle}>
                     {this.renderBadge()}
                     <Image
                         source={require('./../source/icons/iconBell.png')}
                         style={styles.rightIconImageStyle}
                         resizeMode='contain'
                     />
-                </View>
+                </TouchableOpacity>
             )
         }else{
             return(

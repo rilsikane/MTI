@@ -206,12 +206,13 @@ export default class LoginScreen extends Component{
                                     </TouchableOpacity>
                                 </Item>
                                 <CheckBoxes
-                                    title='จำรหัสผ่านเพื่อเข้าใช้งานในครั้งต่อไป'
+                                    checkBoxTitleText='จำรหัสผ่านเพื่อเข้าใช้งานในครั้งต่อไป'
                                     checked={this.state.remember}
                                     checkedColor='#81c5e3'
                                     uncheckedColor='#81c5e3'
-                                    textStyle={styles.checkBoxTextStyle}
+                                    checkBoxTextStyle={styles.checkBoxTextStyle}
                                     onIconPress={()=>this.setState({remember: !this.state.remember})}
+                                    containerStyle={styles.checkBoxStyle}
                                 />
                                 <MainSubmitButton
                                     buttonTitleText='เข้าสู่ระบบ'
@@ -334,8 +335,14 @@ const styles={
         flex: 0.9,
     },
     checkBoxTextStyle:{
-        color: textColor,
-        fontSize: responsiveFontSize(2.64)
+        color: "rgba(255, 255, 255, 0.9)",
+        fontSize: responsiveFontSize(2.2),
+        opacity: 0.9,
+    },  
+    checkBoxStyle:{
+        height: responsiveHeight(3),
+        marginTop: responsiveHeight(2),
+        marginBottom: responsiveHeight(2),
     },
     touchIdContainerStyle:{
         flexDirection: 'row',

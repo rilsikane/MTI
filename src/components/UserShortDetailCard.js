@@ -45,14 +45,16 @@ class UserShortDetailCard extends Component{
                     </View>
                 </View>
                 <View style={styles.userQrContainerStyle}>
-                    <TouchableOpacity>
-                        <Image
-                            source={require('./../source/images/dashboardQr.png')}
-                            style={styles.userQrImageStyle}
-                            resizeMode='contain'
-                        />
+                    {this.props.showQr?    
+                        <TouchableOpacity>
+                            <Image
+                                source={require('./../source/images/dashboardQr.png')}
+                                style={styles.userQrImageStyle}
+                                resizeMode='contain'
+                            />
                         <Text style={styles.myCardTextStyle}>My Card</Text>
-                    </TouchableOpacity>
+                        </TouchableOpacity>:<View/>
+                    }
                 </View>
             </View>
         )
