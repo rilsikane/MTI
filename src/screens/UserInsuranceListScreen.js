@@ -54,7 +54,9 @@ export default class UserInsuranceListScreen extends Component{
                     headerTitleText='รายละเอียดกรมธรรม์'
                 />
                 <ScrollView style={{flex: 1,}}>
-                    <UserShortDetailCard/>
+                    <UserShortDetailCard
+                        showQr={true}    
+                    />
                     <View style={styles.userInsuranceListContainerStyle}>
                         <View style={styles.insuranceTitleContainerStyle}>
                             <Image
