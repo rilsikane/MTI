@@ -65,14 +65,14 @@ class Headers extends Component{
     renderRightButton(){
         if(this.props.rightIconName=='iconBell'){
             return(
-                <View style={styles.rightIconContainerStyle}>
+                <TouchableOpacity style={styles.rightIconContainerStyle}>
                     {this.renderBadge()}
                     <Image
                         source={require('./../source/icons/iconBell.png')}
                         style={styles.rightIconImageStyle}
                         resizeMode='contain'
                     />
-                </View>
+                </TouchableOpacity>
             )
         }else{
             return(
@@ -103,10 +103,10 @@ class Headers extends Component{
             <View>
                 <ImageBackground
                     source={require('./../source/images/bg.png')}
-                    style={styles.headerImageBackgroundStyle}
+                    style={[styles.headerImageBackgroundStyle,this.props.withSearch?styles.headerImageBackgroundWithSearchStyle:{}]}
                     resizeMode='stretch'
                 >
-                    <View style={styles.headerItemsContainerStyle}>
+                    <View style={[styles.headerItemsContainerStyle,this.props.withSearch?styles.headerItemsWithSearchContainerStyle:{}]}>
                         <View>
                             {this.renderLeftButton()}
                         </View>
@@ -133,6 +133,9 @@ const styles={
         //paddingBottom: responsiveHeight(1),
 
     },
+    headerImageBackgroundWithSearchStyle:{
+        height: responsiveHeight(14.78),
+    },
     headerItemsContainerStyle:{
         flexDirection: 'row',
         alignItems: 'center',
@@ -141,6 +144,9 @@ const styles={
         paddingLeft: responsiveWidth(2),
         paddingRight: responsiveWidth(2),
         marginBottom: responsiveHeight(1),
+    },
+    headerItemsWithSearchContainerStyle:{
+        alignItems: 'flex-start',
     },
     leftIconImageStyle:{
         height: responsiveHeight(2.46),

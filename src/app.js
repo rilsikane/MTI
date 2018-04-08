@@ -5,7 +5,7 @@ import { registerScreens,registerScreenVisibilityListener } from './screens';
 import {
   Platform
 } from 'react-native';
-import {setCustomText,setCustomTextInput} from 'react-native-global-props';
+import {setCustomText,setCustomTextInput,setCustomStatusBar} from 'react-native-global-props';
 
 
 registerScreens();
@@ -17,9 +17,15 @@ export default class App {
       fontFamily: Platform.OS === 'android' ?'DBHelvethaicaX':'DBHelvethaicaX-Reg',
     }
   }
+  const customStatusBar = {
+    backgroundColor: 'transparent',
+    translucent: true
+  }
+
   setCustomText(customTextProps);
   setCustomTextInput(customTextProps);
-  
+  setCustomStatusBar(customStatusBar)
+
   reaction(() => app.root, () => this.startApp(app.root));
     app.appInitialized();
   }
