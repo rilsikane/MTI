@@ -56,7 +56,7 @@ export default class PrivilegeScreen extends Component{
                 iconUri={privilege.lifeStyleIconUri}
                 iconTitleText={privilege.lifeStyleTitleText}
                 activityTitleText={privilege.detail}
-                style={[styles.dashboardActivityCardContainerStyle,i==0?{marginTop: responsiveHeight(2)}:{}]}
+                style={[styles.dashboardActivityCardContainerStyle,i==0?{marginTop: responsiveHeight(3)}:{}]}
                 iconContainerStyle={i==0?{flex: 0.35}:{}}
                 detailContainerStyle={i==0?{flex: 0.65}:{}}
             />
