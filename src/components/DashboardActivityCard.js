@@ -75,7 +75,7 @@ class DashboardActivityCard extends Component{
                     />
                     <View style={styles.activityDetailContainerStyle}>
                         <View style={styles.activityDetailSectionStyle}>
-                            <View style={styles.activityIconContainerStyle}>
+                            <View style={[styles.activityIconContainerStyle,this.props.iconContainerStyle]}>
                                 {this.renderCardIcon()}
                                 <Text style={styles.iconTitleTextStyle}>{this.props.iconTitleText}</Text>
                             </View>
@@ -86,7 +86,7 @@ class DashboardActivityCard extends Component{
                                     style={styles.dotSectionImageStyle}
                                 />
                             </View>
-                            <View style={styles.activityTitleContainerStyle}>
+                            <View style={[styles.activityTitleContainerStyle,this.props.detailContainerStyle]}>
                                 {this.renderCardDetail()}
                             </View>
                         </View>

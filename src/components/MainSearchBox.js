@@ -1,7 +1,6 @@
 import React,{Component} from 'react';
 import {Text,View,TextInput,Image,TouchableOpacity} from 'react-native';
 import PropTypes from "prop-types";
-import {Card} from 'native-base'
 import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
 
 class MainSearchBox extends Component{
