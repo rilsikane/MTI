@@ -5,12 +5,14 @@ import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-nat
 
 import {Headers} from './../components/Headers';
 import {MainSubmitButton} from '../components/MainSubmitButton';
+import moment from 'moment';
+import localization from 'moment/locale/th'
 
 export default class InsuranceDetailScreen extends Component{
 
     constructor(props){
         super(props)
-
+        moment.locale("th");
     }
 
     renderProtectRules(rules){
@@ -18,116 +20,101 @@ export default class InsuranceDetailScreen extends Component{
             <View key={i} style={styles.rulesListContainerStyle}>
                 <Text style={styles.bulletStyle}>{'\u2022'}  </Text>
                 <View>
-                    <Text style={styles.protectRuleTextStyle}>{data.ruleTitle}</Text>
+                    {/* <Text style={styles.protectRuleTextStyle}>{data.ruleTitle}</Text>
                     {
                         data.ruleIgnoreCase&&
-                        data.ruleIgnoreCase.map((rule)=><Text key={rule} style={styles.protectRuleTextStyle}>- {rule}</Text>)
+                        data.ruleIgnoreCase.map((rule)=><Text key={rule} style={styles.protectRuleTextStyle}>- {rule.Cover_Desc}</Text>)
                     }
-                    {data.note&&<Text style={styles.protectRuleTextStyle}>** {data.note}</Text>}
+                    {data.note&&<Text style={styles.protectRuleTextStyle}>** {data.note}</Text>} */}
+                    <Text style={styles.protectRuleTextStyle}>{data.Cover_Desc}</Text>
                 </View>
             </View>
         )
     }
+    numberWithCommas(x){
+        return x.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+    calculateInsuranceDuring(effectiveDt,expDate){
+        let date1 = moment(effectiveDt, 'YYYYMMDD').toDate();
+        let date2 = moment(expDate, 'YYYYMMDD').toDate();
+        return this.calcDate(date1,date2);
+    }
+    calcDate(date1,date2) {
+        var diff = Math.floor(date2.getTime() - date1.getTime());
+        var day = 1000 * 60 * 60 * 24;
+        var days = Math.floor(diff/day);
+        var months = Math.floor(days/31);
+        var years = Math.floor(months/12);
+    
+        var message = "";
+        if(years>0 || months ==11){
+            message = years||1 + " ปี";
+        }else if(months>0){
+            message = months + " เดือน";
+        }else if(days>0){
+            message = days + " วัน";
+        }
+
+        return message
+    }
+
 
     render(){
-        let rules1 =[
-            {
-                ruleTitle: 'ภัยจากไฟไหม้',
-            },
-            {
-                ruleTitle: 'ภัยจากฟ้าผ่า (รวมถึงความเสียหายต่อเครื่องใช้ไฟฟ้า และอุปกรณ์ไฟฟ้าที่เกิดจากการลัดวงจรจากฟ้าผ่า)',
-            },
-            {
-                ruleTitle: 'ภัยจากระเบิด',
-            },
-            {
-                ruleTitle: 'ภัยจากการเฉี่ยว หรือ การชน จากยวดยานพาหนะของบุคคลภายนอก',
-            },
-            {
-                ruleTitle: 'ภัยจากอากาศยาน',
-            },
-            {
-                ruleTitle: 'ภัยเนื่องจากน้ำ (ไม่รวมน้ำท่วม) ภัยจากน้ำที่เกิดขึ้นจากการรั่วไหลของน้ำจากท่อน้ำ รวมถึงน้ำฝนที่สาดเข้ามาภายในบ้านแต่จะยกเว้นไม่คุ้มครอง',
-                ruleIgnoreCase: [
-                    'กรณีภัยจากน้ำท่วม',
-                    'การแตกหรือรั่วไหลของน้ำจากระบบท่อประปาใต้ดิน',
-                    'ระบบดับเพลิง',
-                ],
-                note: 'คุ้มครองตามทุนประกันภัย',
-            }
-        ]
-
-        let rules2=[
-            {
-                ruleTitle: 'ภัยจากลมพายุ',
-            },
-            {
-                ruleTitle: 'ภัยจากน้ำท่วม',
-            },
-            {
-                ruleTitle: 'ภัยจากแผ่นดินไหว หรือภูเขาไฟระเบิด หรือคลื่นใต้น้ำ หรือสึนามิที่มีสาเหตุจากธรรมชาติ',
-            },
-            {
-                ruleTitle: 'ภัยจากการเฉี่ยว หรือ การชน จากยวดยานพาหนะของบุคคลภายนอก',
-            },
-            {
-                ruleTitle: 'ภัยจากอากาศยาน',
-            },
-            {
-                ruleTitle: 'ภัยจากลูกเห็บ',
-                note: 'คุ้มครองทุกภัยรวมกันไม่เกิน 20,000 บาท/ปี',
-            }
-        ]
+        let header = this.props.data.Policy_Header[0];
+        let detail = this.props.data.Policy_Detail;
 
         return(
             <View style={styles.InsuranceDetailScreenContainerStyle}>
                 <Headers
-                    leftIconName='back'
+                    leftIconName='close'
                     headerTitleText='รายละเอียดกรมธรรม์'
                 />
                 <ScrollView style={{flex: 1,}}>
                     <View style={styles.insuranceShortDetailContainerStyle}>
-                        <Text style={styles.insuranceIdTextStyle}>เลขที่กรมธรรม์ : 453688653687</Text>
-                        <Text style={styles.insuranceTitleTextStyle}>ประกันอัคคีภัยสำหรับบ้านอยู่อาศัย</Text>
-                        <Text style={styles.insuranceShortDetailTextStyle}>สำหรับกรมธรรม์ประกันอัคคีภัยรวมภัยบ้านอยู่อาศัย (เฉพาะบ้านเดี่ยว และทาวน์เฮาส์) ประเภทสิ่งปลูกสร้างชั้น 1 (ผนังคอนกรีตล้วน)</Text>
+                        <Text style={styles.insuranceIdTextStyle}>เลขที่กรมธรรม์ : {header.Policy_NO}</Text>
+                        <Text style={styles.insuranceIdTextStyle}>ชื่อกรมธรรม์ :{header.Product_Name}</Text>
                     </View>
                     <View style={styles.insuranceDetailContainerStyle}>
-                        <View style={styles.insuranceDetailStyle}>
+                        {header.FLAG == 'Y' && <View style={styles.insuranceDetailStyle}>
                             <View style={styles.insuranceDetailSectionStyle}>
                                 <Text style={styles.insuranceTitleSectionTextStyle}>ทุนประกันภัย</Text>
-                                <Text style={styles.insuranceValueSectionTextStyle}>1,000,000</Text>
+                                {isNaN(header.Sum_insured)?
+                                <Text style={styles.insuranceValueLabelTextStyle}>{'ตามรายละเอียดกรมธรรม์'}</Text>:
+                                <Text style={styles.insuranceValueSectionTextStyle}>{this.numberWithCommas(header.Sum_insured)}</Text>}
                             </View>
                             <View style={styles.insuranceDetailSectionStyle}>
                                 <Text style={styles.insuranceTitleSectionTextStyle}>เบี้ยประกันภัย</Text>
-                                <Text style={styles.insuranceValueSectionTextStyle}>1,063.58</Text>
+                                <Text style={styles.insuranceValueSectionTextStyle}>{this.numberWithCommas(header.Total_Premium)}</Text>
                             </View> 
                             <View style={styles.insuranceDetailSectionStyle}>
                                 <Text style={styles.insuranceTitleSectionTextStyle}>ระยะเวลาเอาประกันภัย</Text>
-                                <Text style={styles.insuranceValueSectionTextStyle}>1 ปี</Text>
+                                <Text style={styles.insuranceValueSectionTextStyle}>{this.calculateInsuranceDuring(header.Effective_Date,header.Expiry_Date)}</Text>
                             </View>
                         </View>
-                        <Image
+                        }
+                        {header.FLAG == 'Y' && <Image
                             source={require('../source/images/dotSectionHorizontal.png')}
                             resizeMode='contain'
                             style={styles.dotSectionImageStyle}
-                        />
+                        />}
                         <Text style={styles.insuranceShortDetailTextStyle}>วันที่เริ่มต้นและสิ้นสุดกรมธรรม์</Text>
-                        <Text style={styles.insuranceDateTextStyle}>30 ธันวาคม 2559 - 30 ธันวาคม 2560</Text>
-                        <Text style={styles.insuanceDueDateTextStyle}>กรมธรรม์ใกล้หมดอายุในอีก 15 วัน</Text>
+                        <Text style={styles.insuranceDateTextStyle}>{`${moment(header.Effective_Date).locale("th",localization).format("DD MMMM YYYY")} - ${moment(header.Expiry_Date).locale("th",localization).format("DD MMMM YYYY")}`}</Text>
+                        {/* <Text style={styles.insuanceDueDateTextStyle}>กรมธรรม์ใกล้หมดอายุในอีก 15 วัน</Text> */}
                         <Image
                             source={require('../source/images/dotSectionHorizontal.png')}
                             resizeMode='contain'
                             style={styles.dotSectionImageStyle}
                         />
-                        <View style={styles.protectionRulesContainerstyle}>
+                         {header.FLAG == 'N' &&<Text style={styles.insuranceShortDetailTextStyle}>ต้องการข้อมูลเพิ่มเติมกรุณาติดต่อเจ้าหน้าที่โทร 1484</Text>}
+                        {header.FLAG == 'Y' &&<View style={styles.protectionRulesContainerstyle}>
                             <Text style={styles.insuranceProtectRuleTextStyle}>คุ้มครองภัยหลัก</Text>
-                            {this.renderProtectRules(rules1)}
-                        </View>
-                        <View style={styles.protectionRulesContainerstyle}>
+                            {this.renderProtectRules(detail)}
+                        </View>}
+                        {/* <View style={styles.protectionRulesContainerstyle}>
                             <Text style={styles.insuranceProtectRuleTextStyle}>คุ้มครองภัยธรรมชาติ</Text>
                             {this.renderProtectRules(rules2)}
-                        </View>
-                        <Text style={styles.insuranceProtectRuleTextStyle}>การชดใช้ค่าสินไหมทดแทนสำหรับค่าเช่าที่อยู่ชั่วคราว</Text>
+                        </View> */}
+                        {/* <Text style={styles.insuranceProtectRuleTextStyle}>การชดใช้ค่าสินไหมทดแทนสำหรับค่าเช่าที่อยู่ชั่วคราว</Text>
                         <Text style={styles.damageTitleTextStyle}>เสียหายทั้งหมด 100%</Text>
                         <Text style={styles.protectRuleTextStyle}>จ่ายตามจริง ไม่เกินวันละ 1,000 บาท และสูงสุดรวมกันไม่เกิน 100,000 บาท ตลอดระยะเวลาเอาประกันภัย</Text>
                         <Text style={styles.damageTitleTextStyle}>เสียหายเกินกว่าร้อยละ 50</Text>
@@ -136,12 +123,12 @@ export default class InsuranceDetailScreen extends Component{
                             source={require('../source/images/dotSectionHorizontal.png')}
                             resizeMode='contain'
                             style={styles.dotSectionImageStyle}
-                        />
-                        <MainSubmitButton
+                        /> */}
+                        {header.FLAG == 'Y' && <MainSubmitButton
                             buttonTitleText='ดาวน์โหลดเอกสาร'
                             iconImageUri={require('../source/icons/iconDownload.png')}
-                            onPress={()=>alert('submit')}
-                        />
+                            onPress={()=>alert('เอกสาร')}
+                        />}
                     </View> 
                     <Image
                         source={require('../source/images/promotionImg.png')}
@@ -157,6 +144,7 @@ export default class InsuranceDetailScreen extends Component{
 const styles={
     InsuranceDetailScreenContainerStyle:{
         flex: 1,
+        backgroundColor:"#fff"
     },
     insuranceShortDetailContainerStyle:{
         height: responsiveHeight(19.71),
@@ -204,9 +192,14 @@ const styles={
         fontSize: responsiveFontSize(2),
     },
     insuranceValueSectionTextStyle:{
-        fontFamily: 'DBHelvethaicaX-Med',
         color: '#1595d3',
         fontSize: responsiveFontSize(3)
+    },
+    insuranceValueLabelTextStyle:{
+        color: '#1595d3',
+        fontSize: responsiveFontSize(2.1),
+        alignItems: 'center',
+        paddingTop:5
     },
     dotSectionImageStyle:{
         width: '100%',
@@ -228,6 +221,7 @@ const styles={
     },
     rulesListContainerStyle:{
         flexDirection: 'row',
+        alignItems: 'center',
     },
     bulletStyle:{
         color: '#777777',

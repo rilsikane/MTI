@@ -12,7 +12,7 @@ class WelcomeScreen extends Component{
         this.app = app;
     }
     gotoLogin(){
-        this.props.navigator.resetTo({
+        this.props.navigator.push({
             screen: 'mti.LifeStyleScreen', // unique ID registered with Navigation.registerScreen
 			title: undefined, // navigation bar title of the pushed screen (optional)
 			titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)

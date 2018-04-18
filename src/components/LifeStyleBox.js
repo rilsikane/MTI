@@ -78,7 +78,7 @@ const styles={
 
     },
     closeButtonImageStyle:{
-        height: responsiveHeight(1.4),
+        height: responsiveHeight(2),
     },
     iconImageContainerStyle:{
         alignItems: 'center',

@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Text,View,Image,Dimensions,ImageBackground,TextInput,TouchableOpacity,ScrollView,SafeAreaView,Keyboard,Animated} from 'react-native';
+import {Text,View,Image,Dimensions,ImageBackground,TextInput,TouchableOpacity,ScrollView,SafeAreaView,Keyboard,Animated,StatusBar} from 'react-native';
 import PropTypes from "prop-types";
 import { Container, Header, Content, Item, Input, Icon,Card } from 'native-base';
 import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
@@ -25,14 +25,14 @@ export default class LoginScreen extends Component{
             forgotPasswordEmail: '',
             remember:false,
             isLoading:false,
-            keyboardShow : false
+            keyboardShow : false,
         }
         this.login = this.login.bind(this);
         this.gotoRegister = this.gotoRegister.bind(this);
         this.gotoWelcome = this.gotoWelcome.bind(this);
         this.app = app;
-        this.keyboardWillShowSub = Keyboard.addListener('keyboardWillShow', this.keyboardWillShow);
-        this.keyboardWillHideSub = Keyboard.addListener('keyboardWillHide', this.keyboardWillHide);
+        this.keyboardWillShowSub = Keyboard.addListener('keyboardDidShow', this.keyboardWillShow);
+        this.keyboardWillHideSub = Keyboard.addListener('keyboardDidHide', this.keyboardWillHide);
         this.scroll = {};
         if(isIphoneX()){
             this.imageHeight = new Animated.Value(responsiveHeight(32),);
@@ -46,31 +46,55 @@ export default class LoginScreen extends Component{
         param.username = this.state.userEmail;
         param.password = this.state.userPassword;
         let response = await authen(param);
-        if(response.first_logon=='N'){
-            let token = response.token;
-            store.save("token",token);
-            if(token){
-                let response = await get("me",{});
-                if(true){
-                    store.save("user",response);
-                    this.gotoWelcome();
+        if(response){
+            if(response.first_logon=="N"){
+            // if(false){
+                let token = response.token;
+                store.save("token",token);
+                if(token){
+                    let [response1,response2] = await Promise.all([get("me",{}), get("me/policy",{})]);
+                    if(response1 && response2){
+                        await store.save("user",response1);
+                        await store.save("policy",response2);
+                        this.gotoWelcome();
+                    }
+                        
                     
                 }else{
                     this.setState({isLoading:false});
                 }
             }else{
+
+                let token = response.token;
+                await store.save("token",token);
+                let user = await get("me",{});
+                user.username = this.state.userEmail;
+                user.password = this.state.userPassword;
                 this.setState({isLoading:false});
+                this.props.navigator.push({
+                    screen: 'mti.RegisterScreen', // unique ID registered with Navigation.registerScreen
+                    title: undefined, // navigation bar title of the pushed screen (optional)
+                    titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
+                    passProps: {user:user}, // Object that will be passed as props to the pushed screen (optional)
+                    animated: true, // does the push have transition animation or does it happen immediately (optional)
+                    backButtonTitle: undefined, // override the back button title (optional)
+                    backButtonHidden: false, // hide the back button altogether (optional)
+                    navigatorStyle: {
+                        drawUnderStatusBar: true,
+                        statusBarColor: 'transparent',
+                    },
+                });
+                
+                
             }
-        }else{
-            this.gotoRegister();
         }
+        this.setState({isLoading:false});
     }
-    gotoRegister(){
+    gotoRegister(user){
         this.props.navigator.push({
 			screen: 'mti.RegisterScreen', // unique ID registered with Navigation.registerScreen
 			title: undefined, // navigation bar title of the pushed screen (optional)
 			titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
-			passProps: {}, // Object that will be passed as props to the pushed screen (optional)
 			animated: true, // does the push have transition animation or does it happen immediately (optional)
 			backButtonTitle: undefined, // override the back button title (optional)
             backButtonHidden: false, // hide the back button altogether (optional)
@@ -80,7 +104,7 @@ export default class LoginScreen extends Component{
             },
 		});
     }
-    gotoWelcome(){
+    async gotoWelcome(){
     // this.props.navigator.resetTo({
     // 	screen: 'mti.WelcomeScreen', // unique ID registered with Navigation.registerScreen
     // 	title: undefined, // navigation bar title of the pushed screen (optional)
@@ -90,21 +114,25 @@ export default class LoginScreen extends Component{
     // 	backButtonTitle: undefined, // override the back button title (optional)
     // 	backButtonHidden: false, // hide the back button altogether (optional)
     // });
-    this.app.login();
+    setTimeout(()=>{
+        this.app.login();
+    },300)
+   
+    
+    //this.setState({isLoading:false});
 }
     keyboardWillShow = async (event) => {
     this.setState({keyboardShow:true});
     await Animated.timing(this.imageHeight, {
-        duration: event.duration,
+        duration: 200,
         toValue: responsiveHeight(0),
     }).start();
-    this.scroll.scrollToEnd();
     };
 
     keyboardWillHide = (event) => {
     this.setState({keyboardShow:false});
     Animated.timing(this.imageHeight, {
-        duration: event.duration,
+        duration: 200,
         toValue: responsiveHeight(isIphoneX()?32:35),
     }).start();
     };
@@ -267,7 +295,7 @@ export default class LoginScreen extends Component{
                             </View>
                         </ImageBackground>
                     </View>
-                    {this.app.isLoading && <Spinner visible={this.app.isLoading}  textStyle={{color: '#FFF'}} />}
+                    {this.state.isLoading && <Spinner visible={this.state.isLoading}  textStyle={{color: '#FFF'}} />}
                 </ScrollView>
                 {this.renderForgotPasswordPopup()}
             </View>

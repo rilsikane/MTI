@@ -13,7 +13,7 @@ class AppStore {
     if (userData == null) {
       this.root = 'login';
     }else{
-      this.root = 'login';
+      this.root = 'after-login';
     }
   }
 
@@ -22,6 +22,7 @@ class AppStore {
   }
   logout() {
     this.root = 'login';
+
   }
  
 }

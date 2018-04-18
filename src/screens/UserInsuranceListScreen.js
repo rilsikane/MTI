@@ -6,45 +6,79 @@ import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-nat
 import {Headers} from './../components/Headers';
 import {UserShortDetailCard} from './../components/UserShortDetailCard';
 import {InsuranceShortDetailCard} from '../components/InsuranceShortDetailCard';
+import store from 'react-native-simple-store';
+import moment from 'moment';
+import localization from 'moment/locale/th'
 
 export default class UserInsuranceListScreen extends Component{
 
     constructor(props){
         super(props)
+        this.state = {policys:[]};
+        this.showDetail = this.showDetail.bind(this);
     }
+   calculateInsuranceDuring(effectiveDt,expDate){
+        let date1 = moment(effectiveDt, 'YYYYMMDD').toDate();
+        let date2 = moment(expDate, 'YYYYMMDD').toDate();
+        return this.calcDate(date1,date2);
+    }
+    calcDate(date1,date2) {
+        var diff = Math.floor(date2.getTime() - date1.getTime());
+        var day = 1000 * 60 * 60 * 24;
+        var days = Math.floor(diff/day);
+        var months = Math.floor(days/31);
+        var years = Math.floor(months/12);
+    
+        var message = "";
+        if(years>0 || months ==11){
+            message = years||1 + " ปี";
+        }else if(months>0){
+            message = months + " เดือน";
+        }else if(days>0){
+            message = days + " วัน";
+        }
 
+        return message
+    }
+    numberWithCommas(x){
+        return x.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
     renderInsuranceShortDetailCard(){
-        let userInsuranceDetail=[
-            {
-                insuranceTitleText: 'ประกันอัคคีภัยสำหรับบ้านอยู่อาศัย',
-                insuranceShortDetailText: 'สำหรับกรมธรรม์ประกันอัคคีภัยรวมภัยบ้านอยู่อาศัย (เฉพาะบ้านเดี่ยว และทาวน์เฮาส์) ประเภทสิ่งปลูกสร้างชั้น 1 (ผนังคอนกรีตล้วน)',
-                insuanceBudget: '1,000,000',
-                insurancePremium: '1,063.58',
-                insuranceDuring: '1'
-            },
-            {
-                insuranceTitleText: 'ประกันอัคคีภัยสำหรับบ้านอยู่อาศัย',
-                insuranceShortDetailText: 'สำหรับกรมธรรม์ประกันอัคคีภัยรวมภัยบ้านอยู่อาศัย (เฉพาะบ้านเดี่ยว และทาวน์เฮาส์) ประเภทสิ่งปลูกสร้างชั้น 1 (ผนังคอนกรีตล้วน)',
-                insuanceBudget: '1,000,000',
-                insurancePremium: '1,063.58',
-                insuranceDuring: '1'
-            }
-        ]
 
-        return userInsuranceDetail.map((data,i)=>
-            <InsuranceShortDetailCard
-                key={i}
-                index={++i}
-                insuranceTitleText={data.insuranceTitleText}
-                insuranceShortDetailText={data.insuranceShortDetailText}
-                insuanceBudget={data.insuanceBudget}
-                insurancePremium={data.insurancePremium}
-                insuranceDuring={data.insuranceDuring}
-                onSeeInsuranceDetailButtonPress={()=>alert('See insurance')}
-                style={styles.insuranceCardContainerStyle}
-            />
+        return this.state.policys.map((item,i)=>
+            {
+            let data = item.Policy_Header[0];    
+            return (<InsuranceShortDetailCard
+                    key={i}
+                    index={++i}
+                    FLAG={data.FLAG}
+                    Policy_NO={data.Policy_NO}
+                    insuranceTitleText={data.Product_Name}
+                    insuranceShortDetailText={data.FLAG=='N' ?'ต้องการข้อมูลเพิ่มเติมกรุณาติดต่อเจ้าหน้าที่โทร 1484':' - '}
+                    insuanceBudget={data.Sum_insured}
+                    insurancePremium={`${data.Total_Premium}`}
+                    insuranceDuring={this.calculateInsuranceDuring(data.Effective_Date,data.Expiry_Date)}
+                    onSeeInsuranceDetailButtonPress={()=>this.showDetail(item)}
+                    style={styles.insuranceCardContainerStyle}
+                />)
+            }
         )
     }
+    async componentDidMount(){
+        let policy = await store.get("policy");
+        console.log(policy);
+        this.setState({policys:policy});
+    }
+   showDetail(data){
+       this.props.navigator.showModal({
+        screen: 'mti.InsuranceDetailScreen', // unique ID registered with Navigation.registerScreen
+        title: 'Modal', // title of the screen as appears in the nav bar (optional)
+        passProps: {data:data,navigator:this.props.navigator}, // simple serializable object that will pass as props to the modal (optional)
+        navigatorStyle: {}, // override the navigator style for the screen, see "Styling the navigator" below (optional)
+        navigatorButtons: {}, // override the nav buttons for the screen, see "Adding buttons to the navigator" below (optional)
+        animationType: 'slide-up' // 'none' / 'slide-up' , appear animation for the modal (optional, default 'slide-up')
+      });
+   }
 
     render(){
         return(
@@ -54,7 +88,7 @@ export default class UserInsuranceListScreen extends Component{
                     headerTitleText='รายละเอียดกรมธรรม์'
                 />
                 <ScrollView style={{flex: 1,}}>
-                    <UserShortDetailCard
+                    <UserShortDetailCard navigator={this.props.navigator}
                         showQr={true}    
                     />
                     <View style={styles.userInsuranceListContainerStyle}>
@@ -129,5 +163,6 @@ const styles={
     extraPrivilegeImageStyle:{
         height: responsiveHeight(12.67),
         width: responsiveWidth(90),
-    }
+    },
+    
 }

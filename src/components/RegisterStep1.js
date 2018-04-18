@@ -28,8 +28,8 @@ class RegisterStep1 extends Component{
         this.focusNextField = this.focusNextField.bind(this); 
         this.inputs = {};
         this.imageHeight = new Animated.Value(responsiveHeight(20.51),);
-        this.keyboardWillShowSub = Keyboard.addListener('keyboardWillShow', this.keyboardWillShow);
-        this.keyboardWillHideSub = Keyboard.addListener('keyboardWillHide', this.keyboardWillHide);
+        this.keyboardWillShowSub = Keyboard.addListener('keyboardDidShow', this.keyboardWillShow);
+        this.keyboardWillHideSub = Keyboard.addListener('keyboardDidHide', this.keyboardWillHide);
         this.onSubmit = this.onSubmit.bind(this);
         this.scroll = {};
     }
@@ -57,16 +57,15 @@ class RegisterStep1 extends Component{
     keyboardWillShow = async (event) => {
         this.setState({keyboardShow:true});
         await Animated.timing(this.imageHeight, {
-          duration: event.duration,
-          toValue: responsiveHeight(12.51),
+          duration: 200,
+          toValue: responsiveHeight(0),
         }).start();
-        this.scroll.scrollToEnd();
       };
     
       keyboardWillHide = (event) => {
         this.setState({keyboardShow:false});
         Animated.timing(this.imageHeight, {
-          duration: event.duration,
+          duration: 200,
           toValue: responsiveHeight(20.51),
         }).start();
       };
@@ -90,7 +89,7 @@ class RegisterStep1 extends Component{
 
     render(){
         return(
-            <ScrollView ref={(scroll) => {this.scroll = scroll;}}
+            <KeyboardAvoidingView behavior="padding"
                 style={{flex:1,}}
                 //contentContainerStyle={{flex: 1}}
             >
@@ -189,10 +188,11 @@ class RegisterStep1 extends Component{
                             isVisible={this.state.isDateTimePickerVisible}
                             onConfirm={this._handleDatePicked}
                             onCancel={this._hideDateTimePicker}
+                            date={moment().set('year', 1990).toDate()}
                         />
                     </View>
                 </View>
-            </ScrollView>
+            </KeyboardAvoidingView>
          
         )
     }

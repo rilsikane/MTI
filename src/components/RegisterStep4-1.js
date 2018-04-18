@@ -8,13 +8,14 @@ import {MainSubmitButton} from './MainSubmitButton';
 import {CheckBoxes} from './../components/CheckBoxes';
 import { observer, inject } from 'mobx-react';
 
-
+@inject('registerStore')
+@observer
 class RegisterStep4_1 extends Component{
 
     constructor(props){
         super(props)
         this.state={
-
+            telErr:false
         }
     }
 
@@ -26,6 +27,30 @@ class RegisterStep4_1 extends Component{
                     <Text style={styles.directionTextStyle}>กดรับรหัส OTP เพื่อรับรหัสยืนยันตัวตนจากเบอร์โทรศัพท์ของคุณ</Text>
                 </View>
                 <View style={styles.userDetailContainerStyle}>
+                {this.props.firstLogon &&
+                    <View>
+                        <TextInputIcon
+                                value={this.props.registerStore.register.tel}
+                                onChangeText={(userPhone)=>this.props.registerStore.register.tel=userPhone}
+                                leftLabelText='โทรศัพท์'
+                                iconUri={require('./../source/icons/iconPhone.png')}
+                                containerStyle={!this.state.telErr ?styles.inputContainerStyle:styles.inputContainerErrStyle}
+                                secondFlex={secondFlex}
+                                thirdFlex={thirdFlex}
+                                keyboardType='phone-pad'
+                                returnKeyType='done'
+                                onBlur={()=>{
+                                    if(this.props.registerStore.register.tel.length!=10 && this.props.registerStore.register.tel.length!=12){
+                                        this.setState({telErr:true})
+                                    }else{
+                                        this.setState({telErr:false})
+                                    }
+                                }}
+                                blurOnSubmit={true}
+                            />
+                        {this.state.telErr && <Text style={styles.errorMsg}>เบอร์โทรศัพท์ ไม่ถูกต้อง</Text>}
+                        </View>
+                    }
                     <View style={styles.submitButtonContainerStyle}>
                         <MainSubmitButton
                             buttonTitleText='รับรหัส OTP'
@@ -94,6 +119,11 @@ const styles={
         flex: 1,
         marginTop: responsiveHeight(2),
         // justifyContent: 'center',
+    },
+    errorMsg:{
+        fontSize:responsiveFontSize(2.2),
+        color:"red",
+        padding:2
     }
 
 }

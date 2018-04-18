@@ -15,7 +15,7 @@ class RegisterStep3 extends Component{
     constructor(props){
         super(props)
         this.state={
-            userEmail: '',
+            userEmail: this.props.registerStore.register.tel,
             userPassword: '',
             userConfirmPassword: '',
             errorText: '',
@@ -66,7 +66,7 @@ class RegisterStep3 extends Component{
     }
 
     onSubmitButtonPress(){
-        this.props.registerStore.register.username = this.state.userEmail;
+        //this.props.registerStore.register.username = this.state.userEmail;
         this.props.registerStore.register.password = this.state.userPassword;
         this.props.onSubmitRegister3Press();
     }
@@ -89,20 +89,20 @@ class RegisterStep3 extends Component{
                 <ScrollView style={{flex: 1}}>
                     <View style={styles.userDetailContainerStyle}>
                         <TextInputIcon
-                            value={this.state.userEmail}
+                            value={this.props.registerStore.register.username}
                             leftLabelText='อีเมล/เบอร์โทรศัพท์'
                             iconUri={require('./../source/icons/iconMail.png')}
                             containerStyle={styles.inputContainerStyle}
                             secondFlex={secondFlex}
                             thirdFlex={thirdFlex}
-                            onChangeText={(userEmail)=> this.setState({userEmail})}
+                            onChangeText={(userEmail)=> this.props.registerStore.register.username = userEmail}
                             keyboardType='email-address'
                             returnKeyType='next'
                             blurOnSubmit={true}
                             onBlur={()=>{
                                 var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
                                 var telRex = /^[08|09|06|][0-9]+[0-9]$/
-                                if(re.test(this.state.userEmail) || telRex.test(this.state.userEmail)){
+                                if(re.test(this.props.registerStore.register.username) || telRex.test(this.props.registerStore.register.username)){
                                     if(telRex.test(this.state.userEmail) && this.state.userEmail.length ==10){
                                         this.setState({userEmailErr:false})
                                     }else if(!telRex.test(this.state.userEmail)){

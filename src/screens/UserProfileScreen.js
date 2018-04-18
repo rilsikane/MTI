@@ -30,6 +30,7 @@ export default class UserProfileScreen extends Component{
             userLifeStyle: '',
             userPassword: '',
             rightIconName: '',
+            member_type:'',
             submitButtonText: 'แก้ไขข้อมูล',
             lifeStyleImage1:[
                 {
@@ -122,7 +123,7 @@ export default class UserProfileScreen extends Component{
             user.surname = "GUEST";
         }
         this.setState({userFirstName:user.name,userLastName:user.surname,userEmail:user.email
-            ,userPhone:user.tel,userBirthDate:user.birthdate})
+            ,userPhone:user.tel,userBirthDate:user.birthdate,member_type:user.member_type,userGender:user.gender})
     }
 
     _showDateTimePicker = () => this.setState({ isDateTimePickerVisible: true })
@@ -326,7 +327,7 @@ export default class UserProfileScreen extends Component{
                                 </ImageBackground>
                             </TouchableOpacity>
                             <Text style={styles.userNameTextStyle}>{`${this.state.userFirstName} ${this.state.userLastName}`}</Text>
-                            <Text style={styles.userLevelTextStyle}>สมาชิกระดับ Silver</Text>
+                            <Text style={styles.userLevelTextStyle}>สมาชิกระดับ {this.state.member_type}</Text>
                         </View>
                     </View>
                     <View style={styles.userDetailContainerStyle}>
@@ -366,7 +367,7 @@ export default class UserProfileScreen extends Component{
                         <TouchableOpacity disabled={!this.state.canEditProfile} onPress={this._showDateTimePicker}>
                             <View pointerEvents={this.state.isDateTimePickerVisible ? 'auto' : 'none'}>
                                 <TextInputIcon
-                                    value={moment(this.state.userBirthDate).locale("th",localization).format("DD MMMM YYYY")}
+                                    value={this.state.userBirthDate ? moment(this.state.userBirthDate).locale("th",localization).format("DD MMMM YYYY"):null}
                                     leftLabelText='วันเกิด'
                                     iconUri={require('./../source/icons/iconBD.png')}
                                     containerStyle={styles.inputContainerStyle}

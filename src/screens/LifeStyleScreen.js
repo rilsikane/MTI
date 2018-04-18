@@ -7,7 +7,7 @@ import {Headers} from './../components/Headers';
 import {MainSubmitButton} from './../components/MainSubmitButton';
 import {LifeStyleBox} from './../components/LifeStyleBox';
 import { observer, inject } from 'mobx-react';
-import {postBasic,authen} from '../api'
+import {postBasic,authen,get,post,put} from '../api'
 import app from '../stores/app'
 import store from 'react-native-simple-store';
 import Spinner from 'react-native-loading-spinner-overlay';
@@ -89,10 +89,12 @@ export default class LifeStyleScreen extends Component{
             ],
             filterLifeStyleImage1: [],
             filterLifeStyleImage2: [],
-
+            lifestyle:[],
+            isLoading:false
         }
         this.onSubmitOtpButtonPress = this.onSubmitOtpButtonPress.bind(this);
         this.app = app;
+        this.gotoWelcome = this.gotoWelcome.bind(this);
     }
 
     componentDidMount(){
@@ -105,21 +107,9 @@ export default class LifeStyleScreen extends Component{
     async onSubmitOtpButtonPress(){
             this.app.isLoading = true
             let param = this.props.registerStore.register;
-            let response = await postBasic("member",param);
-            if(response){
-                if(!response.message){
-                    
-                    this.login();
-                }else{
-                    Alert.alert(
-                        'เกิดข้อผิดพลาด',
-                        response.message,
-                        [
-                        {text: 'OK', onPress: () => console.log('OK Pressed!')},
-                        ]
-                    )
-                }
-            }
+            console.log(this.state.lifestyle);
+            //let response = await postBasic("member",param);
+            await this.login();
     }
     async login(){
         this.app.isLoading = true
@@ -127,24 +117,46 @@ export default class LifeStyleScreen extends Component{
         param.username = this.props.registerStore.register.username;
         param.password = this.props.registerStore.register.password;
         let response = await authen(param);
+        this.app.isLoading = false;
         if(response.first_logon=='N'){
             let token = response.token;
             store.save("token",token);
             if(token){
-                let response = await get("me",{});
-                if(true){
-                    store.save("user",response);
-                    this.app.login();
-                }else{
-                    this.app.isLoading = false
-                }
+                this.app.isLoading = true;
+                let lifeParam = {};
+                lifeParam.lifestyle = this.state.lifestyle;
+                let lifeResponse = await put("me/lifestyle",lifeParam);
+                    if(lifeResponse){
+                        let [response1,response2] = await Promise.all([get("me",{}), get("me/policy",{})]);
+                        if(response1 && response2){
+                            this.app.isLoading = false;
+                            await store.save("user",response1);
+                            await store.save("policy",response2);
+                            this.gotoWelcome();
+                        }else{
+                            this.app.isLoading = false;
+                        }
+                    }
+
             }else{
                 this.app.isLoading = false
             }
         }
     }
+    gotoWelcome(){
+        // this.props.navigator.resetTo({
+        // 	screen: 'mti.WelcomeScreen', // unique ID registered with Navigation.registerScreen
+        // 	title: undefined, // navigation bar title of the pushed screen (optional)
+        // 	titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
+        // 	passProps: {}, // Object that will be passed as props to the pushed screen (optional)
+        // 	animated: true, // does the push have transition animation or does it happen immediately (optional)
+        // 	backButtonTitle: undefined, // override the back button title (optional)
+        // 	backButtonHidden: false, // hide the back button altogether (optional)
+        // });
+        this.app.login();
+    }
 
-    onLifeStylePress(index,list){
+    onLifeStylePress(index,list,title){
         if(list=='1'){
             const lifeStyleImage1 = [...this.state.filterLifeStyleImage1]
             const lifeStyleImage1Selected = [...this.state.lifeStyleImage1Selected]
@@ -152,7 +164,8 @@ export default class LifeStyleScreen extends Component{
             lifeStyleImage1[index] = {...lifeStyleImage1Selected[index]}
       
             this.setState({
-                filterLifeStyleImage1: lifeStyleImage1
+                filterLifeStyleImage1: lifeStyleImage1,
+                lifestyle:[...this.state.lifestyle,title]
             })
         }else{
             const lifeStyleImage2 = [...this.state.filterLifeStyleImage2]
@@ -161,21 +174,22 @@ export default class LifeStyleScreen extends Component{
             lifeStyleImage2[index] = {...lifeStyleImage2Selected[index]}
       
             this.setState({
-                filterLifeStyleImage2: lifeStyleImage2
+                filterLifeStyleImage2: lifeStyleImage2,
+                lifestyle:[...this.state.lifestyle,title]
             })
         }
       
     }
 
-    _onCloseButtonPress(index,list){
+    _onCloseButtonPress(index,list,title){
         if(list=='1'){
             const lifeStyleImage1 = [...this.state.filterLifeStyleImage1]
             const tempLifeStyleImage1 = [...this.state.lifeStyleImage1]
             
             lifeStyleImage1[index] = {...tempLifeStyleImage1[index]}
-            
             this.setState({
-                filterLifeStyleImage1: lifeStyleImage1
+                filterLifeStyleImage1: lifeStyleImage1,
+                lifestyle:[...this.state.lifestyle.filter((item=>item!=title))]
             })
         }else{
             const lifeStyleImage2 = [...this.state.filterLifeStyleImage2]
@@ -184,7 +198,8 @@ export default class LifeStyleScreen extends Component{
             lifeStyleImage2[index] = {...tempLifeStyleImage2[index]}
             
             this.setState({
-                filterLifeStyleImage2: lifeStyleImage2
+                filterLifeStyleImage2: lifeStyleImage2,
+                lifestyle:[...this.state.lifestyle.filter((item=>item!=title))]
             })
         }
       
@@ -199,8 +214,8 @@ export default class LifeStyleScreen extends Component{
                 imageUri={lifeStyleImage.uri}
                 boxTitle={lifeStyleImage.title}
                 isSelected={lifeStyleImage.isSelected}
-                onPress={()=>this.onLifeStylePress(i,'1')}
-                onCloseButtonPress={()=>this._onCloseButtonPress(i,'1')}
+                onPress={()=>this.onLifeStylePress(i,'1',lifeStyleImage.title)}
+                onCloseButtonPress={()=>this._onCloseButtonPress(i,'1',lifeStyleImage.title)}
             />
         )
     }
@@ -214,8 +229,8 @@ export default class LifeStyleScreen extends Component{
                 imageUri={lifeStyleImage.uri}
                 boxTitle={lifeStyleImage.title}
                 isSelected={lifeStyleImage.isSelected}
-                onPress={()=>this.onLifeStylePress(i,'2')}
-                onCloseButtonPress={()=>this._onCloseButtonPress(i,'2')}
+                onPress={()=>this.onLifeStylePress(i,'2',lifeStyleImage.title)}
+                onCloseButtonPress={()=>this._onCloseButtonPress(i,'2',lifeStyleImage.title)}
             />
         )
     }

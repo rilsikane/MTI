@@ -70,8 +70,8 @@ class TextInputIcon extends Component{
     
     getPickerOptions() {
         return [
-            { value: "Female", label: 'หญิง'},
-            { value: "Male", label: 'ชาย'},
+            { value: "F", label: 'หญิง'},
+            { value: "M", label: 'ชาย'},
         ]
     }
 

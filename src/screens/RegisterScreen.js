@@ -15,7 +15,7 @@ import {RegisterStep2} from './../components/RegisterStep2';
 import {RegisterStep3} from './../components/RegisterStep3';
 import {RegisterStep4_1} from './../components/RegisterStep4-1';
 import {RegisterStep4_2} from './../components/RegisterStep4-2';
-import {postBasic} from '../api'
+import {postBasic,put} from '../api'
 import { observer, inject } from 'mobx-react';
 import { ifIphoneX } from 'react-native-iphone-x-helper'
 import app from '../stores/app';
@@ -28,8 +28,10 @@ export default class RegisterScreen extends Component{
     constructor(props){
         super(props)
         this.state={
-            pageNumber: 0,
-            enable:false
+            pageNumber: 1,
+            enable:false,
+            isLoading:false,
+            firstLogon:false
         }
         if(!this.props.registerStore.register){
             this.props.registerStore.register = {};
@@ -37,6 +39,18 @@ export default class RegisterScreen extends Component{
         this.updateRef = this.updateRef.bind(this);
         this.gotoWelcome = this.gotoWelcome.bind(this);
         this.app = app;
+    }
+    async componentDidMount(){
+        if(this.props.user){
+            this.app.isLoading = true;
+            this.props.registerStore.register = {...this.props.user};
+            setTimeout(()=>{
+                this.setState({pageNumber:2,firstLogon:true});
+                this._pages.scrollToPage(1);
+                this.app.isLoading = false;
+            },1500)
+         
+        }
     }
 
     updateRef(ref) {
@@ -163,7 +177,7 @@ export default class RegisterScreen extends Component{
             this.app.isLoading = false;
             if(response){
                 if(!response.message){
-                    this.props.registerStore.register = response;
+                    this.props.registerStore.register = {...response};
                     this.props.registerStore.register.idcard = param.idcard;
                     this.props.registerStore.register.birthdate = param.birthdate;
                     this.setState({enable:true});
@@ -176,44 +190,54 @@ export default class RegisterScreen extends Component{
         }
     }
 
-    _onSubmitRegister2Press(){
+    async _onSubmitRegister2Press(){
         if (this._pages) {
-            this.setState({enable:true});
-            this._pages.scrollToPage(2);
-            this.setState({enable:false});
+            let param = {};
+            param.mobile_no = this.props.registerStore.register.tel;
+            param.email = this.props.registerStore.register.email;
+            //this.app.isLoading = true;
+            if(!this.state.firstLogon){
+            let response = await postBasic("mti/checktelephone",param);
+            //this.app.isLoading = false;
+                if(response){
+                    //this.app.isLoading = true;
+                    let response2 = await postBasic("mti/checkemail",param);
+                    //this.app.isLoading = false;
+                    if(response2){
+                        this.app.isLoading = false;
+                        this.props.registerStore.register.username = this.props.registerStore.register.tel;
+                        this.setState({enable:true});
+                        this._pages.scrollToPage(2);
+                        this.setState({enable:false});
+                    }
+                }else{
+                    this.app.isLoading = false;
+                }
+            }else{
+                this.setState({enable:true,pageNumber:3});
+                this._pages.scrollToPage(3);
+                this.setState({enable:false});
+            }
            
         }
     }
 
     async _onSubmitRegister3Press(){
         if (this._pages) {
-            let param = this.props.registerStore.register;
-            let response = await postBasic("member",param);
-            if(response){
-                if(!response.message){
-                    this.setState({enable:true});
-                    this._pages.scrollToPage(3);
-                    this.setState({enable:false});
-                }else{
-                    Alert.alert(
-                        'เกิดข้อผิดพลาด',
-                        response.message,
-                        [
-                        {text: 'OK', onPress: () => console.log('OK Pressed!')},
-                        ]
-                    )
-                }
-            }
-           
+            this.setState({enable:true});
+            this._pages.scrollToPage(3);
+            this.setState({enable:false});
         }
     }
 
    async _onSubmitRegister4_1Press(){
         if (this._pages) {
+            this.app.isLoading = true;
             let param = {};
             param.mobile_no = this.props.registerStore.register.tel;
             let response = await postBasic("otp/request",param);
             if(response){
+                this.app.isLoading = false;
                 if(!response.message){
                   
                     this.props.registerStore.register.refcode = response.refcode;
@@ -235,24 +259,53 @@ export default class RegisterScreen extends Component{
     }
 
     async _onSubmitRegister4_2Press(otp){
+        this.app.isLoading = false;
         let param = {};
         param.refcode = this.props.registerStore.register.refcode;
         param.otp = otp;
+        //this.app.isLoading = true;
         let response = await postBasic("otp/check",param);
+        this.app.isLoading = false;
         if(response){
             if(!response.message){
                if(response.status=='ok'){
-                this.props.navigator.resetTo({
-                    screen: 'mti.WelcomeScreen', // unique ID registered with Navigation.registerScreen
-                    title: undefined, // navigation bar title of the pushed screen (optional)
-                    passProps: {}, // simple serializable object that will pass as props to the pushed screen (optional)
-                    animated: true, // does the resetTo have transition animation or does it happen immediately (optional)
-                    animationType: 'fade', // 'fade' (for both) / 'slide-horizontal' (for android) does the resetTo have different transition animation (optional)
-                    navigatorStyle: {}, // override the navigator style for the pushed screen (optional)
-                    navigatorButtons: {} // override the nav buttons for the pushed screen (optional)
-                  });
+
+                this.app.isLoading = true;
+                    let param2 = this.props.registerStore.register;
+                    let response2 = {};
+                    if(!this.state.firstLogon){
+                        response2 = await postBasic("member",param2);
+                    }else{
+                        response2 = await put("me/profile",param2);
+                    }
+                    this.app.isLoading = false;
+                    if(response2){
+                        if(!response2.message){
+                            this.app.isLoading = false;
+                            this.props.navigator.resetTo({
+                                screen: 'mti.WelcomeScreen', // unique ID registered with Navigation.registerScreen
+                                title: undefined, // navigation bar title of the pushed screen (optional)
+                                passProps: {}, // simple serializable object that will pass as props to the pushed screen (optional)
+                                animated: true, // does the resetTo have transition animation or does it happen immediately (optional)
+                                animationType: 'fade', // 'fade' (for both) / 'slide-horizontal' (for android) does the resetTo have different transition animation (optional)
+                                navigatorStyle: {}, // override the navigator style for the pushed screen (optional)
+                                navigatorButtons: {} // override the nav buttons for the pushed screen (optional)
+                              });
+                        }else{
+                            this.app.isLoading = false;
+                            Alert.alert(
+                                'เกิดข้อผิดพลาด',
+                                response.message,
+                                [
+                                {text: 'OK', onPress: () => console.log('OK Pressed!')},
+                                ]
+                            )
+                        }
+                    }
+                
                 }
             }else{
+                this.app.isLoading = false;
                 Alert.alert(
                     'เกิดข้อผิดพลาด',
                     response.message,
@@ -262,25 +315,26 @@ export default class RegisterScreen extends Component{
                 )
             }
         }
+        this.app.isLoading = false;
     }
 
     async _onRequestNewOtpButtonPress(){
         let param = {};
             param.mobile_no = this.props.registerStore.register.tel;
+            this.app.isLoading = true;
             let response = await postBasic("otp/request",param);
+            this.app.isLoading = false;
             if(response){
+                this.app.isLoading = false;
                 if(!response.message){
-                    Alert.alert(
+                    setTimeout(()=>{Alert.alert(
                         'แจ้ง OTP',
                         `ส่ง OTP ไปยังหมายเลข ${ this.props.registerStore.register.tel} เรียบร้อยแล้ว`,
                         [
                         {text: 'OK', onPress: () => console.log('OK Pressed!')},
                         ]
-                    )
-                    this.props.registerStore.register.refcode = response;
-                    this._pages.scrollToPage(4);
-                }else{
-                    this.popupDialog.show();
+                    )},150)
+                    this.props.registerStore.register.refcode = response.refcode;
                 }
             }
     }
@@ -310,7 +364,29 @@ export default class RegisterScreen extends Component{
                 <Headers
                     leftIconName='cancel'
                     headerTitleText='ลงทะเบียนสมาชิก'
-                    cancel={()=>this.props.navigator.pop()}
+                    cancel={()=>
+                        {
+                            if(this.state.pageNumber==1){
+                                this.props.navigator.pop()
+                            }else{
+                                if(this.state.pageNumber==2 && this.props.user){
+                                    this.props.navigator.resetTo({
+                                        screen: 'mti.LoginScreen', // unique ID registered with Navigation.registerScreen
+                                        title: undefined, // navigation bar title of the pushed screen (optional)
+                                        titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
+                                        passProps: {}, // Object that will be passed as props to the pushed screen (optional)
+                                        animated: true, // does the push have transition animation or does it happen immediately (optional)
+                                        backButtonTitle: undefined, // override the back button title (optional)
+                                        backButtonHidden: false, // hide the back button altogether (optional)
+                                    })
+                                }else{
+                                    this._pages.scrollToPage(this.state.pageNumber-2);
+                                }
+                            }
+                        }
+                    
+                    }
+                    cancelTxt={this.state.pageNumber==1?'ยกเลิก':'กลับ'}
                     //rightIconName='iconBell'
                 />
                 <PageIndicators
@@ -326,13 +402,13 @@ export default class RegisterScreen extends Component{
                     <RegisterStep1
                         onSubmitRegister1Press={this._onSubmitRegister1Press.bind(this)}
                     />
-                    <RegisterStep2
+                    <RegisterStep2 firstLogon={this.state.firstLogon} pageNumber={this.state.pageNumber}
                         onSubmitRegister2Press={this._onSubmitRegister2Press.bind(this)}
                     />
                     <RegisterStep3
                         onSubmitRegister3Press={this._onSubmitRegister3Press.bind(this)}
                     />
-                    <RegisterStep4_1
+                    <RegisterStep4_1 firstLogon={this.state.firstLogon}
                         onSubmitRegister4_1Press={this._onSubmitRegister4_1Press.bind(this)}
                     />
                     <RegisterStep4_2

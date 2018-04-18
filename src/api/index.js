@@ -34,25 +34,25 @@ export async function authen(param){
             return response.data;
           }else{
                 app.isLoading = false;
-                Alert.alert(
+                setTimeout(()=>{Alert.alert(
                   'เกิดข้อผิดพลาด',
                   response.message,
                   [
                   {text: 'OK', onPress: () => console.log('OK Pressed!')},
                   ]
-                )
+                ),100});
               return false;
           }
       }catch(e){
           console.log(e);
           app.isLoading = false;
-          Alert.alert(
+          setTimeout(()=>{Alert.alert(
             'เกิดข้อผิดพลาด',
               e.response.data.message,
             [
             {text: 'OK'},
             ]
-            )
+            ),100});
         return false;
           
       }
@@ -71,25 +71,27 @@ export async function post(path,param){
               console.log("postService"+JSON.stringify(response.data));
               return response.data;
             }else{
+                app.isLoading = false;
                 console.log(response.data.message);
-                Alert.alert(
+                setTimeout(()=>{Alert.alert(
                     'เกิดข้อผิดพลาด',
                     response.data.message,
                     [
                     {text: 'OK', onPress: () => console.log('OK Pressed!')},
                     ]
-                )
+                )},100);
                 return false;
             }
         }catch(e){
+      app.isLoading = false;
       console.log(e);
-       Alert.alert(
+      setTimeout(()=>{Alert.alert(
         'เกิดข้อผิดพลาด',
         e.response.data.message,
         [
         {text: 'OK', onPress: () => console.log('OK Pressed!')},
         ]
-      )
+      )},100);
             return e;
         }
   }
@@ -108,28 +110,70 @@ export async function postBasic(path,param,customError){
             console.log("postService"+JSON.stringify(response.data));
             return response.data;
           }else{
+            app.isLoading = false;
+            
               if(!customError){
-                Alert.alert(
+                setTimeout(()=>{Alert.alert(
                     'เกิดข้อผิดพลาด',
                     response.data.message,
                     [
                     {text: 'OK', onPress: () => console.log('OK Pressed!')},
                     ]
-                )
+                ),1000});
               }
               return false;
+             
           }
       }catch(e){
-        Alert.alert(
+        app.isLoading = false;
+        setTimeout(()=>{Alert.alert(
         'เกิดข้อผิดพลาด',
             e.response.data.message,
         [
         {text: 'OK', onPress: () => console.log('OK Pressed!')},
         ]
-        )
+        ),1000});
           return false;
       }
 }
+export async function put(path,param){
+    const token = await store.get("token");
+    let requestURL = `${endpoint}${path}`;
+    console.log("requestURLrequestURL"+requestURL);
+        try{
+            console.log("param: "+JSON.stringify(param));
+  
+            let BasicAuth = 'Bearer ' + token;
+  
+            const response = await  axios.put(requestURL, param,{headers: {'Authorization':BasicAuth}});
+            if(!response.data.message){
+              console.log("postService"+JSON.stringify(response.data));
+              return response.data;
+            }else{
+                app.isLoading = false;
+                console.log(response.data.message);
+                setTimeout(()=>{Alert.alert(
+                    'เกิดข้อผิดพลาด',
+                    response.data.message,
+                    [
+                    {text: 'OK', onPress: () => console.log('OK Pressed!')},
+                    ]
+                )},100);
+                return false;
+            }
+        }catch(e){
+      app.isLoading = false;
+      console.log(e);
+      setTimeout(()=>{Alert.alert(
+        'เกิดข้อผิดพลาด',
+        e.response.data.message,
+        [
+        {text: 'OK', onPress: () => console.log('OK Pressed!')},
+        ]
+      )},100);
+            return e;
+        }
+  }
 
 export async function get(path,param){
   const token = await store.get("token");
@@ -145,17 +189,19 @@ export async function get(path,param){
             console.log("postService"+JSON.stringify(response));
             return response.data;
           }else{
+              app.isLoading = false;
               console.log(response.data.message);
-              Alert.alert(
+              setTimeout(()=>{Alert.alert(
                   'เกิดข้อผิดพลาด',
                   response.message,
                   [
                   {text: 'OK', onPress: () => console.log('OK Pressed!')},
                   ]
-              )
+              ),100});
               return false;
           }
       }catch(e){
+        app.isLoading = false;
         console.log(e);
           return false;
       }

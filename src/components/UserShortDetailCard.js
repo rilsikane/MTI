@@ -33,7 +33,7 @@ class UserShortDetailCard extends Component{
                 </View>
                 <View style={styles.userShortDetailContainerStyle}>
                     <Text style={styles.userNameTextStyle}>{`${this.state.user.name} ${this.state.user.surname}`}</Text>
-                    <Text style={styles.userLevelTextStyle}>สมาชิกระดับ Silver</Text>
+                    <Text style={styles.userLevelTextStyle}>สมาชิกระดับ {this.state.user.member_type}</Text>
                     <View style={styles.seeUserDetailLinkContainerStyle}>
                         <TouchableOpacity style={styles.seeUserDetailLinkSectionStyle} onPress={()=>this.props.navigator.push({
                                     screen: 'mti.ProfileScreen', 
@@ -50,7 +50,14 @@ class UserShortDetailCard extends Component{
                             />
                             <Text style={styles.userDetailLinkTextStyle}>ดูข้อมูลส่วนตัว</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.seeUserDetailLinkSectionStyle}>
+                        <TouchableOpacity  style={styles.seeUserDetailLinkSectionStyle} onPress={()=>this.props.navigator.push({
+                                    screen: 'mti.UserInsuranceListScreen', 
+                                    title: undefined, 
+                                    titsleImage: undefined, 
+                                    animated: false, 
+                                    backButtonTitle: undefined,
+                                    backButtonHidden: false, 
+                                })}>
                             <Image
                                 source={require('./../source/icons/iconInsurance.png')}
                                 style={styles.detailIconLinkImageStyle}

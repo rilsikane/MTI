@@ -11,31 +11,44 @@ class InsuranceShortDetailCard extends Component{
         super(props)
 
     }
+    numberWithCommas(x){
+        return x.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+    // checkNumber(num){
+    //     if(isNaN(num)){
+    //         return 'ตามรายละเอียดกรมธรรม์'
+    //     }else{
+    //         return this.numberWithCommas(num);
+    //     }
+    // }   
 
     render(){
         return(
             <View style={this.props.style}>
                 <Text style={styles.insuranceTitleTextStyle}>{this.props.index}. {this.props.insuranceTitleText}</Text>
+                <Text style={styles.insuranceIdTextStyle}>เลขที่กรมธรรม์ : {this.props.Policy_NO}</Text>
                 <Text style={styles.insuranceShortDetailTextStyle}>{this.props.insuranceShortDetailText}</Text>
                 <Image
                     source={require('../source/images/dotSectionHorizontal.png')}
                     resizeMode='contain'
                     style={styles.dotSectionImageStyle}
                 />
-                <View style={styles.insuranceDetailContainerStyle}>
+                {this.props.FLAG=='Y' && <View style={styles.insuranceDetailContainerStyle}>
                     <View style={styles.insuranceDetailSectionStyle}>
                         <Text style={styles.insuranceTitleSectionTextStyle}>ทุนประกันภัย</Text>
-                        <Text style={styles.insuranceValueSectionTextStyle}>{this.props.insuanceBudget}</Text>
+                        {isNaN(this.props.insuanceBudget)?
+                        <Text style={styles.insuranceValueLabelTextStyle}>{'ตามรายละเอียดกรมธรรม์'}</Text>:
+                        <Text style={styles.insuranceValueSectionTextStyle}>{this.numberWithCommas(this.props.insuanceBudget)}</Text>}
                     </View>
                     <View style={styles.insuranceDetailSectionStyle}>
                         <Text style={styles.insuranceTitleSectionTextStyle}>เบี้ยประกันภัย</Text>
-                        <Text style={styles.insuranceValueSectionTextStyle}>{this.props.insurancePremium}</Text>
+                        <Text style={styles.insuranceValueSectionTextStyle}>{this.numberWithCommas(this.props.insurancePremium)}</Text>
                     </View> 
                     <View style={styles.insuranceDetailSectionStyle}>
                         <Text style={styles.insuranceTitleSectionTextStyle}>ระยะเวลาเอาประกันภัย</Text>
-                        <Text style={styles.insuranceValueSectionTextStyle}>{this.props.insuranceDuring} ปี</Text>
+                        <Text style={styles.insuranceValueSectionTextStyle}>{this.props.insuranceDuring}</Text>
                     </View>
-                </View>
+                </View>}
                 <View style={styles.seeInsuranceDetailButtonContainerStyle}>
                     <MainSubmitButton
                         buttonTitleText='ดูรายละเอียดกรรมธรรม์'
@@ -75,12 +88,22 @@ const styles={
         fontSize: responsiveFontSize(2),
     },
     insuranceValueSectionTextStyle:{
-        fontFamily: 'DBHelvethaicaX-Med',
         color: '#1595d3',
-        fontSize: responsiveFontSize(3)
+        fontSize: responsiveFontSize(3),
+        alignItems: 'center',
+    },
+    insuranceValueLabelTextStyle:{
+        color: '#1595d3',
+        fontSize: responsiveFontSize(2.1),
+        alignItems: 'center',
+        paddingTop:5
     },
     seeInsuranceDetailButtonContainerStyle:{
         marginTop: responsiveHeight(2),
+    },
+    insuranceIdTextStyle:{
+        color: '#1595d3',
+        fontSize: responsiveFontSize(2),
     }
 }
 

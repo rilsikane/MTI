@@ -25,17 +25,34 @@ class RegisterStep2 extends Component{
             emailErr:false,
             phoneErr:false
         }
+        this.submitRegister = this.submitRegister.bind(this);
     }
-
+   componentWillReceiveProps(nextProps){
+    if(nextProps.pageNumber==2){
+        this.setState({userEmail:this.props.registerStore.register.email
+            ,userGender:this.props.registerStore.register.gender,userPhone:this.props.registerStore.register.tel})
+    }
+   }
+    componentDidMount(){
+        //this.props.registerStore.register.tel = {...this.props.registerStore.register.tel};
+        this.setState({userEmail:this.props.registerStore.register.email
+            ,userGender:this.props.registerStore.register.gender,userPhone:this.props.registerStore.register.tel})
+    }
     isShowSumbit(){
         if(''!=this.props.registerStore.register.name && ''!=this.props.registerStore.register.surname
-            && ''!=this.props.registerStore.register.gender && ''!=this.props.registerStore.register.email
-            && ''!=this.props.registerStore.register.tel && this.state.checkBoxIsSelected
+            && ''!=this.state.userGender && ''!=this.state.userEmail
+            && ''!=this.state.userPhone && this.state.checkBoxIsSelected
             && !this.state.emailErr && !this.state.telErr){
                 return true;
         }else{
             return false;
         }
+    }
+    submitRegister(){
+        this.props.registerStore.register.email = this.state.userEmail;
+        this.props.registerStore.register.gender = this.state.userGender;
+        this.props.registerStore.register.tel = this.state.userPhone;
+        this.props.onSubmitRegister2Press();
     }
     render(){
         return(
@@ -44,7 +61,7 @@ class RegisterStep2 extends Component{
                 automaticallyAdjustContentInsets={false}
                 //keyboardShouldPersistTaps='always'
                 enableOnAndroid={true}
-                contentContainerStyle={{flex: 1,}}
+                contentContainerStyle={{flexGrow:1,}}
                 //style={{flex: 1}}
                 scrollEnabled={true}
                 >
@@ -63,6 +80,7 @@ class RegisterStep2 extends Component{
                         containerStyle={styles.inputContainerStyle}
                         secondFlex={secondFlex}
                         thirdFlex={thirdFlex}
+                        editable={false}
                     />
                     <TextInputIcon
                         value={this.props.registerStore.register.surname}
@@ -72,10 +90,11 @@ class RegisterStep2 extends Component{
                         containerStyle={styles.inputContainerStyle}
                         secondFlex={secondFlex}
                         thirdFlex={thirdFlex}
+                        editable={false}
                     />
                     <TextInputIcon
-                        genderValue={this.props.registerStore.register.gender}
-                        onSubmitEditing={(userGender)=>this.props.registerStore.register.gender=userGender}
+                        genderValue={this.state.userGender}
+                        onSubmitEditing={(userGender)=>{this.setState({userGender:userGender})}}
                         leftLabelText='เพศ'
                         iconUri={require('./../source/icons/iconGender.png')}
                         containerStyle={styles.inputContainerStyle}
@@ -84,8 +103,8 @@ class RegisterStep2 extends Component{
                         inputType='selector'
                     />
                     <TextInputIcon
-                        value={this.props.registerStore.register.email}
-                        onChangeText={(userEmail)=>this.props.registerStore.register.email=userEmail}
+                        value={this.state.userEmail}
+                        onChangeText={(userEmail)=>this.setState({userEmail:userEmail})}
                         leftLabelText='อีเมล'
                         iconUri={require('./../source/icons/iconMail.png')}
                         containerStyle={!this.state.emailErr ?styles.inputContainerStyle:styles.inputContainerErrStyle}
@@ -94,17 +113,18 @@ class RegisterStep2 extends Component{
                         keyboardType='email-address'
                         onBlur={()=>{
                             var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-                            if(re.test(this.props.registerStore.register.email)){
+                            if(re.test(this.state.userEmail)){
                                 this.setState({emailErr:false})
                             }else{
                                 this.setState({emailErr:true})
                             }
                         }}
+                        editable={!this.props.firstLogon}
                     />
                      {this.state.emailErr && <Text style={styles.errorMsg}>Email ไม่ถูกต้อง</Text>}
                     <TextInputIcon
-                        value={this.props.registerStore.register.tel}
-                        onChangeText={(userPhone)=>this.props.registerStore.register.tel=userPhone}
+                        value={this.state.userPhone}
+                        onChangeText={(userPhone)=>this.setState({userPhone:userPhone})}
                         leftLabelText='โทรศัพท์'
                         iconUri={require('./../source/icons/iconPhone.png')}
                         containerStyle={!this.state.telErr ?styles.inputContainerStyle:styles.inputContainerErrStyle}
@@ -113,13 +133,14 @@ class RegisterStep2 extends Component{
                         keyboardType='phone-pad'
                         returnKeyType='done'
                         onBlur={()=>{
-                            if(this.props.registerStore.register.tel.length!=10 && this.props.registerStore.register.tel.length!=12){
+                            if(this.state.userPhone.length!=10 && this.state.userPhone.length!=12){
                                 this.setState({telErr:true})
                             }else{
                                 this.setState({telErr:false})
                             }
                         }}
                         blurOnSubmit={true}
+                        editable={!this.props.firstLogon}
                     />
                     {this.state.telErr && <Text style={styles.errorMsg}>เบอร์โทรศัพท์ ไม่ถูกต้อง</Text>}
                     <CheckBoxes
@@ -135,7 +156,7 @@ class RegisterStep2 extends Component{
                         <MainSubmitButton
                             buttonTitleText='ยืนยันข้อมูล'
                             onPress={()=>alert('onPress')}
-                            onPress={this.props.onSubmitRegister2Press}
+                            onPress={this.submitRegister}
                         />
                     </View>}
                 </View>
