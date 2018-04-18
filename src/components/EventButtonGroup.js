@@ -22,16 +22,16 @@ class EventButtonGroup extends Component{
                 </TouchableOpacity>
                 <TouchableOpacity>
                     <Image
-                        source={require('../source/icons/iconFavorite.png')}
+                        source={this.props.isFavorite?require('../source/icons/iconFavoriteSelected.png'):require('../source/icons/iconFavorite.png')}
                         resizeMode='contain'
-                        style={styles.eventIconStyle}
+                        style={[styles.eventIconStyle,this.props.isFavorite&&{opacity: 1}]}
                     />
                 </TouchableOpacity>
                 <TouchableOpacity>
                     <Image
-                        source={require('../source/icons/iconShare.png')}
+                        source={this.props.isShareSelected?require('../source/icons/iconShareSelected.png'):require('../source/icons/iconShare.png')}
                         resizeMode='contain'
-                        style={styles.eventIconStyle}
+                        style={[styles.eventIconStyle,this.props.isShareSelected&&{opacity: 1}]}
                     />
                 </TouchableOpacity>
             </View>
