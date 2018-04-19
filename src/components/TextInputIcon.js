@@ -69,10 +69,29 @@ class TextInputIcon extends Component{
 
     
     getPickerOptions() {
-        return [
-            { value: "F", label: 'หญิง'},
-            { value: "M", label: 'ชาย'},
-        ]
+        if(this.props.options==='career'){
+            return [
+                { value: "0", label: 'ครู'},
+                { value: "1", label: 'นักเรียน/นักศึกษา'},
+            ]
+        }else if(this.props.options==='education'){
+            return [
+                { value: "0", label: 'Bachelor\'s Degree'},
+                { value: "1", label: 'Master\' Degree'},
+                { value: "2", label: 'PhD'},
+            ]
+        }else if(this.props.options==='income'){
+            return [
+                { value: "0", label: 'น้อยกว่า 10,000'},
+                { value: "1", label: '10,000 - 15,000'},
+            ]
+        }else{
+            return [
+                { value: "F", label: 'หญิง'},
+                { value: "M", label: 'ชาย'},
+            ]
+        }
+    
     }
 
 
@@ -135,9 +154,9 @@ const styles={
     },
     selectorLabelStyle:{
         color: '#1595d3',
-        fontSize: responsiveFontSize(2.64),
-        textAlignVertical: 'center',
-
+        //fontSize: responsiveFontSize(2.64),
+        //textAlignVertical: 'center',
+        //fontFamily: 'DBHelvethaicaX'
     },
     itemStyle:{
 
