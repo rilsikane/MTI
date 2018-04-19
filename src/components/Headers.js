@@ -117,13 +117,13 @@ class Headers extends Component{
                     resizeMode='stretch'
                 >
                     <View style={[styles.headerItemsContainerStyle,this.props.withSearch?styles.headerItemsWithSearchContainerStyle:{}]}>
-                        <View>
+                        <View style={styles.headerLeftItemContainerStyle}>
                             {this.renderLeftButton()}
                         </View>
-                        <View>
+                        <View style={styles.headerCenterItemContainerStyle}>
                             {this.renderCenterItems()}
                         </View>
-                        <View>
+                        <View style={styles.headerRightItemContainerStyle}>
                             {this.renderRightButton()}
                         </View>
                     </View>
@@ -150,10 +150,21 @@ const styles={
         flexDirection: 'row',
         alignItems: 'center',
         flex: 1,
-        justifyContent: 'space-between',
+        // justifyContent: 'space-between',
         paddingLeft: responsiveWidth(2),
         paddingRight: responsiveWidth(2),
         marginBottom: responsiveHeight(1),
+    },
+    headerLeftItemContainerStyle:{
+        flex: 0.2,
+    },
+    headerCenterItemContainerStyle:{
+        flex: 0.6,
+        alignItems: 'center'
+    },
+    headerRightItemContainerStyle:{
+        flex: 0.2,
+        alignItems: 'flex-end'
     },
     headerItemsWithSearchContainerStyle:{
         alignItems: 'flex-start',
@@ -164,7 +175,7 @@ const styles={
     },
     textTitleStyle:{
         fontSize: responsiveFontSize(4),
-        color: '#FFF'
+        color: '#FFF',
     },
     rightIconContainerStyle:{
         flexDirection: 'row',
@@ -199,7 +210,7 @@ const styles={
         //alignSelf: 'flex-end'
     },
     headersBlankItemStyle:{
-        width: responsiveWidth(4.53),
+        //width: responsiveWidth(8),
     }
 }
 
