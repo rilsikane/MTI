@@ -19,10 +19,6 @@ export default class NoRegisterDataScreen extends Component{
     }
 
     renderLeavingContactPopup(){
-        const slideAnimation = new SlideAnimation({
-            slideFrom: 'bottom',
-        })
-
         return(
             <PopupDialog
                 ref={(leavingDialog) => { this.leavingDialog = leavingDialog; }}
@@ -92,7 +88,33 @@ export default class NoRegisterDataScreen extends Component{
         )
     }
 
-    
+    renderNotificationPopup(){
+        return(
+            <PopupDialog
+                ref={(notifyDialog) => { this.notifyDialog = notifyDialog; }}
+                width={responsiveWidth(90)}
+                height={responsiveHeight(27)}
+                dialogStyle={styles.popupContainerStyle}
+                containerStyle={styles.popupLayoutContainerStyle}
+                dialogAnimation={slideAnimation}
+            >
+                <View>
+                    <TouchableOpacity onPress={()=> this.notifyDialog.dismiss()}>
+                        <Image
+                            source={require('./../source/icons/btnClose.png')}
+                            style={styles.btnCloseImageStyle}
+                            resizeMode='contain'
+                        />
+                    </TouchableOpacity>
+                    <View>
+                        <Text style={styles.popupTitleTextStyle}>แจ้งเตือน</Text>
+                        <Text style={styles.popupDetailTextStyle}>ท่านเป็นสมาชิกของเราอยู่แล้ว รบกวน Login เพื่อเข้าสู่ระบบ สามารถสอบถามเพิ่มเติม ติดต่อ 1484</Text>
+                    </View>
+                </View>
+            </PopupDialog>
+        )
+    }
+
     render(){
         return(
             <View style={styles.noRegisterDataScreenContainerStyle}>
@@ -122,15 +144,20 @@ export default class NoRegisterDataScreen extends Component{
                     />
                 </View>
                 <View style={styles.noUserUseContainerStyle}>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={()=>this.notifyDialog.show()}>
                         <Text style={styles.noUserUserTextStyle}>เข้าใช้งานโดยไม่เป็นสมาชิก</Text>
                     </TouchableOpacity>
                 </View>
                 {this.renderLeavingContactPopup()}
+                {this.renderNotificationPopup()}
             </View>
         )
     }
 }
+
+const slideAnimation = new SlideAnimation({
+    slideFrom: 'bottom',
+})
 
 const secondFlex = 0.3,thirdFlex = 0.9
 
@@ -204,19 +231,17 @@ const styles={
         alignSelf: 'flex-end'
     },
     popupTitleTextStyle:{
-        fontSize: responsiveFontSize(3),
+        fontSize: responsiveFontSize(3.5),
         color: '#1595d3',
         textAlign: 'center',
         marginTop: responsiveHeight(2.5),
         marginBottom: responsiveHeight(2),
-
+        letterSpacing: -0.24,
     },
     popupDetailTextStyle:{
         fontSize: responsiveFontSize(2.2),
         color: '#919195',
         textAlign: 'center',
-        marginLeft: responsiveWidth(8),
-        marginRight: responsiveWidth(8),
     },
     inputContainerStyle:{
         borderBottomColor: '#C4C4C4',

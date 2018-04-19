@@ -58,10 +58,6 @@ export default class RegisterScreen extends Component{
     }
 
     renderPopup(){
-        const slideAnimation = new SlideAnimation({
-            slideFrom: 'bottom',
-          })
-
         return(
             <PopupDialog
                 ref={(popupDialog) => { this.popupDialog = popupDialog; }}
@@ -426,6 +422,10 @@ export default class RegisterScreen extends Component{
         )
     }
 }
+
+const slideAnimation = new SlideAnimation({
+    slideFrom: 'bottom',
+})
 
 const secondFlex = 0.3,thirdFlex = 0.9
 
