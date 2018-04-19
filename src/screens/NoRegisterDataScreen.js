@@ -19,6 +19,10 @@ export default class NoRegisterDataScreen extends Component{
     }
 
     renderLeavingContactPopup(){
+        const slideAnimation = new SlideAnimation({
+            slideFrom: 'bottom',
+        })
+
         return(
             <PopupDialog
                 ref={(leavingDialog) => { this.leavingDialog = leavingDialog; }}
@@ -26,6 +30,7 @@ export default class NoRegisterDataScreen extends Component{
                 height={responsiveHeight(60)}
                 dialogStyle={styles.popupContainerStyle}
                 containerStyle={styles.popupLayoutContainerStyle}
+                //dialogAnimation={slideAnimation}
             >
                 <View>
                     <TouchableOpacity onPress={()=> this.leavingDialog.dismiss()}>
@@ -103,7 +108,7 @@ export default class NoRegisterDataScreen extends Component{
                     />
                 </View>
                 <Text style={styles.noDataTitleTextStyle}>ขออภัยค่ะ ไม่พบข้อมูลสมาชิกของคุณ</Text>
-                <Text style={styles.noDataDetailTextStyle}>กรุณาตรวจสอบข้อมูลสมาชิกของคุณให้ถูกต้อง{'\n'}หรือ {<Text style={styles.leaveContactTextStyle}>ฝากข้อมูลให้เราติดต่อกลับ</Text>} หากคุณเคยเป็นสมาชิกแล้ว</Text>
+                <Text style={styles.noDataDetailTextStyle}>กรุณาตรวจสอบข้อมูลสมาชิกของคุณให้ถูกต้อง{'\n'}หรือ {<Text onPress={()=>this.leavingDialog.show()} style={styles.leaveContactTextStyle}>ฝากข้อมูลให้เราติดต่อกลับ</Text>} หากคุณเคยเป็นสมาชิกแล้ว</Text>
                 <View style={styles.contactButtonGroupContainerStyle}>
                     <MainSubmitButton
                         buttonTitleText='Call Now'
