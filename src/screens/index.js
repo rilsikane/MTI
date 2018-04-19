@@ -19,6 +19,7 @@ import NoRegisterDataScreen from './NoRegisterDataScreen';
 import RequestMoreInfoScreen from './RequestMoreInfoScreen';
 import ForgotPasswordScreen from './ForgotPasswordScreen';
 import NewPasswordScreen from './NewPasswordScreen';
+import PrivilegeAgreementScreen from './PrivilegeAgreementScreen';
 
 import app from '../stores/app';
 
@@ -42,6 +43,7 @@ export function registerScreens() {
   Navigation.registerComponent('mti.RequestMoreInfoScreen', () => RequestMoreInfoScreen, Store, Provider);
   Navigation.registerComponent('mti.ForgotPasswordScreen', () => ForgotPasswordScreen, Store, Provider);
   Navigation.registerComponent('mti.NewPasswordScreen', () => NewPasswordScreen, Store, Provider);
+  Navigation.registerComponent('mti.PrivilegeAgreementScreen', () => PrivilegeAgreementScreen, Store, Provider);
 }
 export function registerScreenVisibilityListener() {
   new ScreenVisibilityListener({
