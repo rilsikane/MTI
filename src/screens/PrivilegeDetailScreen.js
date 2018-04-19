@@ -14,7 +14,7 @@ export default class PrivilegeDetailScreen extends Component{
     constructor(props){
         super(props)
         this.state={
-            showComment: false,
+            showComment: true,
         }
     }
 
@@ -113,6 +113,34 @@ export default class PrivilegeDetailScreen extends Component{
         )
     }
 
+    renderRecommendPrivilegeList(){
+        let privilege = [
+            {
+                bannerUri: require('./../source/images/wefitness-logo.png'),
+                iconUri: require('./../source/icons/iconHealthySelected.png'),
+                iconTitleText: 'Lifestyle',
+                activityTitleText: 'ออกกำลังกายฟรี ที่ WE Fitness 2 วัน พร้อมลด 10% เมื่อสมัครสมาชิก'
+            },
+            {
+                bannerUri: require('./../source/images/privilegeImg02.png'),
+                iconUri: require('./../source/icons/iconBeautySelected.png'),
+                iconTitleText: 'Beauty',
+                activityTitleText: 'ส่วนลด 20% เมื่อซื้อชุดของขวัญ Estee Lauder Set Makeup'
+            },
+        ]
+
+        return privilege.map((data,i)=>
+            <DashboardActivityCard 
+                key={i} 
+                bannerUri={data.bannerUri}
+                iconUri={data.iconUri}
+                iconTitleText={data.iconTitleText}
+                activityTitleText={data.activityTitleText}
+                style={[styles.dashboardActivityCardContainerStyle,i==0&&{marginLeft: responsiveWidth(4.6)}]}
+            />
+        )
+    }
+
     render(){
         return(
             <View style={styles.privilegeDetailScreenContainerStyle}>
@@ -170,6 +198,11 @@ export default class PrivilegeDetailScreen extends Component{
                                 <TouchableOpacity>
                                     <Text style={styles.seeAllTextStyle}>ดูทั้งหมด</Text>
                                 </TouchableOpacity>
+                            </View>
+                            <View style={styles.recommendPrivilegeListContainerStyle}>
+                                <ScrollView horizontal style={{flex: 1,}} showsHorizontalScrollIndicator={false}>
+                                    {this.renderRecommendPrivilegeList()}
+                                </ScrollView>
                             </View>
                         </View>
                     </View>
@@ -366,6 +399,10 @@ const styles={
     recommendTitleContainerStyle:{
         flexDirection: 'row',
         justifyContent: 'space-between',
+        marginLeft: responsiveWidth(4.6),
+        marginRight: responsiveWidth(4.6),
+        marginTop: responsiveHeight(2),
+        marginBottom: responsiveHeight(1.5),
     },
     recommendTitleTextStyle:{
         fontFamily: "DBHelvethaicaX-Med",
@@ -376,6 +413,13 @@ const styles={
     seeAllTextStyle:{
         color: "rgba(85, 86, 90, 0.6)",
         fontSize: responsiveFontSize(2),
+    },
+    recommendPrivilegeListContainerStyle:{
+        flex: 1,
+        marginBottom: responsiveHeight(2),
+    },
+    dashboardActivityCardContainerStyle:{
+        marginRight: responsiveWidth(4.6),
     }
 
 }
