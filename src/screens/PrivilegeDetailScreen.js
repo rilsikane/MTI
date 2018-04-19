@@ -101,11 +101,13 @@ export default class PrivilegeDetailScreen extends Component{
                                 placeholder='ความคิดเห็นของคุณ...'
                                 placeholderTextColor='rgba(145, 145, 149, 0.44)'
                             />
-                            <Image
-                                source={require('../source/icons/iconSendMessage.png')}
-                                resizeMode='contain'
-                                style={styles.sendMessageIconStyle}
-                            />
+                            <TouchableOpacity>
+                                <Image
+                                    source={require('../source/icons/iconSendMessage.png')}
+                                    resizeMode='contain'
+                                    style={styles.sendMessageIconStyle}
+                                />
+                            </TouchableOpacity>
                         </Item>
                     </View>
                 </View>
