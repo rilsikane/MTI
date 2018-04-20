@@ -18,7 +18,7 @@ export default class NewPasswordScreen extends Component{
     }
 
     onSubmitButtonPress(){
-        if(this.state.newPassword!==this.state.confirmNewPassword&&this.state.confirmNewPassword.length>0){
+        if(this.state.newPassword!==this.state.confirmNewPassword){
             Alert.alert(
                 'เกิดข้อผิดพลาด',
                 'รหัสผ่านไม่ตรงกัน',
