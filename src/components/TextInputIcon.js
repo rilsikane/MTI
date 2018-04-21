@@ -37,6 +37,7 @@ class TextInputIcon extends Component{
                     labelStyle={styles.selectorLabelStyle}
                     itemStyle={styles.itemStyle}
                     buttonsTextSize={responsiveFontSize(3)}
+                    enabled={this.props.editable}
                 />
             )
         

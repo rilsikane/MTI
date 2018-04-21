@@ -400,7 +400,7 @@ export default class UserProfileScreen extends Component{
                             editable={this.state.canEditProfile}
                         />
                         <TextInputIcon
-                            value={this.state.userCareer}
+                            genderValue={this.state.userCareer}
                             onChangeText={(userCareer)=>this.setState({userCareer})}
                             leftLabelText='อาชีพ'
                             iconUri={require('./../source/icons/iconCareer.png')}
@@ -408,9 +408,12 @@ export default class UserProfileScreen extends Component{
                             secondFlex={secondFlex}
                             thirdFlex={thirdFlex}
                             rightIconName='pen'
+                            editable={this.state.canEditProfile}
+                            inputType='selector'
+                            options='career'
                         />
                         <TextInputIcon
-                            value={this.state.userEducation}
+                            genderValue={this.state.userEducation}
                             onChangeText={(userEducation)=>this.setState({userEducation})}
                             leftLabelText='การศึกษา'
                             iconUri={require('./../source/icons/iconEducation.png')}
@@ -419,9 +422,11 @@ export default class UserProfileScreen extends Component{
                             thirdFlex={thirdFlex}
                             rightIconName='pen'
                             editable={this.state.canEditProfile}
+                            inputType='selector'
+                            options='education'
                         />
                         <TextInputIcon
-                            value={this.state.userIncome}
+                            genderValue={this.state.userIncome}
                             onChangeText={(userIncome)=>this.setState({userIncome})}
                             leftLabelText='รายได้'
                             iconUri={require('./../source/icons/iconIncome.png')}
@@ -430,6 +435,8 @@ export default class UserProfileScreen extends Component{
                             thirdFlex={thirdFlex}
                             rightIconName='pen'
                             editable={this.state.canEditProfile}
+                            inputType='selector'
+                            options='income'
                         />
                         <TouchableOpacity disabled={!this.state.canEditProfile} onPress={()=>this.popupDialog.show()}>
                             <View pointerEvents={this.state.isLifestyleModalVisible ? 'auto' : 'none'}>
