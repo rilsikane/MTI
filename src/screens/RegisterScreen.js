@@ -20,6 +20,7 @@ import { observer, inject } from 'mobx-react';
 import { ifIphoneX } from 'react-native-iphone-x-helper'
 import app from '../stores/app';
 import Spinner from 'react-native-loading-spinner-overlay';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 @inject('registerStore')
 @observer
@@ -31,7 +32,9 @@ export default class RegisterScreen extends Component{
             pageNumber: 1,
             enable:false,
             isLoading:false,
-            firstLogon:false
+            firstLogon:false,
+            emailErr:false,telErr:false,
+            name:'',surname:'',email:'',tel:''
         }
         if(!this.props.registerStore.register){
             this.props.registerStore.register = {};
@@ -39,15 +42,17 @@ export default class RegisterScreen extends Component{
         this.updateRef = this.updateRef.bind(this);
         this.gotoWelcome = this.gotoWelcome.bind(this);
         this.app = app;
+        this.requestContact = this.requestContact.bind(this);
+        this.openLeavingContactPopup = this.openLeavingContactPopup.bind(this);
     }
     async componentDidMount(){
         if(this.props.user){
-            this.app.isLoading = true;
+            this.setState({isLoading:true})
             this.props.registerStore.register = {...this.props.user};
             setTimeout(()=>{
                 this.setState({pageNumber:2,firstLogon:true});
                 this._pages.scrollToPage(1);
-                this.app.isLoading = false;
+                this.setState({isLoading:false});
             },1500)
          
         }
@@ -55,6 +60,53 @@ export default class RegisterScreen extends Component{
 
     updateRef(ref) {
         this._pages = ref;
+    }
+    isShowSumbit(){
+        if(''!=this.state.name && ''!=this.state.surname
+            && ''!=this.state.email
+            && ''!=this.state.tel
+            && !this.state.emailErr && !this.state.telErr){
+                return true;
+        }else{
+            return false;
+        }
+    }
+    async requestContact(){
+        let param = {};
+        param.name = this.state.name;
+        param.surname = this.state.surname;
+        param.email = this.state.email;
+        param.tel = this.state.tel;
+
+        let response = await postBasic("member/request",param);
+        if(response){
+            Alert.alert(
+                'สำเร็จ',
+                'ฝากข้อมูลติดต่อกลับเรียบร้อย',
+                [
+                {text: 'ตกลง', onPress: () =>{
+                    this.leavingDialog.dismiss();
+                    this.props.navigator.dismissModal({
+                        animationType: 'slide-down' // 'none' / 'slide-down' , dismiss animation for the modal (optional, default 'slide-down')
+                    });
+                    setTimeout(()=>{
+                        this.props.navigator.resetTo({
+                            screen: 'mti.LoginScreen', // unique ID registered with Navigation.registerScreen
+                            title: undefined, // navigation bar title of the pushed screen (optional)
+                            titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
+                            animated: true, // does the push have transition animation or does it happen immediately (optional)
+                            animationType: 'slide-down',
+                            backButtonTitle: undefined, // override the back button title (optional)
+                            backButtonHidden: false, // hide the back button altogether (optional)
+                            })
+                    },500)
+                  }
+                }
+                ]
+            )
+        }else{
+
+        }
     }
 
     renderPopup(){
@@ -96,7 +148,9 @@ export default class RegisterScreen extends Component{
             </PopupDialog>
         )
     }
-
+    openLeavingContactPopup(){
+        this.leavingDialog.show();
+    }
     renderLeavingContactPopup(){
         return(
             <PopupDialog
@@ -106,7 +160,15 @@ export default class RegisterScreen extends Component{
                 dialogStyle={styles.popupContainerStyle}
                 containerStyle={styles.popupLayoutContainerStyle}
             >
-                <View>
+             <KeyboardAwareScrollView
+                resetScrollToCoords={{ x: 0, y: 0 }}
+                automaticallyAdjustContentInsets={false}
+                //keyboardShouldPersistTaps='always'
+                enableOnAndroid={true}
+                contentContainerStyle={{flexGrow:1,}}
+                //style={{flex: 1}}
+                scrollEnabled={true}
+                >
                     <TouchableOpacity onPress={()=> this.leavingDialog.dismiss()}>
                         <Image
                             source={require('./../source/icons/btnClose.png')}
@@ -115,11 +177,11 @@ export default class RegisterScreen extends Component{
                         />
                     </TouchableOpacity>
                     <View>
-                        <Text style={styles.popupTitleTextStyle}>ฝากข้อมูลติดตต่อกลับ</Text>
+                        <Text style={styles.popupTitleTextStyle}>ฝากข้อมูลติดต่อกลับ</Text>
                         <Text style={styles.popupDetailTextStyle}>กรุณากรอกข้อมูลของคุณและรอการติดต่อกลับ</Text>
                         <TextInputIcon
-                            value={this.props.registerStore.register.name}
-                            onChangeText={(userFirstName)=>this.props.registerStore.register.name=userFirstName}
+                            value={this.state.name}
+                            onChangeText={(userFirstName)=>this.setState({name:userFirstName})}
                             leftLabelText='ชื่อ'
                             iconUri={require('./../source/icons/iconAvatar.png')}
                             containerStyle={styles.inputContainerStyle}
@@ -127,8 +189,8 @@ export default class RegisterScreen extends Component{
                             thirdFlex={thirdFlex}
                         />
                         <TextInputIcon
-                            value={this.props.registerStore.register.surname}
-                            onChangeText={(userLastName)=>this.props.registerStore.register.name=surname}
+                            value={this.state.surname}
+                            onChangeText={(userLastName)=>this.setState({surname:userLastName})}
                             leftLabelText='นามสกุล'
                             iconUri={require('./../source/icons/iconAvatar.png')}
                             containerStyle={styles.inputContainerStyle}
@@ -136,62 +198,116 @@ export default class RegisterScreen extends Component{
                             thirdFlex={thirdFlex}
                         />
                         <TextInputIcon
-                            value={this.props.registerStore.register.tel}
-                            onChangeText={(userPhone)=>this.props.registerStore.register.tel=userPhone}
+                            value={this.state.tel}
+                            onChangeText={(userPhone)=>this.setState({tel:userPhone})}
                             leftLabelText='เบอร์โทรศัพท์'
                             iconUri={require('./../source/icons/iconPhone.png')}
                             containerStyle={styles.inputContainerStyle}
                             secondFlex={secondFlex}
                             thirdFlex={thirdFlex}
+                            keyboardType='phone-pad'
+                            onBlur={()=>{
+                                if(this.state.tel.length!=10 && this.state.tel.length!=12){
+                                    this.setState({telErr:true})
+                                }else{
+                                    this.setState({telErr:false})
+                                }
+                            }}
+                            blurOnSubmit={true}
                         />
+                        {this.state.telErr && <Text style={styles.errorMsg}>เบอร์โทรศัพท์ ไม่ถูกต้อง</Text>}
                         <TextInputIcon
-                            value={this.state.forgotPasswordEmail}
-                            onChangeText={(forgotPasswordEmail)=>this.setState({forgotPasswordEmail})}
+                            value={this.state.email}
+                            onChangeText={(email)=>this.setState({email:email})}
                             leftLabelText='อีเมล'
                             iconUri={require('../source/icons/iconMail.png')}
                             containerStyle={styles.inputContainerStyle}
                             secondFlex={secondFlex}
                             thirdFlex={thirdFlex}
                             keyboardType='email-address'
+                            onBlur={()=>{
+                                var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                                if(re.test(this.state.email)){
+                                    this.setState({emailErr:false})
+                                }else{
+                                    this.setState({emailErr:true})
+                                }
+                            }}
+                            blurOnSubmit={true}
+                            returnKeyType = {"done"}
+                            
                         />
+                        {this.state.emailErr && <Text style={styles.errorMsg}>Email ไม่ถูกต้อง</Text>}
                     </View>
-                    <View style={styles.submitButtonContainerStyle}>
+                    {this.isShowSumbit() && <View style={styles.submitButtonContainerStyle}>
                         <MainSubmitButton
                             buttonTitleText='ตกลง'
-                            onPress={()=>alert('Submit')}
+                            onPress={()=>this.requestContact()}
                         />
-                    </View>
-                </View>
+                    </View>}
+                </KeyboardAwareScrollView>
             </PopupDialog>
         )
     }
 
     async _onSubmitRegister1Press(param){
         if (this._pages) {
-            this.app.isLoading = true;
+            this.setState({isLoading:true})
             let response = await postBasic("mti/checkinfo",param,true);
-            this.app.isLoading = false;
+            this.setState({isLoading:false});
             if(response){
                 if(!response.message && "checkMember"!=response.data_source){
                     this.props.registerStore.register = {...response};
                     this.props.registerStore.register.idcard = param.idcard;
                     this.props.registerStore.register.birthdate = param.birthdate;
                     this.setState({enable:true});
-                    this._pages.scrollToPage(1);
-                    this.setState({enable:false});
+                    setTimeout(()=>{
+                        this.setState({enable:true,pageNumber:1});
+                        this._pages.scrollToPage(1);
+                        this.setState({enable:false});
+                    },100);
+                    
                 }else{
-                    this.props.navigator.resetTo({
-                        screen: 'mti.LoginScreen', // unique ID registered with Navigation.registerScreen
-                        title: undefined, // navigation bar title of the pushed screen (optional)
-                        titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
-                        passProps: {}, // Object that will be passed as props to the pushed screen (optional)
-                        animated: true, // does the push have transition animation or does it happen immediately (optional)
-                        backButtonTitle: undefined, // override the back button title (optional)
-                        backButtonHidden: false, // hide the back button altogether (optional)
-                    })
+                    this.setState({isLoading:false});
+                    if("checkMember"==response.data_source){
+                        setTimeout(()=>{
+                        Alert.alert(
+                            'แจ้งเตือน',
+                            'ท่านเป็นสมาชิกของเราอยู่แล้วรบกวนlog in เพื่อเข้าระบบ สอบถามเพิ่มเติมติดต่อ 1484',
+                            [
+                            {text: 'ตกลง', onPress: () =>{
+                               
+                                    this.props.navigator.resetTo({
+                                        screen: 'mti.LoginScreen', // unique ID registered with Navigation.registerScreen
+                                        title: undefined, // navigation bar title of the pushed screen (optional)
+                                        titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
+                                        animated: true, // does the push have transition animation or does it happen immediately (optional)
+                                        animationType: 'slide-down',
+                                        backButtonTitle: undefined, // override the back button title (optional)
+                                        backButtonHidden: false, // hide the back button altogether (optional)
+                                        })
+                               
+                            }
+                            }
+                            ]
+                        )
+                        },500)
+                    }
                 }
             }else{
-                this.popupDialog.show();
+                this.props.registerStore.register = {...param};
+                setTimeout(()=>{
+                this.props.navigator.showModal({
+                    screen: 'mti.NoRegisterDataScreen', // unique ID registered with Navigation.registerScreen
+                    title: undefined, // navigation bar title of the pushed screen (optional)
+                    titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
+                    passProps: {navigator:this.props.navigator}, // Object that will be passed as props to the pushed screen (optional)
+                    animated: true, // does the push have transition animation or does it happen immediately (optional)
+                    backButtonTitle: undefined, // override the back button title (optional)
+                    backButtonHidden: false, // hide the back button altogether (optional)
+                    
+                })
+                },500)
             }
         }
     }
@@ -201,23 +317,28 @@ export default class RegisterScreen extends Component{
             let param = {};
             param.mobile_no = this.props.registerStore.register.tel;
             param.email = this.props.registerStore.register.email;
-            //this.app.isLoading = true;
+            //this.setState({isLoading:true})
             if(!this.state.firstLogon){
             let response = await postBasic("mti/checktelephone",param);
-            //this.app.isLoading = false;
+            //this.setState({isLoading:false});
                 if(response){
-                    //this.app.isLoading = true;
+                    //this.setState({isLoading:true})
                     let response2 = await postBasic("mti/checkemail",param);
-                    //this.app.isLoading = false;
+                    //this.setState({isLoading:false});
                     if(response2){
-                        this.app.isLoading = false;
+                        this.setState({isLoading:false});
                         this.props.registerStore.register.username = this.props.registerStore.register.tel;
                         this.setState({enable:true});
-                        this._pages.scrollToPage(2);
-                        this.setState({enable:false});
+                        setTimeout(()=>{
+                            this.setState({enable:true,pageNumber:2});
+                            this._pages.scrollToPage(2);
+                            this.setState({enable:false});
+                        },100)
+                       
+                        
                     }
                 }else{
-                    this.app.isLoading = false;
+                    this.setState({isLoading:false});
                 }
             }else{
                 this.setState({enable:true,pageNumber:3});
@@ -230,7 +351,7 @@ export default class RegisterScreen extends Component{
 
     async _onSubmitRegister3Press(){
         if (this._pages) {
-            this.setState({enable:true});
+            this.setState({enable:true,pageNumber:4});
             this._pages.scrollToPage(3);
             this.setState({enable:false});
         }
@@ -238,17 +359,18 @@ export default class RegisterScreen extends Component{
 
    async _onSubmitRegister4_1Press(){
         if (this._pages) {
-            this.app.isLoading = true;
+            this.setState({isLoading:true})
             let param = {};
             param.mobile_no = this.props.registerStore.register.tel;
             let response = await postBasic("otp/request",param);
             if(response){
-                this.app.isLoading = false;
+                this.setState({isLoading:false});
                 if(!response.message){
-                  
                     this.props.registerStore.register.refcode = response.refcode;
-                    this.setState({enable:true});
-                    this._pages.scrollToPage(4);
+                    this.setState({enable:true,pageNumber:4});
+                    setTimeout(()=>{
+                        this._pages.scrollToPage(4);
+                    },100)
                     this.setState({enable:false});
                 }else{
                     Alert.alert(
@@ -265,18 +387,18 @@ export default class RegisterScreen extends Component{
     }
 
     async _onSubmitRegister4_2Press(otp){
-        this.app.isLoading = false;
+        this.setState({isLoading:false});
         let param = {};
         param.refcode = this.props.registerStore.register.refcode;
         param.otp = otp;
-        //this.app.isLoading = true;
+        //this.setState({isLoading:true})
         let response = await postBasic("otp/check",param);
-        this.app.isLoading = false;
+        this.setState({isLoading:false});
         if(response){
             if(!response.message){
                if(response.status=='ok'){
 
-                this.app.isLoading = true;
+                this.setState({isLoading:true})
                     let param2 = this.props.registerStore.register;
                     let response2 = {};
                     if(!this.state.firstLogon){
@@ -284,10 +406,11 @@ export default class RegisterScreen extends Component{
                     }else{
                         response2 = await put("me/profile",param2);
                     }
-                    this.app.isLoading = false;
+                    this.setState({isLoading:false});
                     if(response2){
                         if(!response2.message){
-                            this.app.isLoading = false;
+                            this.setState({isLoading:false});
+                            this.props.registerStore.register = {};
                             this.props.navigator.resetTo({
                                 screen: 'mti.WelcomeScreen', // unique ID registered with Navigation.registerScreen
                                 title: undefined, // navigation bar title of the pushed screen (optional)
@@ -298,7 +421,7 @@ export default class RegisterScreen extends Component{
                                 navigatorButtons: {} // override the nav buttons for the pushed screen (optional)
                               });
                         }else{
-                            this.app.isLoading = false;
+                            this.setState({isLoading:false});
                             Alert.alert(
                                 'เกิดข้อผิดพลาด',
                                 response.message,
@@ -311,7 +434,7 @@ export default class RegisterScreen extends Component{
                 
                 }
             }else{
-                this.app.isLoading = false;
+                this.setState({isLoading:false});
                 Alert.alert(
                     'เกิดข้อผิดพลาด',
                     response.message,
@@ -321,17 +444,17 @@ export default class RegisterScreen extends Component{
                 )
             }
         }
-        this.app.isLoading = false;
+        this.setState({isLoading:false});
     }
 
     async _onRequestNewOtpButtonPress(){
-        let param = {};
+            let param = {};
             param.mobile_no = this.props.registerStore.register.tel;
-            this.app.isLoading = true;
+            this.setState({isLoading:true})
             let response = await postBasic("otp/request",param);
-            this.app.isLoading = false;
+            this.setState({isLoading:false});
             if(response){
-                this.app.isLoading = false;
+                this.setState({isLoading:false});
                 if(!response.message){
                     setTimeout(()=>{Alert.alert(
                         'แจ้ง OTP',
@@ -372,6 +495,7 @@ export default class RegisterScreen extends Component{
                     headerTitleText='ลงทะเบียนสมาชิก'
                     cancel={()=>
                         {
+                            console.log(this.state.pageNumber);
                             if(this.state.pageNumber==1){
                                 this.props.navigator.pop()
                             }else{
@@ -386,7 +510,9 @@ export default class RegisterScreen extends Component{
                                         backButtonHidden: false, // hide the back button altogether (optional)
                                     })
                                 }else{
+                                    this.setState({enable:true});
                                     this._pages.scrollToPage(this.state.pageNumber-2);
+                                    this.setState({enable:false,pageNumber:this.state.pageNumber-1});
                                 }
                             }
                         }
@@ -405,12 +531,17 @@ export default class RegisterScreen extends Component{
                     isDragging={false} 
                     scrollEnabled={this.state.enable}
                 >
-                    <RegisterStep1
+                     <RegisterStep1
                         onSubmitRegister1Press={this._onSubmitRegister1Press.bind(this)}
                     />
-                    <RegisterStep2 firstLogon={this.state.firstLogon} pageNumber={this.state.pageNumber}
-                        onSubmitRegister2Press={this._onSubmitRegister2Press.bind(this)}
+                     <RegisterStep2 firstLogon={this.state.firstLogon} pageNumber={this.state.pageNumber}
+                        onSubmitRegister2Press={this._onSubmitRegister2Press.bind(this)} 
+                        openLeavingDialog={this.openLeavingContactPopup} 
+                        closeLeavingDialog={()=>this.leavingDialog.close()}
                     />
+                   
+                    
+                  
                     <RegisterStep3
                         onSubmitRegister3Press={this._onSubmitRegister3Press.bind(this)}
                     />
@@ -426,7 +557,7 @@ export default class RegisterScreen extends Component{
                        
                 {this.renderLeavingContactPopup()}
                 {this.renderPopup()}
-                {this.app.isLoading && <Spinner visible={this.app.isLoading}  textStyle={{color: '#FFF'}} />}
+                {this.state.isLoading && <Spinner visible={this.state.isLoading}  textStyle={{color: '#FFF'}} />}
             </View>
             
         )

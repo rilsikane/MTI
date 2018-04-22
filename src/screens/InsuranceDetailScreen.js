@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Text,View,Image,ScrollView} from 'react-native';
+import {Text,View,Image,ScrollView,Linking,Alert} from 'react-native';
 import PropTypes from "prop-types";
 import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
 
@@ -7,12 +7,16 @@ import {Headers} from './../components/Headers';
 import {MainSubmitButton} from '../components/MainSubmitButton';
 import moment from 'moment';
 import localization from 'moment/locale/th'
+import {post} from '../api'
+import Spinner from 'react-native-loading-spinner-overlay';
 
 export default class InsuranceDetailScreen extends Component{
 
     constructor(props){
         super(props)
         moment.locale("th");
+        this.openPolicyDocument = this.openPolicyDocument.bind(this);
+        this.state = {isLoading:false};
     }
 
     renderProtectRules(rules){
@@ -43,9 +47,10 @@ export default class InsuranceDetailScreen extends Component{
         var diff = Math.floor(date2.getTime() - date1.getTime());
         var day = 1000 * 60 * 60 * 24;
         var days = Math.floor(diff/day);
+        days+=1;
         var months = Math.floor(days/31);
         var years = Math.floor(months/12);
-    
+        
         var message = "";
         if(years>0 || months ==11){
             message = years||1 + " ปี";
@@ -56,6 +61,28 @@ export default class InsuranceDetailScreen extends Component{
         }
 
         return message
+    }
+    async openPolicyDocument(pol_no,tran_no){
+        let param = {};
+        param.pol_no = pol_no;
+        param.tran_no = tran_no;
+        this.setState({isLoading:true});
+        let response = await post("me/policy/document",param);
+        this.setState({isLoading:false});
+        if(response.url_file && response.url_file!=""){
+            Linking.openURL(response.url_file);
+        }else{
+            setTimeout(()=>{
+                Alert.alert(
+                    'เกิดข้อผิดพลาด',
+                    'ไม่พบเอกสาร',
+                    [
+                    {text: 'OK', onPress: () => console.log('OK Pressed!')},
+                    ]
+                )
+            },500)
+            
+        }
     }
 
 
@@ -127,7 +154,7 @@ export default class InsuranceDetailScreen extends Component{
                         {header.FLAG == 'Y' && <MainSubmitButton
                             buttonTitleText='ดาวน์โหลดเอกสาร'
                             iconImageUri={require('../source/icons/iconDownload.png')}
-                            onPress={()=>alert('เอกสาร')}
+                            onPress={()=>this.openPolicyDocument(header.Policy_NO,header.TranNo)}
                         />}
                     </View> 
                     <Image
@@ -136,6 +163,7 @@ export default class InsuranceDetailScreen extends Component{
                         style={styles.advertiseImageStyle}
                     />
                 </ScrollView>
+                {this.state.isLoading && <Spinner visible={this.state.isLoading}  textStyle={{color: '#FFF'}} />}
             </View>
         )
     }

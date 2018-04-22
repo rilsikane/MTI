@@ -8,6 +8,9 @@ import {Headers} from './../components/Headers';
 import {DashboardActivityCard} from './../components/DashboardActivityCard';
 import {PastEventCard} from './../components/PastEventCard';
 import { observer, inject } from 'mobx-react';
+import {post,authen,get} from '../api';
+import store from 'react-native-simple-store';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 @inject('naviStore')
 @observer
@@ -56,11 +59,29 @@ export default class DashboardScreen extends Component{
                     eventTitleText: 'MTI 8 Anniversary "ยิ้มรับความสำเร็จ..ฉลอง ก้าวแห่งความภาคภูมิใจ" กับเมืองไทยประกันภัย',
                     eventDetailText: 'นำลูกค้าล่องเรือชมบรรยากาศริมแม่น้ำเจ้าพระยา พร้อมรับประทานอาหารค่ำและชมมินิคอนเสิร์ต จากศิลปินคู่ ดูโอ แอน(ธิติมา) - ปิงปอง(ศิรศักดิ์) พร้อมกันนี้ ยังมีกิจกรรม...'
                 }
-            ]
+            ],
+            isLoading:true
         }
         this.props.naviStore.navigation = this.props.navigator;
     }
-
+    async componentDidMount(){
+        let user = await store.get("user");
+        this.setState({isLoading:true});
+        if(user){
+            let response = await get("me",{});
+            if(response){
+                await store.update("user",response);
+                this.setState({isLoading:false});
+            }else{
+                this.setState({isLoading:false});
+            }
+        }else{
+            this.setState({isLoading:false});
+        }
+          // await store.save("policy",response2);
+                        // get("me/policy",{})
+    };
+    
     renderHotDealList(){
         return this.state.hotDeal.map((hotdeal,i)=>
             <DashboardActivityCard 
@@ -122,7 +143,7 @@ export default class DashboardScreen extends Component{
                     notify='2'
                 />
                 <ScrollView style={{flex: 1}}>
-                    <UserShortDetailCard navigator={this.props.navigator}/>
+                    {!this.state.isLoading && <UserShortDetailCard navigator={this.props.navigator}/>}
                     <View style={styles.dashboardDetailTopContainerStyle}>
                         <View style={styles.hotDealTitleTextContainerStyle}>
                             <Text style={styles.dashboardSectionTitleTextStyle}>HOT DEAL</Text>
@@ -166,6 +187,7 @@ export default class DashboardScreen extends Component{
                         </ScrollView>
                     </View>
                 </ScrollView>
+                {this.state.isLoading && <Spinner visible={this.state.isLoading}  textStyle={{color: '#FFF'}} />}
             </View>
         )
     }

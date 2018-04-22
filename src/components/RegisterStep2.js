@@ -54,6 +54,7 @@ class RegisterStep2 extends Component{
         this.props.registerStore.register.tel = this.state.userPhone;
         this.props.onSubmitRegister2Press();
     }
+    
     render(){
         return(
             <KeyboardAwareScrollView
@@ -64,7 +65,7 @@ class RegisterStep2 extends Component{
                 contentContainerStyle={{flexGrow:1,}}
                 //style={{flex: 1}}
                 scrollEnabled={true}
-                >
+            >
                 
             <View style={styles.registerStep1ContainerStyle}>
                 <View style={styles.registerDirectionContainerStyle}>
@@ -143,6 +144,7 @@ class RegisterStep2 extends Component{
                         editable={!this.props.firstLogon}
                     />
                     {this.state.telErr && <Text style={styles.errorMsg}>เบอร์โทรศัพท์ ไม่ถูกต้อง</Text>}
+                    <View style={{flexDirection: 'row',paddingTop:10}}>
                     <CheckBoxes
                         checkBoxTitleText='ยอบรับ เงื่อนไขการให้บริการ'
                         checked={this.state.checkBoxIsSelected}
@@ -152,10 +154,16 @@ class RegisterStep2 extends Component{
                         textUnderLine={true}
                         onIconPress={()=>this.setState({checkBoxIsSelected: !this.state.checkBoxIsSelected})}
                     />
+                    </View>
+                    <View style={{flexDirection: 'row',padding:5}}>
+                    <Text style={styles.directionTextStyle}>กรณีพบข้อมูลไม่ถูกต้อง</Text>
+                    <TouchableOpacity onPress={()=>this.props.openLeavingDialog()}>
+                        <Text style={[styles.textUnderLineStyle]}>ติดต่อเรา</Text>
+                    </TouchableOpacity>
+                    </View>
                     {this.isShowSumbit() && <View style={styles.submitButtonContainerStyle}>
                         <MainSubmitButton
                             buttonTitleText='ยืนยันข้อมูล'
-                            onPress={()=>alert('onPress')}
                             onPress={this.submitRegister}
                         />
                     </View>}
@@ -221,6 +229,13 @@ const styles={
         fontSize:responsiveFontSize(2.2),
         color:"red",
         padding:2
+    },
+    textUnderLineStyle:{
+        textDecorationLine: 'underline',
+        textDecorationColor: '#0194d2',
+        textDecorationStyle: 'solid',
+        color:'#0194d2',
+        fontSize: responsiveFontSize(2.4)
     }
 
 }

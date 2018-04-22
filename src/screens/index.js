@@ -22,6 +22,8 @@ import NewPasswordScreen from './NewPasswordScreen';
 import PrivilegeAgreementScreen from './PrivilegeAgreementScreen';
 import PrivilegeQrCodeScreen from './PrivilegeQrCodeScreen';
 import PrivilegeForMemberScreen from './PrivilegeForMemberScreen';
+import ConfirmOtpScreen from './ConfirmOtpScreen';
+import ReqOtpScreen from './ReqOtpScreen';
 
 import app from '../stores/app';
 
@@ -48,6 +50,9 @@ export function registerScreens() {
   Navigation.registerComponent('mti.PrivilegeAgreementScreen', () => PrivilegeAgreementScreen, Store, Provider);
   Navigation.registerComponent('mti.PrivilegeQrCodeScreen', () => PrivilegeQrCodeScreen, Store, Provider);
   Navigation.registerComponent('mti.PrivilegeForMemberScreen', () => PrivilegeForMemberScreen, Store, Provider);
+  Navigation.registerComponent('mti.ConfirmOtpScreen', () => ConfirmOtpScreen, Store, Provider);
+  Navigation.registerComponent('mti.ReqOtpScreen', () => ReqOtpScreen, Store, Provider);
+  
 }
 export function registerScreenVisibilityListener() {
   new ScreenVisibilityListener({

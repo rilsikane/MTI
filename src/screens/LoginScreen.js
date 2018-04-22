@@ -34,6 +34,7 @@ export default class LoginScreen extends Component{
         this.keyboardWillShowSub = Keyboard.addListener('keyboardDidShow', this.keyboardWillShow);
         this.keyboardWillHideSub = Keyboard.addListener('keyboardDidHide', this.keyboardWillHide);
         this.scroll = {};
+        this.forgotPassword = this.forgotPassword.bind(this);
         if(isIphoneX()){
             this.imageHeight = new Animated.Value(responsiveHeight(32),);
         }else{
@@ -41,10 +42,13 @@ export default class LoginScreen extends Component{
         }
     }
     async login(){
-        this.setState({isLoading:true});
+       
         let param = {};
         param.username = this.state.userEmail;
         param.password = this.state.userPassword;
+        setTimeout(()=>{
+            this.setState({isLoading:true});
+        },100)
         let response = await authen(param);
         if(response){
             if(response.first_logon=="N"){
@@ -52,14 +56,12 @@ export default class LoginScreen extends Component{
                 let token = response.token;
                 store.save("token",token);
                 if(token){
-                    let [response1,response2] = await Promise.all([get("me",{}), get("me/policy",{})]);
-                    if(response1 && response2){
+                    let [response1] = await Promise.all([get("me",{})]);
+                    this.setState({isLoading:false});
+                    if(response1){
                         await store.save("user",response1);
-                        await store.save("policy",response2);
                         this.gotoWelcome();
                     }
-                        
-                    
                 }else{
                     this.setState({isLoading:false});
                 }
@@ -136,48 +138,58 @@ export default class LoginScreen extends Component{
         toValue: responsiveHeight(isIphoneX()?32:35),
     }).start();
     };
-    renderForgotPasswordPopup(){
-        return(
-            <PopupDialog
-                ref={(popupDialog) => { this.popupDialog = popupDialog; }}
-                width={responsiveWidth(90)}
-                height={responsiveHeight(38)}
-                dialogStyle={styles.popupContainerStyle}
-                containerStyle={styles.popupLayoutContainerStyle}
-            >
-                <View>
-                    <TouchableOpacity onPress={()=> this.popupDialog.dismiss()}>
-                        <Image
-                            source={require('./../source/icons/btnClose.png')}
-                            style={styles.btnCloseImageStyle}
-                            resizeMode='contain'
-                        />
-                    </TouchableOpacity>
-                    <View>
-                        <Text style={styles.popupTitleTextStyle}>ลืมรหัสผ่าน</Text>
-                        <Text style={styles.popupDetailTextStyle}>กรุณากรอกอีเมลของคุณเพื่อขอรับรหัสผ่านใหม่</Text>
-                        <TextInputIcon
-                            value={this.state.forgotPasswordEmail}
-                            onChangeText={(forgotPasswordEmail)=>this.setState({forgotPasswordEmail})}
-                            leftLabelText='อีเมล'
-                            iconUri={require('../source/icons/iconMail.png')}
-                            containerStyle={styles.inputContainerStyle}
-                            secondFlex={secondFlex}
-                            thirdFlex={thirdFlex}
-                            keyboardType='email-address'
-                        />
-                    </View>
-                    <View style={styles.submitButtonContainerStyle}>
-                        <MainSubmitButton
-                            buttonTitleText='ตกลง'
-                            onPress={()=>alert('Submit')}
-                        />
-                    </View>
-                </View>
-            </PopupDialog>
-        )
+    // renderForgotPasswordPopup(){
+    //     return(
+    //         <PopupDialog
+    //             ref={(popupDialog) => { this.popupDialog = popupDialog; }}
+    //             width={responsiveWidth(90)}
+    //             height={responsiveHeight(38)}
+    //             dialogStyle={styles.popupContainerStyle}
+    //             containerStyle={styles.popupLayoutContainerStyle}
+    //         >
+    //             <View>
+    //                 <TouchableOpacity onPress={()=> this.popupDialog.dismiss()}>
+    //                     <Image
+    //                         source={require('./../source/icons/btnClose.png')}
+    //                         style={styles.btnCloseImageStyle}
+    //                         resizeMode='contain'
+    //                     />
+    //                 </TouchableOpacity>
+    //                 <View>
+    //                     <Text style={styles.popupTitleTextStyle}>ลืมรหัสผ่าน</Text>
+    //                     <Text style={styles.popupDetailTextStyle}>กรุณากรอกอีเมลของคุณเพื่อขอรับรหัสผ่านใหม่</Text>
+    //                     <TextInputIcon
+    //                         value={this.state.forgotPasswordEmail}
+    //                         onChangeText={(forgotPasswordEmail)=>this.setState({forgotPasswordEmail})}
+    //                         leftLabelText='อีเมล/เบอร์โทรศํพท์'
+    //                         iconUri={require('../source/icons/iconMail.png')}
+    //                         containerStyle={styles.inputContainerStyle}
+    //                         secondFlex={secondFlex}
+    //                         thirdFlex={thirdFlex}
+    //                         keyboardType='email-address'
+    //                     />
+    //                 </View>
+    //                 <View style={styles.submitButtonContainerStyle}>
+    //                     <MainSubmitButton
+    //                         buttonTitleText='ตกลง'
+    //                         onPress={()=>alert('Submit')}
+    //                     />
+    //                 </View>
+    //             </View>
+    //         </PopupDialog>
+    //     )
+    // }
+    forgotPassword(){
+        this.props.navigator.resetTo({
+            screen: 'mti.ForgotPasswordScreen', // unique ID registered with Navigation.registerScreen
+            title: undefined, // navigation bar title of the pushed screen (optional)
+            titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
+            passProps: {navigator:this.props.navigator}, // Object that will be passed as props to the pushed screen (optional)
+            animated: true, // does the push have transition animation or does it happen immediately (optional)
+            backButtonTitle: undefined, // override the back button title (optional)
+            backButtonHidden: false, // hide the back button altogether (optional)
+        })
     }
-
     render(){
         return(
             <View style={styles.loginContainerStyle}>
@@ -257,7 +269,7 @@ export default class LoginScreen extends Component{
                                             this.login();
                                         }}
                                     />
-                                    <TouchableOpacity onPress={()=>this.popupDialog.show()} style={styles.forgotPasswordContainerStyle}> 
+                                    <TouchableOpacity onPress={()=>this.forgotPassword()} style={styles.forgotPasswordContainerStyle}> 
                                         <Text style={styles.forgotPasswordTextStyle}>ลืมรหัสผ่าน ?</Text>
                                     </TouchableOpacity>
                                 </Item>
@@ -283,7 +295,9 @@ export default class LoginScreen extends Component{
                                     <TouchableOpacity>
                                         <Text style={styles.touchIdDetailTextStyle}>เข้าใช้งานได้ง่ายๆ ด้วย Passcode Lock & Touch ID คลิก</Text>
                                     </TouchableOpacity>
+                                    
                                 </View>
+                                <Text style={{color:"#fff"}}>Version : 1.27</Text>
                                 <View style={styles.registerBottomContainerStyle}>
                                     <TouchableOpacity onPress={this.gotoRegister}>
                                         <Text style={styles.registerBottomTextStyle}>ลงทะเบียนสมาชิก</Text>
@@ -297,7 +311,7 @@ export default class LoginScreen extends Component{
                     </View>
                     {this.state.isLoading && <Spinner visible={this.state.isLoading}  textStyle={{color: '#FFF'}} />}
                 </ScrollView>
-                {this.renderForgotPasswordPopup()}
+                {/* {this.renderForgotPasswordPopup()} */}
             </View>
         )
     }
@@ -417,6 +431,8 @@ const styles={
     touchIdDetailTextStyle:{
         color: '#9fbfcf',
         fontSize: responsiveFontSize(2),
+        flex:1,
+        textAlign:'center'
 
     },
     registerBottomTextStyle:{

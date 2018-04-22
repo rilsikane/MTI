@@ -7,6 +7,7 @@ import {TextInputIcon} from './TextInputIcon';
 import {MainSubmitButton} from './MainSubmitButton';
 import {CheckBoxes} from './../components/CheckBoxes';
 import { observer, inject } from 'mobx-react';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 @inject('registerStore')
 @observer
@@ -72,7 +73,8 @@ class RegisterStep3 extends Component{
     }
     isShowSubmit(){
         if(this.state.userEmail!=''&&this.state.userPassword !='' 
-        &&(this.state.errorText==null||this.state.errorText=='') && this.state.userConfirmPassword !=''){
+        &&(this.state.errorText==null||this.state.errorText=='') && this.state.userConfirmPassword !='' 
+        && !this.state.errorPassowrd){
             return true;
         }else{
             return false;
@@ -86,7 +88,15 @@ class RegisterStep3 extends Component{
                     <Text style={styles.registerTitleTextStyle}>ข้อมูลบัญชีของคุณ</Text>
                     <Text style={styles.directionTextStyle}>กรุณากอรกข้อมูลบัญชีส่วนตัว เพื่อใช้ในการเข้าใช้งานแอพพลิเคชั่น</Text>
                 </View>
-                <ScrollView style={{flex: 1}}>
+                <KeyboardAwareScrollView
+                    resetScrollToCoords={{ x: 0, y: 0 }}
+                    automaticallyAdjustContentInsets={false}
+                    //keyboardShouldPersistTaps='always'
+                    enableOnAndroid={true}
+                    contentContainerStyle={{flexGrow:1,}}
+                    //style={{flex: 1}}
+                    scrollEnabled={true}
+                >
                     <View style={styles.userDetailContainerStyle}>
                         <TextInputIcon
                             value={this.props.registerStore.register.username}
@@ -99,6 +109,7 @@ class RegisterStep3 extends Component{
                             keyboardType='email-address'
                             returnKeyType='next'
                             blurOnSubmit={true}
+                            editable={false}
                             onBlur={()=>{
                                 var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
                                 var telRex = /^[08|09|06|][0-9]+[0-9]$/
@@ -154,7 +165,7 @@ class RegisterStep3 extends Component{
                             />
                         </View>}
                     </View>
-                </ScrollView>
+                </KeyboardAwareScrollView>
             </View>
         )
     }
@@ -223,7 +234,12 @@ const styles={
         fontSize:responsiveFontSize(2.2),
         color:"red",
         padding:2
-    }
+    },
+    errorTextStyle:{
+        fontSize: responsiveHeight(2.64),
+        marginTop: responsiveHeight(1),
+        color: 'red'
+    },
 
 }
 

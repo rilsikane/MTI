@@ -189,6 +189,7 @@ class RegisterStep1 extends Component{
                             onConfirm={this._handleDatePicked}
                             onCancel={this._hideDateTimePicker}
                             date={moment().set('year', 1990).toDate()}
+                            maximumDate={new Date()}
                         />
                     </View>
                 </View>

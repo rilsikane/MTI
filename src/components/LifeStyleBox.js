@@ -14,7 +14,7 @@ class LifeStyleBox extends Component{
         let isSelected = this.props.isSelected
         if(isSelected){
             return(
-                <View style={[styles.boxContainerStyle,{backgroundColor: '#1595d3'},this.props.style]}>
+                <TouchableOpacity style={[styles.boxContainerStyle,{backgroundColor: '#1595d3'},this.props.style]} onPress={this.props.onPress}>
                     <TouchableOpacity onPress={this.props.onCloseButtonPress} style={styles.closeIconContainerStyle}>
                         <Image
                             source={require('./../source/icons/btnCloseWhite.png')}
@@ -30,11 +30,11 @@ class LifeStyleBox extends Component{
                         />
                         <Text style={[styles.lifestyleTextStyle,{color: '#FFF'}]}>{this.props.boxTitle}</Text>
                     </TouchableOpacity>
-                </View>
+                </TouchableOpacity>
             )
         }else{
             return(
-                <View style={[styles.boxContainerStyle,{backgroundColor: '#f6f6f6'},this.props.style]}>
+                <TouchableOpacity style={[styles.boxContainerStyle,{backgroundColor: '#f6f6f6'},this.props.style]} onPress={this.props.onPress}>
                     <TouchableOpacity onPress={this.props.onPress} style={styles.iconImageContainerStyle}>
                         <Image
                             source={this.props.imageUri}
@@ -43,7 +43,7 @@ class LifeStyleBox extends Component{
                         />
                         <Text style={[styles.lifestyleTextStyle,{color: '#919195'}]}>{this.props.boxTitle}</Text>
                     </TouchableOpacity>
-                </View>
+                </TouchableOpacity>
             )
         }
   

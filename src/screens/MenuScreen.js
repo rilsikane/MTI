@@ -194,6 +194,7 @@ export default class MenuScreen extends Component{
                                     {text: "ออกจากระบบ", onPress: ()=> {
                                         store.delete("user");
                                         store.delete("policy");
+                                        store.delete("token");
                                         this.app.logout();
                                     }},
                                     ],

@@ -105,11 +105,21 @@ export default class LifeStyleScreen extends Component{
     }
 
     async onSubmitOtpButtonPress(){
-            this.app.isLoading = true
-            let param = this.props.registerStore.register;
-            console.log(this.state.lifestyle);
-            //let response = await postBasic("member",param);
-            await this.login();
+            if(this.state.lifestyle && this.state.lifestyle.length>0){
+                this.app.isLoading = true
+                let param = this.props.registerStore.register;
+                console.log(this.state.lifestyle);
+                //let response = await postBasic("member",param);
+                await this.login();
+            }else{
+                Alert.alert(
+                    'เกิดข้อผิดพลาด',
+                    'กรุณาเลือกอย่างน้อย 1 รายการ',
+                    [
+                    {text: 'OK', onPress: () => console.log('OK Pressed!')},
+                    ]
+                )
+            }
     }
     async login(){
         this.app.isLoading = true
@@ -118,7 +128,7 @@ export default class LifeStyleScreen extends Component{
         param.password = this.props.registerStore.register.password;
         let response = await authen(param);
         this.app.isLoading = false;
-        if(response.first_logon=='N'){
+        //if(response.first_logon=='N'){
             let token = response.token;
             store.save("token",token);
             if(token){
@@ -127,12 +137,16 @@ export default class LifeStyleScreen extends Component{
                 lifeParam.lifestyle = this.state.lifestyle;
                 let lifeResponse = await put("me/lifestyle",lifeParam);
                     if(lifeResponse){
-                        let [response1,response2] = await Promise.all([get("me",{}), get("me/policy",{})]);
-                        if(response1 && response2){
-                            this.app.isLoading = false;
-                            await store.save("user",response1);
-                            await store.save("policy",response2);
-                            this.gotoWelcome();
+                        let response1 = await get("me",{});
+                        if(response1){
+                            let response2 = await put("me/profile",response1);
+                            if(response2){
+                                await store.save("user",response1);
+                                this.app.isLoading = false;
+                                this.gotoWelcome();
+                            }else{
+                                this.app.isLoading = false;
+                            }
                         }else{
                             this.app.isLoading = false;
                         }
@@ -141,7 +155,7 @@ export default class LifeStyleScreen extends Component{
             }else{
                 this.app.isLoading = false
             }
-        }
+        //}
     }
     gotoWelcome(){
         // this.props.navigator.resetTo({
@@ -156,27 +170,35 @@ export default class LifeStyleScreen extends Component{
         this.app.login();
     }
 
-    onLifeStylePress(index,list,title){
+    onLifeStylePress(index,list,title,isSelected){
         if(list=='1'){
-            const lifeStyleImage1 = [...this.state.filterLifeStyleImage1]
-            const lifeStyleImage1Selected = [...this.state.lifeStyleImage1Selected]
-            
-            lifeStyleImage1[index] = {...lifeStyleImage1Selected[index]}
-      
-            this.setState({
-                filterLifeStyleImage1: lifeStyleImage1,
-                lifestyle:[...this.state.lifestyle,title]
-            })
+            if(!isSelected){
+                const lifeStyleImage1 = [...this.state.filterLifeStyleImage1]
+                const lifeStyleImage1Selected = [...this.state.lifeStyleImage1Selected]
+                
+                lifeStyleImage1[index] = {...lifeStyleImage1Selected[index]}
+        
+                this.setState({
+                    filterLifeStyleImage1: lifeStyleImage1,
+                    lifestyle:[...this.state.lifestyle,title]
+                })
+            }else{
+                this._onCloseButtonPress(index,list,title);
+            }   
         }else{
-            const lifeStyleImage2 = [...this.state.filterLifeStyleImage2]
-            const lifeStyleImage2Selected = [...this.state.lifeStyleImage2Selected]
-            
-            lifeStyleImage2[index] = {...lifeStyleImage2Selected[index]}
-      
-            this.setState({
-                filterLifeStyleImage2: lifeStyleImage2,
-                lifestyle:[...this.state.lifestyle,title]
-            })
+            if(!isSelected){
+                const lifeStyleImage2 = [...this.state.filterLifeStyleImage2]
+                const lifeStyleImage2Selected = [...this.state.lifeStyleImage2Selected]
+                
+                lifeStyleImage2[index] = {...lifeStyleImage2Selected[index]}
+        
+                this.setState({
+                    filterLifeStyleImage2: lifeStyleImage2,
+                    lifestyle:[...this.state.lifestyle,title]
+                })
+            }else{
+                this._onCloseButtonPress(index,list,title);
+            }
         }
       
     }
@@ -214,7 +236,7 @@ export default class LifeStyleScreen extends Component{
                 imageUri={lifeStyleImage.uri}
                 boxTitle={lifeStyleImage.title}
                 isSelected={lifeStyleImage.isSelected}
-                onPress={()=>this.onLifeStylePress(i,'1',lifeStyleImage.title)}
+                onPress={()=>this.onLifeStylePress(i,'1',lifeStyleImage.title,lifeStyleImage.isSelected)}
                 onCloseButtonPress={()=>this._onCloseButtonPress(i,'1',lifeStyleImage.title)}
             />
         )
@@ -229,7 +251,7 @@ export default class LifeStyleScreen extends Component{
                 imageUri={lifeStyleImage.uri}
                 boxTitle={lifeStyleImage.title}
                 isSelected={lifeStyleImage.isSelected}
-                onPress={()=>this.onLifeStylePress(i,'2',lifeStyleImage.title)}
+                onPress={()=>this.onLifeStylePress(i,'2',lifeStyleImage.title,lifeStyleImage.isSelected)}
                 onCloseButtonPress={()=>this._onCloseButtonPress(i,'2',lifeStyleImage.title)}
             />
         )

@@ -6,7 +6,11 @@ import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-nat
 import {Headers} from './../components/Headers';
 import {TextInputIcon} from './../components/TextInputIcon';
 import {MainSubmitButton} from './../components/MainSubmitButton';
+import {postBasic} from '../api'
+import { observer, inject } from 'mobx-react';
 
+@inject('registerStore')
+@observer
 export default class NewPasswordScreen extends Component{
 
     constructor(props){
@@ -14,10 +18,11 @@ export default class NewPasswordScreen extends Component{
         this.state={
             newPassword: '',
             confirmNewPassword: '',
+            errorPassowrd:false
         }
     }
 
-    onSubmitButtonPress(){
+    async onSubmitButtonPress(){
         if(this.state.newPassword!==this.state.confirmNewPassword&&this.state.confirmNewPassword.length>0){
             Alert.alert(
                 'เกิดข้อผิดพลาด',
@@ -29,11 +34,38 @@ export default class NewPasswordScreen extends Component{
             this.setState({
                 newPassword: null,
                 confirmNewPassword: null,
+                errorPassowrd:false
             })
         }else{
-
+            let responnse = await postBasic("forgot/password",{email:this.props.registerStore.otp.email,new_password:this.state.newPassword});
+            if(responnse){
+                Alert.alert(
+                    'สำเร็จ',
+                    'เปลี่ยนรหัสผ่านเรียบร้อยแล้ว',
+                    [
+                    {text: 'ตกลง', onPress: () => this.props.navigator.resetTo({
+                        screen: 'mti.LoginScreen', // unique ID registered with Navigation.registerScreen
+                        title: undefined, // navigation bar title of the pushed screen (optional)
+                        titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
+                        passProps: {}, // Object that will be passed as props to the pushed screen (optional)
+                        animated: true, // does the push have transition animation or does it happen immediately (optional)
+                        backButtonTitle: undefined, // override the back button title (optional)
+                        backButtonHidden: false, // hide the back button altogether (optional)
+                    })},
+                    ]
+                )
+            }
         }
         Keyboard.dismiss()
+    }
+    onPasswordChange(){
+        var regex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$/
+        if(this.state.newPassword.length ==8 && regex.test(this.state.newPassword)){
+            this.setState({errorPassowrd:false})
+        }else{
+            this.setState({errorPassowrd:true})
+        }
+
     }
 
     render(){
@@ -42,6 +74,15 @@ export default class NewPasswordScreen extends Component{
                   <Headers
                     leftIconName='cancel'
                     headerTitleText='รหัสผ่านใหม่'
+                    cancel={()=> this.props.navigator.resetTo({
+                        screen: 'mti.LoginScreen', // unique ID registered with Navigation.registerScreen
+                        title: undefined, // navigation bar title of the pushed screen (optional)
+                        passProps: {}, // simple serializable object that will pass as props to the pushed screen (optional)
+                        animated: true, // does the resetTo have transition animation or does it happen immediately (optional)
+                        animationType: 'fade', // 'fade' (for both) / 'slide-horizontal' (for android) does the resetTo have different transition animation (optional)
+                        navigatorStyle: {}, // override the navigator style for the pushed screen (optional)
+                        navigatorButtons: {} // override the nav buttons for the pushed screen (optional)
+                      })}
                 />
                 <View style={styles.newPasswordDetailContainerStyle}>
                     <TextInputIcon
@@ -53,7 +94,9 @@ export default class NewPasswordScreen extends Component{
                         secondFlex={secondFlex}
                         thirdFlex={thirdFlex}
                         secureTextEntry
+                        onEndEditing={this.onPasswordChange.bind(this)}
                     />
+                    {this.state.errorPassowrd && <Text style={styles.errorMsg}>รหัสผ่านไม่ถูกรูปแบบ</Text>}
                     <TextInputIcon
                         value={this.state.confirmNewPassword}
                         onChangeText={(confirmNewPassword)=>this.setState({confirmNewPassword})}
@@ -64,11 +107,14 @@ export default class NewPasswordScreen extends Component{
                         thirdFlex={thirdFlex}
                         secureTextEntry
                     />
-                    <MainSubmitButton
+                     <Text style={styles.errorTextStyle}>{this.state.errorText}</Text>
+                     <Text style={styles.directionTextStyle}>รหัสผ่านจะต้องมี 8 หลัก ประกอบไปด้วยตัวอักษรภาษาอังกฤษพิมพ์ใหญ่และตัวพิมพ์เล็กและตัวเลข</Text>
+                     {!this.state.errorPassowrd && this.state.newPassword!=''&& this.state.confirmNewPassword!='' 
+                     &&<MainSubmitButton
                         buttonTitleText='ตกลง'
                         onPress={this.onSubmitButtonPress.bind(this)}
                         style={styles.submitButtonContainerStyle}
-                    />
+                    />}
                 </View>
             </View>
         )
@@ -101,5 +147,21 @@ const styles={
     },
     submitButtonContainerStyle:{
         marginTop: responsiveHeight(2.5),
-    }
+    },
+    errorMsg:{
+        fontSize:responsiveFontSize(2.2),
+        color:"red",
+        padding:2
+    },
+    errorTextStyle:{
+        fontSize: responsiveHeight(2.64),
+        marginTop: responsiveHeight(1),
+        color: 'red'
+    },
+    directionTextStyle:{
+        textAlign: 'center',
+        color: "#919195",
+        letterSpacing: 0,
+        fontSize: responsiveFontSize(2.2),
+    },
 }

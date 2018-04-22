@@ -57,6 +57,8 @@ class Headers extends Component{
                     <Text style={{fontSize: responsiveFontSize(3),color: '#FFF'}}>กลับ</Text>
                 </TouchableOpacity>
             )
+        }else{
+            
         }
     }
 

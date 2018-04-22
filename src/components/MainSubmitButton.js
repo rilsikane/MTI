@@ -39,7 +39,7 @@ const styles={
     },
     buttonTextStyle:{
         color: '#FFF',
-        fontSize: responsiveFontSize(3.9),
+        fontSize: responsiveFontSize(3),
     },
     iconImageStyle:{
         height: responsiveHeight(2.81),

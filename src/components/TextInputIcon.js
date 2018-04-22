@@ -37,6 +37,7 @@ class TextInputIcon extends Component{
                     labelStyle={styles.selectorLabelStyle}
                     itemStyle={styles.itemStyle}
                     buttonsTextSize={responsiveFontSize(3)}
+                    placeholder={this.props.leftLabelText}
                 />
             )
         
@@ -87,6 +88,7 @@ class TextInputIcon extends Component{
             ]
         }else{
             return [
+                { value: "", label: ''},
                 { value: "F", label: 'หญิง'},
                 { value: "M", label: 'ชาย'},
             ]
@@ -154,9 +156,8 @@ const styles={
     },
     selectorLabelStyle:{
         color: '#1595d3',
-        //fontSize: responsiveFontSize(2.64),
-        //textAlignVertical: 'center',
-        //fontFamily: 'DBHelvethaicaX'
+        fontSize: responsiveFontSize(2.64),
+        textAlignVertical: 'center',
     },
     itemStyle:{
 

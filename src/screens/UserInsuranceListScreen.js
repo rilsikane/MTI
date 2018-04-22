@@ -9,13 +9,25 @@ import {InsuranceShortDetailCard} from '../components/InsuranceShortDetailCard';
 import store from 'react-native-simple-store';
 import moment from 'moment';
 import localization from 'moment/locale/th'
+import {get} from '../api';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 export default class UserInsuranceListScreen extends Component{
 
     constructor(props){
         super(props)
-        this.state = {policys:[]};
+        this.state = {policys:[],isLoading:true};
         this.showDetail = this.showDetail.bind(this);
+
+    }
+    async componentDidMount(){
+        this.setState({isLoading:true});
+        let response = await get("me/policy",{});
+        if(response){
+            this.setState({isLoading:false,policys:response});
+        }else{
+            this.setState({isLoading:false})
+        }
     }
    calculateInsuranceDuring(effectiveDt,expDate){
         let date1 = moment(effectiveDt, 'YYYYMMDD').toDate();
@@ -25,7 +37,9 @@ export default class UserInsuranceListScreen extends Component{
     calcDate(date1,date2) {
         var diff = Math.floor(date2.getTime() - date1.getTime());
         var day = 1000 * 60 * 60 * 24;
+        
         var days = Math.floor(diff/day);
+        days += 1;
         var months = Math.floor(days/31);
         var years = Math.floor(months/12);
     
@@ -42,6 +56,10 @@ export default class UserInsuranceListScreen extends Component{
     }
     numberWithCommas(x){
         return x.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+    calculateExpire(expiry_Date){
+        var diff = Math.floor(moment(expiry_Date, 'YYYYMMDD').toDate().getTime() - new Date().getTime());
+        return diff<0;
     }
     renderInsuranceShortDetailCard(){
 
@@ -60,14 +78,10 @@ export default class UserInsuranceListScreen extends Component{
                     insuranceDuring={this.calculateInsuranceDuring(data.Effective_Date,data.Expiry_Date)}
                     onSeeInsuranceDetailButtonPress={()=>this.showDetail(item)}
                     style={styles.insuranceCardContainerStyle}
+                    expire={this.calculateExpire(data.Expiry_Date)}
                 />)
             }
         )
-    }
-    async componentDidMount(){
-        let policy = await store.get("policy");
-        console.log(policy);
-        this.setState({policys:policy});
     }
    showDetail(data){
        this.props.navigator.showModal({
@@ -89,7 +103,7 @@ export default class UserInsuranceListScreen extends Component{
                 />
                 <ScrollView style={{flex: 1,}}>
                     <UserShortDetailCard navigator={this.props.navigator}
-                        showQr={true}    
+                        showQr={true} isPolicy={true}
                     />
                     <View style={styles.userInsuranceListContainerStyle}>
                         <View style={styles.insuranceTitleContainerStyle}>
@@ -100,7 +114,7 @@ export default class UserInsuranceListScreen extends Component{
                             />
                             <Text style={styles.insuranceTitleTextStyle}>กรมธรรม์ของคุณ</Text>
                         </View>
-                        {this.renderInsuranceShortDetailCard()}
+                        {this.state.policys && this.state.policys.length >0  && this.renderInsuranceShortDetailCard()}
                     </View>
                     <Image
                         source={require('../source/images/promotionImg.png')}
@@ -117,7 +131,9 @@ export default class UserInsuranceListScreen extends Component{
                             />
                         </TouchableOpacity>
                     </View>
+                    {this.state.isLoading && <Spinner visible={this.state.isLoading}  textStyle={{color: '#FFF'}} />}
                 </ScrollView>
+                
             </View>
         )
     }
@@ -129,13 +145,12 @@ const styles={
     },
     userInsuranceListContainerStyle:{
         flex: 1,
-        paddingLeft: responsiveWidth(5),
-        paddingRight: responsiveWidth(5),
     },
     insuranceTitleContainerStyle:{
         flexDirection: 'row',
         marginTop: responsiveHeight(2),
         marginBottom: responsiveHeight(2),
+        marginLeft: responsiveWidth(5),
     },
     insuranceTitleIconStyle:{
         height: responsiveHeight(3.25),
@@ -146,10 +161,13 @@ const styles={
         color: '#1595d3',
         fontSize: responsiveFontSize(2.5),
         marginLeft: responsiveWidth(1.5),
-
+        
     },
     insuranceCardContainerStyle:{
         marginBottom: responsiveHeight(3.5),
+        paddingLeft: responsiveWidth(5),
+        paddingRight: responsiveWidth(5),
+        paddingTop:5
     },
     advertiseImageStyle:{
         height: responsiveHeight(18.30),
