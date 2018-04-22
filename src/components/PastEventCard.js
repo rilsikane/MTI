@@ -13,12 +13,14 @@ class PastEventCard extends Component{
     render(){
         return(
             <TouchableOpacity style={[styles.pastEventCardContainerStyle,this.props.style]}>
-                <Image
-                    source={this.props.bannerUri}
-                    resizeMode='stretch'
-                    style={styles.bannerImageStyle}
-                    borderRadius={3}
-                />
+                <View style={styles.bannerImageContainerStyle}>
+                    <Image
+                        source={this.props.bannerUri}
+                        resizeMode='contain'
+                        style={styles.bannerImageStyle}
+                        borderRadius={3}
+                    />
+                </View>
                 <Text numberOfLines={2} style={styles.eventTitleTextStyle}>{this.props.eventTitleText}</Text>
                 <Text numberOfLines={3} style={styles.eventDetailTextStyle}>{this.props.eventDetailText}</Text>
             </TouchableOpacity>
@@ -30,10 +32,14 @@ const styles={
     pastEventCardContainerStyle:{
         width: responsiveWidth(86.25),
     },
-    bannerImageStyle:{
+    bannerImageContainerStyle:{
         height: responsiveHeight(19.01),
         width: responsiveWidth(86.25),
-
+        alignItems: 'center',
+        marginBottom: responsiveHeight(1),
+    },
+    bannerImageStyle:{
+        flex: 1,
     },
     eventTitleTextStyle:{
         color: '#1595d3',
