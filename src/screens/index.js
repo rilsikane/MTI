@@ -23,6 +23,7 @@ import PrivilegeAgreementScreen from './PrivilegeAgreementScreen';
 import PrivilegeQrCodeScreen from './PrivilegeQrCodeScreen';
 import PrivilegeForMemberScreen from './PrivilegeForMemberScreen';
 import QAndAScreen from './QAndAScreen';
+import UsageHistoryScreen from './UsageHistoryScreen';
 
 import app from '../stores/app';
 
@@ -50,6 +51,7 @@ export function registerScreens() {
   Navigation.registerComponent('mti.PrivilegeQrCodeScreen', () => PrivilegeQrCodeScreen, Store, Provider);
   Navigation.registerComponent('mti.PrivilegeForMemberScreen', () => PrivilegeForMemberScreen, Store, Provider);
   Navigation.registerComponent('mti.QAndAScreen', () => QAndAScreen, Store, Provider);
+  Navigation.registerComponent('mti.UsageHistoryScreen', () => UsageHistoryScreen, Store, Provider);
 }
 export function registerScreenVisibilityListener() {
   new ScreenVisibilityListener({
