@@ -43,9 +43,9 @@ class LifeStyleTabs extends Component{
             },
         ]
 
-        tab[this.state.tabIndex].isActive = true
-        if(this.state.tabIndex!=this.state.previousTabIndex){
-            tab[this.state.previousTabIndex].isActive = false
+        tab[this.props.tabIndex].isActive = true
+        if(this.props.tabIndex!=this.props.previousTabIndex){
+            tab[this.props.previousTabIndex].isActive = false
         }
 
         return tab.map((tab)=>
@@ -71,17 +71,6 @@ class LifeStyleTabs extends Component{
         )
     }
 
-    _onChangeTab(index){
-        if(index.i!=this.state.previousTabIndex){
-            this.setState({
-                previousTabIndex: index.i,
-            })
-        }
-        this.setState({
-            tabIndex: index.i,
-        })
-    }
-
     render(){
         return(
             <View style={styles.tabsContainerStyle}>
@@ -89,7 +78,7 @@ class LifeStyleTabs extends Component{
                     tabBarUnderlineStyle={styles.tabBarUnderlineStyle} 
                     style={[styles.tabsStyle,this.props.style]}
                     initialPage={0} 
-                    onChangeTab={(index)=>this._onChangeTab(index)}
+                    onChangeTab={this.props.onChangeTab}
                     renderTabBar={()=> <ScrollableTab/>}
 
                 >
