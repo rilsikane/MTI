@@ -12,7 +12,7 @@ export default class PrivilegeScreen extends Component{
 
     constructor(props){
         super(props)
-
+        
     }
 
     renderPrivilegeList(){
