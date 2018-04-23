@@ -23,11 +23,11 @@ export default class PrivilegeDetailScreen extends Component{
     }
     async componentDidMount(){
 
-        //let response = await get(`privilege/${this.props.id}`,{})
-        let response2 = await post(`privilege/redeem`,{"privilege_id":this.props.id});
-        console.log(response2);
-        // this.setState({detail:response,isLoading:false})
-        this.setState({isLoading:false})
+        let response = await get(`privilege/${this.props.id}`,{})
+        //let response2 = await post(`privilege/redeem`,{"privilege_id":this.props.id});
+        //console.log(response2);
+        this.setState({detail:response,isLoading:false})
+        //this.setState({isLoading:false})
     }
     renderPrivilegeDetailList(){
         let data=[
