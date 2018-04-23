@@ -297,7 +297,7 @@ export default class LoginScreen extends Component{
                                     </TouchableOpacity>
                                     
                                 </View>
-                                <Text style={{color:"#fff"}}>Version : 1.28</Text>
+                                <Text style={{color:"#fff"}}>Version : 1.29</Text>
                                 <View style={styles.registerBottomContainerStyle}>
                                     <TouchableOpacity onPress={this.gotoRegister}>
                                         <Text style={styles.registerBottomTextStyle}>ลงทะเบียนสมาชิก</Text>
