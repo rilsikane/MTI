@@ -15,16 +15,22 @@ export default class PrivilegeScreen extends Component{
         super(props)
         this.state={
             privilege:[], 
+            privilegeOrg: [],
+            privilegeHot: [],
+            privilegeHealthy: [],
+            privilegeEat: [],
+            privilegeTravel: [],
             tabIndex: 0,
             previousTabIndex: 0,
         }
         this.openDetail = this.openDetail.bind(this);
+        this.getPrivilegeForEachTabs = this.getPrivilegeForEachTabs.bind(this);
     }
     async componentDidMount(){
         let privilege = await get("privileges?page=1&pagesize=20",{});
         if(privilege){
             console.log(privilege.data);
-            this.setState({privilege:privilege.data});
+            this.setState({privilege:privilege.data,privilegeOrg: privilege.data});
         }       
     }
     openDetail(id){
@@ -57,7 +63,7 @@ export default class PrivilegeScreen extends Component{
         )
     }
 
-    _onChangeTab(index){
+    async _onChangeTab(index){
         if(index.i!=this.state.previousTabIndex){
             this.setState({
                 previousTabIndex: index.i,
@@ -66,6 +72,41 @@ export default class PrivilegeScreen extends Component{
         this.setState({
             tabIndex: index.i,
         })
+        this.getPrivilegeForEachTabs(index.i)
+    }
+
+    async getPrivilegeForEachTabs(index){
+        if(index==0){
+            this.setState({privilege:this.state.privilegeOrg});
+        }else if(index==1){
+            if(this.state.privilegeHot.length==0){
+                let privilege = await get("privilege/groups?filter_set=hotdeal&page=1&pagesize=20",{});
+                this.setState({privilege: privilege.data,privilegeHot:privilege.data});
+            }else{
+                this.setState({privilege:this.state.privilegeHot});
+            }
+        }else if(index==2){
+            if(this.state.privilegeHealthy.length==0){
+                let privilege = await get("privilege/groups?filter_set=healthy&page=1&pagesize=20",{});
+                this.setState({privilege: privilege.data,privilegeHealthy:privilege.data});
+            }else{
+                this.setState({privilege:this.state.privilegeHealthy});
+            }
+        }else if(index==3){
+            if(this.state.privilegeEat.length==0){
+                let privilege = await get("privilege/groups?filter_set=eat&page=1&pagesize=20",{});
+                this.setState({privilege: privilege.data,privilegeEat:privilege.data});
+            }else{
+                this.setState({privilege:this.state.privilegeEat});
+            }
+        }else if(index==4){
+            if(this.state.privilegeTravel.length==0){
+                let privilege = await get("privilege/groups?filter_set=travel&page=1&pagesize=20",{});
+                this.setState({privilege: privilege.data,privilegeTravel:privilege.data});
+            }else{
+                this.setState({privilege:this.state.privilegeTravel});
+            }
+        }
     }
 
     render(){
