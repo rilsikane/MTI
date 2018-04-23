@@ -59,6 +59,7 @@ export default class PrivilegeAgreementScreen extends Component{
 const styles={
     privilegeAgreementScreenContainerStyle:{
         flex: 1,
+        backgroundColor: '#FFF'
     },
     privilegeAgreementContainerStyle:{
         flex: 1,
