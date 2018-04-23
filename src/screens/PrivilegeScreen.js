@@ -20,6 +20,7 @@ export default class PrivilegeScreen extends Component{
             privilegeHealthy: [],
             privilegeEat: [],
             privilegeTravel: [],
+            tabsList:[],
             tabIndex: 0,
             previousTabIndex: 0,
         }
@@ -28,6 +29,8 @@ export default class PrivilegeScreen extends Component{
     }
     async componentDidMount(){
         let privilege = await get("privileges?page=1&pagesize=20",{});
+        let tabsList = await get('privilege/groups',{});
+        this.setState({tabsList: tabsList.data});
         if(privilege){
             console.log(privilege.data);
             this.setState({privilege:privilege.data,privilegeOrg: privilege.data});
@@ -127,6 +130,7 @@ export default class PrivilegeScreen extends Component{
                         onChangeTab={(index)=>this._onChangeTab(index)}
                         tabIndex={this.state.tabIndex}
                         previousTabIndex={this.state.previousTabIndex}
+                        data={this.state.tabsList}
                     />
                     <View style={styles.privilegeListContainerStyle}>
                         <Image

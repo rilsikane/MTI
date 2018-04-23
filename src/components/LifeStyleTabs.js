@@ -43,24 +43,27 @@ class LifeStyleTabs extends Component{
             },
         ]
 
-        tab[this.props.tabIndex].isActive = true
-        if(this.props.tabIndex!=this.props.previousTabIndex){
-            tab[this.props.previousTabIndex].isActive = false
-        }
+        // tab[this.props.tabIndex].isActive = true
+        // if(this.props.tabIndex!=this.props.previousTabIndex){
+        //     tab[this.props.previousTabIndex].isActive = false
+        // }
 
-        return tab.map((tab)=>
+        return this.props.data.map((tab)=>
             <Tab 
-                key={tab.title} 
+                key={tab.id} 
                 heading={
                     <TabHeading 
                         style={styles.tabHeadingStyle}
                     >
                         <Image
-                            source={tab.isActive?tab.activeIcon:tab.inActiveIcon}
+                            //source={tab.isActive?tab.activeIcon:tab.inActiveIcon}
+                            source={require('../source/icons/iconTabsActiveAll.png')}
                             resizeMode='contain'
-                            style={[styles.tabIconStyle,tab.isActive?{}:styles.inActiveIconStyle]}
+                            //style={[styles.tabIconStyle,tab.isActive?{}:styles.inActiveIconStyle]}
+                            style={[styles.tabIconStyle,]}
                         />
-                        <Text style={[styles.tabTitleTextStyle,tab.isActive?styles.tabTitleActiveTextStyle:{}]}>{tab.title}</Text>
+                        {/* <Text style={[styles.tabTitleTextStyle,tab.isActive?styles.tabTitleActiveTextStyle:{}]}>{tab.name}</Text> */}
+                        <Text style={[styles.tabTitleTextStyle,]}>{tab.name}</Text>
                     </TabHeading>
                 }
             >

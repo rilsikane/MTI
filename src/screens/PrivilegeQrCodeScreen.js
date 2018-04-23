@@ -2,6 +2,7 @@ import React,{Component} from 'react';
 import {Text,View,Image} from 'react-native';
 import PropTypes from "prop-types";
 import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
+import QRCode from 'react-native-qrcode';
 
 import {Headers} from './../components/Headers';
 
@@ -18,6 +19,11 @@ export default class PrivilegeQrCodeScreen extends Component{
                 <Headers
                     leftIconName='cancel'
                     headerTitleText='QR Code สำหรับใช้สิทธิ์'
+                    cancel={()=>
+                        this.props.navigator.dismissAllModals({
+                            animationType: 'slide-down' // 'none' / 'slide-down' , dismiss animation for the modal (optional, default 'slide-down')
+                        })
+                    }
                 />
                 <View style={styles.privilegeQrCodeContainerStyle}>
                     <View style={styles.privilegeLogoContainerStyle}>
@@ -35,16 +41,22 @@ export default class PrivilegeQrCodeScreen extends Component{
                         />
                         <Text style={styles.lifeStyleTextStyle}>Healthy</Text>
                     </View>
-                    <Text style={styles.privilegeTitleTextStyle}>ตรวจสุขภาพสายตาฟรี (มูลค่า 1,000 บาท){'\n'}ส่วนลดแว่นตาสูงสุด 55% พร้อมรับประกัน 1 ปี</Text>
+                    <Text style={styles.privilegeTitleTextStyle}>{this.props.data.name}</Text>
                     <Text style={styles.privilegeDetailTextStyle}>คุณสามารถรับสิทธิพิเศษได้โดยการแสดง QR Code ที่หน้าร้านหรือบันทึก QR Code เพื่อใช้สิทธิพิเศษนี้ในภายหลัง</Text>
                 </View>
                 <View style={styles.qrCodeContainerStyle}>
                     <Text style={styles.qrRefCodeTextStyle}>Reference Code : 4567435679</Text>
                     <View style={styles.qrCodeImageContainerStyle}>
-                        <Image
+                        {/* <Image
                             source={require('../source/images/myCardQrImg.png')}
                             resizeMode='contain'
                             style={styles.qrCodeImageStyle}
+                        /> */}
+                        <QRCode
+                            value={this.props.redeem.redeem_code}
+                            size={responsiveHeight(29.66)}
+                            bgColor='#000'
+                            fgColor='#FFF'
                         />
                     </View>
                     <Text style={styles.qrCodeExpTextStyle}>สิทธิพิเศษของสิทธิ์นี้มีระยะเวลาในการใช้งาน 15 นาที</Text>
@@ -117,7 +129,10 @@ const styles={
         marginTop: responsiveHeight(2.5),
     },
     qrCodeImageContainerStyle:{
-        height: responsiveHeight(29.66)
+        height: responsiveHeight(29.66),
+        alignItems: 'center',
+        marginTop: responsiveHeight(1),
+        marginBottom: responsiveHeight(1),
     },
     qrCodeImageStyle:{
        flex: 1,
