@@ -17,7 +17,7 @@ export default class PrivilegeScreen extends Component{
         this.openDetail = this.openDetail.bind(this);
     }
     async componentDidMount(){
-        let privilege = await get("privileges?page=1,pagesize=10",{});
+        let privilege = await get("privileges?page=1,pagesize=20",{});
         if(privilege){
             console.log(privilege.data);
             this.setState({privilege:privilege.data});
