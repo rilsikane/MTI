@@ -13,11 +13,15 @@ export default class PrivilegeScreen extends Component{
 
     constructor(props){
         super(props)
-        this.state={privilege:[]}
+        this.state={
+            privilege:[], 
+            tabIndex: 0,
+            previousTabIndex: 0,
+        }
         this.openDetail = this.openDetail.bind(this);
     }
     async componentDidMount(){
-        let privilege = await get("privileges?page=1,pagesize=20",{});
+        let privilege = await get("privileges?page=1&pagesize=20",{});
         if(privilege){
             console.log(privilege.data);
             this.setState({privilege:privilege.data});
@@ -53,6 +57,17 @@ export default class PrivilegeScreen extends Component{
         )
     }
 
+    _onChangeTab(index){
+        if(index.i!=this.state.previousTabIndex){
+            this.setState({
+                previousTabIndex: index.i,
+            })
+        }
+        this.setState({
+            tabIndex: index.i,
+        })
+    }
+
     render(){
         return(
             <View style={styles.privilegeScreenContainerStyle}>
@@ -68,6 +83,9 @@ export default class PrivilegeScreen extends Component{
                 <ScrollView style={{zIndex:3}}>
                     <LifeStyleTabs
                         tabChildren={this.renderPrivilegeList()}
+                        onChangeTab={(index)=>this._onChangeTab(index)}
+                        tabIndex={this.state.tabIndex}
+                        previousTabIndex={this.state.previousTabIndex}
                     />
                     <View style={styles.privilegeListContainerStyle}>
                         <Image

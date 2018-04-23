@@ -57,6 +57,7 @@ export default class PrivilegeQrCodeScreen extends Component{
 const styles={
     privilegeQrCodeSreenContainerStyle:{
         flex: 1,
+        backgroundColor: '#FFF',
     },
     privilegeQrCodeContainerStyle:{
         height: responsiveHeight(41),
