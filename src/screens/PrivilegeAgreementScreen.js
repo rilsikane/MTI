@@ -26,6 +26,7 @@ export default class PrivilegeAgreementScreen extends Component{
     }
     async redeem(){
         let response2 = await post(`privilege/redeem`,{"privilege_id":this.props.data.id});
+        console.log(JSON.stringify(response2));
         this.props.navigator.showModal({
             screen: 'mti.PrivilegeQrCodeScreen', // unique ID registered with Navigation.registerScreen
             title: undefined, // navigation bar title of the pushed screen (optional)
