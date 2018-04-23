@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Text,View,Image,ScrollView} from 'react-native';
+import {Text,View,Image,ScrollView,TouchableOpacity} from 'react-native';
 import PropTypes from "prop-types";
 import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
 
@@ -7,55 +7,45 @@ import {Headers} from './../components/Headers';
 import {MainSearchBox} from '../components/MainSearchBox';
 import {LifeStyleTabs} from '../components/LifeStyleTabs';
 import {DashboardActivityCard} from '../components/DashboardActivityCard';
+import {post,authen,get} from '../api';
 
 export default class PrivilegeScreen extends Component{
 
     constructor(props){
         super(props)
-
+        this.state={privilege:[]}
+        this.openDetail = this.openDetail.bind(this);
     }
-
+    async componentDidMount(){
+        let privilege = await get("privileges?page=1,pagesize=10",{});
+        if(privilege){
+            console.log(privilege.data);
+            this.setState({privilege:privilege.data});
+        }       
+    }
+    openDetail(id){
+        this.props.navigator.push({
+            screen: "mti.PrivilegeDetailScreen", // unique ID registered with Navigation.registerScreen
+            passProps:{id:id},
+            title: undefined, // navigation bar title of the pushed screen (optional)
+            titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
+            animated: false, // does the push have transition animation or does it happen immediately (optional)
+            backButtonTitle: undefined, // override the back button title (optional)
+            backButtonHidden: false, // hide the back button altogether (optional)
+        })
+    }
     renderPrivilegeList(){
-        let privilege=[
-            {
-                imageUri: require('../source/images/privilegeImg01.png'),
-                lifeStyleIconUri: require('../source/icons/iconTabsActiveHealthWhite.png'),
-                lifeStyleTitleText: 'Health and Beauty',
-                detail: 'ตรวจสุขภาพสายตาฟรี (มูลค่า 1,000 บาท) พร้อมส่วนลดแว่นตาสูงสุด 55%',
-            },
-            {
-                imageUri: require('../source/images/wefitness-logo.png'),
-                lifeStyleIconUri: require('../source/icons/iconHealthySelected.png'),
-                lifeStyleTitleText: 'Healthy',
-                detail: 'ออกกำลังกายฟรี ที่ WE Fitness 2 วัน พร้อมลด 10% เมื่อสมัครสมาชิก',
-            },
-            {
-                imageUri: require('../source/images/lifestyle-logo.png'),
-                lifeStyleIconUri: require('../source/icons/iconDiningSelected.png'),
-                lifeStyleTitleText: 'Dining',
-                detail: 'ส่วนลด 20% ที่ร้าน iberry เมื่อสั่งเมนูขนมหวานครบ 1,000 บาท รับฟรีไอศครีม 1 ถ้วย',
-            },
-            {
-                imageUri: require('../source/images/privilegeImg02.png'),
-                lifeStyleIconUri: require('../source/icons/iconBeautySelected.png'),
-                lifeStyleTitleText: 'Beauty',
-                detail: 'ส่วนลด 20% เมื่อซื้อชุดของขวัญ Estee Lauder Set Makeup',
-            },
-            {
-                imageUri: require('../source/images/privilegeImg03.png'),
-                lifeStyleIconUri: require('../source/icons/iconTravelSelected.png'),
-                lifeStyleTitleText: 'Travel',
-                detail: 'ส่วนลด 20% ที่ร้าน iberry เมื่อสั่งเมนูขนมหวานครบ 1,000 บาท รับฟรีไอศครีม 1 ถ้วย',
-            },
-        ]
+       
 
-        return privilege.map((privilege,i)=>
+        return this.state.privilege.map((privilege,i)=>
             <DashboardActivityCard 
-                key={i} 
-                bannerUri={privilege.imageUri}
+                key={i}
+                onPress={()=>this.openDetail(privilege.id)}
+                bannerUri={privilege.picture_url ? {uri:privilege.picture_url}:null}
+                groupId={privilege.group_id}
                 iconUri={privilege.lifeStyleIconUri}
                 iconTitleText={privilege.lifeStyleTitleText}
-                activityTitleText={privilege.detail}
+                activityTitleText={privilege.name}
                 style={[styles.dashboardActivityCardContainerStyle,i==0?{marginTop: responsiveHeight(3)}:{}]}
                 iconContainerStyle={i==0?{flex: 0.35}:{}}
                 detailContainerStyle={i==0?{flex: 0.65}:{}}
@@ -75,7 +65,7 @@ export default class PrivilegeScreen extends Component{
                 <MainSearchBox
                     onPress={()=>alert('search')}
                 />
-                <ScrollView>
+                <ScrollView style={{zIndex:3}}>
                     <LifeStyleTabs
                         tabChildren={this.renderPrivilegeList()}
                     />

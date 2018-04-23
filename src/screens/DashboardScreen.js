@@ -19,7 +19,7 @@ export default class DashboardScreen extends Component{
     constructor(props){
         super(props)
         this.state={
-            hotDeal:[
+            hotDealDefault:[
                 {
                     bannerUri: require('./../source/images/wefitness-logo.png'),
                     iconUri: require('./../source/icons/iconHealthySelected.png'),
@@ -34,20 +34,7 @@ export default class DashboardScreen extends Component{
                 },
             ],
 
-            myLifeStyle:[
-                {
-                    bannerUri: require('./../source/images/lifestyle-logo.png'),
-                    iconUri: require('./../source/icons/iconDiningSelected.png'),
-                    iconTitleText: 'Dining',
-                    activityTitleText: 'ส่วนลด 20% ที่ร้าน iberry เมื่อสั่งเมนูขนมหวานครบ 1,000 บาท รับฟรีไอศครีม 1 ถ้วย'
-                },
-                {
-                    bannerUri: require('./../source/images/lifestyle-logo.png'),
-                    iconUri: require('./../source/icons/iconDiningSelected.png'),
-                    iconTitleText: 'Dining',
-                    activityTitleText: 'ส่วนลด 20% ที่ร้าน iberry เมื่อสั่งเมนูขนมหวานครบ 1,000 บาท รับฟรีไอศครีม 1 ถ้วย'
-                }
-            ],
+            myLifeStyle:[],
             pastEvent:[
                 {
                     bannerUri: require('./../source/images/latestActImg.png'),
@@ -60,6 +47,7 @@ export default class DashboardScreen extends Component{
                     eventDetailText: 'นำลูกค้าล่องเรือชมบรรยากาศริมแม่น้ำเจ้าพระยา พร้อมรับประทานอาหารค่ำและชมมินิคอนเสิร์ต จากศิลปินคู่ ดูโอ แอน(ธิติมา) - ปิงปอง(ศิรศักดิ์) พร้อมกันนี้ ยังมีกิจกรรม...'
                 }
             ],
+            hotDeal:[],
             isLoading:true
         }
         this.props.naviStore.navigation = this.props.navigator;
@@ -75,6 +63,19 @@ export default class DashboardScreen extends Component{
             }else{
                 this.setState({isLoading:false});
             }
+            let privilegeGroup = await get("privilege/groups",{});
+            if(privilegeGroup){
+                await store.save("privilegeGroup",privilegeGroup.data);
+            }
+            let hotDeal = await get("privileges?filter_set=hotdeal",{});
+            if(hotDeal){
+                console.log(hotDeal.data);
+                this.setState({hotDeal:hotDeal.data});
+            }
+            let myLife = await get("privileges?filter_set=lifestyle",{});
+            if(myLife){
+                this.setState({myLifeStyle:myLife.data});
+            }
         }else{
             this.setState({isLoading:false});
         }
@@ -83,29 +84,59 @@ export default class DashboardScreen extends Component{
     };
     
     renderHotDealList(){
-        return this.state.hotDeal.map((hotdeal,i)=>
-            <DashboardActivityCard 
-                key={i} 
-                bannerUri={hotdeal.bannerUri}
-                iconUri={hotdeal.iconUri}
-                iconTitleText={hotdeal.iconTitleText}
-                activityTitleText={hotdeal.activityTitleText}
-                style={{marginLeft: responsiveWidth(3)}}
-            />
-        )
+        if(this.state.hotDeal && this.state.hotDeal.length >0){    
+            return this.state.hotDeal.map((hotdeal,i)=>
+                <DashboardActivityCard 
+                    key={i} 
+                    bannerUri={hotdeal.picture_url ? {uri:hotdeal.picture_url}:null}
+                    iconUri={hotdeal.iconUri}
+                    iconTitleText={hotdeal.iconTitleText}
+                    activityTitleText={hotdeal.name}
+                    groupId={hotdeal.group_id}
+                    style={{marginLeft: responsiveWidth(3)}}
+                />
+            )
+        }else{
+            return this.state.hotDealDefault.map((hotdeal,i)=>
+                <DashboardActivityCard 
+                    key={i} 
+                    bannerUri={hotdeal.bannerUri}
+                    iconUri={hotdeal.iconUri}
+                    iconTitleText={hotdeal.iconTitleText}
+                    activityTitleText={hotdeal.activityTitleText}
+                    style={{marginLeft: responsiveWidth(3)}}
+                    groupId={hotdeal.group_id}
+                />
+            )
+        }
     }
 
     renderMyLifeStyleList(){
-        return this.state.myLifeStyle.map((myLifeStyle,i)=>
-            <DashboardActivityCard 
+        if(this.state.myLifeStyle && this.state.myLifeStyle.length >0){    
+            return this.state.hotDeal.map((myLifeStyle,i)=>
+                <DashboardActivityCard 
                 key={i} 
-                bannerUri={myLifeStyle.bannerUri}
+                bannerUri={myLifeStyle.picture_url ? {uri:myLifeStyle.picture_url}:null}
                 iconUri={myLifeStyle.iconUri}
                 iconTitleText={myLifeStyle.iconTitleText}
-                activityTitleText={myLifeStyle.activityTitleText}
+                activityTitleText={myLifeStyle.name}
                 style={{marginLeft: responsiveWidth(3)}}
+                groupId={myLifeStyle.group_id}
             />
-        )
+            )
+        }else{
+            return this.state.hotDealDefault.map((hotdeal,i)=>
+                    <DashboardActivityCard 
+                    key={i} 
+                    bannerUri={hotdeal.bannerUri}
+                    iconUri={hotdeal.iconUri}
+                    iconTitleText={hotdeal.iconTitleText}
+                    activityTitleText={hotdeal.activityTitleText}
+                    style={{marginLeft: responsiveWidth(3)}}
+                    groupId={hotdeal.group_id}
+                />
+            )
+        }
     }
 
     renderNewEventCard(){
