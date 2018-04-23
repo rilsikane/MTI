@@ -20,9 +20,9 @@ export default class PrivilegeDetailScreen extends Component{
             detail:{},
             isLoading:true
         }
+        this.retrivePrivillege = this.retrivePrivillege.bind(this);
     }
     async componentDidMount(){
-
         let response = await get(`privilege/${this.props.id}`,{})
         //let response2 = await post(`privilege/redeem`,{"privilege_id":this.props.id});
         //console.log(response2);
@@ -37,17 +37,32 @@ export default class PrivilegeDetailScreen extends Component{
         ]
 
         // return data.map((data,i)=>
-        //     // <View key={i} style={styles.privilegeTextContainerStyle}>
-        //     //     <Text style={styles.privilegeDetailSubTextStyle}>{`${++i}. `}</Text>
-        //     //     <Text style={styles.privilegeDetailSubTextStyle}>{data}</Text>
-        //     // </View>
+        //     <View key={i} style={styles.privilegeTextContainerStyle}>
+        //         <Text style={styles.privilegeDetailSubTextStyle}>{`${++i}. `}</Text>
+        //         <Text style={styles.privilegeDetailSubTextStyle}>{data}</Text>
+        //     </View>
           
         // )
-        return <HTMLView
-            value={this.state.detail.content1}
-            stylesheet={styles.privilegeDetailSubTextStyle}
-        />
+        return <Text style={styles.privilegeDetailSubTextStyle}>{this.state.detail.content1}</Text>
+        // return         
+        //     (<View  style={styles.privilegeTextContainerStyle}>
+        //         {/* <Text style={styles.privilegeDetailSubTextStyle}>{`${++i}. `}</Text> */}
+        //         <Text style={styles.privilegeDetailSubTextStyle}>{this.state.detail.content2}</Text>
+        //     </View>)
     }
+    retrivePrivillege(){
+        this.props.navigator.showModal({
+            screen: 'mti.PrivilegeAgreementScreen', // unique ID registered with Navigation.registerScreen
+            title: undefined, // navigation bar title of the pushed screen (optional)
+            titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
+            passProps: {navigator:this.props.navigator,data:this.state.detail}, // Object that will be passed as props to the pushed screen (optional)
+            animated: true, // does the push have transition animation or does it happen immediately (optional)
+            backButtonTitle: undefined, // override the back button title (optional)
+            backButtonHidden: false, // hide the back button altogether (optional)
+            
+        })
+    }
+    
 
     renderCommentSection(){
         let comment = [
@@ -117,7 +132,7 @@ export default class PrivilegeDetailScreen extends Component{
                                 placeholder='ความคิดเห็นของคุณ...'
                                 placeholderTextColor='rgba(145, 145, 149, 0.44)'
                             />
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={this.retrivePrivillege}>
                                 <Image
                                     source={require('../source/icons/iconSendMessage.png')}
                                     resizeMode='contain'
@@ -204,7 +219,7 @@ export default class PrivilegeDetailScreen extends Component{
                                 {this.renderPrivilegeDetailList()}
                                 <MainSubmitButton
                                     buttonTitleText='ขอรับสิทธิ'
-                                    onPress={()=>alert('submit')}
+                                    onPress={this.retrivePrivillege}
                                     style={styles.submitButtonStyle}
                                 />
                                 {this.state.showComment&&this.renderCommentSection()}

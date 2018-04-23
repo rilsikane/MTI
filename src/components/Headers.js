@@ -58,7 +58,7 @@ class Headers extends Component{
                 </TouchableOpacity>
             )
         }else{
-            
+            return null;
         }
     }
 
