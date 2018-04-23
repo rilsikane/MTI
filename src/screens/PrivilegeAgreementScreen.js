@@ -26,7 +26,7 @@ export default class PrivilegeAgreementScreen extends Component{
     }
     async redeem(){
         let response2 = await post(`privilege/redeem`,{"privilege_id":this.props.data.id});
-        console.log(response2);
+        console.log(JSON.stringify(response2));
     }
 
     render(){
