@@ -8,16 +8,27 @@ import {Headers} from './../components/Headers';
 import {DashboardActivityCard} from './../components/DashboardActivityCard';
 import {MainSubmitButton} from './../components/MainSubmitButton';
 import {EventButtonGroup} from '../components/EventButtonGroup';
-
+import {post,authen,get} from '../api';
+import Spinner from 'react-native-loading-spinner-overlay';
+import HTMLView from 'react-native-htmlview';
 export default class PrivilegeDetailScreen extends Component{
 
     constructor(props){
         super(props)
         this.state={
             showComment: true,
+            detail:{},
+            isLoading:true
         }
     }
+    async componentDidMount(){
 
+        //let response = await get(`privilege/${this.props.id}`,{})
+        let response2 = await post(`privilege/redeem`,{"privilege_id":this.props.id});
+        console.log(response2);
+        // this.setState({detail:response,isLoading:false})
+        this.setState({isLoading:false})
+    }
     renderPrivilegeDetailList(){
         let data=[
             'ตรวจสุขภาพสายตาฟรี มูลค่า 1,000 บาท (เฉพาะวันพฤหัสและนัดหมายล่วงหน้า ตรวจวัดสุขภาพสายตา, ตรวจวัดความดันตา, ตรวจจอประสาทตา, ตรวจสุขภาพกระจกตา',
@@ -25,12 +36,17 @@ export default class PrivilegeDetailScreen extends Component{
             'รับประกัน 1 ปี หลังการซื้อแว่นทุกประเภท (ปกติรับประกัน 3 เดือน)',
         ]
 
-        return data.map((data,i)=>
-            <View key={i} style={styles.privilegeTextContainerStyle}>
-                <Text style={styles.privilegeDetailSubTextStyle}>{`${++i}. `}</Text>
-                <Text style={styles.privilegeDetailSubTextStyle}>{data}</Text>
-            </View>
-        )
+        // return data.map((data,i)=>
+        //     // <View key={i} style={styles.privilegeTextContainerStyle}>
+        //     //     <Text style={styles.privilegeDetailSubTextStyle}>{`${++i}. `}</Text>
+        //     //     <Text style={styles.privilegeDetailSubTextStyle}>{data}</Text>
+        //     // </View>
+          
+        // )
+        return <HTMLView
+            value={this.state.detail.content1}
+            stylesheet={styles.privilegeDetailSubTextStyle}
+        />
     }
 
     renderCommentSection(){
@@ -144,7 +160,7 @@ export default class PrivilegeDetailScreen extends Component{
     }
 
     render(){
-        return(
+        return !this.state.isLoading ? (
             <View style={styles.privilegeDetailScreenContainerStyle}>
                 <Headers
                     leftIconName='back'
@@ -155,7 +171,7 @@ export default class PrivilegeDetailScreen extends Component{
                         <View style={styles.bannerImageContainerStyle}>
                             <View style={styles.bannerImageSectionStyle}>
                                 <Image
-                                    source={require('../source/images/privilegeImg01.png')}
+                                    source={this.state.detail && this.state.detail.picture_url ? {uri:this.state.detail.picture_url}:null}
                                     style={styles.bannerImageStyle}
                                     borderRadius={3}
                                 />
@@ -182,8 +198,8 @@ export default class PrivilegeDetailScreen extends Component{
                                 style={styles.dotSectionImageStyle}
                             />
                             <View style={styles.detailContainerStyle}>
-                                <Text style={styles.privilegeTitleTextStyle}>ตรวจสุขภาพสายตาฟรี (มูลค่า 1,000 บาท) ส่วนลดแว่นตาสูงสุด 55% พร้อมรับประกัน 1 ปี</Text>
-                                <Text style={styles.privilegeDurationTextStyle}>ระยะเวลาสิทธิพิเศษ : 15 - 31 ธันวาคม 2561</Text>
+                                <Text style={styles.privilegeTitleTextStyle}>{this.state.detail.name}</Text>
+                                <Text style={styles.privilegeDurationTextStyle}>ระยะเวลาสิทธิพิเศษ : </Text>
                                 <Text style={styles.privilegeDetailTextStyle}>รายละเอียดสิทธิพิเศษ</Text>
                                 {this.renderPrivilegeDetailList()}
                                 <MainSubmitButton
@@ -210,7 +226,8 @@ export default class PrivilegeDetailScreen extends Component{
                     </View>
                 </ScrollView>
             </View>
-        )
+        ): <Spinner visible={this.state.isLoading}  textStyle={{color: '#FFF'}} />
+
     }
 }
 
@@ -285,10 +302,9 @@ const styles={
         flex: 1,
     },
     privilegeTitleTextStyle:{
-        fontFamily: 'DBHelvethaicaX-Med',
         letterSpacing: 0,
         color: '#1595d3',
-        fontSize: responsiveFontSize(3),
+        fontSize: responsiveFontSize(2.7),
         marginLeft: responsiveWidth(4.6),
         marginRight: responsiveWidth(4.6),
     },
@@ -407,7 +423,6 @@ const styles={
         marginBottom: responsiveHeight(1.5),
     },
     recommendTitleTextStyle:{
-        fontFamily: "DBHelvethaicaX-Med",
         letterSpacing: 0,
         color: "#1595d3",
         fontSize: responsiveFontSize(2.8),

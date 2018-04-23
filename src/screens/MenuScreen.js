@@ -31,6 +31,17 @@ export default class MenuScreen extends Component{
         }
         this.setState({user:user});
     }
+    gotoMenu(link){
+        this.props.naviStore.navigation.push({
+            screen: link, // unique ID registered with Navigation.registerScreen
+            title: undefined, // navigation bar title of the pushed screen (optional)
+            titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
+            animated: false, // does the push have transition animation or does it happen immediately (optional)
+            backButtonTitle: undefined, // override the back button title (optional)
+            backButtonHidden: false, // hide the back button altogether (optional)
+        })
+        this.closeToggle();
+    }
 
     render(){
         return(
@@ -53,17 +64,7 @@ export default class MenuScreen extends Component{
                         </View>
                         <View style={styles.userShortDetailSectionStyle}>
                             <Text style={styles.userNameTextStyle}>{`${this.state.user.name} ${this.state.user.surname}`}</Text>
-                            <TouchableOpacity onPress={()=>{
-                                this.props.naviStore.navigation.push({
-                                    screen: 'mti.ProfileScreen', // unique ID registered with Navigation.registerScreen
-                                    title: undefined, // navigation bar title of the pushed screen (optional)
-                                    titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
-                                    animated: false, // does the push have transition animation or does it happen immediately (optional)
-                                    backButtonTitle: undefined, // override the back button title (optional)
-                                    backButtonHidden: false, // hide the back button altogether (optional)
-                                })
-                                this.closeToggle();
-                            }
+                            <TouchableOpacity onPress={()=>this.gotoMenu("mti.ProfileScreen")
                             }>
                                 <Text style={styles.userPrivateDetailTextStyle}>ข้อมูลส่วนตัว</Text>
                             </TouchableOpacity>
@@ -74,17 +75,7 @@ export default class MenuScreen extends Component{
                         <View style={styles.mainBorderStyle}/>
                         <View style={styles.menuSectionStyle}>        
                             <TouchableOpacity style={styles.menuSubSectionStyle}
-                                onPress={()=>{
-                                    this.props.naviStore.navigation.push({
-                                        screen: 'mti.UserInsuranceListScreen', // unique ID registered with Navigation.registerScreen
-                                        title: undefined, // navigation bar title of the pushed screen (optional)
-                                        titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
-                                        animated: false, // does the push have transition animation or does it happen immediately (optional)
-                                        backButtonTitle: undefined, // override the back button title (optional)
-                                        backButtonHidden: false, // hide the back button altogether (optional)
-                                    })
-                                    this.closeToggle();
-                                }
+                                onPress={()=>this.gotoMenu("mti.UserInsuranceListScreen")
                                 }
                             >
                                 <Image
@@ -130,7 +121,8 @@ export default class MenuScreen extends Component{
                         </View>
                         <View style={styles.mainBorderStyle}/>
                         <View style={styles.menuSectionStyle}>        
-                            <TouchableOpacity style={styles.menuSubSectionStyle}>
+                            <TouchableOpacity style={styles.menuSubSectionStyle} 
+                            onPress={()=>this.gotoMenu("mti.PrivilegeScreen")}>
                                 <Image
                                     source={require('./../source/icons/iconPrivilegeWhite.png')}
                                     resizeMode='contain'

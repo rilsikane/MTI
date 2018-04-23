@@ -54,6 +54,7 @@ const styles={
         shadowRadius: 10,
         shadowOpacity: 1,
         elevation: 3,
+        zIndex:9999
     },
     textInputContainerStyle:{
         flexDirection: 'row',

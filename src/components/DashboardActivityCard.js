@@ -2,32 +2,53 @@ import React,{Component} from 'react';
 import {Text,View,ImageBackground,Image,TouchableOpacity} from 'react-native';
 import PropTypes from "prop-types";
 import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
+import store from 'react-native-simple-store';
+import FastImage from 'react-native-fast-image'
 
 class DashboardActivityCard extends Component{
 
     constructor(props){
         super(props)
+        this.state = {groups:[]}
 
     }
+    async componentDidMount(){
+        let group = await store.get("privilegeGroup");
+        if(group){
+            this.setState({groups:group});
+        }
+    }
 
-    renderCardIcon(){
+    renderCardIcon(groupId){
         const iconUri = this.props.iconUri
         const iconText = this.props.iconText
-
+        
         if(iconText){
             return(
                 <Text style={styles.iconTextStyle}>{iconText}</Text>
             )
         }else{
+            
             return(
-                <Image
-                    source={this.props.iconUri}
-                    resizeMode='contain'
-                    style={styles.iconImageStyle}
-                />
+                <View>
+                    <FastImage
+                        source={this.props.iconUri}
+                        resizeMode='contain'
+                        style={styles.iconImageStyle}
+                    />
+                    <Text style={styles.iconTitleTextStyle}>{this.getTitleText()}</Text>
+                </View>
             )
         }
 
+    }
+    getTitleText(){
+        if(this.state.groups.length >0 && this.props.groupId){
+            let group =  this.state.groups.filter(gp=>gp.id==this.props.groupId)
+            return group && group.length>0 ? group[0].name:null;
+        }else{
+            return null;
+        }
     }
 
     renderCardDetail(){
@@ -58,7 +79,7 @@ class DashboardActivityCard extends Component{
 
     render(){
         return(
-            <TouchableOpacity
+            <TouchableOpacity onPress={this.props.onPress}
                 style={[styles.dashboardActivityCardContainerStyle,this.props.style]}
             >
                 <ImageBackground
@@ -77,7 +98,6 @@ class DashboardActivityCard extends Component{
                         <View style={styles.activityDetailSectionStyle}>
                             <View style={[styles.activityIconContainerStyle,this.props.iconContainerStyle]}>
                                 {this.renderCardIcon()}
-                                <Text style={styles.iconTitleTextStyle}>{this.props.iconTitleText}</Text>
                             </View>
                             <View style={{height: '80%',}}>
                                 <Image
@@ -145,7 +165,7 @@ const styles={
     iconTitleTextStyle:{
         color: 'rgba(255, 255, 255, 0.6)',
         letterSpacing: 0,
-        fontSize: responsiveFontSize(2.2),
+        fontSize: responsiveFontSize(1.8),
         textAlign: 'center',
 
     },
