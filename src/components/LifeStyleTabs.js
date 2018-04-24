@@ -125,6 +125,7 @@ const styles={
     tabContentStyle:{
         flex: 1,
         alignItems: 'center',
+        marginTop: responsiveHeight(3)
     }
 }
 

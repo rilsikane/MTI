@@ -1,7 +1,8 @@
 import React,{Component} from 'react';
-import {Text,View,Image,ScrollView,TouchableOpacity} from 'react-native';
+import {Text,View,Image,ScrollView,TouchableOpacity,FlatList} from 'react-native';
 import PropTypes from "prop-types";
 import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 import {Headers} from './../components/Headers';
 import {MainSearchBox} from '../components/MainSearchBox';
@@ -27,18 +28,24 @@ export default class PrivilegeScreen extends Component{
             tabsList:[],
             tabIndex: 0,
             previousTabIndex: 0,
+            isLoading: false,
         }
         this.openDetail = this.openDetail.bind(this);
         this.getPrivilegeForEachTabs = this.getPrivilegeForEachTabs.bind(this);
     }
     async componentDidMount(){
+        this.setState({isLoading: true})
         let privilege = await get("privileges?filter_group_id=1&page=1&pagesize=20",{});
         //let privilege = await get("privileges?page=1&pagesize=20",{});
         let tabsList = await get('privilege/groups',{});
         this.setState({tabsList: tabsList.data});
         if(privilege){
             console.log(privilege.data);
-            this.setState({privilege:privilege.data,privilegeOrg: privilege.data});
+            this.setState({
+                privilege:privilege.data,
+                privilegeOrg: privilege.data,
+                isLoading: false,
+            });
         }       
     }
     openDetail(id){
@@ -53,38 +60,48 @@ export default class PrivilegeScreen extends Component{
         })
     }
     renderPrivilegeList(){
-       
-
-        return this.state.privilege.map((privilege,i)=>
-            <DashboardActivityCard 
-                key={i}
-                onPress={()=>this.openDetail(privilege.id)}
-                bannerUri={privilege.picture_url ? {uri:privilege.picture_url}:null}
-                groupId={privilege.group_id}
-                iconUri={privilege.lifeStyleIconUri}
-                iconTitleText={privilege.lifeStyleTitleText}
-                activityTitleText={privilege.name}
-                style={[styles.dashboardActivityCardContainerStyle,i==0?{marginTop: responsiveHeight(3)}:{}]}
-                iconContainerStyle={i==0?{flex: 0.35}:{}}
-                detailContainerStyle={i==0?{flex: 0.65}:{}}
+        return(
+            <FlatList
+                data={this.state.privilege}
+                keyExtractor={this._keyExtractor}
+                renderItem={this._renderItem}
             />
         )
     }
 
-    async _onChangeTab(index){
+    _renderItem = ({item}) => (
+        <DashboardActivityCard 
+            onPress={()=>this.openDetail(item.id)}
+            bannerUri={item.picture_url ? {uri:item.picture_url}:null}
+            groupId={item.group_id}
+            iconUri={require('../source/icons/iconHealthySelected.png')}
+            iconTitleText={item.lifeStyleTitleText}
+            activityTitleText={item.name}
+            style={[styles.dashboardActivityCardContainerStyle,]}
+            // iconContainerStyle={i==0?{flex: 0.35}:{}}
+            // detailContainerStyle={i==0?{flex: 0.65}:{}}
+        />
+    );
+
+    _keyExtractor = (item, index) => item.id;
+
+    _onChangeTab(index){
         if(index.i!=this.state.previousTabIndex){
             this.setState({
                 previousTabIndex: index.i,
+                privilege: [],
             })
+            this.getPrivilegeForEachTabs(index.i)
         }
         this.setState({
             tabIndex: index.i,
         })
-        this.getPrivilegeForEachTabs(index.i)
+        
     }
 
     async getPrivilegeForEachTabs(index){
-        let privilege = await get(`privileges?filter_group_id=${++index}&page=1&pagesize=20`,{});
+        let filter_group_id = index;
+        let privilege = await get(`privileges?filter_group_id=${++filter_group_id}&page=1&pagesize=20`,{});
         //console.log(privilege.data)
         if(index==0){
             this.setState({privilege:this.state.privilegeOrg});
@@ -167,6 +184,7 @@ export default class PrivilegeScreen extends Component{
                         />
                     </View>
                 </ScrollView>
+                {this.state.isLoading && <Spinner visible={this.state.isLoading}  textStyle={{color: '#FFF'}} />}
             </View>
         )
     }
