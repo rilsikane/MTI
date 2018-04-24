@@ -36,9 +36,12 @@ export default class PrivilegeScreen extends Component{
     async componentDidMount(){
         this.setState({isLoading: true})
         let privilege = await get("privileges?filter_group_id=1&page=1&pagesize=20",{});
-        //let privilege = await get("privileges?page=1&pagesize=20",{});
+ 
         let tabsList = await get('privilege/groups',{});
-        this.setState({tabsList: tabsList.data});
+        tabsList.data.unshift({id: '99',name: 'All'},{id: '100',name: 'Hot'});
+        this.setState({
+            tabsList: tabsList.data
+        })
         if(privilege){
             console.log(privilege.data);
             this.setState({
