@@ -6,13 +6,45 @@ import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-nat
 import SelectInput from 'react-native-select-input-ios';
 import TextInputMask from 'react-native-text-input-mask';
 
+import {post,authen,get} from '../api';
+
 class TextInputIcon extends Component{
 
     constructor(props){
         super(props)
         this.state={
-        
+            dropDownCareer: [],
+            dropDownEducation: [],
+            dropDownIncome: [],
         }
+    }
+
+    async componentDidMount(){
+        if(this.props.options){
+            let dropDownMaster = await get('masterdata/profile',{});
+            dropDownMaster.career.map((data,i)=>{
+                this.state.dropDownCareer.push({
+                    value: i,
+                    label: data,
+                })
+            })
+            dropDownMaster.education.map((data,i)=>{
+                this.state.dropDownEducation.push({
+                    value: i,
+                    label: data,
+                })
+            })
+            dropDownMaster.income.map((data,i)=>{
+                this.state.dropDownIncome.push({
+                    value: i,
+                    label: data,
+                })
+            })
+
+            //console.log(dropDownMaster)
+        }
+     
+        
     }
 
     renderLeftLabel(){
@@ -27,6 +59,7 @@ class TextInputIcon extends Component{
     renderInput(){
         let inputType = this.props.inputType
         if(inputType=='selector'){
+
             return(
                 <SelectInput
                     value={this.props.genderValue}
@@ -70,26 +103,15 @@ class TextInputIcon extends Component{
     }
 
     
-    getPickerOptions() {
+    getPickerOptions(){
         if(this.props.options==='career'){
-            return [
-                { value: "0", label: 'ครู'},
-                { value: "1", label: 'นักเรียน/นักศึกษา'},
-            ]
+            return this.state.dropDownCareer
         }else if(this.props.options==='education'){
-            return [
-                { value: "0", label: 'Bachelor\'s Degree'},
-                { value: "1", label: 'Master\' Degree'},
-                { value: "2", label: 'PhD'},
-            ]
+            return this.state.dropDownEducation
         }else if(this.props.options==='income'){
-            return [
-                { value: "0", label: 'น้อยกว่า 10,000'},
-                { value: "1", label: '10,000 - 15,000'},
-            ]
+            return this.state.dropDownIncome
         }else{
             return [
-                { value: "", label: ''},
                 { value: "F", label: 'หญิง'},
                 { value: "M", label: 'ชาย'},
             ]

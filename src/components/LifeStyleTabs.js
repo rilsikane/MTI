@@ -47,7 +47,7 @@ class LifeStyleTabs extends Component{
         // if(this.props.tabIndex!=this.props.previousTabIndex){
         //     tab[this.props.previousTabIndex].isActive = false
         // }
-
+        
         return this.props.data.map((tab)=>
             <Tab 
                 key={tab.id} 

@@ -126,7 +126,6 @@ const styles={
     bannerImageStyle:{
         flex: 1,
         justifyContent: 'flex-end',
-
     },
     activityCardOverlayImageStyle:{
         height: responsiveHeight(7.74),
