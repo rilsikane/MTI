@@ -19,6 +19,7 @@ export default class PrivilegeScreen extends Component{
             privilegeOrg: [],
             privilegeHot: [],
             privilegeHealthy: [],
+            privilegeBeauty: [],
             privilegeEat: [],
             privilegeTravel: [],
             privilegeAuto: [],
@@ -35,7 +36,7 @@ export default class PrivilegeScreen extends Component{
     }
     async componentDidMount(){
         this.setState({isLoading: true})
-        let privilege = await get("privileges?filter_group_id=1&page=1&pagesize=20",{});
+        let privilege = await get("privileges?page=1&pagesize=20",{});
  
         let tabsList = await get('privilege/groups',{});
         tabsList.data.unshift({id: '99',name: 'All'},{id: '100',name: 'Hot'});
@@ -103,57 +104,63 @@ export default class PrivilegeScreen extends Component{
     }
 
     async getPrivilegeForEachTabs(index){
-        if(index==6){
-            index = 8;
+        if(index==8){
+            index = 10;
         }
         let filter_group_id = index;
-        let privilege = await get(`privileges?filter_group_id=${++filter_group_id}&page=1&pagesize=20`,{});
+        let privilege = [];
+        if(index==1){
+            privilege = await get(`privileges?filter_set=hotdeal&page=1&pagesize=20`,{});
+        }else{
+            privilege = await get(`privileges?filter_group_id=${--filter_group_id}&page=1&pagesize=20`,{});
+            console.log(privilege.data)
+        }
         //console.log(privilege.data)
         if(index==0){
             this.setState({privilege:this.state.privilegeOrg});
         }else if(index==1){
+            if(this.state.privilegeHot.length==0){
+                this.setState({privilege: privilege.data,privilegeHot:privilege.data});
+            }else{
+                this.setState({privilege:this.state.privilegeHot});
+            }
+        }else if(index==2){
             if(this.state.privilegeHealthy.length==0){
                 this.setState({privilege: privilege.data,privilegeHealthy:privilege.data});
             }else{
                 this.setState({privilege:this.state.privilegeHealthy});
             }
-        }else if(index==2){
+        }else if(index==3){
+            if(this.state.privilegeBeauty.length==0){
+                this.setState({privilege: privilege.data,privilegeBeauty:privilege.data});
+            }else{
+                this.setState({privilege:this.state.privilegeBeauty});
+            }
+        }else if(index==4){
             if(this.state.privilegeEat.length==0){
                 this.setState({privilege: privilege.data,privilegeEat:privilege.data});
             }else{
                 this.setState({privilege:this.state.privilegeEat});
             }
-        }else if(index==3){
+        }else if(index==5){
             if(this.state.privilegeTravel.length==0){
                 this.setState({privilege: privilege.data,privilegeTravel:privilege.data});
             }else{
                 this.setState({privilege:this.state.privilegeTravel});
             }
-        }else if(index==4){
+        }else if(index==6){
             if(this.state.privilegeAuto.length==0){
                 this.setState({privilege: privilege.data,privilegeAuto:privilege.data});
             }else{
                 this.setState({privilege:this.state.privilegeAuto});
             }
-        }else if(index==5){
+        }else if(index==7){
             if(this.state.privilegeEntertain.length==0){
                 this.setState({privilege: privilege.data,privilegeEntertain:privilege.data});
             }else{
                 this.setState({privilege:this.state.privilegeEntertain});
             }
-        }else if(index==6){
-            if(this.state.privilegeSport.length==0){
-                this.setState({privilege: privilege.data,privilegeSport:privilege.data});
-            }else{
-                this.setState({privilege:this.state.privilegeSport});
-            }
-        }else if(index==7){
-            // if(this.state.privilegeSport.length==0){
-            //     this.setState({privilege: privilege.data,privilegeSport:privilege.data});
-            // }else{
-            //     this.setState({privilege:this.state.privilegeSport});
-            // }
-        }else if(index==9){
+        }else if(index==10){
             if(this.state.privilegeOther.length==0){
                 this.setState({privilege: privilege.data,privilegeOther:privilege.data});
             }else{
