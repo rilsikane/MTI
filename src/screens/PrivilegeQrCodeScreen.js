@@ -53,7 +53,7 @@ export default class PrivilegeQrCodeScreen extends Component{
                             style={styles.qrCodeImageStyle}
                         /> */}
                         <QRCode
-                            value={this.props.redeem.redeem_code}
+                            value={this.props.redeem.redeem_code||'tmp9999'}
                             size={responsiveHeight(29.66)}
                             bgColor='#000'
                             fgColor='#FFF'

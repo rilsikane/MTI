@@ -58,7 +58,7 @@ export async function authen(param){
         if(e && "ECONNABORTED"!=e.code){
             setTimeout(()=>{Alert.alert(
             'เกิดข้อผิดพลาด',
-            e.response.data ? e.response.data.message:'ไม่สามารถเชื่อมต่อกับ Server ได้',
+            (e.response && e.response.data) ? e.response.data.message:'ไม่สามารถเชื่อมต่อกับ Server ได้',
             [
             {text: 'OK', onPress: () => console.log('OK Pressed!')},
             ]
@@ -117,7 +117,7 @@ export async function post(path,param){
             if(e && "ECONNABORTED"!=e.code){
                 setTimeout(()=>{Alert.alert(
                 'เกิดข้อผิดพลาด',
-                e.response.data ? e.response.data.message:'ไม่สามารถเชื่อมต่อกับ Server ได้',
+                (e.response && e.response.data) ? e.response.data.message:'ไม่สามารถเชื่อมต่อกับ Server ได้',
                 [
                 {text: 'OK', onPress: () => console.log('OK Pressed!')},
                 ]
@@ -180,7 +180,7 @@ export async function postBasic(path,param,customError){
         if(e && "ECONNABORTED"!=e.code){
             setTimeout(()=>{Alert.alert(
             'เกิดข้อผิดพลาด',
-            e.response.data ? e.response.data.message:'ไม่สามารถเชื่อมต่อกับ Server ได้',
+            (e.response && e.response.data) ? e.response.data.message:'ไม่สามารถเชื่อมต่อกับ Server ได้',
             [
             {text: 'OK', onPress: () => console.log('OK Pressed!')},
             ]
@@ -238,7 +238,7 @@ export async function put(path,param){
             if(e && "ECONNABORTED"!=e.code){
                 setTimeout(()=>{Alert.alert(
                 'เกิดข้อผิดพลาด',
-                e.response.data ? e.response.data.message:'ไม่สามารถเชื่อมต่อกับ Server ได้',
+                (e.response && e.response.data) ? e.response.data.message:'ไม่สามารถเชื่อมต่อกับ Server ได้',
                 [
                 {text: 'OK', onPress: () => console.log('OK Pressed!')},
                 ]
@@ -298,7 +298,7 @@ export async function get(path,param){
         if(e && "ECONNABORTED"!=e.code){
             setTimeout(()=>{Alert.alert(
             'เกิดข้อผิดพลาด',
-            e.response.data ? e.response.data.message:'ไม่สามารถเชื่อมต่อกับ Server ได้',
+            (e.response && e.response.data) ? e.response.data.message:'ไม่สามารถเชื่อมต่อกับ Server ได้',
             [
             {text: 'OK', onPress: () => console.log('OK Pressed!')},
             ]
