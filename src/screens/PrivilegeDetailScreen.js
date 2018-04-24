@@ -32,20 +32,18 @@ export default class PrivilegeDetailScreen extends Component{
         //this.setState({isLoading:false})
     }
     renderPrivilegeDetailList(){
-        let data=[
-            'ตรวจสุขภาพสายตาฟรี มูลค่า 1,000 บาท (เฉพาะวันพฤหัสและนัดหมายล่วงหน้า ตรวจวัดสุขภาพสายตา, ตรวจวัดความดันตา, ตรวจจอประสาทตา, ตรวจสุขภาพกระจกตา',
-            'ส่วนลดแว่นตาสูงสุด 55%',
-            'รับประกัน 1 ปี หลังการซื้อแว่นทุกประเภท (ปกติรับประกัน 3 เดือน)',
-        ]
-
-        // return data.map((data,i)=>
-        //     <View key={i} style={styles.privilegeTextContainerStyle}>
-        //         <Text style={styles.privilegeDetailSubTextStyle}>{`${++i}. `}</Text>
-        //         <Text style={styles.privilegeDetailSubTextStyle}>{data}</Text>
-        //     </View>
-          
-        // )
-        return <Text style={styles.privilegeDetailSubTextStyle}>{this.state.detail.content1}</Text>
+        let data = this.state.detail.content1.split("|");
+        if(data.length>0){
+            return data.map((data,i)=>
+                <View key={i} style={styles.privilegeTextContainerStyle}>
+                    <Text style={styles.privilegeDetailSubTextStyle}>{`${++i}. `}</Text>
+                    <Text style={styles.privilegeDetailSubTextStyle}>{data}</Text>
+                </View>
+            
+            )
+        }else{
+            return <View style={styles.privilegeTextContainerStyle}><Text style={styles.privilegeDetailSubTextStyle}>{this.state.detail.content1}</Text></View>
+        }
         // return         
         //     (<View  style={styles.privilegeTextContainerStyle}>
         //         {/* <Text style={styles.privilegeDetailSubTextStyle}>{`${++i}. `}</Text> */}
