@@ -100,8 +100,8 @@ export default class PrivilegeScreen extends Component{
     }
 
     async getPrivilegeForEachTabs(index){
-        if(index==8){
-            index = 9;
+        if(index==6){
+            index = 8;
         }
         let filter_group_id = index;
         let privilege = await get(`privileges?filter_group_id=${++filter_group_id}&page=1&pagesize=20`,{});
@@ -150,7 +150,7 @@ export default class PrivilegeScreen extends Component{
             // }else{
             //     this.setState({privilege:this.state.privilegeSport});
             // }
-        }else if(index==8){
+        }else if(index==9){
             if(this.state.privilegeOther.length==0){
                 this.setState({privilege: privilege.data,privilegeOther:privilege.data});
             }else{
