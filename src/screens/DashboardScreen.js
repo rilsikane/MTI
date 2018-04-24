@@ -68,12 +68,12 @@ export default class DashboardScreen extends Component{
             if(privilegeGroup){
                 await store.save("privilegeGroup",privilegeGroup.data);
             }
-            let hotDeal = await get("privileges?filter_set=hotdeal",{});
+            let hotDeal = await get("privileges?filter_set=hotdeal&page=1&pagesize=5",{});
             if(hotDeal){
                 console.log(hotDeal.data);
                 this.setState({hotDeal:hotDeal.data});
             }
-            let myLife = await get("privileges?filter_set=lifestyle",{});
+            let myLife = await get("privileges?filter_set=lifestyle&page=1&pagesize=5",{});
             if(myLife){
                 this.setState({myLifeStyle:myLife.data});
             }

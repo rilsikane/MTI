@@ -11,6 +11,8 @@ import {EventButtonGroup} from '../components/EventButtonGroup';
 import {post,authen,get} from '../api';
 import Spinner from 'react-native-loading-spinner-overlay';
 import HTMLView from 'react-native-htmlview';
+import moment from 'moment';
+import localization from 'moment/locale/th'
 export default class PrivilegeDetailScreen extends Component{
 
     constructor(props){
@@ -173,6 +175,9 @@ export default class PrivilegeDetailScreen extends Component{
             />
         )
     }
+    getexpireDate(){
+        return `${moment(this.state.detail.start_date).locale('th').format("DD MMM")} - ${moment(this.state.detail.end_date).locale('th').format("DD MMM YYYY")}`
+    }
 
     render(){
         return !this.state.isLoading ? (
@@ -214,7 +219,7 @@ export default class PrivilegeDetailScreen extends Component{
                             />
                             <View style={styles.detailContainerStyle}>
                                 <Text style={styles.privilegeTitleTextStyle}>{this.state.detail.name}</Text>
-                                <Text style={styles.privilegeDurationTextStyle}>ระยะเวลาสิทธิพิเศษ : </Text>
+                                <Text style={styles.privilegeDurationTextStyle}>ระยะเวลาสิทธิพิเศษ : {this.getexpireDate()}</Text>
                                 <Text style={styles.privilegeDetailTextStyle}>รายละเอียดสิทธิพิเศษ</Text>
                                 {this.renderPrivilegeDetailList()}
                                 <MainSubmitButton

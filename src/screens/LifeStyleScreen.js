@@ -143,6 +143,7 @@ export default class LifeStyleScreen extends Component{
                             if(response2){
                                 await store.save("user",response1);
                                 this.app.isLoading = false;
+                                this.props.registerStore.register={};
                                 this.gotoWelcome();
                             }else{
                                 this.app.isLoading = false;
