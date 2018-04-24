@@ -45,7 +45,7 @@ export default class PrivilegeQrCodeScreen extends Component{
                     <Text style={styles.privilegeDetailTextStyle}>คุณสามารถรับสิทธิพิเศษได้โดยการแสดง QR Code ที่หน้าร้านหรือบันทึก QR Code เพื่อใช้สิทธิพิเศษนี้ในภายหลัง</Text>
                 </View>
                 <View style={styles.qrCodeContainerStyle}>
-                    <Text style={styles.qrRefCodeTextStyle}>Reference Code : 4567435679</Text>
+                    <Text style={styles.qrRefCodeTextStyle}>Reference Code : {this.props.redeem.redeem_code}</Text>
                     <View style={styles.qrCodeImageContainerStyle}>
                         {/* <Image
                             source={require('../source/images/myCardQrImg.png')}
@@ -102,7 +102,7 @@ const styles={
         letterSpacing: 0,
         textAlign: "center",
         color: "#1595d3",
-        fontSize: responsiveFontSize(3),
+        fontSize: responsiveFontSize(2),
         fontFamily: "DBHelvethaicaX-Med",
         marginTop: responsiveHeight(2.4),
         marginBottom: responsiveHeight(2.4),

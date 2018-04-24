@@ -410,7 +410,6 @@ export default class RegisterScreen extends Component{
                     if(response2){
                         if(!response2.message){
                             this.setState({isLoading:false});
-                            this.props.registerStore.register = {};
                             this.props.navigator.resetTo({
                                 screen: 'mti.WelcomeScreen', // unique ID registered with Navigation.registerScreen
                                 title: undefined, // navigation bar title of the pushed screen (optional)

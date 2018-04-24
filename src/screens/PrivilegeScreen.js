@@ -100,6 +100,9 @@ export default class PrivilegeScreen extends Component{
     }
 
     async getPrivilegeForEachTabs(index){
+        if(index==8){
+            index = 9;
+        }
         let filter_group_id = index;
         let privilege = await get(`privileges?filter_group_id=${++filter_group_id}&page=1&pagesize=20`,{});
         //console.log(privilege.data)
