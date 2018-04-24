@@ -52,6 +52,7 @@ export default class DashboardScreen extends Component{
         }
         this.props.naviStore.navigation = this.props.navigator;
         this.openDetail = this.openDetail.bind(this);
+        this.goToPrivilleges = this.goToPrivilleges.bind(this);
     }
     async componentDidMount(){
         let user = await store.get("user");
@@ -82,6 +83,7 @@ export default class DashboardScreen extends Component{
         }
           // await store.save("policy",response2);
                         // get("me/policy",{})
+       
     };
     openDetail(id){
         this.props.navigator.push({
@@ -177,6 +179,16 @@ export default class DashboardScreen extends Component{
             />
         )
     }
+    goToPrivilleges(){
+        this.props.navigator.push({
+            screen: "mti.PrivilegeScreen", // unique ID registered with Navigation.registerScreen
+            title: undefined, // navigation bar title of the pushed screen (optional)
+            titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
+            animated: false, // does the push have transition animation or does it happen immediately (optional)
+            backButtonTitle: undefined, // override the back button title (optional)
+            backButtonHidden: false, // hide the back button altogether (optional)
+        })
+    }
 
     render(){
         return(
@@ -192,7 +204,7 @@ export default class DashboardScreen extends Component{
                     <View style={styles.dashboardDetailTopContainerStyle}>
                         <View style={styles.hotDealTitleTextContainerStyle}>
                             <Text style={styles.dashboardSectionTitleTextStyle}>HOT DEAL</Text>
-                            <TouchableOpacity style={styles.showAllContainerStyle}>
+                            <TouchableOpacity style={styles.showAllContainerStyle} onPress={this.goToPrivilleges}>
                                 <Text style={styles.showAllTextStyle}>ดูทั้งหมด</Text>
                             </TouchableOpacity>
                         </View>
@@ -201,7 +213,7 @@ export default class DashboardScreen extends Component{
                         </ScrollView>
                         <View style={styles.hotDealTitleTextContainerStyle}>
                             <Text style={styles.dashboardSectionTitleTextStyle}>MY LIFESTYLE</Text>
-                            <TouchableOpacity style={styles.showAllContainerStyle}>
+                            <TouchableOpacity style={styles.showAllContainerStyle} onPress={this.goToPrivilleges}>
                                 <Text style={styles.showAllTextStyle}>ดูทั้งหมด</Text>
                             </TouchableOpacity>
                         </View>
