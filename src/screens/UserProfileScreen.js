@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import PopupDialog,{ SlideAnimation }  from 'react-native-popup-dialog';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 import {Headers} from './../components/Headers';
 import {TextInputIcon} from './../components/TextInputIcon';
@@ -12,6 +13,7 @@ import {LifeStyleBox} from './../components/LifeStyleBox';
 import store from 'react-native-simple-store';
 import moment from 'moment';
 import localization from 'moment/locale/th'
+import {post,authen,get} from '../api';
 
 export default class UserProfileScreen extends Component{
 
@@ -27,10 +29,11 @@ export default class UserProfileScreen extends Component{
             userCareer: '',
             userEducation: '',
             userIncome: '',
-            userLifeStyle: '',
+            userLifeStyle: [],
             userPassword: '',
             rightIconName: '',
             member_type:'',
+            userProfile:{},
             submitButtonText: 'แก้ไขข้อมูล',
             lifeStyleImage1:[
                 {
@@ -106,12 +109,15 @@ export default class UserProfileScreen extends Component{
             canEditProfile: false,
             isLifestyleModalVisible: false,
             isDateTimePickerVisible: false,
-
+            isLoading: false,
         }
         moment.locale("th");
     }
 
     async componentDidMount(){
+        this.setState({isLoading: true})
+        let userProfile = await get('me',{});
+        //console.log(userProfile)
         this.setState({
             filterLifeStyleImage1: this.state.lifeStyleImage1,
             filterLifeStyleImage2: this.state.lifeStyleImage2
@@ -122,8 +128,20 @@ export default class UserProfileScreen extends Component{
             user.name = "GUEST";
             user.surname = "GUEST";
         }
-        this.setState({userFirstName:user.name,userLastName:user.surname,userEmail:user.email
-            ,userPhone:user.tel,userBirthDate:user.birthdate,member_type:user.member_type,userGender:user.gender})
+        this.setState({
+            userFirstName:user.name,
+            userLastName:user.surname,
+            userEmail:user.email,
+            userPhone:user.tel,
+            userBirthDate:user.birthdate,
+            member_type:user.member_type,
+            userGender:user.gender,
+            userCareer:user.career,
+            userEducation:user.education,
+            userIncome:user.income,
+            userLifeStyle:user.lifestyle,
+            isLoading: false,
+        })
     }
 
     _showDateTimePicker = () => this.setState({ isDateTimePickerVisible: true })
@@ -216,8 +234,23 @@ export default class UserProfileScreen extends Component{
     }
 
     onLifestyleModalSubmitButtonPress(){
-        this.popupDialog.dismiss()
-
+        this.popupDialog.dismiss();
+        let filterLifeStyle = [];
+        this.state.filterLifeStyleImage1.map((data)=>{
+            if(data.isSelected==true){
+                filterLifeStyle.push(data.title)
+            }
+        })
+        this.state.filterLifeStyleImage2.map((data)=>{
+            if(data.isSelected==true){
+                filterLifeStyle.push(data.title)
+            }
+        })
+        this.setState({
+            userLifeStyle: filterLifeStyle,
+            filterLifeStyleImage1: this.state.lifeStyleImage1,
+            filterLifeStyleImage2: this.state.lifeStyleImage2,
+        })
     }
 
     onLifeStylePress(index,list){
@@ -441,7 +474,7 @@ export default class UserProfileScreen extends Component{
                         <TouchableOpacity disabled={!this.state.canEditProfile} onPress={()=>this.popupDialog.show()}>
                             <View pointerEvents={this.state.isLifestyleModalVisible ? 'auto' : 'none'}>
                                 <TextInputIcon
-                                    value={this.state.userLifeStyle}
+                                    value={this.state.userLifeStyle.toString()}
                                     leftLabelText='ไลฟ์สไตล์'
                                     iconUri={require('./../source/icons/iconLifestyle.png')}
                                     containerStyle={styles.inputContainerStyle}
@@ -483,6 +516,7 @@ export default class UserProfileScreen extends Component{
                 
                 </ScrollView>
                 {this.renderLifestyleModal()}
+                {this.state.isLoading && <Spinner visible={this.state.isLoading}  textStyle={{color: '#FFF'}} />}
             </View>
         )
     }
