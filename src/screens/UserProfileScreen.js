@@ -105,17 +105,61 @@ export default class UserProfileScreen extends Component{
             ],
             filterLifeStyleImage1: [],
             filterLifeStyleImage2: [],
+            dropDownCareer: [],
+            dropDownEducation: [],
+            dropDownIncome: [],
 
             canEditProfile: false,
             isLifestyleModalVisible: false,
             isDateTimePickerVisible: false,
             isLoading: false,
         }
+        this.onUpdatePictureProfilePress = this.onUpdatePictureProfilePress.bind(this);
         moment.locale("th");
     }
 
     async componentDidMount(){
-        this.init();
+        await this.getDropDownMaster();
+        await this.init();
+        
+    }
+
+    async getDropDownMaster(){
+        this.setState({isLoading: true});
+        let dropDownMaster = await get('masterdata/profile',{});
+        dropDownMaster.career.map((data,i)=>{
+            this.state.dropDownCareer.push({
+                value: data,
+                label: data,
+            })
+        })
+        dropDownMaster.education.map((data,i)=>{
+            this.state.dropDownEducation.push({
+                value: data,
+                label: data,
+            })
+        })
+        dropDownMaster.income.map((data,i)=>{
+            this.state.dropDownIncome.push({
+                value: data,
+                label: data,
+            })
+        })
+    }
+
+    getPickerOptions(type){
+        if(type==='career'){
+            return this.state.dropDownCareer
+        }else if(type==='education'){
+            return this.state.dropDownEducation
+        }else if(type==='income'){
+            return this.state.dropDownIncome
+        }else{
+            return [
+                { value: "F", label: 'หญิง'},
+                { value: "M", label: 'ชาย'},
+            ]
+        }
     }
 
     async init(){
@@ -161,20 +205,21 @@ export default class UserProfileScreen extends Component{
 
     async updateUserProfile(userEmail,userPhone,userBirthDate,userGender,userCareer,userEducation,userIncome,userLifeStyle){
         let params = {};
-        params.email = userEmail;
-        params.tel = userPhone;
+        //params.email = userEmail;
+        //params.tel = userPhone;
         params.gender = userGender;
         params.income = userIncome;
         params.education = userEducation;
         params.career = userCareer;
-
+        params.lifestyle = userLifeStyle;
         let response = await put('me/profile',params);
+        let lifeStyleUpdate = await put('me/lifestyle',params);
         let [user] = await Promise.all([get("me",{})]);
         if(user){
             await store.save("user",user);
             this.init();
         }
-        console.log(response);
+        //console.log(user);
         return response.status;
     }
 
@@ -366,6 +411,9 @@ export default class UserProfileScreen extends Component{
         )
     }
 
+    onUpdatePictureProfilePress(){
+
+    }
 
     render(){
         return(
@@ -379,7 +427,7 @@ export default class UserProfileScreen extends Component{
                     />
                     <View style={styles.userShortDetailContainerStyle}>
                         <View style={styles.userAvatarContainerStyle}>
-                            <TouchableOpacity style={styles.userAvatarSectionStyle}>
+                            <TouchableOpacity disabled={!this.state.canEditProfile} onPress={this.onUpdatePictureProfilePress} style={styles.userAvatarSectionStyle}>
                                 <View style={styles.avatarBorderStyle}/>
                                 <ImageBackground
                                     source={require('./../source/images/userAvatarImg.png')}
@@ -409,7 +457,7 @@ export default class UserProfileScreen extends Component{
                             secondFlex={secondFlex}
                             thirdFlex={thirdFlex}
                             rightIconName='pen'
-                            editable={this.state.canEditProfile}
+                            editable={false}
                         /> 
                         <TextInputIcon
                             value={this.state.userLastName}
@@ -420,7 +468,7 @@ export default class UserProfileScreen extends Component{
                             secondFlex={secondFlex}
                             thirdFlex={thirdFlex}
                             rightIconName='pen'
-                            editable={this.state.canEditProfile}
+                            editable={false}
                         />
                         <TextInputIcon
                             genderValue={this.state.userGender}
@@ -432,8 +480,9 @@ export default class UserProfileScreen extends Component{
                             thirdFlex={thirdFlex}
                             inputType='selector'
                             editable={this.state.canEditProfile}
+                            //options={this.getPickerOptions()}
                         />
-                        <TouchableOpacity disabled={!this.state.canEditProfile} onPress={this._showDateTimePicker}>
+                        <TouchableOpacity disabled={true} onPress={this._showDateTimePicker}>
                             <View pointerEvents={this.state.isDateTimePickerVisible ? 'auto' : 'none'}>
                                 <TextInputIcon
                                     value={this.state.userBirthDate ? moment(this.state.userBirthDate).locale("th",localization).format("DD MMMM YYYY"):null}
@@ -456,7 +505,7 @@ export default class UserProfileScreen extends Component{
                             thirdFlex={thirdFlex}
                             keyboardType='email-address'
                             rightIconName='pen'
-                            editable={this.state.canEditProfile}
+                            editable={false}
                         />
                         <TextInputIcon
                             value={this.state.userPhone}
@@ -466,7 +515,7 @@ export default class UserProfileScreen extends Component{
                             containerStyle={styles.inputContainerStyle}
                             secondFlex={secondFlex}
                             thirdFlex={thirdFlex}
-                            editable={this.state.canEditProfile}
+                            editable={false}
                         />
                         <TextInputIcon
                             genderValue={this.state.userCareer}
@@ -479,7 +528,7 @@ export default class UserProfileScreen extends Component{
                             rightIconName='pen'
                             editable={this.state.canEditProfile}
                             inputType='selector'
-                            options='career'
+                            options={this.getPickerOptions('career')}
                         />
                         <TextInputIcon
                             genderValue={this.state.userEducation}
@@ -492,7 +541,7 @@ export default class UserProfileScreen extends Component{
                             rightIconName='pen'
                             editable={this.state.canEditProfile}
                             inputType='selector'
-                            options='education'
+                            options={this.getPickerOptions('education')}
                         />
                         <TextInputIcon
                             genderValue={this.state.userIncome}
@@ -505,7 +554,7 @@ export default class UserProfileScreen extends Component{
                             rightIconName='pen'
                             editable={this.state.canEditProfile}
                             inputType='selector'
-                            options='income'
+                            options={this.getPickerOptions('income')}
                         />
                         <TouchableOpacity disabled={!this.state.canEditProfile} onPress={()=>this.popupDialog.show()}>
                             <View pointerEvents={this.state.isLifestyleModalVisible ? 'auto' : 'none'}>
@@ -532,7 +581,7 @@ export default class UserProfileScreen extends Component{
                             secureTextEntry={true}
                             onChangeText={(userPassword)=> this.setState({userPassword})}
                             rightIconName='pen'
-                            editable={this.state.canEditProfile}
+                            editable={false}
                         />
                         <View style={styles.submitButtonContainerStyle}>
                             <MainSubmitButton

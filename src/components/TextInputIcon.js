@@ -13,39 +13,10 @@ class TextInputIcon extends Component{
     constructor(props){
         super(props)
         this.state={
-            dropDownCareer: [],
-            dropDownEducation: [],
-            dropDownIncome: [],
+            
         }
     }
 
-    async componentDidMount(){
-        if(this.props.options){
-            let dropDownMaster = await get('masterdata/profile',{});
-            dropDownMaster.career.map((data,i)=>{
-                this.state.dropDownCareer.push({
-                    value: data,
-                    label: data,
-                })
-            })
-            dropDownMaster.education.map((data,i)=>{
-                this.state.dropDownEducation.push({
-                    value: data,
-                    label: data,
-                })
-            })
-            dropDownMaster.income.map((data,i)=>{
-                this.state.dropDownIncome.push({
-                    value: data,
-                    label: data,
-                })
-            })
-
-            //console.log(dropDownMaster)
-        }
-     
-        
-    }
 
     renderLeftLabel(){
         // let leftLabelText = this.props.leftLabelText
@@ -63,7 +34,7 @@ class TextInputIcon extends Component{
             return(
                 <SelectInput
                     value={this.props.genderValue}
-                    options={this.getPickerOptions()}
+                    options={this.props.options?this.props.options:this.getPickerOptions()}
                     onCancelEditing={() => console.log('onCancel')}
                     onSubmitEditing={this.props.onSubmitEditing}
                     style={[styles.selectorStyle,{flex: this.props.thirdFlex}]}
@@ -90,7 +61,6 @@ class TextInputIcon extends Component{
         else{
             return(
                 <TextInput
-                    
                     placeholder={this.props.leftLabelText}
                     blurOnSubmit={ false }
                     ref={this.props.refs} 
@@ -104,19 +74,10 @@ class TextInputIcon extends Component{
 
     
     getPickerOptions(){
-        if(this.props.options==='career'){
-            return this.state.dropDownCareer
-        }else if(this.props.options==='education'){
-            return this.state.dropDownEducation
-        }else if(this.props.options==='income'){
-            return this.state.dropDownIncome
-        }else{
-            return [
-                { value: "F", label: 'หญิง'},
-                { value: "M", label: 'ชาย'},
-            ]
-        }
-    
+        return [
+            { value: "F", label: 'หญิง'},
+            { value: "M", label: 'ชาย'},
+        ]
     }
 
 
