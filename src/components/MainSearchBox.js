@@ -15,7 +15,9 @@ class MainSearchBox extends Component{
             <View style={styles.searchBoxContainerStyle}>
                 <View style={styles.textInputContainerStyle}>
                     <TextInput
-                        placeholder='ค้นหาสิทธิพิเศษที่คุณต้องการ'
+                        value={this.props.value}
+                        onChangeText={this.props.onChangeText}
+                        placeholder={this.props.placeholder}
                         underlineColorAndroid='transparent'
                         style={styles.searchInputStyle}
                     />

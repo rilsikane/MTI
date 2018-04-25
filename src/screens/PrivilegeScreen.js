@@ -33,6 +33,7 @@ export default class PrivilegeScreen extends Component{
         }
         this.openDetail = this.openDetail.bind(this);
         this.getPrivilegeForEachTabs = this.getPrivilegeForEachTabs.bind(this);
+        this.openPrivilegeSearch = this.openPrivilegeSearch.bind(this)
     }
     async componentDidMount(){
         this.setState({isLoading: true})
@@ -66,6 +67,8 @@ export default class PrivilegeScreen extends Component{
     renderPrivilegeList(){
         return(
             <FlatList
+                style={{flexGrow: 0}}
+                scrollEnabled={false}
                 data={this.state.privilege}
                 keyExtractor={this._keyExtractor}
                 renderItem={this._renderItem}
@@ -113,7 +116,6 @@ export default class PrivilegeScreen extends Component{
             privilege = await get(`privileges?filter_set=hotdeal&page=1&pagesize=20`,{});
         }else{
             privilege = await get(`privileges?filter_group_id=${--filter_group_id}&page=1&pagesize=20`,{});
-            console.log(privilege.data)
         }
         //console.log(privilege.data)
         if(index==0){
@@ -169,6 +171,18 @@ export default class PrivilegeScreen extends Component{
         }
     }
 
+    openPrivilegeSearch(){
+        this.props.navigator.push({
+            screen: "mti.PrivilegeSearchScreen", // unique ID registered with Navigation.registerScreen
+            passProps:{},
+            title: undefined, // navigation bar title of the pushed screen (optional)
+            titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
+            animated: false, // does the push have transition animation or does it happen immediately (optional)
+            backButtonTitle: undefined, // override the back button title (optional)
+            backButtonHidden: false, // hide the back button altogether (optional)
+        })
+    }
+
     render(){
         return(
             <View style={styles.privilegeScreenContainerStyle}>
@@ -179,24 +193,30 @@ export default class PrivilegeScreen extends Component{
                     withSearch
                 />
                 <MainSearchBox
-                    onPress={()=>alert('search')}
+                    //value={}
+                    //onChangeText={}
+                    onPress={this.openPrivilegeSearch}
+                    placeholder='ค้นหาสิทธิพิเศษที่คุณต้องการ'
                 />
-                <ScrollView style={{zIndex:3}}>
-                    <LifeStyleTabs
-                        tabChildren={this.renderPrivilegeList()}
-                        onChangeTab={(index)=>this._onChangeTab(index)}
-                        tabIndex={this.state.tabIndex}
-                        previousTabIndex={this.state.previousTabIndex}
-                        data={this.state.tabsList}
-                    />
-                    <View style={styles.privilegeListContainerStyle}>
-                        <Image
-                            source={require('./../source/images/promotionImg.png')}
-                            style={styles.promotionImageStyle}
-                            resizeMode='stretch'
-                        />
-                    </View>
-                </ScrollView>
+                 <View style={{flex: 1}}>
+                    <ScrollView style={{zIndex:3}}>
+                    
+                            <LifeStyleTabs
+                                tabChildren={this.renderPrivilegeList()}
+                                onChangeTab={(index)=>this._onChangeTab(index)}
+                                tabIndex={this.state.tabIndex}
+                                previousTabIndex={this.state.previousTabIndex}
+                                data={this.state.tabsList}
+                            />
+                            <View style={styles.privilegeListContainerStyle}>
+                                <Image
+                                    source={require('./../source/images/promotionImg.png')}
+                                    style={styles.promotionImageStyle}
+                                    resizeMode='stretch'
+                                />
+                            </View>
+                    </ScrollView>
+                </View>
                 {this.state.isLoading && <Spinner visible={this.state.isLoading}  textStyle={{color: '#FFF'}} />}
             </View>
         )
@@ -208,7 +228,7 @@ const styles={
         flex: 1,
     },
     privilegeListContainerStyle:{
-  
+        backgroundColor: '#FFF'
     },
     promotionImageStyle:{
         height: responsiveHeight(18.30),
