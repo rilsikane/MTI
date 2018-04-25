@@ -13,7 +13,7 @@ import {LifeStyleBox} from './../components/LifeStyleBox';
 import store from 'react-native-simple-store';
 import moment from 'moment';
 import localization from 'moment/locale/th'
-import {post,authen,get} from '../api';
+import {post,authen,get,put} from '../api';
 
 export default class UserProfileScreen extends Component{
 
@@ -115,14 +115,17 @@ export default class UserProfileScreen extends Component{
     }
 
     async componentDidMount(){
-        this.setState({isLoading: true})
-        let userProfile = await get('me',{});
-        //console.log(userProfile)
+        this.init();
+    }
+
+    async init(){
         this.setState({
+            isLoading: true,
             filterLifeStyleImage1: this.state.lifeStyleImage1,
-            filterLifeStyleImage2: this.state.lifeStyleImage2
+            filterLifeStyleImage2: this.state.lifeStyleImage2,
         })
         let user = await store.get("user");
+        console.log(user)
         if(!user){
             user = {};
             user.name = "GUEST";
@@ -156,18 +159,48 @@ export default class UserProfileScreen extends Component{
         this._hideDateTimePicker()
     }
 
-    
-    onSubmitButtonPress(){
+    async updateUserProfile(userEmail,userPhone,userBirthDate,userGender,userCareer,userEducation,userIncome,userLifeStyle){
+        let params = {};
+        params.email = userEmail;
+        params.tel = userPhone;
+        params.gender = userGender;
+        params.income = userIncome;
+        params.education = userEducation;
+        params.career = userCareer;
+
+        let response = await put('me/profile',params);
+        let [user] = await Promise.all([get("me",{})]);
+        if(user){
+            await store.save("user",user);
+            this.init();
+        }
+        console.log(response);
+        return response.status;
+    }
+
+    async onSubmitButtonPress(){
         if(this.state.submitButtonText==='แก้ไขข้อมูล'){
             this.setState({
                 submitButtonText: 'บันทึกข้อมูล',
                 canEditProfile: true,
-            
             })
         }else{
+            this.setState({isLoading: true});
+            let response = await this.updateUserProfile(
+                this.state.userEmail,
+                this.state.userPhone,
+                this.state.userBirthDate,
+                this.state.userGender,
+                this.state.userCareer,
+                this.state.userEducation,
+                this.state.userIncome,
+                this.state.userLifeStyle
+            );
+
             this.setState({
                 submitButtonText: 'แก้ไขข้อมูล',
                 canEditProfile: false,
+                isLoading: false,
             })
         }
     }
@@ -187,6 +220,7 @@ export default class UserProfileScreen extends Component{
     }
 
     onCancelButtonPress(){
+        this.init();
         this.setState({
             submitButtonText: 'แก้ไขข้อมูล',
             canEditProfile: false,
@@ -235,6 +269,7 @@ export default class UserProfileScreen extends Component{
 
     onLifestyleModalSubmitButtonPress(){
         this.popupDialog.dismiss();
+        this.setState({isLoading: true});
         let filterLifeStyle = [];
         this.state.filterLifeStyleImage1.map((data)=>{
             if(data.isSelected==true){
@@ -250,6 +285,7 @@ export default class UserProfileScreen extends Component{
             userLifeStyle: filterLifeStyle,
             filterLifeStyleImage1: this.state.lifeStyleImage1,
             filterLifeStyleImage2: this.state.lifeStyleImage2,
+            isLoading: false,
         })
     }
 
@@ -434,7 +470,7 @@ export default class UserProfileScreen extends Component{
                         />
                         <TextInputIcon
                             genderValue={this.state.userCareer}
-                            onChangeText={(userCareer)=>this.setState({userCareer})}
+                            onSubmitEditing={(userCareer)=>this.setState({userCareer})}
                             leftLabelText='อาชีพ'
                             iconUri={require('./../source/icons/iconCareer.png')}
                             containerStyle={styles.inputContainerStyle}
@@ -447,7 +483,7 @@ export default class UserProfileScreen extends Component{
                         />
                         <TextInputIcon
                             genderValue={this.state.userEducation}
-                            onChangeText={(userEducation)=>this.setState({userEducation})}
+                            onSubmitEditing={(userEducation)=>this.setState({userEducation})}
                             leftLabelText='การศึกษา'
                             iconUri={require('./../source/icons/iconEducation.png')}
                             containerStyle={styles.inputContainerStyle}
@@ -460,7 +496,7 @@ export default class UserProfileScreen extends Component{
                         />
                         <TextInputIcon
                             genderValue={this.state.userIncome}
-                            onChangeText={(userIncome)=>this.setState({userIncome})}
+                            onSubmitEditing={(userIncome)=>this.setState({userIncome})}
                             leftLabelText='รายได้'
                             iconUri={require('./../source/icons/iconIncome.png')}
                             containerStyle={styles.inputContainerStyle}

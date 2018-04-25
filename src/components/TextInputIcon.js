@@ -24,19 +24,19 @@ class TextInputIcon extends Component{
             let dropDownMaster = await get('masterdata/profile',{});
             dropDownMaster.career.map((data,i)=>{
                 this.state.dropDownCareer.push({
-                    value: i,
+                    value: data,
                     label: data,
                 })
             })
             dropDownMaster.education.map((data,i)=>{
                 this.state.dropDownEducation.push({
-                    value: i,
+                    value: data,
                     label: data,
                 })
             })
             dropDownMaster.income.map((data,i)=>{
                 this.state.dropDownIncome.push({
-                    value: i,
+                    value: data,
                     label: data,
                 })
             })
