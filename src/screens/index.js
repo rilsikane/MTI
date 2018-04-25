@@ -27,6 +27,7 @@ import ReqOtpScreen from './ReqOtpScreen';
 import QAndAScreen from './QAndAScreen';
 import UsageHistoryScreen from './UsageHistoryScreen';
 import FavoriteScreen from './FavoriteScreen';
+import ActivityDetailScreen from './ActivityDetailScreen';
 
 import app from '../stores/app';
 
@@ -59,6 +60,7 @@ export function registerScreens() {
   Navigation.registerComponent('mti.QAndAScreen', () => QAndAScreen, Store, Provider);
   Navigation.registerComponent('mti.UsageHistoryScreen', () => UsageHistoryScreen, Store, Provider);
   Navigation.registerComponent('mti.FavoriteScreen', () => FavoriteScreen, Store, Provider);
+  Navigation.registerComponent('mti.ActivityDetailScreen', () => ActivityDetailScreen, Store, Provider);
 }
 export function registerScreenVisibilityListener() {
   new ScreenVisibilityListener({
