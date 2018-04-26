@@ -7,7 +7,7 @@ import MapView,{Marker} from 'react-native-maps';
 import {Headers} from './../components/Headers';
 import {MainSearchBox} from '../components/MainSearchBox';
 
-export default class PrivilegeSearchScreen extends Component{
+export default class ServiceSearchCorpCenterScreen extends Component{
 
     constructor(props){
         super(props)
@@ -16,20 +16,21 @@ export default class PrivilegeSearchScreen extends Component{
 
     render(){
         return(
-            <View style={styles.privilegeSearchScreenContainerStyle}>
+            <View style={styles.serviceSearchCorpCenterScreenContainerStyle}>
                 <Headers
                     leftIconName='back'
-                    headerTitleText='ค้นหาสิทธิพิเศษ'
+                    headerTitleText='ค้นหาศูนย์และอู่รับงานบริษัท'
                     rightIconName='iconBell'
                     withSearch
+                    longTitle
                 />
                 <MainSearchBox
                     //value={}
                     //onChangeText={}
                     onPress={()=>alert('search')}
-                    placeholder='ค้นหาสิทธิพิเศษที่คุณต้องการ'
+                    placeholder='ค้นหาศูนย์และอู่ในพื้นที่ที่คุณต้องการ'
                 />
-                <View style={styles.privilegeSearchContainerStyle}>
+                <View style={styles.serviceSearchCorpCenterContainerStyle}>
                     <MapView
                         initialRegion={{
                             latitude: 13.697567,
@@ -54,10 +55,10 @@ export default class PrivilegeSearchScreen extends Component{
 }
 
 const styles={
-    privilegeSearchScreenContainerStyle:{
+    serviceSearchCorpCenterScreenContainerStyle:{
         flex: 1,
     },
-    privilegeSearchContainerStyle:{
+    serviceSearchCorpCenterContainerStyle:{
         flex: 1,
     }
 }

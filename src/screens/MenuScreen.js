@@ -144,7 +144,7 @@ export default class MenuScreen extends Component{
                         </View>
                         <View style={styles.subBorderStyle}/>
                         <View style={styles.menuSectionStyle}>        
-                            <TouchableOpacity style={styles.menuSubSectionStyle}>
+                            <TouchableOpacity onPress={()=>this.gotoMenu("mti.ServiceScreen")} style={styles.menuSubSectionStyle}>
                                 <Image
                                     source={require('./../source/icons/iconServiceWhite.png')}
                                     resizeMode='contain'

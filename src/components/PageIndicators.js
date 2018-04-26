@@ -11,20 +11,27 @@ class PageIndicators extends Component{
     }
 
     renderIndicators(){
-        let indicatorColor = ['#b2dff1','#b2dff1','#b2dff1','#b2dff1']
+        let indicatorColor = [];
+        if(this.props.numberOfPage){
+            for(let i=0;i<this.props.numberOfPage;i++){
+                indicatorColor.push('#b2dff1');
+            }
+        }else{
+            indicatorColor = ['#b2dff1','#b2dff1','#b2dff1','#b2dff1'];
+        }
         let pageNumber = this.props.pageNumber
         for(let index=0;index<pageNumber;index++){
             indicatorColor[index] = '#0194d2'
         }
 
         return indicatorColor.map((indicatorColor,i)=>
-            <View key={i} style={[styles.indicatorStyle,{backgroundColor: indicatorColor}]}/>
+            <View key={i} style={[styles.indicatorStyle,{backgroundColor: indicatorColor},this.props.style]}/>
         )
     }
 
     render(){
         return(
-            <View style={styles.indicatorContainerStyle}>
+            <View style={[styles.indicatorContainerStyle,this.props.containerStyle]}>
                 {this.renderIndicators()}
             </View>
         )
@@ -44,6 +51,7 @@ const styles={
     indicatorStyle:{
         width: responsiveWidth(20),
         height: responsiveHeight(0.7),
+        borderRadius: 3,
     }
 }
 

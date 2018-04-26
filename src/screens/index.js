@@ -29,6 +29,11 @@ import UsageHistoryScreen from './UsageHistoryScreen';
 import FavoriteScreen from './FavoriteScreen';
 import ActivityDetailScreen from './ActivityDetailScreen';
 import PrivilegeSearchScreen from './PrivilegeSearchScreen';
+import ActivityFeedbackScreen from './ActivityFeedbackScreen';
+import ServiceScreen from './ServiceScreen';
+import ServiceSearchHospitalScreen from './ServiceSearchHospitalScreen';
+import ServiceSearchCorpCenterScreen from './ServiceSearchCorpCenterScreen';
+import ServiceSearchBranchScreen from './ServiceSearchBranchScreen';
 
 import app from '../stores/app';
 
@@ -63,6 +68,11 @@ export function registerScreens() {
   Navigation.registerComponent('mti.FavoriteScreen', () => FavoriteScreen, Store, Provider);
   Navigation.registerComponent('mti.ActivityDetailScreen', () => ActivityDetailScreen, Store, Provider);
   Navigation.registerComponent('mti.PrivilegeSearchScreen', () => PrivilegeSearchScreen, Store, Provider);
+  Navigation.registerComponent('mti.ActivityFeedbackScreen', () => ActivityFeedbackScreen, Store, Provider);
+  Navigation.registerComponent('mti.ServiceScreen', () => ServiceScreen, Store, Provider);
+  Navigation.registerComponent('mti.ServiceSearchHospitalScreen', () => ServiceSearchHospitalScreen, Store, Provider);
+  Navigation.registerComponent('mti.ServiceSearchCorpCenterScreen', () => ServiceSearchCorpCenterScreen, Store, Provider);
+  Navigation.registerComponent('mti.ServiceSearchBranchScreen', () => ServiceSearchBranchScreen, Store, Provider);
 }
 export function registerScreenVisibilityListener() {
   new ScreenVisibilityListener({

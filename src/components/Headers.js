@@ -119,13 +119,13 @@ class Headers extends Component{
                     resizeMode='stretch'
                 >
                     <View style={[styles.headerItemsContainerStyle,this.props.withSearch?styles.headerItemsWithSearchContainerStyle:{}]}>
-                        <View style={styles.headerLeftItemContainerStyle}>
+                        <View style={[styles.headerLeftItemContainerStyle,this.props.longTitle&&styles.sideItemWithLongTitleStyle,this.props.withSearch&&styles.leftItemWithSearchStyle]}>
                             {this.renderLeftButton()}
                         </View>
-                        <View style={styles.headerCenterItemContainerStyle}>
+                        <View style={[styles.headerCenterItemContainerStyle,this.props.longTitle&&{flex: 0.8}]}>
                             {this.renderCenterItems()}
                         </View>
-                        <View style={styles.headerRightItemContainerStyle}>
+                        <View style={[styles.headerRightItemContainerStyle,this.props.longTitle&&styles.sideItemWithLongTitleStyle,this.props.withSearch&&styles.rightItemWithSearchStyle]}>
                             {this.renderRightButton()}
                         </View>
                     </View>
@@ -162,14 +162,25 @@ const styles={
     },
     headerCenterItemContainerStyle:{
         flex: 0.6,
-        alignItems: 'center'
+        alignItems: 'center',
+      
     },
     headerRightItemContainerStyle:{
         flex: 0.2,
-        alignItems: 'flex-end'
+        alignItems: 'flex-end',
+
     },
     headerItemsWithSearchContainerStyle:{
         alignItems: 'flex-start',
+    },
+    sideItemWithLongTitleStyle:{
+        flex: 0.1,
+    },
+    leftItemWithSearchStyle:{
+        marginTop: responsiveHeight(0.5),
+    },
+    rightItemWithSearchStyle:{
+        marginTop: responsiveHeight(1),
     },
     leftIconImageStyle:{
         height: responsiveHeight(2.46),
