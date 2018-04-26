@@ -2,15 +2,24 @@ import React,{Component} from 'react';
 import {Text,View,Image,TouchableOpacity} from 'react-native';
 import PropTypes from "prop-types";
 import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
+import PopupDialog,{ SlideAnimation }  from 'react-native-popup-dialog';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
+import {TextInputIcon} from './../components/TextInputIcon';
 import {Headers} from '../components/Headers';
+import {postBasic} from '../api'
 
 export default class ServiceScreen extends Component{
 
     constructor(props){
         super(props)
+        this.state={
+            emailErr:false,telErr:false,
+            name:'',surname:'',email:'',tel:''
+        }
         this.gotoService = this.gotoService.bind(this);
         this.onServicePress = this.onServicePress.bind(this);
+        this.openLeavingContactPopup = this.openLeavingContactPopup.bind(this);
     }
 
     renderServiceList(){
@@ -55,7 +64,7 @@ export default class ServiceScreen extends Component{
 
     onServicePress(index){
         if(index==0){
-
+            this.openLeavingContactPopup()
         }else if(index==1){
             this.gotoService('mti.ServiceSearchHospitalScreen');
         }else if(index==2){
@@ -75,6 +84,158 @@ export default class ServiceScreen extends Component{
             backButtonTitle: undefined, // override the back button title (optional)
             backButtonHidden: false, // hide the back button altogether (optional)
         })
+    }
+
+    openLeavingContactPopup(){
+        this.leavingDialog.show();
+    }
+
+    async requestContact(){
+        let param = {};
+        param.name = this.state.name;
+        param.surname = this.state.surname;
+        param.email = this.state.email;
+        param.tel = this.state.tel;
+
+        let response = await postBasic("member/request",param);
+        if(response){
+            Alert.alert(
+                'สำเร็จ',
+                'ฝากข้อมูลติดต่อกลับเรียบร้อย',
+                [
+                {text: 'ตกลง', onPress: () =>{
+                    this.leavingDialog.dismiss();
+                    this.props.navigator.dismissModal({
+                        animationType: 'slide-down' // 'none' / 'slide-down' , dismiss animation for the modal (optional, default 'slide-down')
+                    });
+                    setTimeout(()=>{
+                        this.props.navigator.resetTo({
+                            screen: 'mti.LoginScreen', // unique ID registered with Navigation.registerScreen
+                            title: undefined, // navigation bar title of the pushed screen (optional)
+                            titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
+                            animated: true, // does the push have transition animation or does it happen immediately (optional)
+                            animationType: 'slide-down',
+                            backButtonTitle: undefined, // override the back button title (optional)
+                            backButtonHidden: false, // hide the back button altogether (optional)
+                            })
+                    },500)
+                  }
+                }
+                ]
+            )
+        }else{
+
+        }
+    }
+
+    renderLeavingContactPopup(){
+        return(
+            <PopupDialog
+                ref={(leavingDialog) => { this.leavingDialog = leavingDialog; }}
+                width={responsiveWidth(90)}
+                height={responsiveHeight(60)}
+                dialogStyle={styles.popupContainerStyle}
+                containerStyle={styles.popupLayoutContainerStyle}
+            >
+             <KeyboardAwareScrollView
+                resetScrollToCoords={{ x: 0, y: 0 }}
+                automaticallyAdjustContentInsets={false}
+                //keyboardShouldPersistTaps='always'
+                enableOnAndroid={true}
+                contentContainerStyle={{flexGrow:1,}}
+                //style={{flex: 1}}
+                scrollEnabled={true}
+                >
+                    <TouchableOpacity onPress={()=> this.leavingDialog.dismiss()}>
+                        <Image
+                            source={require('./../source/icons/btnClose.png')}
+                            style={styles.btnCloseImageStyle}
+                            resizeMode='contain'
+                        />
+                    </TouchableOpacity>
+                    <View>
+                        <Text style={styles.popupTitleTextStyle}>ฝากข้อมูลติดต่อกลับ</Text>
+                        <Text style={styles.popupDetailTextStyle}>กรุณากรอกข้อมูลของคุณและรอการติดต่อกลับ</Text>
+                        <TextInputIcon
+                            value={this.state.name}
+                            onChangeText={(userFirstName)=>this.setState({name:userFirstName})}
+                            leftLabelText='ชื่อ'
+                            iconUri={require('./../source/icons/iconAvatar.png')}
+                            containerStyle={styles.inputContainerStyle}
+                            secondFlex={secondFlex}
+                            thirdFlex={thirdFlex}
+                        />
+                        <TextInputIcon
+                            value={this.state.surname}
+                            onChangeText={(userLastName)=>this.setState({surname:userLastName})}
+                            leftLabelText='นามสกุล'
+                            iconUri={require('./../source/icons/iconAvatar.png')}
+                            containerStyle={styles.inputContainerStyle}
+                            secondFlex={secondFlex}
+                            thirdFlex={thirdFlex}
+                        />
+                        <TextInputIcon
+                            value={this.state.tel}
+                            onChangeText={(userPhone)=>this.setState({tel:userPhone})}
+                            leftLabelText='เบอร์โทรศัพท์'
+                            iconUri={require('./../source/icons/iconPhone.png')}
+                            containerStyle={styles.inputContainerStyle}
+                            secondFlex={secondFlex}
+                            thirdFlex={thirdFlex}
+                            keyboardType='phone-pad'
+                            onBlur={()=>{
+                                if(this.state.tel.length!=10 && this.state.tel.length!=12){
+                                    this.setState({telErr:true})
+                                }else{
+                                    this.setState({telErr:false})
+                                }
+                            }}
+                            blurOnSubmit={true}
+                        />
+                        {this.state.telErr && <Text style={styles.errorMsg}>เบอร์โทรศัพท์ ไม่ถูกต้อง</Text>}
+                        <TextInputIcon
+                            value={this.state.email}
+                            onChangeText={(email)=>this.setState({email:email})}
+                            leftLabelText='อีเมล'
+                            iconUri={require('../source/icons/iconMail.png')}
+                            containerStyle={styles.inputContainerStyle}
+                            secondFlex={secondFlex}
+                            thirdFlex={thirdFlex}
+                            keyboardType='email-address'
+                            onBlur={()=>{
+                                var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                                if(re.test(this.state.email)){
+                                    this.setState({emailErr:false})
+                                }else{
+                                    this.setState({emailErr:true})
+                                }
+                            }}
+                            blurOnSubmit={true}
+                            returnKeyType = {"done"}
+                            
+                        />
+                        {this.state.emailErr && <Text style={styles.errorMsg}>Email ไม่ถูกต้อง</Text>}
+                    </View>
+                    {this.isShowSumbit() && <View style={styles.submitButtonContainerStyle}>
+                        <MainSubmitButton
+                            buttonTitleText='ตกลง'
+                            onPress={()=>this.requestContact()}
+                        />
+                    </View>}
+                </KeyboardAwareScrollView>
+            </PopupDialog>
+        )
+    }
+
+    isShowSumbit(){
+        if(''!=this.state.name && ''!=this.state.surname
+            && ''!=this.state.email
+            && ''!=this.state.tel
+            && !this.state.emailErr && !this.state.telErr){
+                return true;
+        }else{
+            return false;
+        }
     }
 
     render(){
@@ -102,10 +263,13 @@ export default class ServiceScreen extends Component{
                         />
                     </View>
                 </View>
+                {this.renderLeavingContactPopup()}
             </View>
         )
     }
 }
+
+const secondFlex = 0.3,thirdFlex = 0.9
 
 const styles={
     serviceScreenContainerStyle:{
@@ -145,5 +309,50 @@ const styles={
         opacity: 0.3,
         marginTop: responsiveHeight(3),
         marginBottom: responsiveHeight(3),
+    },
+    popupContainerStyle:{
+        borderRadius: 3,
+        padding: responsiveWidth(4),
+
+    },
+    popupLayoutContainerStyle:{
+        justifyContent: 'flex-start',
+        paddingTop: responsiveHeight(10)
+    },
+    btnCloseImageStyle:{
+        height: responsiveHeight(2.81),
+        alignSelf: 'flex-end'
+    },
+    popupTitleTextStyle:{
+        fontSize: responsiveFontSize(3),
+        color: '#1595d3',
+        textAlign: 'center',
+        marginTop: responsiveHeight(2.5),
+        marginBottom: responsiveHeight(2),
+
+    },
+    popupDetailTextStyle:{
+        fontSize: responsiveFontSize(2.2),
+        color: '#919195',
+        textAlign: 'center',
+        marginLeft: responsiveWidth(8),
+        marginRight: responsiveWidth(8),
+    },
+    popupRefTextStyle:{
+        fontSize: responsiveFontSize(2.6),
+        color: '#1595d3',
+        textAlign: 'center',
+        textDecorationLine: 'underline'
+    },
+    submitButtonContainerStyle:{
+        marginLeft: responsiveWidth(2),
+        marginRight: responsiveWidth(2),
+        justifyContent: 'center',
+        marginTop: responsiveHeight(2),
+
+    },
+    inputContainerStyle:{
+        borderBottomColor: '#C4C4C4',
+        height: responsiveHeight(8),
     },
 }
