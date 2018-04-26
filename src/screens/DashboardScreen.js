@@ -11,6 +11,7 @@ import { observer, inject } from 'mobx-react';
 import {post,authen,get} from '../api';
 import store from 'react-native-simple-store';
 import Spinner from 'react-native-loading-spinner-overlay';
+import app from '../stores/app';
 
 @inject('naviStore')
 @observer
@@ -53,6 +54,7 @@ export default class DashboardScreen extends Component{
         this.props.naviStore.navigation = this.props.navigator;
         this.openDetail = this.openDetail.bind(this);
         this.goToPrivilleges = this.goToPrivilleges.bind(this);
+        this.app = app;
     }
     async componentDidMount(){
         let user = await store.get("user");
@@ -62,22 +64,27 @@ export default class DashboardScreen extends Component{
             if(response){
                 await store.update("user",response);
                 this.setState({isLoading:false});
+                let privilegeGroup = await get("privilege/groups",{});
+                if(privilegeGroup){
+                    await store.save("privilegeGroup",privilegeGroup.data);
+                }
+                let hotDeal = await get("privileges?filter_set=hotdeal&page=1&pagesize=5",{});
+                if(hotDeal){
+                    console.log(hotDeal.data);
+                    this.setState({hotDeal:hotDeal.data});
+                }
+                let myLife = await get("privileges?filter_set=lifestyle&page=1&pagesize=5",{});
+                if(myLife){
+                    this.setState({myLifeStyle:myLife.data});
+                }
             }else{
                 this.setState({isLoading:false});
+                setTimeout(()=>{
+                    this.app.logout();
+                },500)
+               
             }
-            let privilegeGroup = await get("privilege/groups",{});
-            if(privilegeGroup){
-                await store.save("privilegeGroup",privilegeGroup.data);
-            }
-            let hotDeal = await get("privileges?filter_set=hotdeal&page=1&pagesize=5",{});
-            if(hotDeal){
-                console.log(hotDeal.data);
-                this.setState({hotDeal:hotDeal.data});
-            }
-            let myLife = await get("privileges?filter_set=lifestyle&page=1&pagesize=5",{});
-            if(myLife){
-                this.setState({myLifeStyle:myLife.data});
-            }
+           
         }else{
             this.setState({isLoading:false});
         }

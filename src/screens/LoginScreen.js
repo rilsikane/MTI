@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Text,View,Image,Dimensions,ImageBackground,TextInput,TouchableOpacity,ScrollView,SafeAreaView,Keyboard,Animated,StatusBar} from 'react-native';
+import {Text,View,Image,Dimensions,ImageBackground,TextInput,TouchableOpacity,ScrollView,SafeAreaView,Keyboard,Animated,StatusBar,Alert} from 'react-native';
 import PropTypes from "prop-types";
 import { Container, Header, Content, Item, Input, Icon,Card } from 'native-base';
 import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
@@ -42,13 +42,20 @@ export default class LoginScreen extends Component{
         }
     }
     async login(){
-       
+        if(this.state.userEmail=='' || this.state.userPassword==''){
+            Alert.alert(
+            'เกิดข้อผิดพลาด',
+            `Invalid Username and Passowrd`,
+            [
+            {text: 'OK', onPress: () => console.log('OK Pressed!')},
+            ]
+            )
+            return false
+        }
         let param = {};
         param.username = this.state.userEmail;
         param.password = this.state.userPassword;
-        setTimeout(()=>{
-            this.setState({isLoading:true});
-        },100)
+        this.setState({isLoading:true});
         let response = await authen(param);
         if(response){
             if(response.first_logon=="N"){
@@ -63,7 +70,9 @@ export default class LoginScreen extends Component{
                         this.gotoWelcome();
                     }
                 }else{
-                    this.setState({isLoading:false});
+                     setTimeout(()=>{
+                        this.setState({isLoading:false});
+                    },500)
                 }
             }else{
 
@@ -89,8 +98,14 @@ export default class LoginScreen extends Component{
                 
                 
             }
+        }else{
+            this.setState({isLoading:false});
+            setTimeout(()=>{
+                this.setState({isLoading:false});
+            },1500)
+            return false;
         }
-        this.setState({isLoading:false});
+      
     }
     gotoRegister(user){
         this.props.navigator.push({
@@ -297,7 +312,7 @@ export default class LoginScreen extends Component{
                                     </TouchableOpacity>
                                     
                                 </View>
-                                <Text style={{color:"#fff"}}>Version : 1.32</Text>
+                                <Text style={{color:"#fff"}}>Version : 1.34</Text>
                                 <View style={styles.registerBottomContainerStyle}>
                                     <TouchableOpacity onPress={this.gotoRegister}>
                                         <Text style={styles.registerBottomTextStyle}>ลงทะเบียนสมาชิก</Text>
@@ -309,7 +324,7 @@ export default class LoginScreen extends Component{
                             </View>
                         </ImageBackground>
                     </View>
-                    {this.state.isLoading && <Spinner visible={this.state.isLoading}  textStyle={{color: '#FFF'}} />}
+                    <Spinner visible={this.state.isLoading}  textStyle={{color: '#FFF'}} />
                 </ScrollView>
                 {/* {this.renderForgotPasswordPopup()} */}
             </View>

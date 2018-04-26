@@ -340,7 +340,7 @@ const styles={
     popupContainerStyle:{
         borderRadius: 3,
         padding: responsiveWidth(4),
-
+        zIndex:9999
     },
     popupLayoutContainerStyle:{
         justifyContent: 'flex-start',

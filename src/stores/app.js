@@ -21,6 +21,9 @@ class AppStore {
     this.root = 'after-login';
   }
   logout() {
+    store.delete("user");
+    store.delete("policy");
+    store.delete("token");
     this.root = 'login';
 
   }

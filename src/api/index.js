@@ -40,7 +40,7 @@ export async function authen(param){
                     [
                     {text: 'OK', onPress: () => console.log('OK Pressed!')},
                     ]
-                    ),200});
+                    ),500});
                 return false;
             }
         }else{
@@ -50,7 +50,7 @@ export async function authen(param){
                 [
                 {text: 'OK', onPress: () => console.log('OK Pressed!')},
                 ]
-                ),200});
+                ),500});
             return false;
         }
 
@@ -62,7 +62,8 @@ export async function authen(param){
             [
             {text: 'OK', onPress: () => console.log('OK Pressed!')},
             ]
-            ),200});
+            ),500});
+            return false;
         }else{
             setTimeout(()=>{Alert.alert(
                 'เกิดข้อผิดพลาด',
@@ -70,7 +71,7 @@ export async function authen(param){
                 [
                 {text: 'OK', onPress: () => console.log('OK Pressed!')},
                 ]
-                ),200});
+                ),500});
         }
         return false;
           

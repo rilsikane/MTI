@@ -34,7 +34,7 @@ class UserShortDetailCard extends Component{
                 <View style={styles.userShortDetailContainerStyle}>
                     <Text ellipsizeMode='tail' numberOfLines={1} style={styles.userNameTextStyle}>{`${this.state.user.name} ${this.state.user.surname}`}</Text>
                     <Text style={styles.userLevelTextStyle}>สมาชิกระดับ {this.state.user.member_type}</Text>
-                    <View style={styles.seeUserDetailLinkContainerStyle}>
+                     <View style={styles.seeUserDetailLinkContainerStyle}>
                         <TouchableOpacity style={styles.seeUserDetailLinkSectionStyle} onPress={()=>this.props.navigator.push({
                                     screen: 'mti.ProfileScreen', 
                                     title: undefined, 

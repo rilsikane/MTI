@@ -21,10 +21,15 @@ export default class UserInsuranceListScreen extends Component{
 
     }
     async componentDidMount(){
-        this.setState({isLoading:true});
-        let response = await get("me/policy",{});
-        if(response){
-            this.setState({isLoading:false,policys:response});
+        const user = await store.get("user");
+        if(user && "GUEST"!=user.name){
+            this.setState({isLoading:true});
+            let response = await get("me/policy",{});
+            if(response){
+                this.setState({isLoading:false,policys:response});
+            }else{
+                this.setState({isLoading:false})
+            }
         }else{
             this.setState({isLoading:false})
         }
