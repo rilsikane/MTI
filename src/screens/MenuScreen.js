@@ -155,7 +155,9 @@ export default class MenuScreen extends Component{
                         </View>
                         <View style={styles.mainBorderStyle}/>
                         <View style={styles.menuSectionStyle}>        
-                            <TouchableOpacity style={styles.menuSubSectionStyle}>
+                            <TouchableOpacity style={styles.menuSubSectionStyle}
+                                onPress={()=>this.gotoMenu("mti.ContactUsScreen")}
+                            >
                                 <Image
                                     source={require('./../source/icons/iconContactWhite.png')}
                                     resizeMode='contain'
