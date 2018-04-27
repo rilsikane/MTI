@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Text,View,Image,ImageBackground,TouchableOpacity,ScrollView} from 'react-native';
+import {Text,View,Image,ImageBackground,TouchableOpacity,ScrollView,Alert} from 'react-native';
 import PropTypes from "prop-types";
 import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
 import DateTimePicker from 'react-native-modal-datetime-picker';
@@ -35,76 +35,17 @@ export default class UserProfileScreen extends Component{
             member_type:'',
             userProfile:{},
             submitButtonText: 'แก้ไขข้อมูล',
-            lifeStyleImage1:[
-                {
-                    uri: require('./../source/icons/iconBeauty.png'),
-                    title: 'Beauty',
-                    isSelected: false,
-                },
-                {
-                    uri: require('./../source/icons/iconDining.png'),
-                    title: 'Dining',
-                    isSelected: false,
-                },
-                {
-                    uri: require('./../source/icons/iconTravel.png'),
-                    title: 'Travel',
-                    isSelected: false,
-                }
-            ],
-            lifeStyleImage1Selected:[
-                {
-                    uri: require('./../source/icons/iconBeautySelected.png'),
-                    title: 'Beauty',
-                    isSelected: true,
-                },
-                {
-                    uri: require('./../source/icons/iconDiningSelected.png'),
-                    title: 'Dining',
-                    isSelected: true,
-                },
-                {
-                    uri: require('./../source/icons/iconTravelSelected.png'),
-                    title: 'Travel',
-                    isSelected: true,
-                }
-            ],
-            lifeStyleImage2:[
-                {
-                    uri: require('./../source/icons/iconHealthy.png'),
-                    title: 'Healthy',
-                    isSelected: false,
-                },
-                {
-                    uri: require('./../source/icons/iconAuto.png'),
-                    title: 'Auto',
-                    isSelected: false,
-                },
-                {
-                    uri: require('./../source/icons/iconShopping.png'),
-                    title: 'Shopping',
-                    isSelected: false,
-                }
-            ],
-            lifeStyleImage2Selected:[
-                {
-                    uri: require('./../source/icons/iconHealthySelected.png'),
-                    title: 'Healthy',
-                    isSelected: true,
-                },
-                {
-                    uri: require('./../source/icons/iconAutoSelected.png'),
-                    title: 'Auto',
-                    isSelected: true,
-                },
-                {
-                    uri: require('./../source/icons/iconShoppingSelected.png'),
-                    title: 'Shopping',
-                    isSelected: true,
-                }
-            ],
+            lifeStyleImage1:[],
+            lifeStyleImage1Selected:[],
+            lifeStyleImage2:[],
+            lifeStyleImage2Selected:[],
             filterLifeStyleImage1: [],
             filterLifeStyleImage2: [],
+            lifeStyleImage3:[],
+            lifeStyleImage3Selected:[],
+            filterLifeStyleImage3: [],
+            lifestyle:[],
+            orgUserLifeStyleId: [],
             dropDownCareer: [],
             dropDownEducation: [],
             dropDownIncome: [],
@@ -115,6 +56,7 @@ export default class UserProfileScreen extends Component{
             isLoading: false,
         }
         this.onUpdatePictureProfilePress = this.onUpdatePictureProfilePress.bind(this);
+        this.onCloseModalPress = this.onCloseModalPress.bind(this);
         moment.locale("th");
     }
 
@@ -163,10 +105,28 @@ export default class UserProfileScreen extends Component{
     }
 
     async init(){
+        this.setState({isLoading:true});
+        let response = await get("privilege/groups",{});
+        let list = response.data;
+        let list1=[],list2=[],list3=[];
+        for(let i=0;i<list.length;i++){
+            list[i].isSelected = false;
+            if(i<3){
+                list1.push(list[i]);
+            }else if(i<6){
+                list2.push(list[i]);
+            }else if(i<9){
+                list3.push(list[i]);
+            }
+        }
+
+        this.setState({lifeStyleImage1:list1,lifeStyleImage1Selected:list1});
+        this.setState({lifeStyleImage2:list2,lifeStyleImage2Selected:list2});
+        this.setState({lifeStyleImage3:list3,lifeStyleImage3Selected:list3,isLoading:false});
         this.setState({
-            isLoading: true,
             filterLifeStyleImage1: this.state.lifeStyleImage1,
             filterLifeStyleImage2: this.state.lifeStyleImage2,
+            filterLifeStyleImage3: this.state.lifeStyleImage3
         })
         let user = await store.get("user");
         console.log(user)
@@ -186,7 +146,8 @@ export default class UserProfileScreen extends Component{
             userCareer:user.career,
             userEducation:user.education,
             userIncome:user.income,
-            userLifeStyle:user.lifestyle,
+            userLifeStyle:user.lifestyle.map(data=>data.title),
+            orgUserLifeStyleId: user.lifestyle.map(data=>data.id),
             isLoading: false,
         })
     }
@@ -239,7 +200,7 @@ export default class UserProfileScreen extends Component{
                 this.state.userCareer,
                 this.state.userEducation,
                 this.state.userIncome,
-                this.state.userLifeStyle
+                this.state.lifestyle
             );
 
             this.setState({
@@ -282,11 +243,11 @@ export default class UserProfileScreen extends Component{
                 ref={(popupDialog) => { this.popupDialog = popupDialog; }}
                 //dialogAnimation={slideAnimation}
                 width={responsiveWidth(90.15)}
-                height={responsiveHeight(58.05)}
+                height={responsiveHeight(63)}
                 dialogStyle={styles.popupContainerStyle}
             >
                 <View>
-                    <TouchableOpacity onPress={()=> this.popupDialog.dismiss()}>
+                    <TouchableOpacity onPress={this.onCloseModalPress}>
                         <Image
                             source={require('./../source/icons/btnClose.png')}
                             style={styles.btnCloseImageStyle}
@@ -300,7 +261,9 @@ export default class UserProfileScreen extends Component{
                     <View style={styles.lifestyleBoxList2ContainerStyle}>
                         {this.renderLifeStyleBoxList2()}
                     </View>
-
+                    <View style={[styles.lifestyleBoxList2ContainerStyle,{paddingTop:10}]}>
+                        {this.renderLifeStyleBoxList3()}
+                    </View>
                     <View style={styles.submitButtonContainerStyle}>
                         <MainSubmitButton
                             buttonTitleText='ตกลง'
@@ -312,68 +275,125 @@ export default class UserProfileScreen extends Component{
         )
     }
 
-    onLifestyleModalSubmitButtonPress(){
+    onCloseModalPress(){
         this.popupDialog.dismiss();
-        this.setState({isLoading: true});
-        let filterLifeStyle = [];
-        this.state.filterLifeStyleImage1.map((data)=>{
-            if(data.isSelected==true){
-                filterLifeStyle.push(data.title)
-            }
-        })
-        this.state.filterLifeStyleImage2.map((data)=>{
-            if(data.isSelected==true){
-                filterLifeStyle.push(data.title)
-            }
-        })
         this.setState({
-            userLifeStyle: filterLifeStyle,
-            filterLifeStyleImage1: this.state.lifeStyleImage1,
-            filterLifeStyleImage2: this.state.lifeStyleImage2,
-            isLoading: false,
+            lifestyle: this.state.orgUserLifeStyleId,
         })
     }
 
-    onLifeStylePress(index,list){
-        if(list==='1'){
-            const lifeStyleImage1 = [...this.state.filterLifeStyleImage1]
-            const lifeStyleImage1Selected = [...this.state.lifeStyleImage1Selected]
-            
-            lifeStyleImage1[index] = {...lifeStyleImage1Selected[index]}
-      
-            this.setState({
-                filterLifeStyleImage1: lifeStyleImage1
+    onLifestyleModalSubmitButtonPress(){
+        console.log(this.state.lifestyle)
+        if(this.state.lifestyle && this.state.lifestyle.length>0){
+            this.popupDialog.dismiss();
+            this.setState({isLoading: true});
+            let filterLifeStyle = [];
+            this.state.filterLifeStyleImage1.map((data)=>{
+                if(data.isSelected==true){
+                    filterLifeStyle.push(data.name)
+                }
             })
+            this.state.filterLifeStyleImage2.map((data)=>{
+                if(data.isSelected==true){
+                    filterLifeStyle.push(data.name)
+                }
+            })
+            this.state.filterLifeStyleImage3.map((data)=>{
+                if(data.isSelected==true){
+                    filterLifeStyle.push(data.name)
+                }
+            })
+            console.log(this.state.filterLifeStyleImage2)
+            console.log(filterLifeStyle)
+            this.setState({
+                userLifeStyle: filterLifeStyle,
+                filterLifeStyleImage1: this.state.lifeStyleImage1,
+                filterLifeStyleImage2: this.state.lifeStyleImage2,
+                filterLifeStyleImage3: this.state.lifeStyleImage3,
+                isLoading: false,
+            })
+            console.log(this.state.userLifeStyle)
         }else{
-            const lifeStyleImage2 = [...this.state.filterLifeStyleImage2]
-            const lifeStyleImage2Selected = [...this.state.lifeStyleImage2Selected]
-            
-            lifeStyleImage2[index] = {...lifeStyleImage2Selected[index]}
-      
-            this.setState({
-                filterLifeStyleImage2: lifeStyleImage2
-            })
+            Alert.alert(
+                'เกิดข้อผิดพลาด',
+                'กรุณาเลือกอย่างน้อย 1 รายการ',
+                [
+                {text: 'OK', onPress: () => console.log('OK Pressed!')},
+                ]
+            )
         }
+     
     }
 
-    _onCloseButtonPress(index,list){
-        if(list==='1'){
+    onLifeStylePress(index,list,title,isSelected){
+        if(list=='1'){
+            if(!isSelected){
+                const lifeStyleImage1 = [...this.state.filterLifeStyleImage1]
+                
+                lifeStyleImage1[index].isSelected=true;
+        
+                this.setState({
+                    filterLifeStyleImage1: lifeStyleImage1,
+                    lifestyle:[...this.state.lifestyle,title]
+                })
+            }else{
+                this._onCloseButtonPress(index,list,title);
+            }   
+        }else if(list=='2'){
+            if(!isSelected){
+                const lifeStyleImage2 = [...this.state.filterLifeStyleImage2]
+                lifeStyleImage2[index].isSelected=true;
+                
+        
+                this.setState({
+                    filterLifeStyleImage2: lifeStyleImage2,
+                    lifestyle:[...this.state.lifestyle,title]
+                })
+            }else{
+                this._onCloseButtonPress(index,list,title);
+            }
+        }else{
+            if(!isSelected){
+                const lifeStyleImage3 = [...this.state.filterLifeStyleImage3]
+                lifeStyleImage3[index].isSelected=true;
+        
+                this.setState({
+                    filterLifeStyleImage3: lifeStyleImage3,
+                    lifestyle:[...this.state.lifestyle,title]
+                })
+            }else{
+                this._onCloseButtonPress(index,list,title);
+            }
+        }
+      
+    }
+
+    _onCloseButtonPress(index,list,title){
+        if(list=='1'){
             const lifeStyleImage1 = [...this.state.filterLifeStyleImage1]
-            const tempLifeStyleImage1 = [...this.state.lifeStyleImage1]
             
-            lifeStyleImage1[index] = {...tempLifeStyleImage1[index]}
+            lifeStyleImage1[index].isSelected=false;
+            this.setState({
+                filterLifeStyleImage1: lifeStyleImage1,
+                lifestyle:[...this.state.lifestyle.filter((item=>item!=title))]
+            })
+        }else if(list=='2'){
+            const lifeStyleImage2 = [...this.state.filterLifeStyleImage2]
+            
+            lifeStyleImage2[index].isSelected = false;
             
             this.setState({
-                filterLifeStyleImage1: lifeStyleImage1
+                filterLifeStyleImage2: lifeStyleImage2,
+                lifestyle:[...this.state.lifestyle.filter((item=>item!=title))]
             })
         }else{
-            const lifeStyleImage2 = [...this.state.filterLifeStyleImage2]
-            const tempLifeStyleImage2 = [...this.state.lifeStyleImage2]
+            const lifeStyleImage3 = [...this.state.filterLifeStyleImage3]
             
-            lifeStyleImage2[index] = {...tempLifeStyleImage2[index]}
+            lifeStyleImage3[index].isSelected=false;
             
             this.setState({
-                filterLifeStyleImage2: lifeStyleImage2
+                filterLifeStyleImage3: lifeStyleImage3,
+                lifestyle:[...this.state.lifestyle.filter((item=>item!=title))]
             })
         }
       
@@ -385,11 +405,11 @@ export default class UserProfileScreen extends Component{
         return lifeStyleImage.map((lifeStyleImage,i)=>
             <LifeStyleBox
                 key={i}
-                imageUri={lifeStyleImage.uri}
-                boxTitle={lifeStyleImage.title}
+                imageUri={lifeStyleImage.icon_url!="" ? {uri:lifeStyleImage.icon_url}:null}
+                boxTitle={lifeStyleImage.name}
                 isSelected={lifeStyleImage.isSelected}
-                onPress={()=>this.onLifeStylePress(i,'1')}
-                onCloseButtonPress={()=>this._onCloseButtonPress(i,'1')}
+                onPress={()=>this.onLifeStylePress(i,'1',lifeStyleImage.id,lifeStyleImage.isSelected)}
+                onCloseButtonPress={()=>this._onCloseButtonPress(i,'1',lifeStyleImage.id)}
                 style={styles.boxListStyle}
             />
         )
@@ -401,12 +421,27 @@ export default class UserProfileScreen extends Component{
         return lifeStyleImage.map((lifeStyleImage,i)=>
             <LifeStyleBox
                 key={i}
-                imageUri={lifeStyleImage.uri}
-                boxTitle={lifeStyleImage.title}
+                imageUri={lifeStyleImage.icon_url!="" ? {uri:lifeStyleImage.icon_url}:null}
+                boxTitle={lifeStyleImage.name}
                 isSelected={lifeStyleImage.isSelected}
-                onPress={()=>this.onLifeStylePress(i,'2')}
-                onCloseButtonPress={()=>this._onCloseButtonPress(i,'2')}
+                onPress={()=>this.onLifeStylePress(i,'2',lifeStyleImage.id,lifeStyleImage.isSelected)}
+                onCloseButtonPress={()=>this._onCloseButtonPress(i,'2',lifeStyleImage.id)}
                 style={styles.boxListStyle}
+            />
+        )
+    }
+
+    renderLifeStyleBoxList3(){
+        const lifeStyleImage = [...this.state.filterLifeStyleImage3]
+
+        return lifeStyleImage.map((lifeStyleImage,i)=>
+            <LifeStyleBox
+                key={i}
+                imageUri={lifeStyleImage.icon_url!="" ? {uri:lifeStyleImage.icon_url}:null}
+                boxTitle={lifeStyleImage.name}
+                isSelected={lifeStyleImage.isSelected}
+                onPress={()=>this.onLifeStylePress(i,'3',lifeStyleImage.id,lifeStyleImage.isSelected)}
+                onCloseButtonPress={()=>this._onCloseButtonPress(i,'3',lifeStyleImage.id)}
             />
         )
     }
@@ -559,7 +594,7 @@ export default class UserProfileScreen extends Component{
                         <TouchableOpacity disabled={!this.state.canEditProfile} onPress={()=>this.popupDialog.show()}>
                             <View pointerEvents={this.state.isLifestyleModalVisible ? 'auto' : 'none'}>
                                 <TextInputIcon
-                                    value={this.state.userLifeStyle.toString()}
+                                    value={this.state.userLifeStyle.sort().toString()}
                                     leftLabelText='ไลฟ์สไตล์'
                                     iconUri={require('./../source/icons/iconLifestyle.png')}
                                     containerStyle={styles.inputContainerStyle}
