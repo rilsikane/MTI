@@ -86,7 +86,8 @@ const styles={
         flex: 1,
     },
     iconImageStyle:{
-        height: responsiveHeight(4.92),
+        height: responsiveHeight(6.92),
+        width:responsiveHeight(9)
 
     },
     lifestyleTextStyle:{

@@ -2,7 +2,7 @@ import React,{Component} from 'react';
 import {Text,View} from 'react-native';
 import PropTypes from "prop-types";
 import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
-import {SelectMultipleGroupButton} from 'react-native-selectmultiple-button'
+//import {SelectMultipleGroupButton} from 'react-native-selectmultiple-button'
 
 class MainRadioButton extends Component{
 
@@ -15,16 +15,17 @@ class MainRadioButton extends Component{
 
     renderRadioButton(){     
         return(
-            <SelectMultipleGroupButton
-                multiple={false}
-                //defaultSelectedIndexes={0}
-                containerViewStyle={styles.containerViewStyle}
-                highLightStyle={styles.highLightStyle}
-                buttonViewStyle={styles.buttonViewStyle}
-                textStyle={styles.textStyle}
-                singleTap={this.props.singleTap}
-                group={this.props.group} 
-            />
+            // <SelectMultipleGroupButton
+            //     multiple={false}
+            //     //defaultSelectedIndexes={0}
+            //     containerViewStyle={styles.containerViewStyle}
+            //     highLightStyle={styles.highLightStyle}
+            //     buttonViewStyle={styles.buttonViewStyle}
+            //     textStyle={styles.textStyle}
+            //     singleTap={this.props.singleTap}
+            //     group={this.props.group} 
+            // />
+            <View></View>
         )
     }
 

@@ -297,7 +297,7 @@ const styles={
         flex: 0.2,
     },
     serviceTitleTextStyle:{
-        fontFamily: "DBHelvethaicaX-Med",
+         
         fontSize: responsiveFontSize(2.8),
         letterSpacing: 0,
         color: "#1595d3",

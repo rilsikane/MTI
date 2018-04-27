@@ -33,9 +33,9 @@ class UserShortDetailCard extends Component{
                 </View>
                 <View style={styles.userShortDetailContainerStyle}>
                     <Text ellipsizeMode='tail' numberOfLines={1} style={styles.userNameTextStyle}>{`${this.state.user.name} ${this.state.user.surname}`}</Text>
-                    <Text style={styles.userLevelTextStyle}>สมาชิกระดับ {this.state.user.member_type}</Text>
+                    <Text style={styles.userLevelTextStyle}>สมาชิกระดับ {this.state.user.member_type||' - '}</Text>
                      <View style={styles.seeUserDetailLinkContainerStyle}>
-                        <TouchableOpacity style={styles.seeUserDetailLinkSectionStyle} onPress={()=>this.props.navigator.push({
+                        {this.state.user.name!="GUEST" && <TouchableOpacity style={styles.seeUserDetailLinkSectionStyle} onPress={()=>this.props.navigator.push({
                                     screen: 'mti.ProfileScreen', 
                                     title: undefined, 
                                     titsleImage: undefined, 
@@ -49,8 +49,8 @@ class UserShortDetailCard extends Component{
                                 resizeMode='contain'
                             />
                             <Text style={styles.userDetailLinkTextStyle}>ดูข้อมูลส่วนตัว</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity  style={styles.seeUserDetailLinkSectionStyle} onPress={()=> !this.props.isPolicy && this.props.navigator.push({
+                        </TouchableOpacity>}
+                        {this.state.user.name!="GUEST" && <TouchableOpacity  style={styles.seeUserDetailLinkSectionStyle} onPress={()=> !this.props.isPolicy && this.props.navigator.push({
                                     screen: 'mti.UserInsuranceListScreen', 
                                     title: undefined, 
                                     titsleImage: undefined, 
@@ -64,7 +64,7 @@ class UserShortDetailCard extends Component{
                                 resizeMode='contain'
                             />
                             <Text style={styles.userDetailLinkTextStyle}>ดูข้อมูลกรมธรรม์</Text>
-                        </TouchableOpacity>
+                        </TouchableOpacity>}
                     </View>
                 </View>
                 <View style={styles.userQrContainerStyle}>

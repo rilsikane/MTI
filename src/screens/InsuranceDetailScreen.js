@@ -53,7 +53,7 @@ export default class InsuranceDetailScreen extends Component{
         
         var message = "";
         if(years>0 || months ==11){
-            message = years||1 + " ปี";
+            message = `${years||1}  ปี`;
         }else if(months>0){
             message = months + " เดือน";
         }else if(days>0){

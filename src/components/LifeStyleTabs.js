@@ -57,7 +57,7 @@ class LifeStyleTabs extends Component{
                     >
                         <Image
                             //source={tab.isActive?tab.activeIcon:tab.inActiveIcon}
-                            source={require('../source/icons/iconTabsActiveAll.png')}
+                            source={tab.icon_url ? {uri:tab.icon_url}:tab.icon}
                             resizeMode='contain'
                             //style={[styles.tabIconStyle,tab.isActive?{}:styles.inActiveIconStyle]}
                             style={[styles.tabIconStyle,]}
@@ -110,6 +110,7 @@ const styles={
     },
     tabIconStyle:{
         height: responsiveHeight(3.52),
+        width: responsiveHeight(3.52),
     },
     inActiveIconStyle:{
         opacity: 0.3,

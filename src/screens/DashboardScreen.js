@@ -211,9 +211,9 @@ export default class DashboardScreen extends Component{
                     <View style={styles.dashboardDetailTopContainerStyle}>
                         <View style={styles.hotDealTitleTextContainerStyle}>
                             <Text style={styles.dashboardSectionTitleTextStyle}>HOT DEAL</Text>
-                            <TouchableOpacity style={styles.showAllContainerStyle} onPress={this.goToPrivilleges}>
+                            {/* <TouchableOpacity style={styles.showAllContainerStyle} onPress={this.goToPrivilleges}>
                                 <Text style={styles.showAllTextStyle}>ดูทั้งหมด</Text>
-                            </TouchableOpacity>
+                            </TouchableOpacity> */}
                         </View>
                         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.scrollViewActivityCardContainerStyle}>
                             {this.renderHotDealList()}

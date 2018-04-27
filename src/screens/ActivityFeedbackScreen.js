@@ -250,7 +250,7 @@ const styles={
         marginRight: responsiveWidth(5),
     },
     activityTitleTextStyle:{
-        fontFamily: "DBHelvethaicaX-Med",
+         
         fontSize: responsiveFontSize(3.1),
         letterSpacing: 0,
         textAlign: "center",
@@ -311,7 +311,7 @@ const styles={
         letterSpacing: 0,
         color: "#1595d3",
         fontSize: responsiveFontSize(2.8),
-        fontFamily: "DBHelvethaicaX-Med",
+         
     },
     seeAllTextStyle:{
         color: "rgba(85, 86, 90, 0.6)",

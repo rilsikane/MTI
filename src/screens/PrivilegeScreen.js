@@ -40,7 +40,7 @@ export default class PrivilegeScreen extends Component{
         let privilege = await get("privileges?page=1&pagesize=20",{});
  
         let tabsList = await get('privilege/groups',{});
-        tabsList.data.unshift({id: '99',name: 'All'},{id: '100',name: 'Hot'});
+        tabsList.data.unshift({id: '99',name: 'All',icon:require("../source/icons/iconTabsInActiveAll.png")},{id: '100',name: 'Hot',icon:require("../source/icons/iconTabsInActiveHot.png")});
         this.setState({
             tabsList: tabsList.data
         })

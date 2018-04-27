@@ -19,88 +19,46 @@ export default class LifeStyleScreen extends Component{
     constructor(props){
         super(props)
         this.state={
-            lifeStyleImage1:[
-                {
-                    uri: require('./../source/icons/iconBeauty.png'),
-                    title: 'Beauty',
-                    isSelected: false,
-                },
-                {
-                    uri: require('./../source/icons/iconDining.png'),
-                    title: 'Dining',
-                    isSelected: false,
-                },
-                {
-                    uri: require('./../source/icons/iconTravel.png'),
-                    title: 'Travel',
-                    isSelected: false,
-                }
-            ],
-            lifeStyleImage1Selected:[
-                {
-                    uri: require('./../source/icons/iconBeautySelected.png'),
-                    title: 'Beauty',
-                    isSelected: true,
-                },
-                {
-                    uri: require('./../source/icons/iconDiningSelected.png'),
-                    title: 'Dining',
-                    isSelected: true,
-                },
-                {
-                    uri: require('./../source/icons/iconTravelSelected.png'),
-                    title: 'Travel',
-                    isSelected: true,
-                }
-            ],
-            lifeStyleImage2:[
-                {
-                    uri: require('./../source/icons/iconHealthy.png'),
-                    title: 'Healthy',
-                    isSelected: false,
-                },
-                {
-                    uri: require('./../source/icons/iconAuto.png'),
-                    title: 'Auto',
-                    isSelected: false,
-                },
-                {
-                    uri: require('./../source/icons/iconShopping.png'),
-                    title: 'Shopping',
-                    isSelected: false,
-                }
-            ],
-            lifeStyleImage2Selected:[
-                {
-                    uri: require('./../source/icons/iconHealthySelected.png'),
-                    title: 'Healthy',
-                    isSelected: true,
-                },
-                {
-                    uri: require('./../source/icons/iconAutoSelected.png'),
-                    title: 'Auto',
-                    isSelected: true,
-                },
-                {
-                    uri: require('./../source/icons/iconShoppingSelected.png'),
-                    title: 'Shopping',
-                    isSelected: true,
-                }
-            ],
+            lifeStyleImage1:[],
+            lifeStyleImage1Selected:[],
+            lifeStyleImage2:[],
+            lifeStyleImage2Selected:[],
+            lifeStyleImage3:[],
+            lifeStyleImage3Selected:[],
             filterLifeStyleImage1: [],
             filterLifeStyleImage2: [],
+            filterLifeStyleImage3: [],
             lifestyle:[],
-            isLoading:false
-        }
+            isLoading:true
+        } 
         this.onSubmitOtpButtonPress = this.onSubmitOtpButtonPress.bind(this);
         this.app = app;
         this.gotoWelcome = this.gotoWelcome.bind(this);
     }
 
-    componentDidMount(){
+    async componentDidMount(){
+        this.setState({isLoading:true});
+        let response = await get("privilege/groups",{});
+        let list = response.data;
+        let list1=[],list2=[],list3=[];
+        for(let i=0;i<list.length;i++){
+            list[i].isSelected = false;
+            if(i<3){
+                list1.push(list[i]);
+            }else if(i<6){
+                list2.push(list[i]);
+            }else if(i<9){
+                list3.push(list[i]);
+            }
+        }
+
+        this.setState({lifeStyleImage1:list1,lifeStyleImage1Selected:list1});
+        this.setState({lifeStyleImage2:list2,lifeStyleImage2Selected:list2});
+        this.setState({lifeStyleImage3:list3,lifeStyleImage3Selected:list3,isLoading:false});
         this.setState({
             filterLifeStyleImage1: this.state.lifeStyleImage1,
-            filterLifeStyleImage2: this.state.lifeStyleImage2
+            filterLifeStyleImage2: this.state.lifeStyleImage2,
+            filterLifeStyleImage3: this.state.lifeStyleImage3
         })
     }
 
@@ -175,9 +133,8 @@ export default class LifeStyleScreen extends Component{
         if(list=='1'){
             if(!isSelected){
                 const lifeStyleImage1 = [...this.state.filterLifeStyleImage1]
-                const lifeStyleImage1Selected = [...this.state.lifeStyleImage1Selected]
                 
-                lifeStyleImage1[index] = {...lifeStyleImage1Selected[index]}
+                lifeStyleImage1[index].isSelected=true;
         
                 this.setState({
                     filterLifeStyleImage1: lifeStyleImage1,
@@ -186,15 +143,26 @@ export default class LifeStyleScreen extends Component{
             }else{
                 this._onCloseButtonPress(index,list,title);
             }   
-        }else{
+        }else if(list=='2'){
             if(!isSelected){
                 const lifeStyleImage2 = [...this.state.filterLifeStyleImage2]
-                const lifeStyleImage2Selected = [...this.state.lifeStyleImage2Selected]
+                lifeStyleImage2[index].isSelected=true;
                 
-                lifeStyleImage2[index] = {...lifeStyleImage2Selected[index]}
         
                 this.setState({
                     filterLifeStyleImage2: lifeStyleImage2,
+                    lifestyle:[...this.state.lifestyle,title]
+                })
+            }else{
+                this._onCloseButtonPress(index,list,title);
+            }
+        }else{
+            if(!isSelected){
+                const lifeStyleImage3 = [...this.state.filterLifeStyleImage3]
+                lifeStyleImage3[index].isSelected=true;
+        
+                this.setState({
+                    filterLifeStyleImage3: lifeStyleImage3,
                     lifestyle:[...this.state.lifestyle,title]
                 })
             }else{
@@ -207,21 +175,28 @@ export default class LifeStyleScreen extends Component{
     _onCloseButtonPress(index,list,title){
         if(list=='1'){
             const lifeStyleImage1 = [...this.state.filterLifeStyleImage1]
-            const tempLifeStyleImage1 = [...this.state.lifeStyleImage1]
             
-            lifeStyleImage1[index] = {...tempLifeStyleImage1[index]}
+            lifeStyleImage1[index].isSelected=false;
             this.setState({
                 filterLifeStyleImage1: lifeStyleImage1,
                 lifestyle:[...this.state.lifestyle.filter((item=>item!=title))]
             })
-        }else{
+        }else if(list=='2'){
             const lifeStyleImage2 = [...this.state.filterLifeStyleImage2]
-            const tempLifeStyleImage2 = [...this.state.lifeStyleImage2]
             
-            lifeStyleImage2[index] = {...tempLifeStyleImage2[index]}
+            lifeStyleImage2[index].isSelected = false;
             
             this.setState({
                 filterLifeStyleImage2: lifeStyleImage2,
+                lifestyle:[...this.state.lifestyle.filter((item=>item!=title))]
+            })
+        }else{
+            const lifeStyleImage3 = [...this.state.filterLifeStyleImage3]
+            
+            lifeStyleImage3[index].isSelected=false;
+            
+            this.setState({
+                filterLifeStyleImage3: lifeStyleImage3,
                 lifestyle:[...this.state.lifestyle.filter((item=>item!=title))]
             })
         }
@@ -234,11 +209,11 @@ export default class LifeStyleScreen extends Component{
         return lifeStyleImage.map((lifeStyleImage,i)=>
             <LifeStyleBox
                 key={i}
-                imageUri={lifeStyleImage.uri}
-                boxTitle={lifeStyleImage.title}
+                imageUri={lifeStyleImage.icon_url!="" ? {uri:lifeStyleImage.icon_url}:null}
+                boxTitle={lifeStyleImage.name}
                 isSelected={lifeStyleImage.isSelected}
-                onPress={()=>this.onLifeStylePress(i,'1',lifeStyleImage.title,lifeStyleImage.isSelected)}
-                onCloseButtonPress={()=>this._onCloseButtonPress(i,'1',lifeStyleImage.title)}
+                onPress={()=>this.onLifeStylePress(i,'1',lifeStyleImage.id,lifeStyleImage.isSelected)}
+                onCloseButtonPress={()=>this._onCloseButtonPress(i,'1',lifeStyleImage.id)}
             />
         )
     }
@@ -249,11 +224,25 @@ export default class LifeStyleScreen extends Component{
         return lifeStyleImage.map((lifeStyleImage,i)=>
             <LifeStyleBox
                 key={i}
-                imageUri={lifeStyleImage.uri}
-                boxTitle={lifeStyleImage.title}
+                imageUri={lifeStyleImage.icon_url!="" ? {uri:lifeStyleImage.icon_url}:null}
+                boxTitle={lifeStyleImage.name}
                 isSelected={lifeStyleImage.isSelected}
-                onPress={()=>this.onLifeStylePress(i,'2',lifeStyleImage.title,lifeStyleImage.isSelected)}
-                onCloseButtonPress={()=>this._onCloseButtonPress(i,'2',lifeStyleImage.title)}
+                onPress={()=>this.onLifeStylePress(i,'2',lifeStyleImage.id,lifeStyleImage.isSelected)}
+                onCloseButtonPress={()=>this._onCloseButtonPress(i,'2',lifeStyleImage.id)}
+            />
+        )
+    }
+    renderLifeStyleBoxList3(){
+        const lifeStyleImage = [...this.state.filterLifeStyleImage3]
+
+        return lifeStyleImage.map((lifeStyleImage,i)=>
+            <LifeStyleBox
+                key={i}
+                imageUri={lifeStyleImage.icon_url!="" ? {uri:lifeStyleImage.icon_url}:null}
+                boxTitle={lifeStyleImage.name}
+                isSelected={lifeStyleImage.isSelected}
+                onPress={()=>this.onLifeStylePress(i,'3',lifeStyleImage.id,lifeStyleImage.isSelected)}
+                onCloseButtonPress={()=>this._onCloseButtonPress(i,'3',lifeStyleImage.id)}
             />
         )
     }
@@ -270,6 +259,9 @@ export default class LifeStyleScreen extends Component{
                     </View>
                     <View style={styles.lifestyleBoxList2ContainerStyle}>
                         {this.renderLifeStyleBoxList2()}
+                    </View>
+                    <View style={[styles.lifestyleBoxList2ContainerStyle,{paddingTop:10}]}>
+                        {this.renderLifeStyleBoxList3()}
                     </View>
                     <View style={styles.submitButtonContainerStyle}>
                         <MainSubmitButton
