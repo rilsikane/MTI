@@ -8,6 +8,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import {TextInputIcon} from './../components/TextInputIcon';
 import {Headers} from '../components/Headers';
 import {postBasic} from '../api'
+import {MainSubmitButton} from '../components/MainSubmitButton';
 
 export default class ServiceScreen extends Component{
 
