@@ -30,10 +30,12 @@ export default class PrivilegeScreen extends Component{
             tabIndex: 0,
             previousTabIndex: 0,
             isLoading: false,
+            searchValue: '',
         }
         this.openDetail = this.openDetail.bind(this);
         this.getPrivilegeForEachTabs = this.getPrivilegeForEachTabs.bind(this);
-        this.openPrivilegeSearch = this.openPrivilegeSearch.bind(this)
+        this.openPrivilegeSearch = this.openPrivilegeSearch.bind(this);
+        this._onSearchIconPress = this._onSearchIconPress.bind(this);
     }
     async componentDidMount(){
         this.setState({isLoading: true})
@@ -183,6 +185,12 @@ export default class PrivilegeScreen extends Component{
         })
     }
 
+    async _onSearchIconPress(){
+        this.setState({tabIndex: 0,isLoading: true,privilege:[]});
+        let response = await get(`privileges?search=${this.state.searchValue}&page=1&pagesize=20`,{});
+        this.setState({privilege: response.data,isLoading: false});
+    }
+
     render(){
         return(
             <View style={styles.privilegeScreenContainerStyle}>
@@ -193,9 +201,10 @@ export default class PrivilegeScreen extends Component{
                     withSearch
                 />
                 <MainSearchBox
-                    //value={}
-                    //onChangeText={}
+                    value={this.state.searchValue}
+                    onChangeText={(searchValue)=>this.setState({searchValue})}
                     onPress={this.openPrivilegeSearch}
+                    onSearchIconPress={this._onSearchIconPress}
                     placeholder='ค้นหาสิทธิพิเศษที่คุณต้องการ'
                 />
                  <View style={{flex: 1}}>
@@ -207,6 +216,7 @@ export default class PrivilegeScreen extends Component{
                                 tabIndex={this.state.tabIndex}
                                 previousTabIndex={this.state.previousTabIndex}
                                 data={this.state.tabsList}
+                                page={this.state.tabIndex}
                             />
                             <View style={styles.privilegeListContainerStyle}>
                                 <Image

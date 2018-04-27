@@ -18,14 +18,18 @@ class MainSearchBox extends Component{
                         value={this.props.value}
                         onChangeText={this.props.onChangeText}
                         placeholder={this.props.placeholder}
+                        onSubmitEditing={this.props.onSearchIconPress}
                         underlineColorAndroid='transparent'
                         style={styles.searchInputStyle}
+                        returnKeyType='search'
                     />
-                    <Image
-                        source={require('../source/icons/iconSearch.png')}
-                        resizeMode='contain'
-                        style={styles.searchIconStyle}
-                    />
+                    <TouchableOpacity onPress={this.props.onSearchIconPress}>
+                        <Image
+                            source={require('../source/icons/iconSearch.png')}
+                            resizeMode='contain'
+                            style={styles.searchIconStyle}
+                        />
+                    </TouchableOpacity>
                 </View>
                 <TouchableOpacity onPress={this.props.onPress} style={styles.searchButtonContainerStyle}>
                     <Image

@@ -77,13 +77,13 @@ class LifeStyleTabs extends Component{
     render(){
         return(
             <View style={styles.tabsContainerStyle}>
-                <Tabs 
+                <Tabs               
+                    page={this.props.page}
                     tabBarUnderlineStyle={styles.tabBarUnderlineStyle} 
                     style={[styles.tabsStyle,this.props.style]}
                     initialPage={0} 
                     onChangeTab={this.props.onChangeTab}
-                    renderTabBar={()=> <ScrollableTab/>}
-
+                    renderTabBar={()=> <ScrollableTab/>}     
                 >
                     {this.renderTab()}
                 </Tabs>
