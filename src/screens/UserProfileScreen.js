@@ -55,6 +55,8 @@ export default class UserProfileScreen extends Component{
             isLifestyleModalVisible: false,
             isDateTimePickerVisible: false,
             isLoading: false,
+            userImageBase64:"",
+            user:{}
         }
         this.onUpdatePictureProfilePress = this.onUpdatePictureProfilePress.bind(this);
         this.onCloseModalPress = this.onCloseModalPress.bind(this);
@@ -150,6 +152,7 @@ export default class UserProfileScreen extends Component{
             userLifeStyle:user.lifestyle.map(data=>data.title),
             orgUserLifeStyleId: user.lifestyle.map(data=>data.id),
             isLoading: false,
+            user:user
         })
     }
 
@@ -169,20 +172,30 @@ export default class UserProfileScreen extends Component{
         let params = {};
         //params.email = userEmail;
         //params.tel = userPhone;
-        params.gender = userGender;
-        params.income = userIncome;
-        params.education = userEducation;
-        params.career = userCareer;
+        this.state.user.gender = userGender;
+        this.state.user.income = userIncome;
+        this.state.user.education = userEducation;
+        this.state.user.career = userCareer;
         params.lifestyle = userLifeStyle;
-        let response = await put('me/profile',params);
-        let lifeStyleUpdate = await put('me/lifestyle',params);
-        let [user] = await Promise.all([get("me",{})]);
-        if(user){
-            await store.save("user",user);
-            this.init();
+
+
+        let response = await put('me/profile',this.state.user);
+        if(response){
+            //let lifeStyleUpdate = await put('me/lifestyle',userLifeStyle);
+            // if(this.state.userImageBase64 && this.state.userImageBase64!=""){
+            //     let pictureResponse = await post('me/picture',{image:this.state.userImageBase64});
+            // }
+            let user = await get("me",{});
+            if(user){
+                await store.save("user",user);
+                //this.init();
+            }
+            return response;
+        }else{
+            return false;
         }
         //console.log(user);
-        return response.status;
+        
     }
 
     async onSubmitButtonPress(){
@@ -203,12 +216,27 @@ export default class UserProfileScreen extends Component{
                 this.state.userIncome,
                 this.state.lifestyle
             );
+            if(response){
+                Alert.alert(
+                    'สำเร็จ',
+                    'บันทึกข้อมูลเรียบร้อยแล้ว',
+                    [
+                    {text: 'OK', onPress: () => {this.setState({
+                        submitButtonText: 'แก้ไขข้อมูล',
+                        canEditProfile: false,
+                        isLoading: false,
+                    })}},
+                    ]
+                )
+            }else{
+                this.setState({
+                    submitButtonText: 'แก้ไขข้อมูล',
+                    canEditProfile: false,
+                    isLoading: false,
+                })
+            }
 
-            this.setState({
-                submitButtonText: 'แก้ไขข้อมูล',
-                canEditProfile: false,
-                isLoading: false,
-            })
+            
         }
     }
 
@@ -448,6 +476,15 @@ export default class UserProfileScreen extends Component{
     }
 
     onUpdatePictureProfilePress(){
+        const options = {
+            title: 'เปลี่ยนรูปประจำตัว',
+            noData:true,
+            mediaType:'mixed',
+            storageOptions: {
+                skipBackup: true,
+                path: 'construction cloud'
+            }
+        };
         ImagePicker.showImagePicker(options, async (response) => {
             //console.log('Response = ', response);
           
@@ -471,7 +508,7 @@ export default class UserProfileScreen extends Component{
                 let base64Img = await RNFS.readFile(fileResize.uri, "base64")  
                 let success = await RNFS.unlink(fileResize.uri)
                 if(success){
-                    let response
+                        this.setState({userImageBase64:base64Img});
                 }
               }
             }

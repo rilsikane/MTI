@@ -1,10 +1,11 @@
 import React,{Component} from 'react';
-import {Text,View,Image,TouchableOpacity} from 'react-native';
+import {Text,View,Image,TouchableOpacity,Linking} from 'react-native';
 import PropTypes from "prop-types";
 import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
 
 import {Headers} from '../components/Headers';
 import {MainSubmitButton} from '../components/MainSubmitButton';
+import Communications from 'react-native-communications';
 
 export default class ContactUsScreen extends Component{
 
@@ -45,14 +46,14 @@ export default class ContactUsScreen extends Component{
                         <Text style={styles.contactDesciptionTextStyle}>252 ถ.รัชดาภิเษก แขวงห้วยขวาง เขตห้วยขวาง กรุงเทพฯ  103101 โทร. 1484   แฟกซ์ : 0-2665-4166, 0-2274-9511, 0-2276-2033</Text>
                         <View style={styles.contactListSectionStyle}>
                             <View style={styles.iconGroupContainerStyle}>
-                                <TouchableOpacity>
+                                <TouchableOpacity onPress={()=>Linking.openURL('mailto:info@muangthaiinsurance.com?subject=ติดต่อเรา&body=ติดต่อเรา')}>
                                     <Image
                                         source={require('../source/icons/iconMessage01.png')}
                                         resizeMode='contain'
                                         style={styles.iconImageStyle}
                                     />
                                 </TouchableOpacity>
-                                <TouchableOpacity>
+                                <TouchableOpacity onPress={()=>Linking.openURL("https://www.facebook.com/MTIconnectDotCom/")}>
                                     <Image
                                         source={require('../source/icons/iconFacebook.png')}
                                         resizeMode='contain'
@@ -67,7 +68,7 @@ export default class ContactUsScreen extends Component{
                                     />
                                 </TouchableOpacity>
                             </View>
-                            <TouchableOpacity style={styles.iconGroupContainerStyle}>
+                            <TouchableOpacity style={styles.iconGroupContainerStyle} onPress={()=>Communications.phonecall("1484", true)}>
                                 <Image
                                     source={require('../source/icons/iconPhone02.png')}
                                     resizeMode='contain'
@@ -99,7 +100,7 @@ export default class ContactUsScreen extends Component{
                                     />
                                 </TouchableOpacity>
                             </View>
-                            <TouchableOpacity style={styles.iconGroupContainerStyle}>
+                            <TouchableOpacity style={styles.iconGroupContainerStyle} onPress={()=>Communications.phonecall("1484", true)}>
                                 <Image
                                     source={require('../source/icons/iconPhone02.png')}
                                     resizeMode='contain'
