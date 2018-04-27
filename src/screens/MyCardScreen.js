@@ -2,16 +2,48 @@ import React,{Component} from 'react';
 import {Text,View,Image} from 'react-native';
 import PropTypes from "prop-types";
 import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 import {Headers} from './../components/Headers';
 import {UserShortDetailCard} from './../components/UserShortDetailCard';
 import {CheckBoxes} from '../components/CheckBoxes';
 
+import {post,authen,get,put} from '../api';
+
 export default class MyCardScreen extends Component{
 
     constructor(props){
         super(props)
+        this.state={
+            isLoading: false,
+            qrChecked: true,
+            userDetail:{},
+        }
+    }
 
+    async componentDidMount(){
+        this.init();
+    }
+
+    async init(){
+        this.setState({isLoading: true});
+        let userDetail = await get('me',{});
+        console.log(userDetail);
+        this.setState({
+            userDetail: userDetail,
+            isLoading: false,
+        })
+    }
+
+    onCheckBoxPress(type){
+        if(type==='qr'){
+        
+            this.setState({qrChecked: true})
+        }else{
+        
+            this.setState({qrChecked: false})
+        }
+      
     }
 
     render(){
@@ -25,41 +57,42 @@ export default class MyCardScreen extends Component{
                 <View style={styles.myCardContainerStyle}>
                     <UserShortDetailCard
                         showQr={false}
+                        navigator={this.props.navigator}
                     />
                     <View style={styles.myCardSectionStyle}>
                         <View style={styles.frontCardContainerStyle}>
                             <Text style={styles.myCardTitleTextStyle}>MTI MY CARD</Text>
                             <View style={styles.myCardDetailTextContainerStyle}>
-                                <Text style={styles.userNameTextStyle}>ชรินทร์ทิพย์ บำรุงศักดิ์</Text>
-                                <Text style={styles.cardIdTextStyle}>รหัส 454435788665444368</Text>
+                                <Text style={styles.userNameTextStyle}>{`${this.state.userDetail.name} ${this.state.userDetail.surname}`}</Text>
+                                <Text style={styles.cardIdTextStyle}>รหัส {this.state.userDetail.idcard}</Text>
                             </View>
                         </View>
                         <View style={styles.checkBoxContainerStyle}>
                             <Text style={styles.checkTitleTextStyle}>ข้อมูลหลังบัตร :</Text>
                             <CheckBoxes
                                 checkBoxTitleText='QR Code'
-                                checked={true}
+                                checked={this.state.qrChecked}
                                 checkedColor='#0194d2'
                                 uncheckedColor='rgba(145, 145, 149, 0.27)'
                                 checkBoxTextStyle={styles.checkBoxTextStyle}
                                 //textUnderLine={true}
-                                onIconPress={()=>alert('checked')}
+                                onIconPress={()=>this.onCheckBoxPress('qr')}
                                 containerStyle={styles.checkBoxStyle}
                             />
                             <CheckBoxes
                                 checkBoxTitleText='Barcode'
-                                checked={false}
+                                checked={!this.state.qrChecked}
                                 checkedColor='#0194d2'
                                 uncheckedColor='rgba(145, 145, 149, 0.27)'
                                 checkBoxTextStyle={styles.checkBoxTextStyle}
                                 //textUnderLine={true}
-                                onIconPress={()=>alert('checked')}
+                                onIconPress={()=>this.onCheckBoxPress('barcode')}
                                 containerStyle={styles.checkBoxStyle}
                             />
                         </View>
                         <View style={styles.backCardContainerStyle}>
                             <Image
-                                source={require('../source/images/myCardQrImg.png')}
+                                source={this.state.qrChecked?require('../source/images/myCardQrImg.png'):require('../source/images/barcode.png')}
                                 resizeMode='contain'
                                 style={styles.qrImageStyle}
                             />
@@ -67,6 +100,7 @@ export default class MyCardScreen extends Component{
                         </View>
                     </View>
                 </View>
+                {this.state.isLoading && <Spinner visible={this.state.isLoading}  textStyle={{color: '#FFF'}} />}
             </View>
         )
     }
