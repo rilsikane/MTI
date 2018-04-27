@@ -14,6 +14,7 @@ import store from 'react-native-simple-store';
 import moment from 'moment';
 import localization from 'moment/locale/th'
 import {post,authen,get,put} from '../api';
+import ImagePicker from 'react-native-image-picker'
 
 export default class UserProfileScreen extends Component{
 
@@ -412,7 +413,34 @@ export default class UserProfileScreen extends Component{
     }
 
     onUpdatePictureProfilePress(){
-
+        ImagePicker.showImagePicker(options, async (response) => {
+            //console.log('Response = ', response);
+          
+            if (response.didCancel) {
+              //console.log('User cancelled image picker');
+            }
+            else if (response.error) {
+              //console.log('ImagePicker Error: ', response.error);
+            }
+            else {
+              const {originalRotation } = response;
+              let rotation = 0
+              if ( originalRotation === 90 ) {
+                rotation = 90
+              } else if ( originalRotation === 270 ) {
+                rotation = -90
+              }
+      
+              const fileResize = await ImageResizer.createResizedImage(response.uri, 720, 960, "JPEG",60,rotation);
+              if(index != -1){
+                let base64Img = await RNFS.readFile(fileResize.uri, "base64")  
+                let success = await RNFS.unlink(fileResize.uri)
+                if(success){
+                    let response
+                }
+              }
+            }
+          });
     }
 
     render(){
