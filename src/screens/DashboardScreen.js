@@ -207,7 +207,7 @@ export default class DashboardScreen extends Component{
                     notify='2'
                 />
                 <ScrollView style={{flex: 1}}>
-                    {!this.state.isLoading && <UserShortDetailCard navigator={this.props.navigator}/>}
+                    {!this.state.isLoading && <UserShortDetailCard showQr navigator={this.props.navigator}/>}
                     <View style={styles.dashboardDetailTopContainerStyle}>
                         <View style={styles.hotDealTitleTextContainerStyle}>
                             <Text style={styles.dashboardSectionTitleTextStyle}>HOT DEAL</Text>
