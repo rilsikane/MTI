@@ -3,7 +3,6 @@ import {Text,View,ImageBackground,Image,TouchableOpacity} from 'react-native';
 import PropTypes from "prop-types";
 import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
 import store from 'react-native-simple-store';
-import FastImage from 'react-native-fast-image'
 
 class DashboardActivityCard extends Component{
 
@@ -31,7 +30,7 @@ class DashboardActivityCard extends Component{
             
             return(
                 <View>
-                    <FastImage
+                    <Image
                         source={this.props.iconUri}
                         resizeMode='contain'
                         style={styles.iconImageStyle}
