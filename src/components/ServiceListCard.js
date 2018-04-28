@@ -25,7 +25,7 @@ class ServiceListCard extends Component{
                         style={styles.mapIconStyle}
                     />
                 </TouchableOpacity>
-                <TouchableOpacity onPress={()=>this.gotoMap(item.id)}>
+                <TouchableOpacity onPress={()=>this.gotoMap(item.type_id)}>
                     <Image
                         source={require('../source/icons/iconMapMarker01.png')}
                         resizeMode='contain'

@@ -33,7 +33,7 @@ export default class ServiceSearchHospitalScreen extends Component{
                     orgServiceList:serviceList.data,
                     isLoading: false});
             }
-            console.log(serviceList.data)
+            // console.log(serviceList.data)
         }
     }
 
