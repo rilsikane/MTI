@@ -316,3 +316,61 @@ export async function get(path,param){
           return false;
       }
 }
+export async function getBasic(path,param){
+    let credentials = await base64.encode("mticonnect"+":"+"QaZwSxEdCrFv");
+    var config = {
+      headers: { 'Authorization': 'Basic '+credentials },
+      timeout:timeout
+    }
+    let requestURL = `${endpoint}${path}`;
+    
+        try{
+            const response = await axios.get(requestURL,config)
+            if(response){
+              if(!response.data.message){
+                  console.log("postService"+JSON.stringify(response));
+                  return response.data;
+              }else{
+                  app.isLoading = false;
+                  console.log(response.data.message);
+                  setTimeout(()=>{Alert.alert(
+                      'เกิดข้อผิดพลาด',
+                      response.message,
+                      [
+                      {text: 'OK', onPress: () => console.log('OK Pressed!')},
+                      ]
+                  ),200});
+                  return false;
+              }
+              }else{
+                  setTimeout(()=>{Alert.alert(
+                      'เกิดข้อผิดพลาด',
+                      `${path}:ไม่สามารถเชื่อมต่อกับระบบได้`,
+                      [
+                      {text: 'OK', onPress: () => console.log('OK Pressed!')},
+                      ]
+                      ),200});
+                  return false;
+              }
+        }catch(e){
+          app.isLoading = false;
+          if(e && "ECONNABORTED"!=e.code){
+              setTimeout(()=>{Alert.alert(
+              'เกิดข้อผิดพลาด',
+              (e.response && e.response.data) ? e.response.data.message:'ไม่สามารถเชื่อมต่อกับ Server ได้',
+              [
+              {text: 'OK', onPress: () => console.log('OK Pressed!')},
+              ]
+              ),200});
+          }else{
+              setTimeout(()=>{Alert.alert(
+                  'เกิดข้อผิดพลาด',
+                     'เกินกำหนดระยะเวลาเชื่อมต่อกับ Server',
+                  [
+                  {text: 'OK', onPress: () => console.log('OK Pressed!')},
+                  ]
+                  ),200});
+          }
+            return false;
+        }
+  }
