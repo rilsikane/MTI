@@ -15,14 +15,19 @@ export default class ContactUsScreen extends Component{
     }
 
     gotoBranchSearch(){
-        this.props.navigator.push({
+        this.props.navigator.showModal({
             screen: 'mti.ServiceSearchBranchScreen', // unique ID registered with Navigation.registerScreen
-            passProps:{},
             title: undefined, // navigation bar title of the pushed screen (optional)
             titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
-            animated: false, // does the push have transition animation or does it happen immediately (optional)
+            passProps: {
+                navigator:this.props.navigator,
+                data:this.props.data,
+                isMap: true,
+            }, // Object that will be passed as props to the pushed screen (optional)
+            animated: true, // does the push have transition animation or does it happen immediately (optional)
             backButtonTitle: undefined, // override the back button title (optional)
             backButtonHidden: false, // hide the back button altogether (optional)
+            
         })
     }
 
@@ -42,7 +47,7 @@ export default class ContactUsScreen extends Component{
                         />
                     </View>
                     <View style={styles.contactListContainerStyle}>
-                        <Text style={styles.contactTitleTextStyle}>ติดต่อเมืองไทยประกันภัย</Text>
+                        <Text style={styles.contactTitleTextStyle}>ติดต่อเมืองไทยประกันภัย โทร. 1484</Text>
                         <Text style={styles.contactDesciptionTextStyle}>252 ถ.รัชดาภิเษก แขวงห้วยขวาง เขตห้วยขวาง กรุงเทพฯ  103101 โทร. 1484   แฟกซ์ : 0-2665-4166, 0-2274-9511, 0-2276-2033</Text>
                         <View style={styles.contactListSectionStyle}>
                             <View style={styles.iconGroupContainerStyle}>
@@ -60,7 +65,7 @@ export default class ContactUsScreen extends Component{
                                         style={styles.iconImageStyle}
                                     />
                                 </TouchableOpacity>
-                                <TouchableOpacity>
+                                <TouchableOpacity onPress={this.gotoBranchSearch}>
                                     <Image
                                         source={require('../source/icons/iconMapMarker01.png')}
                                         resizeMode='contain'
@@ -92,7 +97,7 @@ export default class ContactUsScreen extends Component{
                                         style={styles.iconImageStyle}
                                     />
                                 </TouchableOpacity>
-                                <TouchableOpacity>
+                                <TouchableOpacity onPress={this.gotoBranchSearch}>
                                     <Image
                                         source={require('../source/icons/iconMapMarker01.png')}
                                         resizeMode='contain'

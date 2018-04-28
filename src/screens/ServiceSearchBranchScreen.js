@@ -11,35 +11,51 @@ export default class ServiceSearchBranchScreen extends Component{
 
     constructor(props){
         super(props)
+        this.state={
+            searchValue: '',
 
+        }
+    }
+
+    componentDidMount(){
+        animationTimeout = setTimeout(() => {
+            this.focus();
+        },1000);
+    }
+
+    focus=()=> {    
+        this.mapRef.fitToSuppliedMarkers(['1'],true);
     }
 
     render(){
         return(
             <View style={styles.serviceSearchBranchScreenContainerStyle}>
                 <Headers
-                    leftIconName='back'
+                    leftIconName='close'
                     headerTitleText='ค้นหาสาขาย่อย'
                     rightIconName='iconBell'
                     withSearch
                 />
                 <MainSearchBox
-                    //value={}
-                    //onChangeText={}
+                    value={this.state.searchValue}
+                    onChangeText={(searchValue)=>this.setState({searchValue})}
                     onPress={()=>alert('search')}
                     placeholder='ค้นหาสาขาย่อยในพื้นที่ที่คุณต้องการ'
                 />
                 <View style={styles.serviceSearchBranchContainerStyle}>
                     <MapView
+                        ref={(ref) => { this.mapRef = ref; }}
                         initialRegion={{
-                            latitude: 13.697567,
-                            longitude: 100.53758300000004,
+                            latitude: 15.870032,
+                            longitude: 100.99254100000007,
                             latitudeDelta: 15.870032,
                             longitudeDelta: 100.99254100000007,
                         }}
                         style={{flex: 1,}}
                     >
                         <Marker
+                            identifier={'1'}
+                            //key={data.id}
                             coordinate={{
                                 latitude: 13.697567,
                                 longitude: 100.53758300000004
