@@ -5,9 +5,6 @@ import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-nat
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import PopupDialog,{ SlideAnimation }  from 'react-native-popup-dialog';
 import Spinner from 'react-native-loading-spinner-overlay';
-import ImagePicker from 'react-native-image-picker'
-import ImageResizer from 'react-native-image-resizer';
-import RNFS from 'react-native-fs';
 
 import {Headers} from './../components/Headers';
 import {TextInputIcon} from './../components/TextInputIcon';
