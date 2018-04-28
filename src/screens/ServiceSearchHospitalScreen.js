@@ -100,7 +100,7 @@ export default class ServiceSearchHospitalScreen extends Component{
         return(
             <View style={styles.serviceSearchHospitalScreenContainerStyle}>
                 <Headers
-                    leftIconName='back'
+                    leftIconName={this.props.isMap?'close':'back'}
                     headerTitleText='ค้นหาโรงพยาบาลเครือข่าย MTI'
                     rightIconName='iconBell'
                     withSearch

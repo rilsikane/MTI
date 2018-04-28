@@ -101,7 +101,7 @@ export default class ServiceSearchCorpCenterScreen extends Component{
         return(
             <View style={styles.serviceSearchCorpCenterScreenContainerStyle}>
                 <Headers
-                    leftIconName='back'
+                    leftIconName={this.props.isMap?'close':'back'}
                     headerTitleText='ค้นหาศูนย์และอู่รับงานบริษัท'
                     rightIconName='iconBell'
                     withSearch
