@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Text,View,Image,TouchableOpacity} from 'react-native';
+import {Text,View,Image,TouchableOpacity,Linking} from 'react-native';
 import PropTypes from "prop-types";
 import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
 import PopupDialog,{ SlideAnimation }  from 'react-native-popup-dialog';
@@ -65,7 +65,7 @@ export default class ServiceScreen extends Component{
 
     onServicePress(index){
         if(index==0){
-            this.openLeavingContactPopup()
+            ()=>onPress=()=>Communications.phonecall("1484", true);
         }else if(index==1){
             this.gotoService('mti.ServiceSearchHospitalScreen');
         }else if(index==2){
@@ -248,21 +248,21 @@ export default class ServiceScreen extends Component{
                     rightIconName='iconBell'
                 />
                 <View style={styles.serviceContainerStyle}>
-                    <View style={styles.topBannerImageContainerStyle}>
+                    <TouchableOpacity onPress={()=>Linking.openURL('http://www.muangthaiinsurance.com/index_mti.html')} style={styles.topBannerImageContainerStyle}>
                         <Image
                             source={require('../source/images/serviceBannerImg01.png')}
                             style={styles.topBannerImageContainerStyle}
                         />
-                    </View>
+                    </TouchableOpacity>
                     <View style={styles.serviceListContainerStyle}>
                         {this.renderServiceList()}
                     </View>
-                    <View style={styles.topBannerImageContainerStyle}>
+                    <TouchableOpacity onPress={()=>Linking.openURL('http://www.muangthaiinsurance.com/index_mti.html')} style={styles.topBannerImageContainerStyle}>
                         <Image
                             source={require('../source/images/serviceBannerImg02.png')}
                             style={styles.topBannerImageContainerStyle}
                         />
-                    </View>
+                    </TouchableOpacity>
                 </View>
                 {this.renderLeavingContactPopup()}
             </View>

@@ -15,24 +15,23 @@ export default class PrivilegeAgreementScreen extends Component{
     }
 
     renderAgreementList(){
-
-        // return this.props.data.content2.map((data,i)=>
-        //     <View key={i} style={styles.agreementListTextContainerStyle}>
-        //         <Text style={styles.agreementTitleTextStyle}>{++i}. </Text>
-        //         <Text style={styles.agreementTitleTextStyle}>{data.description}</Text>
-        //     </View>
-        // )
-        return <Text style={styles.agreementTitleTextStyle}>{this.props.data.content2}</Text>
+        let content2 = this.props.data.content2.split("|");
+        return content2.map((data,i)=>
+            <View key={i} style={styles.agreementListTextContainerStyle}>
+                <Text style={styles.agreementTitleTextStyle}>{data}</Text>
+            </View>
+        )
+        //return <Text style={styles.agreementTitleTextStyle}>{this.props.data.content2}</Text>
     }
     async redeem(){
-        let response2 = await post(`privilege/redeem`,{"privilege_id":this.props.data.id});
+        let response2 = await post(`redeem`,{"privilege_id":this.props.data.id});
         console.log(JSON.stringify(response2));
         if(response2){
             this.props.navigator.showModal({
                 screen: 'mti.PrivilegeQrCodeScreen', // unique ID registered with Navigation.registerScreen
                 title: undefined, // navigation bar title of the pushed screen (optional)
                 titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
-                passProps: {navigator:this.props.navigator,redeem:response2,data:this.props.data}, // Object that will be passed as props to the pushed screen (optional)
+                passProps: {navigator:this.props.navigator,redeem:response2,data:this.props.data,item:this.props.item}, // Object that will be passed as props to the pushed screen (optional)
                 animated: true, // does the push have transition animation or does it happen immediately (optional)
                 backButtonTitle: undefined, // override the back button title (optional)
                 backButtonHidden: false, // hide the back button altogether (optional)

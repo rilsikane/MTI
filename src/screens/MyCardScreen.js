@@ -144,7 +144,6 @@ const styles={
         justifyContent: 'space-around',
     },
     myCardTitleTextStyle:{
-        fontFamily: 'DBHelvethaicaX-Med',
         letterSpacing: 0,
         textAlign: "center",
         color: "rgba(145, 145, 149, 0.27)",

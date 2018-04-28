@@ -7,7 +7,7 @@ import {Headers} from './../components/Headers';
 import {MainSubmitButton} from './../components/MainSubmitButton';
 import {LifeStyleBox} from './../components/LifeStyleBox';
 import { observer, inject } from 'mobx-react';
-import {postBasic,authen,get,post,put} from '../api'
+import {postBasic,authen,get,post,put,getBasic} from '../api'
 import app from '../stores/app'
 import store from 'react-native-simple-store';
 import Spinner from 'react-native-loading-spinner-overlay';
@@ -37,29 +37,43 @@ export default class LifeStyleScreen extends Component{
     }
 
     async componentDidMount(){
-        this.setState({isLoading:true});
-        let response = await get("privilege/groups",{});
-        let list = response.data;
-        let list1=[],list2=[],list3=[];
-        for(let i=0;i<list.length;i++){
-            list[i].isSelected = false;
-            if(i<3){
-                list1.push(list[i]);
-            }else if(i<6){
-                list2.push(list[i]);
-            }else if(i<9){
-                list3.push(list[i]);
+        this.app.isLoading = true;
+        let param = {};
+        param.username = this.props.registerStore.register.username;
+        param.password = this.props.registerStore.register.password;
+        let authenResponse = await authen(param);
+        if(authenResponse){
+            let token = authenResponse.token;
+            if(token){
+                store.save("token",token);
+                let response = await getBasic("privilege/groups",{});
+                let list = response.data;
+                let list1=[],list2=[],list3=[];
+                for(let i=0;i<list.length;i++){
+                    list[i].isSelected = false;
+                    if(i<3){
+                        list1.push(list[i]);
+                    }else if(i<6){
+                        list2.push(list[i]);
+                    }else if(i<9){
+                        list3.push(list[i]);
+                    }
+                }
+                this.app.isLoading = false;
+                this.setState({lifeStyleImage1:list1,lifeStyleImage1Selected:list1});
+                this.setState({lifeStyleImage2:list2,lifeStyleImage2Selected:list2});
+                this.setState({lifeStyleImage3:list3,lifeStyleImage3Selected:list3,isLoading:false});
+                this.setState({
+                    filterLifeStyleImage1: this.state.lifeStyleImage1,
+                    filterLifeStyleImage2: this.state.lifeStyleImage2,
+                    filterLifeStyleImage3: this.state.lifeStyleImage3
+                })
+            }else{
+                this.app.isLoading = false;
             }
+        }else{
+            this.app.isLoading = false;
         }
-
-        this.setState({lifeStyleImage1:list1,lifeStyleImage1Selected:list1});
-        this.setState({lifeStyleImage2:list2,lifeStyleImage2Selected:list2});
-        this.setState({lifeStyleImage3:list3,lifeStyleImage3Selected:list3,isLoading:false});
-        this.setState({
-            filterLifeStyleImage1: this.state.lifeStyleImage1,
-            filterLifeStyleImage2: this.state.lifeStyleImage2,
-            filterLifeStyleImage3: this.state.lifeStyleImage3
-        })
     }
 
     async onSubmitOtpButtonPress(){
@@ -80,16 +94,16 @@ export default class LifeStyleScreen extends Component{
             }
     }
     async login(){
-        this.app.isLoading = true
-        let param = {};
-        param.username = this.props.registerStore.register.username;
-        param.password = this.props.registerStore.register.password;
-        let response = await authen(param);
-        this.app.isLoading = false;
+        // this.app.isLoading = true
+        // let param = {};
+        // param.username = this.props.registerStore.register.username;
+        // param.password = this.props.registerStore.register.password;
+        // let response = await authen(param);
+        // this.app.isLoading = false;
         //if(response.first_logon=='N'){
-            let token = response.token;
-            store.save("token",token);
-            if(token){
+            // let token = response.token;
+            // store.save("token",token);
+            // if(token){
                 this.app.isLoading = true;
                 let lifeParam = {};
                 lifeParam.lifestyle = this.state.lifestyle;
@@ -111,9 +125,9 @@ export default class LifeStyleScreen extends Component{
                         }
                     }
 
-            }else{
-                this.app.isLoading = false
-            }
+            // }else{
+            //     this.app.isLoading = false
+            // }
         //}
     }
     gotoWelcome(){
@@ -126,7 +140,10 @@ export default class LifeStyleScreen extends Component{
         // 	backButtonTitle: undefined, // override the back button title (optional)
         // 	backButtonHidden: false, // hide the back button altogether (optional)
         // });
-        this.app.login();
+        setTimeout(()=>{
+            this.app.login();
+        },500)
+       
     }
 
     onLifeStylePress(index,list,title,isSelected){
