@@ -6,7 +6,7 @@ import { ifIphoneX,isIphoneX } from 'react-native-iphone-x-helper'
 import { observer, inject } from 'mobx-react';
 import app from '../stores/app';
 import store from 'react-native-simple-store';
-@inject('naviStore')
+@inject('naviStore','userStore')
 @observer
 export default class MenuScreen extends Component{
 
@@ -56,7 +56,7 @@ export default class MenuScreen extends Component{
                         <View style={styles.userAvatarContainerStyle}>
                             <View style={styles.avatarBorderStyle}>
                                 <Image
-                                    source={require('./../source/images/userAvatarImg.png')}
+                                    source={{uri:this.props.userStore.user.profile_img}}
                                     style={styles.userAvatarImageStyle}
                                     resizeMode='cover'
                                 />

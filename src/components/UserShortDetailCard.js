@@ -3,6 +3,11 @@ import {Text,View,Image,TouchableOpacity} from 'react-native';
 import PropTypes from "prop-types";
 import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
 import store from 'react-native-simple-store';
+
+import { observer, inject } from 'mobx-react';
+
+@inject('userStore')
+@observer
 class UserShortDetailCard extends Component{
 
     constructor(props){
@@ -25,7 +30,7 @@ class UserShortDetailCard extends Component{
                 <View style={styles.userAvatarContainerStyle}>
                     <View style={styles.avatarBorderStyle}>
                         <Image
-                            source={require('./../source/images/userAvatarImg.png')}
+                            source={{uri:this.props.userStore.user.profile_img}}
                             style={styles.userAvatarImageStyle}
                             resizeMode='cover'
                         />

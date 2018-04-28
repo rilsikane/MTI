@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
 import store from 'react-native-simple-store';
 
+
 class DashboardActivityCard extends Component{
 
     constructor(props){
@@ -52,7 +53,7 @@ class DashboardActivityCard extends Component{
     getIcon(){
         if(this.state.groups.length >0 && this.props.groupId){
             let group =  this.state.groups.filter(gp=>gp.id==this.props.groupId)
-            return group && group.length>0 ? {uri:group[0].icon_url}:null;
+            return group && group.length>0 ? {uri:group[0].icon2_url}:null;
         }else{
             return null;
         }

@@ -28,20 +28,21 @@ export async function authen(param){
           let BasicAuth = 'Basic ' + credentials;
 
           let response = await  axios.post(requestURL,param,{headers: {'Authorization':BasicAuth},timeout:timeout});
-          console.log(response);
           if(response.status){
             if(response.status==201 && response.data.status=='ok'){
                 //let token = response.data;
                 return response.data;
             }else{
+               
                     setTimeout(()=>{Alert.alert(
                     'เกิดข้อผิดพลาด',
                     response.data ? response.data.message:response.message,
                     [
-                    {text: 'OK', onPress: () => console.log('OK Pressed!')},
+                    {text: 'OK', onPress: () => false},
                     ]
                     ),500});
-                return false;
+                
+                
             }
         }else{
             setTimeout(()=>{Alert.alert(

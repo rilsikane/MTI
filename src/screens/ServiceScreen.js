@@ -9,6 +9,7 @@ import {TextInputIcon} from './../components/TextInputIcon';
 import {Headers} from '../components/Headers';
 import {postBasic} from '../api'
 import {MainSubmitButton} from '../components/MainSubmitButton';
+import Communications from 'react-native-communications';
 
 export default class ServiceScreen extends Component{
 
@@ -21,6 +22,7 @@ export default class ServiceScreen extends Component{
         this.gotoService = this.gotoService.bind(this);
         this.onServicePress = this.onServicePress.bind(this);
         this.openLeavingContactPopup = this.openLeavingContactPopup.bind(this);
+        this.callCenter = this.callCenter.bind(this);
     }
 
     renderServiceList(){
@@ -62,10 +64,13 @@ export default class ServiceScreen extends Component{
             </View>
         )
     }
+    callCenter(){
+        Communications.phonecall("1484", true);
+    }
 
     onServicePress(index){
         if(index==0){
-            ()=>onPress=()=>Communications.phonecall("1484", true);
+            this.callCenter();
         }else if(index==1){
             this.gotoService('mti.ServiceSearchHospitalScreen');
         }else if(index==2){

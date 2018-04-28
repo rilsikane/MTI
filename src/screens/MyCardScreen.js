@@ -9,13 +9,14 @@ import {UserShortDetailCard} from './../components/UserShortDetailCard';
 import {CheckBoxes} from '../components/CheckBoxes';
 
 import {post,authen,get,put} from '../api';
+import store from 'react-native-simple-store';
 
 export default class MyCardScreen extends Component{
 
     constructor(props){
         super(props)
         this.state={
-            isLoading: false,
+            isLoading: true,
             qrChecked: true,
             userDetail:{},
         }
@@ -27,12 +28,13 @@ export default class MyCardScreen extends Component{
 
     async init(){
         this.setState({isLoading: true});
-        let userDetail = await get('me',{});
-        console.log(userDetail);
+        let user = await store.get("user");
+       
         this.setState({
-            userDetail: userDetail,
+            userDetail: user,
             isLoading: false,
         })
+        console.log(this.state.userDetail.card)
     }
 
     onCheckBoxPress(type){
@@ -91,11 +93,11 @@ export default class MyCardScreen extends Component{
                             />
                         </View>
                         <View style={styles.backCardContainerStyle}>
-                            <Image
-                                source={this.state.qrChecked?require('../source/images/myCardQrImg.png'):require('../source/images/barcode.png')}
+                            {!this.state.isLoading  && <Image
+                                source={{uri:this.state.qrChecked?this.state.userDetail.card.qrcode:this.state.userDetail.card.barcode}}
                                 resizeMode='contain'
                                 style={styles.qrImageStyle}
-                            />
+                            />}
                             <Text style={styles.myCardTitleTextStyle}>MTI MY CARD</Text>
                         </View>
                     </View>
@@ -130,6 +132,7 @@ const styles={
     },
     qrImageStyle:{
         height: responsiveHeight(14.43),
+        width: responsiveHeight(30),
         alignSelf: 'center',
         marginTop: responsiveHeight(3),
     },

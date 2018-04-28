@@ -17,7 +17,10 @@ import {post,authen,get,put,getBasic} from '../api';
 import ImagePicker from 'react-native-image-picker'
 import ImageResizer from 'react-native-image-resizer'
 import RNFS from 'react-native-fs'
+import { observer, inject } from 'mobx-react';
 
+@inject('userStore')
+@observer
 export default class UserProfileScreen extends Component{
 
     constructor(props){
@@ -52,6 +55,7 @@ export default class UserProfileScreen extends Component{
             dropDownCareer: [],
             dropDownEducation: [],
             dropDownIncome: [],
+            saveLifeStyle:[],
 
             canEditProfile: false,
             isLifestyleModalVisible: false,
@@ -112,11 +116,19 @@ export default class UserProfileScreen extends Component{
 
     async init(){
         this.setState({isLoading:true});
+        let user = await store.get("user");
+        console.log(user)
+        if(!user){
+            user = {};
+            user.name = "GUEST";
+            user.surname = "GUEST";
+        }
         let response = await getBasic("privilege/groups",{});
         let list = response.data;
         let list1=[],list2=[],list3=[];
         for(let i=0;i<list.length;i++){
-            list[i].isSelected = false;
+            let filter = user.lifestyle.filter(item=>item.id==list[i].id);
+            list[i].isSelected = filter && filter.length>0;    
             if(i<3){
                 list1.push(list[i]);
             }else if(i<6){
@@ -134,13 +146,7 @@ export default class UserProfileScreen extends Component{
             filterLifeStyleImage2: this.state.lifeStyleImage2,
             filterLifeStyleImage3: this.state.lifeStyleImage3
         })
-        let user = await store.get("user");
-        console.log(user)
-        if(!user){
-            user = {};
-            user.name = "GUEST";
-            user.surname = "GUEST";
-        }
+       
         this.setState({
             userFirstName:user.name,
             userLastName:user.surname,
@@ -156,7 +162,8 @@ export default class UserProfileScreen extends Component{
             orgUserLifeStyleId: user.lifestyle.map(data=>data.id),
             isLoading: false,
             user:user,
-            profileImage:user.profile_img
+            profileImage:user.profile_img,
+            lifestyle:user.lifestyle.map(data=>data.id)
         })
     }
 
@@ -185,7 +192,9 @@ export default class UserProfileScreen extends Component{
 
         let response = await put('me/profile',this.state.user);
         if(response){
-            let lifeStyleUpdate = await put('me/lifestyle',{lifestyle:userLifeStyle});
+            if(userLifeStyle.length>0){
+                let lifeStyleUpdate = await put('me/lifestyle',{lifestyle:userLifeStyle});
+            }
             if(this.state.userImageBase64 && this.state.userImageBase64!=""){
                  let pictureResponse = await post('me/picture',{image:`data:image/jpeg;base64,${this.state.userImageBase64}`});
                  console.log(pictureResponse);
@@ -193,6 +202,7 @@ export default class UserProfileScreen extends Component{
             let user = await get("me",{});
             if(user){
                 await store.save("user",user);
+                this.props.userStore.user = user; 
                 //this.init();
             }
             return response;
@@ -322,6 +332,7 @@ export default class UserProfileScreen extends Component{
             this.popupDialog.dismiss();
             this.setState({isLoading: true});
             let filterLifeStyle = [];
+            let filter
             this.state.filterLifeStyleImage1.map((data)=>{
                 if(data.isSelected==true){
                     filterLifeStyle.push(data.name)
@@ -337,8 +348,8 @@ export default class UserProfileScreen extends Component{
                     filterLifeStyle.push(data.name)
                 }
             })
-            console.log(this.state.filterLifeStyleImage2)
-            console.log(filterLifeStyle)
+            console.log("filterLifeStyleImage2 "+this.state.filterLifeStyleImage2)
+            console.log("filterLifeStyle" +filterLifeStyle)
             this.setState({
                 userLifeStyle: filterLifeStyle,
                 filterLifeStyleImage1: this.state.lifeStyleImage1,
@@ -437,15 +448,19 @@ export default class UserProfileScreen extends Component{
         const lifeStyleImage = [...this.state.filterLifeStyleImage1]
 
         return lifeStyleImage.map((lifeStyleImage,i)=>
-            <LifeStyleBox
-                key={i}
-                imageUri={lifeStyleImage.icon_url!="" ? {uri:lifeStyleImage.icon_url}:null}
-                boxTitle={lifeStyleImage.name}
-                isSelected={lifeStyleImage.isSelected}
-                onPress={()=>this.onLifeStylePress(i,'1',lifeStyleImage.id,lifeStyleImage.isSelected)}
-                onCloseButtonPress={()=>this._onCloseButtonPress(i,'1',lifeStyleImage.id)}
-                style={styles.boxListStyle}
-            />
+            { 
+            return( 
+                <LifeStyleBox
+                    key={i}
+                    imageUri={lifeStyleImage.icon_url!="" ? {uri:lifeStyleImage.icon_url}:null}
+                    boxTitle={lifeStyleImage.name}
+                    isSelected={lifeStyleImage.isSelected}
+                    onPress={()=>this.onLifeStylePress(i,'1',lifeStyleImage.id,lifeStyleImage.isSelected)}
+                    onCloseButtonPress={()=>this._onCloseButtonPress(i,'1',lifeStyleImage.id)}
+                    style={styles.boxListStyle}
+                />
+            )
+            }
         )
     }
 
@@ -453,15 +468,19 @@ export default class UserProfileScreen extends Component{
         const lifeStyleImage = [...this.state.filterLifeStyleImage2]
 
         return lifeStyleImage.map((lifeStyleImage,i)=>
-            <LifeStyleBox
-                key={i}
-                imageUri={lifeStyleImage.icon_url!="" ? {uri:lifeStyleImage.icon_url}:null}
-                boxTitle={lifeStyleImage.name}
-                isSelected={lifeStyleImage.isSelected}
-                onPress={()=>this.onLifeStylePress(i,'2',lifeStyleImage.id,lifeStyleImage.isSelected)}
-                onCloseButtonPress={()=>this._onCloseButtonPress(i,'2',lifeStyleImage.id)}
-                style={styles.boxListStyle}
-            />
+            {
+            return( 
+                <LifeStyleBox
+                    key={i}
+                    imageUri={lifeStyleImage.icon_url!="" ? {uri:lifeStyleImage.icon_url}:null}
+                    boxTitle={lifeStyleImage.name}
+                    isSelected={lifeStyleImage.isSelected}
+                    onPress={()=>this.onLifeStylePress(i,'2',lifeStyleImage.id,lifeStyleImage.isSelected)}
+                    onCloseButtonPress={()=>this._onCloseButtonPress(i,'2',lifeStyleImage.id)}
+                    style={styles.boxListStyle}
+                />
+            )
+            }
         )
     }
 
@@ -469,14 +488,19 @@ export default class UserProfileScreen extends Component{
         const lifeStyleImage = [...this.state.filterLifeStyleImage3]
 
         return lifeStyleImage.map((lifeStyleImage,i)=>
-            <LifeStyleBox
-                key={i}
-                imageUri={lifeStyleImage.icon_url!="" ? {uri:lifeStyleImage.icon_url}:null}
-                boxTitle={lifeStyleImage.name}
-                isSelected={lifeStyleImage.isSelected}
-                onPress={()=>this.onLifeStylePress(i,'3',lifeStyleImage.id,lifeStyleImage.isSelected)}
-                onCloseButtonPress={()=>this._onCloseButtonPress(i,'3',lifeStyleImage.id)}
-            />
+        {   
+            return( 
+                <LifeStyleBox
+                    key={i}
+                    imageUri={lifeStyleImage.icon_url!="" ? {uri:lifeStyleImage.icon_url}:null}
+                    boxTitle={lifeStyleImage.name}
+                    isSelected={lifeStyleImage.isSelected}
+                    onPress={()=>this.onLifeStylePress(i,'3',lifeStyleImage.id,lifeStyleImage.isSelected)}
+                    onCloseButtonPress={()=>this._onCloseButtonPress(i,'3',lifeStyleImage.id)}
+                    style={styles.boxListStyle}
+                />
+            )
+            }
         )
     }
 

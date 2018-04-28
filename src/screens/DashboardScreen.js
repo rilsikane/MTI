@@ -13,7 +13,7 @@ import store from 'react-native-simple-store';
 import Spinner from 'react-native-loading-spinner-overlay';
 import app from '../stores/app';
 
-@inject('naviStore')
+@inject('naviStore','userStore')
 @observer
 export default class DashboardScreen extends Component{
 
@@ -60,9 +60,11 @@ export default class DashboardScreen extends Component{
         let user = await store.get("user");
         this.setState({isLoading:true});
         if(user){
+           
             let response = await get("me",{});
             if(response){
                 await store.update("user",response);
+                this.props.userStore.user = response; 
                 this.setState({isLoading:false});
                 let privilegeGroup = await getBasic("privilege/groups",{});
                 if(privilegeGroup){
@@ -73,7 +75,7 @@ export default class DashboardScreen extends Component{
                     console.log(hotDeal.data);
                     this.setState({hotDeal:hotDeal.data});
                 }
-                let myLife = await getBasic("privileges?filter_set=lifestyle&page=1&pagesize=5",{});
+                let myLife = await get("memberprivileges?filter_set=lifestyle&page=1&pagesize=5",{});
                 if(myLife){
                     this.setState({myLifeStyle:myLife.data});
                 }
