@@ -42,7 +42,7 @@ class TextInputIcon extends Component{
                     itemStyle={styles.itemStyle}
                     buttonsTextSize={responsiveFontSize(3)}
                     placeholder={this.props.leftLabelText}
-                    enabled={this.props.editable}
+                    enabled={this.props.editable!==false}
                 />
             )
         

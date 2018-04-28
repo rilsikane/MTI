@@ -8,7 +8,7 @@ import {Headers} from './../components/Headers';
 import {DashboardActivityCard} from './../components/DashboardActivityCard';
 import {PastEventCard} from './../components/PastEventCard';
 import { observer, inject } from 'mobx-react';
-import {post,authen,get} from '../api';
+import {post,authen,get,getBasic} from '../api';
 import store from 'react-native-simple-store';
 import Spinner from 'react-native-loading-spinner-overlay';
 import app from '../stores/app';
@@ -64,16 +64,16 @@ export default class DashboardScreen extends Component{
             if(response){
                 await store.update("user",response);
                 this.setState({isLoading:false});
-                let privilegeGroup = await get("privilege/groups",{});
+                let privilegeGroup = await getBasic("privilege/groups",{});
                 if(privilegeGroup){
                     await store.save("privilegeGroup",privilegeGroup.data);
                 }
-                let hotDeal = await get("privileges?filter_set=hotdeal&page=1&pagesize=5",{});
+                let hotDeal = await getBasic("privileges?filter_set=hotdeal&page=1&pagesize=5",{});
                 if(hotDeal){
                     console.log(hotDeal.data);
                     this.setState({hotDeal:hotDeal.data});
                 }
-                let myLife = await get("privileges?filter_set=lifestyle&page=1&pagesize=5",{});
+                let myLife = await getBasic("privileges?filter_set=lifestyle&page=1&pagesize=5",{});
                 if(myLife){
                     this.setState({myLifeStyle:myLife.data});
                 }
@@ -92,10 +92,10 @@ export default class DashboardScreen extends Component{
                         // get("me/policy",{})
        
     };
-    openDetail(id){
+    openDetail(item){
         this.props.navigator.push({
             screen: "mti.PrivilegeDetailScreen", // unique ID registered with Navigation.registerScreen
-            passProps:{id:id},
+            passProps:{data:item},
             title: undefined, // navigation bar title of the pushed screen (optional)
             titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
             animated: false, // does the push have transition animation or does it happen immediately (optional)
@@ -115,7 +115,7 @@ export default class DashboardScreen extends Component{
                     activityTitleText={hotdeal.name}
                     groupId={hotdeal.group_id}
                     style={{marginLeft: responsiveWidth(3)}}
-                    onPress={()=>this.openDetail(hotdeal.id)}
+                    onPress={()=>this.openDetail(hotdeal)}
                 />
             )
         }else{
@@ -135,7 +135,7 @@ export default class DashboardScreen extends Component{
 
     renderMyLifeStyleList(){
         if(this.state.myLifeStyle && this.state.myLifeStyle.length >0){    
-            return this.state.hotDeal.map((myLifeStyle,i)=>
+            return this.state.myLifeStyle.map((myLifeStyle,i)=>
                 <DashboardActivityCard 
                 key={i} 
                 bannerUri={myLifeStyle.picture_url ? {uri:myLifeStyle.picture_url}:null}
@@ -144,7 +144,7 @@ export default class DashboardScreen extends Component{
                 activityTitleText={myLifeStyle.name}
                 style={{marginLeft: responsiveWidth(3)}}
                 groupId={myLifeStyle.group_id}
-                onPress={()=>this.openDetail(myLifeStyle.id)}
+                onPress={()=>this.openDetail(myLifeStyle)}
             />
             )
         }else{

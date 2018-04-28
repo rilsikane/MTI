@@ -46,16 +46,14 @@ export default class InsuranceDetailScreen extends Component{
     calcDate(date1,date2) {
         var diff = Math.floor(date2.getTime() - date1.getTime());
         var day = 1000 * 60 * 60 * 24;
-        var days = Math.floor(diff/day);
-        days+=1;
-        var months = Math.floor(days/31);
-        var years = Math.floor(months/12);
         
+        var days = Math.floor(diff/day);
+        days += 1;
+        var years = Math.floor(days/365);
+    
         var message = "";
-        if(years>0 || months ==11){
+        if(years>0 || days>360){
             message = `${years||1}  ปี`;
-        }else if(months>0){
-            message = months + " เดือน";
         }else if(days>0){
             message = days + " วัน";
         }

@@ -8,11 +8,12 @@ import {Headers} from './../components/Headers';
 import {DashboardActivityCard} from './../components/DashboardActivityCard';
 import {MainSubmitButton} from './../components/MainSubmitButton';
 import {EventButtonGroup} from '../components/EventButtonGroup';
-import {post,authen,get} from '../api';
+import {post,authen,get,getBasic} from '../api';
 import Spinner from 'react-native-loading-spinner-overlay';
 import HTMLView from 'react-native-htmlview';
 import moment from 'moment';
 import localization from 'moment/locale/th'
+import store from 'react-native-simple-store';
 export default class PrivilegeDetailScreen extends Component{
 
     constructor(props){
@@ -20,23 +21,43 @@ export default class PrivilegeDetailScreen extends Component{
         this.state={
             showComment: true,
             detail:{},
-            isLoading:true
+            recommend:[],
+            isLoading:true,
+            groups:[]
         }
         this.retrivePrivillege = this.retrivePrivillege.bind(this);
+        this.renderRecommendPrivilegeList = this.renderRecommendPrivilegeList.bind(this);
     }
     async componentDidMount(){
-        let response = await get(`privilege/${this.props.id}`,{})
+        let response = await getBasic(`privilege/${this.props.data.id}`,{})
+        let response2 = await getBasic(`privileges?filter_group_id=${this.props.data.group_id}&page=1&pagesize=3`,{});
+        let group = await store.get("privilegeGroup");
         //let response2 = await post(`privilege/redeem`,{"privilege_id":this.props.id});
         //console.log(response2);
-        this.setState({detail:response,isLoading:false})
+        this.setState({detail:response,isLoading:false,recommend:response2.data,groups:group})
         //this.setState({isLoading:false})
+    }
+    getTitleText(){
+        if(this.state.groups.length >0 && this.props.data.group_id){
+            let group =  this.state.groups.filter(gp=>gp.id==this.props.data.group_id)
+            return group && group.length>0 ? group[0].name:null;
+        }else{
+            return null;
+        }
+    }
+    getIcon(){
+        if(this.state.groups.length >0 && this.props.data.group_id){
+            let group =  this.state.groups.filter(gp=>gp.id==this.props.data.group_id)
+            return group && group.length>0 ? {uri:group[0].icon_url}:null;
+        }else{
+            return null;
+        }
     }
     renderPrivilegeDetailList(){
         let data = this.state.detail.content1.split("|");
         if(data.length>0){
             return data.map((data,i)=>
                 <View key={i} style={styles.privilegeTextContainerStyle}>
-                    <Text style={styles.privilegeDetailSubTextStyle}>{`${++i}. `}</Text>
                     <Text style={styles.privilegeDetailSubTextStyle}>{data}</Text>
                 </View>
             
@@ -55,7 +76,7 @@ export default class PrivilegeDetailScreen extends Component{
             screen: 'mti.PrivilegeAgreementScreen', // unique ID registered with Navigation.registerScreen
             title: undefined, // navigation bar title of the pushed screen (optional)
             titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
-            passProps: {navigator:this.props.navigator,data:this.state.detail}, // Object that will be passed as props to the pushed screen (optional)
+            passProps: {navigator:this.props.navigator,data:this.state.detail,item:this.props.item}, // Object that will be passed as props to the pushed screen (optional)
             animated: true, // does the push have transition animation or does it happen immediately (optional)
             backButtonTitle: undefined, // override the back button title (optional)
             backButtonHidden: false, // hide the back button altogether (optional)
@@ -132,7 +153,7 @@ export default class PrivilegeDetailScreen extends Component{
                                 placeholder='ความคิดเห็นของคุณ...'
                                 placeholderTextColor='rgba(145, 145, 149, 0.44)'
                             />
-                            <TouchableOpacity onPress={this.retrivePrivillege}>
+                            <TouchableOpacity>
                                 <Image
                                     source={require('../source/icons/iconSendMessage.png')}
                                     resizeMode='contain'
@@ -145,33 +166,38 @@ export default class PrivilegeDetailScreen extends Component{
             </View>
         )
     }
-
+    openDetail(item){
+        this.props.navigator.push({
+            screen: "mti.PrivilegeDetailScreen", // unique ID registered with Navigation.registerScreen
+            passProps:{data:item},
+            title: undefined, // navigation bar title of the pushed screen (optional)
+            titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
+            animated: false, // does the push have transition animation or does it happen immediately (optional)
+            backButtonTitle: undefined, // override the back button title (optional)
+            backButtonHidden: false, // hide the back button altogether (optional)
+        })
+    }
     renderRecommendPrivilegeList(){
-        let privilege = [
-            {
-                bannerUri: require('./../source/images/wefitness-logo.png'),
-                iconUri: require('./../source/icons/iconHealthySelected.png'),
-                iconTitleText: 'Lifestyle',
-                activityTitleText: 'ออกกำลังกายฟรี ที่ WE Fitness 2 วัน พร้อมลด 10% เมื่อสมัครสมาชิก'
-            },
-            {
-                bannerUri: require('./../source/images/privilegeImg02.png'),
-                iconUri: require('./../source/icons/iconBeautySelected.png'),
-                iconTitleText: 'Beauty',
-                activityTitleText: 'ส่วนลด 20% เมื่อซื้อชุดของขวัญ Estee Lauder Set Makeup'
-            },
-        ]
-
-        return privilege.map((data,i)=>
-            <DashboardActivityCard 
-                key={i} 
-                bannerUri={data.bannerUri}
-                iconUri={data.iconUri}
-                iconTitleText={data.iconTitleText}
-                activityTitleText={data.activityTitleText}
-                style={[styles.dashboardActivityCardContainerStyle,i==0&&{marginLeft: responsiveWidth(4.6)}]}
-            />
-        )
+        console.log(this.state.recommend);
+        if(this.state.recommend && this.state.recommend.length > 0 ){
+        return (this.state.recommend.map((data,i)=>
+                {
+                    if(data.id != this.state.detail.id){
+                        return <DashboardActivityCard 
+                        key={i} 
+                        bannerUri={data.picture_url ? {uri:data.picture_url}:null}
+                        iconUri={data.iconUri}
+                        iconTitleText={data.iconTitleText}
+                        activityTitleText={data.name}
+                        groupId={data.group_id}
+                        onPress={()=>this.openDetail(data)}
+                        style={[styles.dashboardActivityCardContainerStyle,i==0&&{marginLeft: responsiveWidth(4.6)}]}
+                        />
+                    }
+                }))
+        }else{
+            return null;
+        }
     }
     getexpireDate(){
         return `${moment(this.state.detail.start_date).locale('th').format("DD MMM")} - ${moment(this.state.detail.end_date).locale('th').format("DD MMM YYYY")}`
@@ -197,11 +223,11 @@ export default class PrivilegeDetailScreen extends Component{
                             <View style={styles.iconEventContainerStyle}>
                                 <View style={styles.privilegeTitleContainerStyle}>
                                     <Image
-                                        source={require('../source/icons/iconHealthy.png')}
+                                        source={this.getIcon()}
                                         resizeMode='contain'
                                         style={styles.titleIconStyle}
                                     />
-                                    <Text style={styles.titleTextStyle}>Healthy</Text>
+                                    <Text style={styles.titleTextStyle}>{this.getTitleText()}</Text>
                                 </View>
                                 <View style={styles.eventButtonGroupContainerStyle}>
                                     <EventButtonGroup
@@ -231,13 +257,10 @@ export default class PrivilegeDetailScreen extends Component{
                         <View style={styles.recommendPrivilegeContainerStyle}>
                             <View style={styles.recommendTitleContainerStyle}>
                                 <Text style={styles.recommendTitleTextStyle}>สิทธิพิเศษที่แนะนำให้คุณ</Text>
-                                <TouchableOpacity>
-                                    <Text style={styles.seeAllTextStyle}>ดูทั้งหมด</Text>
-                                </TouchableOpacity>
                             </View>
                             <View style={styles.recommendPrivilegeListContainerStyle}>
                                 <ScrollView horizontal style={{flex: 1,}} showsHorizontalScrollIndicator={false}>
-                                    {this.renderRecommendPrivilegeList()}
+                                    {!this.state.isLoading && this.renderRecommendPrivilegeList()}
                                 </ScrollView>
                             </View>
                         </View>

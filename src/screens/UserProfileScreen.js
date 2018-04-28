@@ -13,8 +13,10 @@ import {LifeStyleBox} from './../components/LifeStyleBox';
 import store from 'react-native-simple-store';
 import moment from 'moment';
 import localization from 'moment/locale/th'
-import {post,authen,get,put} from '../api';
+import {post,authen,get,put,getBasic} from '../api';
 import ImagePicker from 'react-native-image-picker'
+import ImageResizer from 'react-native-image-resizer'
+import RNFS from 'react-native-fs'
 
 export default class UserProfileScreen extends Component{
 
@@ -56,7 +58,8 @@ export default class UserProfileScreen extends Component{
             isDateTimePickerVisible: false,
             isLoading: false,
             userImageBase64:"",
-            user:{}
+            user:{},
+            profileImage:""
         }
         this.onUpdatePictureProfilePress = this.onUpdatePictureProfilePress.bind(this);
         this.onCloseModalPress = this.onCloseModalPress.bind(this);
@@ -109,7 +112,7 @@ export default class UserProfileScreen extends Component{
 
     async init(){
         this.setState({isLoading:true});
-        let response = await get("privilege/groups",{});
+        let response = await getBasic("privilege/groups",{});
         let list = response.data;
         let list1=[],list2=[],list3=[];
         for(let i=0;i<list.length;i++){
@@ -152,7 +155,8 @@ export default class UserProfileScreen extends Component{
             userLifeStyle:user.lifestyle.map(data=>data.title),
             orgUserLifeStyleId: user.lifestyle.map(data=>data.id),
             isLoading: false,
-            user:user
+            user:user,
+            profileImage:user.profile_img
         })
     }
 
@@ -176,15 +180,16 @@ export default class UserProfileScreen extends Component{
         this.state.user.income = userIncome;
         this.state.user.education = userEducation;
         this.state.user.career = userCareer;
-        params.lifestyle = userLifeStyle;
+        //params.lifestyle = userLifeStyle;
 
 
         let response = await put('me/profile',this.state.user);
         if(response){
-            //let lifeStyleUpdate = await put('me/lifestyle',userLifeStyle);
-            // if(this.state.userImageBase64 && this.state.userImageBase64!=""){
-            //     let pictureResponse = await post('me/picture',{image:this.state.userImageBase64});
-            // }
+            let lifeStyleUpdate = await put('me/lifestyle',{lifestyle:userLifeStyle});
+            if(this.state.userImageBase64 && this.state.userImageBase64!=""){
+                 let pictureResponse = await post('me/picture',{image:`data:image/jpeg;base64,${this.state.userImageBase64}`});
+                 console.log(pictureResponse);
+            }
             let user = await get("me",{});
             if(user){
                 await store.save("user",user);
@@ -504,12 +509,10 @@ export default class UserProfileScreen extends Component{
               }
       
               const fileResize = await ImageResizer.createResizedImage(response.uri, 720, 960, "JPEG",60,rotation);
-              if(index != -1){
+              if(fileResize){
                 let base64Img = await RNFS.readFile(fileResize.uri, "base64")  
                 let success = await RNFS.unlink(fileResize.uri)
-                if(success){
-                        this.setState({userImageBase64:base64Img});
-                }
+                this.setState({userImageBase64:base64Img});
               }
             }
           });
@@ -530,7 +533,8 @@ export default class UserProfileScreen extends Component{
                             <TouchableOpacity disabled={!this.state.canEditProfile} onPress={this.onUpdatePictureProfilePress} style={styles.userAvatarSectionStyle}>
                                 <View style={styles.avatarBorderStyle}/>
                                 <ImageBackground
-                                    source={require('./../source/images/userAvatarImg.png')}
+                                    source={this.state.userImageBase64 ? {uri:`data:image/jpeg;base64,${this.state.userImageBase64}`} 
+                                    : {uri:this.state.profileImage}}
                                     style={styles.userAvatarImageStyle}
                                     borderRadius= {responsiveHeight(5.235)}
                                 >
@@ -670,7 +674,7 @@ export default class UserProfileScreen extends Component{
                                 />
                             </View>
                         </TouchableOpacity>
-                        <TextInputIcon
+                        {/* <TextInputIcon
                             value={this.state.userPassword}
                             leftLabelText='รหัสผ่าน'
                             iconUri={require('./../source/icons/iconPass.png')}
@@ -682,7 +686,7 @@ export default class UserProfileScreen extends Component{
                             onChangeText={(userPassword)=> this.setState({userPassword})}
                             rightIconName='pen'
                             editable={false}
-                        />
+                        /> */}
                         <View style={styles.submitButtonContainerStyle}>
                             <MainSubmitButton
                                 buttonTitleText={this.state.submitButtonText}

@@ -8,7 +8,8 @@ import {Headers} from './../components/Headers';
 import {MainSearchBox} from '../components/MainSearchBox';
 import {LifeStyleTabs} from '../components/LifeStyleTabs';
 import {DashboardActivityCard} from '../components/DashboardActivityCard';
-import {post,authen,get} from '../api';
+import {post,authen,get,getBasic} from '../api';
+
 
 export default class PrivilegeScreen extends Component{
 
@@ -39,10 +40,9 @@ export default class PrivilegeScreen extends Component{
     }
     async componentDidMount(){
         this.setState({isLoading: true})
-        let privilege = await get("privileges?page=1&pagesize=20",{});
- 
-        let tabsList = await get('privilege/groups',{});
-        tabsList.data.unshift({id: '99',name: 'All',icon:require("../source/icons/iconTabsInActiveAll.png")},{id: '100',name: 'Hot',icon:require("../source/icons/iconTabsInActiveHot.png")});
+        let privilege = await getBasic("privileges?page=1&pagesize=20",{});
+        let tabsList = await getBasic('privilege/groups',{});
+        tabsList.data.unshift({id: '99',name: 'All',icon:require("../source/icons/iconTabsInActiveAll.png")});
         this.setState({
             tabsList: tabsList.data
         })
@@ -55,10 +55,10 @@ export default class PrivilegeScreen extends Component{
             });
         }       
     }
-    openDetail(id){
+    openDetail(item){
         this.props.navigator.push({
             screen: "mti.PrivilegeDetailScreen", // unique ID registered with Navigation.registerScreen
-            passProps:{id:id},
+            passProps:{data:item},
             title: undefined, // navigation bar title of the pushed screen (optional)
             titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
             animated: false, // does the push have transition animation or does it happen immediately (optional)
@@ -80,10 +80,9 @@ export default class PrivilegeScreen extends Component{
 
     _renderItem = ({item}) => (
         <DashboardActivityCard 
-            onPress={()=>this.openDetail(item.id)}
+            onPress={()=>this.openDetail(item)}
             bannerUri={item.picture_url ? {uri:item.picture_url}:null}
             groupId={item.group_id}
-            iconUri={require('../source/icons/iconHealthySelected.png')}
             iconTitleText={item.lifeStyleTitleText}
             activityTitleText={item.name}
             style={[styles.dashboardActivityCardContainerStyle,]}
@@ -109,56 +108,59 @@ export default class PrivilegeScreen extends Component{
     }
 
     async getPrivilegeForEachTabs(index){
-        if(index==8){
+        if(index==7){
             index = 10;
         }
         let filter_group_id = index;
         let privilege = [];
-        if(index==1){
-            privilege = await get(`privileges?filter_set=hotdeal&page=1&pagesize=20`,{});
-        }else{
-            privilege = await get(`privileges?filter_group_id=${--filter_group_id}&page=1&pagesize=20`,{});
-        }
+        // if(index==1){
+        //     privilege = await get(`privileges?filter_set=hotdeal&page=1&pagesize=20`,{});
+        // }
+        // else{
+            privilege = await getBasic(`privileges?filter_group_id=${filter_group_id}&page=1&pagesize=20`,{});
+        //}
         //console.log(privilege.data)
         if(index==0){
             this.setState({privilege:this.state.privilegeOrg});
-        }else if(index==1){
-            if(this.state.privilegeHot.length==0){
-                this.setState({privilege: privilege.data,privilegeHot:privilege.data});
-            }else{
-                this.setState({privilege:this.state.privilegeHot});
-            }
-        }else if(index==2){
+        }
+        // else if(index==1){
+            // if(this.state.privilegeHot.length==0){
+            //     this.setState({privilege: privilege.data,privilegeHot:privilege.data});
+            // }else{
+            //     this.setState({privilege:this.state.privilegeHot});
+            // }
+        // }
+        else if(index==1){
             if(this.state.privilegeHealthy.length==0){
                 this.setState({privilege: privilege.data,privilegeHealthy:privilege.data});
             }else{
                 this.setState({privilege:this.state.privilegeHealthy});
             }
-        }else if(index==3){
+        }else if(index==2){
             if(this.state.privilegeBeauty.length==0){
                 this.setState({privilege: privilege.data,privilegeBeauty:privilege.data});
             }else{
                 this.setState({privilege:this.state.privilegeBeauty});
             }
-        }else if(index==4){
+        }else if(index==3){
             if(this.state.privilegeEat.length==0){
                 this.setState({privilege: privilege.data,privilegeEat:privilege.data});
             }else{
                 this.setState({privilege:this.state.privilegeEat});
             }
-        }else if(index==5){
+        }else if(index==4){
             if(this.state.privilegeTravel.length==0){
                 this.setState({privilege: privilege.data,privilegeTravel:privilege.data});
             }else{
                 this.setState({privilege:this.state.privilegeTravel});
             }
-        }else if(index==6){
+        }else if(index==5){
             if(this.state.privilegeAuto.length==0){
                 this.setState({privilege: privilege.data,privilegeAuto:privilege.data});
             }else{
                 this.setState({privilege:this.state.privilegeAuto});
             }
-        }else if(index==7){
+        }else if(index==6){
             if(this.state.privilegeEntertain.length==0){
                 this.setState({privilege: privilege.data,privilegeEntertain:privilege.data});
             }else{
@@ -187,7 +189,7 @@ export default class PrivilegeScreen extends Component{
 
     async _onSearchIconPress(){
         this.setState({tabIndex: 0,isLoading: true,privilege:[]});
-        let response = await get(`privileges?search=${this.state.searchValue}&page=1&pagesize=20`,{});
+        let response = await getBasic(`privileges?search=${this.state.searchValue}&page=1&pagesize=20`,{});
         this.setState({privilege: response.data,isLoading: false});
     }
 

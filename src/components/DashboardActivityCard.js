@@ -31,7 +31,7 @@ class DashboardActivityCard extends Component{
             return(
                 <View>
                     <Image
-                        source={this.props.iconUri}
+                        source={this.getIcon()}
                         resizeMode='contain'
                         style={styles.iconImageStyle}
                     />
@@ -49,6 +49,14 @@ class DashboardActivityCard extends Component{
             return null;
         }
     }
+    getIcon(){
+        if(this.state.groups.length >0 && this.props.groupId){
+            let group =  this.state.groups.filter(gp=>gp.id==this.props.groupId)
+            return group && group.length>0 ? {uri:group[0].icon_url}:null;
+        }else{
+            return null;
+        }
+    }
 
     renderCardDetail(){
         const activityDetailText = this.props.activityDetailText
@@ -62,7 +70,7 @@ class DashboardActivityCard extends Component{
                     </View>
                     <View style={styles.addEventIconContainerStyleStyle}>
                         <Image
-                            source={require('./../source/icons/iconEventAdd.png')}
+                            source={this.getIcon()}
                             resizeMode='contain'
                             style={styles.addEventIconImageStyle}
                         />
@@ -157,8 +165,11 @@ const styles={
         textAlign: 'center',
     },
     iconImageStyle:{
-        height: responsiveHeight(2.46),
-
+        height: responsiveHeight(4),
+        width: responsiveHeight(6),
+        alignItems:'center',
+        justifyContent: 'center',
+        alignSelf: 'center',
     },
     iconTitleTextStyle:{
         color: 'rgba(255, 255, 255, 0.6)',

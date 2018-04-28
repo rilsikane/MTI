@@ -3,14 +3,37 @@ import {Text,View,Image} from 'react-native';
 import PropTypes from "prop-types";
 import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
 import QRCode from 'react-native-qrcode';
-
+import store from 'react-native-simple-store';
 import {Headers} from './../components/Headers';
+
 
 export default class PrivilegeQrCodeScreen extends Component{
 
     constructor(props){
         super(props)
-
+        this.state={groups:[]}
+    }
+    async componentDidMount(){
+        let group = await store.get("privilegeGroup");
+        if(group){
+            this.setState({groups:group});
+        }
+    }
+    getIcon(){
+        if(this.state.groups.length >0 && this.props.data.group_id){
+            let group =  this.state.groups.filter(gp=>gp.id==this.props.data.group_id)
+            return group && group.length>0 ? {uri:group[0].icon_url}:null;
+        }else{
+            return null;
+        }
+    }
+    getTitleText(){
+        if(this.state.groups.length >0 && this.props.data.group_id){
+            let group =  this.state.groups.filter(gp=>gp.id==this.props.data.group_id)
+            return group && group.length>0 ? group[0].name:null;
+        }else{
+            return null;
+        }
     }
 
     render(){
@@ -28,18 +51,17 @@ export default class PrivilegeQrCodeScreen extends Component{
                 <View style={styles.privilegeQrCodeContainerStyle}>
                     <View style={styles.privilegeLogoContainerStyle}>
                         <Image
-                            source={require('../source/images/privilegeLogo01.png')}
+                            source={{uri:this.props.data.partner_picture}}
                             resizeMode='contain'
                             style={styles.privilegeLogoStyle}
                         />
                     </View>
                     <View style={styles.lifeStyleContainerStyle}>
                         <Image
-                            source={require('../source/icons/iconHealthy.png')}
-                            resizeMode='contain'
+                            source={this.getIcon()}
                             style={styles.lifeStyleIconStyle}
                         />
-                        <Text style={styles.lifeStyleTextStyle}>Healthy</Text>
+                        <Text style={styles.lifeStyleTextStyle}>{this.getTitleText()}</Text>
                     </View>
                     <Text style={styles.privilegeTitleTextStyle}>{this.props.data.name}</Text>
                     <Text style={styles.privilegeDetailTextStyle}>คุณสามารถรับสิทธิพิเศษได้โดยการแสดง QR Code ที่หน้าร้านหรือบันทึก QR Code เพื่อใช้สิทธิพิเศษนี้ในภายหลัง</Text>
@@ -81,7 +103,9 @@ const styles={
     },
     privilegeLogoStyle:{
         flex: 1,
-        alignSelf: 'center'
+        alignSelf: 'center',
+        width:responsiveHeight(10),
+        height:responsiveHeight(10)
     },
     lifeStyleContainerStyle:{
         flexDirection: 'row',
