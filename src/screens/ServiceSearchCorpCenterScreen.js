@@ -43,8 +43,8 @@ export default class ServiceSearchCorpCenterScreen extends Component{
     }
 
     focus=()=> {    
-        let hospitalId = this.props.data.map(data=>data.id);
-        this.mapRef.fitToSuppliedMarkers(hospitalId,true);
+        let corpId = this.props.data.map(data=>data.id);
+        this.mapRef.fitToSuppliedMarkers(corpId,true);
     }
 
     renderContent(){
