@@ -5,6 +5,9 @@ import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-nat
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import PopupDialog,{ SlideAnimation }  from 'react-native-popup-dialog';
 import Spinner from 'react-native-loading-spinner-overlay';
+import ImagePicker from 'react-native-image-picker'
+import ImageResizer from 'react-native-image-resizer';
+import RNFS from 'react-native-fs';
 
 import {Headers} from './../components/Headers';
 import {TextInputIcon} from './../components/TextInputIcon';
@@ -14,7 +17,7 @@ import store from 'react-native-simple-store';
 import moment from 'moment';
 import localization from 'moment/locale/th'
 import {post,authen,get,put} from '../api';
-import ImagePicker from 'react-native-image-picker'
+
 
 export default class UserProfileScreen extends Component{
 
@@ -508,7 +511,7 @@ export default class UserProfileScreen extends Component{
                 let base64Img = await RNFS.readFile(fileResize.uri, "base64")  
                 let success = await RNFS.unlink(fileResize.uri)
                 if(success){
-                        this.setState({userImageBase64:base64Img});
+                    this.setState({userImageBase64:base64Img});
                 }
               }
             }
