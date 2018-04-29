@@ -24,7 +24,7 @@ export default class UserInsuranceListScreen extends Component{
         const user = await store.get("user");
         if(user && "GUEST"!=user.name){
             this.setState({isLoading:true});
-            let response = await get("me/policy",{});
+            let response = await get("me/policy?pagesize=20&page=1",{});
             if(response){
                 this.setState({isLoading:false,policys:response});
             }else{

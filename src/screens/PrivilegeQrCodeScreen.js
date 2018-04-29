@@ -5,19 +5,24 @@ import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-nat
 import QRCode from 'react-native-qrcode';
 import store from 'react-native-simple-store';
 import {Headers} from './../components/Headers';
-
+import TimerMixin from 'react-timer-mixin';
 
 export default class PrivilegeQrCodeScreen extends Component{
 
     constructor(props){
         super(props)
-        this.state={groups:[]}
+        this.state={groups:[],timeCount:""}
     }
     async componentDidMount(){
         let group = await store.get("privilegeGroup");
         if(group){
             this.setState({groups:group});
         }
+        let endtime = new Date();
+        endtime.setTime(endtime.getTime() + (15 * 60 * 1000));
+        this.timer = TimerMixin.setInterval( async () => {
+            await this.getTimeRemaining(endtime);
+          }, 10);
     }
     getIcon(){
         if(this.state.groups.length >0 && this.props.data.group_id){
@@ -34,6 +39,23 @@ export default class PrivilegeQrCodeScreen extends Component{
         }else{
             return null;
         }
+    }
+    getTimeRemaining(endtime){
+        var t = Date.parse(endtime) - Date.parse(new Date());
+        var seconds = Math.floor( (t/1000) % 60 );
+        var minutes = Math.floor( (t/1000/60) % 60 );
+        if(t >0){
+            this.setState({timeCount:`${minutes<10 ? '0'+minutes:minutes} : ${seconds<10 ? '0'+seconds:seconds}`})
+        }else{
+            this.setState({timeCount:`00:00`});
+            TimerMixin.clearInterval(this.timer);
+            this.props.navigator.dismissAllModals({
+                animationType: 'slide-down' // 'none' / 'slide-down' , dismiss animation for the modal (optional, default 'slide-down')
+            })
+        }    
+    }
+    componentWillUnmount(){
+      TimerMixin.clearInterval(this.timer);
     }
 
     render(){
@@ -65,6 +87,7 @@ export default class PrivilegeQrCodeScreen extends Component{
                     </View>
                     <Text style={styles.privilegeTitleTextStyle}>{this.props.data.name}</Text>
                     <Text style={styles.privilegeDetailTextStyle}>คุณสามารถรับสิทธิพิเศษได้โดยการแสดง QR Code ที่หน้าร้านหรือบันทึก QR Code เพื่อใช้สิทธิพิเศษนี้ในภายหลัง</Text>
+                    <Text style={styles.timerTextStyle}>{this.state.timeCount}</Text>
                 </View>
                 <View style={styles.qrCodeContainerStyle}>
                     <Text style={styles.qrRefCodeTextStyle}>Reference Code : {this.props.redeem.redeem_code}</Text>
@@ -137,6 +160,15 @@ const styles={
         fontSize: responsiveFontSize(2.15),
         marginLeft: responsiveWidth(11),
         marginRight: responsiveWidth(11),
+    },
+    timerTextStyle:{
+        letterSpacing: 0,
+        textAlign: "center",
+        color: "rgb(253, 98, 98)",
+        fontSize: responsiveFontSize(5),
+        marginLeft: responsiveWidth(11),
+        marginRight: responsiveWidth(11),
+        marginTop: 20,
     },
     qrCodeContainerStyle:{
         flex: 1,

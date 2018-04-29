@@ -153,13 +153,9 @@ class RegisterStep1 extends Component{
                             containerStyle={styles.inputContainerStyle}
                             secondFlex={secondFlex}
                             thirdFlex={thirdFlex}
-                            returnKeyType = {"next"}
+                            returnKeyType = {"done"}
                             onSubmitEditing={() => {
                                 Keyboard.dismiss();
-                                this.inputs['userLastName'].blur();
-                                setTimeout(()=>{
-                                    this.setState({ isDateTimePickerVisible: true })
-                                },500)
                             }}
                         />
 

@@ -32,10 +32,35 @@ export default async function startApplication(root) {
        
         case 'after-login':
        
-         Navigation.startSingleScreenApp({
-            screen: { 
-              screen: 'mti.DashboardScreen'
+        Navigation.startTabBasedApp({
+          tabs: [
+            {
+              label: 'หน้าหลัก',
+              //screen: 'staffio.Overview',
+              screen: 'mti.DashboardScreen',
+              icon: require('../src/source/images/default_11.png'),
+              selectedIcon: require('../src/source/images/over_11.png'),
+              title: undefined,
+              tabBarText:'Workpool',
+              navigatorStyle: {},
             },
+             {
+              label: 'สิทธิพิเศษ',
+              screen: 'mti.PrivilegeScreen',
+              icon: require('../src/source/images/default_13.png'),
+              selectedIcon: require('../src/source/images/over_13.png'),
+              title: undefined,
+              navigatorStyle: {},
+            },
+            {
+              label: 'บริการ',
+              screen: 'mti.ServiceScreen',
+              icon: require('../src/source/images/default_17.png'),
+              selectedIcon: require('../src/source/images/over_17.png'),
+              title: undefined,
+              navigatorStyle: {},
+            },
+          ],
             drawer: {
               // optional, add this if you want a side menu drawer in your app
               left: {
@@ -56,14 +81,34 @@ export default async function startApplication(root) {
               // for TheSideBar: 'airbnb', 'facebook', 'luvocracy','wunder-list'
               disableOpenGesture: true // optional, can the drawer, both right and left, be opened with a swipe instead of button
             },
+            tabsStyle:{
+              tabBarButtonColor: '#9B9B9B', // change the color of the tab icons and text (also unselected)
+              tabBarSelectedButtonColor: 'rgb(253, 98, 98)', // change the color of the selected tab icon and text (only selected)
+              tabBarBackgroundColor: '#ffffff', // change the background color of the tab bar
+              tabBarTranslucent: true, // change the translucent of the tab bar to false
+              tabBarLabelColor: '#333333', // iOS only. change the color of tab text
+              tabBarSelectedLabelColor: 'rgb(253, 98, 98)', // iOS only. change the color of the selected tab text
+              forceTitlesDisplay: true, // Android only. If true - Show all bottom tab labels. If false - only the selected tab's label is visible.
+              tabBarTextFontFamily: 'DBHelvethaicaX-Reg',
+            },
             appStyle: {
             orientation: 'portrait',
             navBarBlur: false,
             drawUnderNavBar: true,
             navBarTransparent: true,
             navBarHidden: true  ,
-            navBarBackgroundColor: '#f58020', 
-            }
+            navBarBackgroundColor: '#f58020',
+            tabBarButtonColor: '#9B9B9B', // change the color of the tab icons and text (also unselected)
+            tabBarSelectedButtonColor: 'rgb(253, 98, 98)', // change the color of the selected tab icon and text (only selected)
+            tabBarBackgroundColor: '#ffffff', // change the background color of the tab bar
+            tabBarTranslucent: true, // change the translucent of the tab bar to false
+            tabBarLabelColor: '#333333', // iOS only. change the color of tab text
+            tabBarSelectedLabelColor: 'rgb(253, 98, 98)', // iOS only. change the color of the selected tab text
+            forceTitlesDisplay: true, // Android only. If true - Show all bottom tab labels. If false - only the selected tab's label is visible.
+            tabBarTextFontFamily: 'DBHelvethaicaX-Reg',
+            },
+            animationType: 'fade',
+            lazyload:true
         });
         return;
        
