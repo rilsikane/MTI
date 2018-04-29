@@ -37,12 +37,8 @@ export default class PrivilegeScreen extends Component{
         this.getPrivilegeForEachTabs = this.getPrivilegeForEachTabs.bind(this);
         this.openPrivilegeSearch = this.openPrivilegeSearch.bind(this);
         this._onSearchIconPress = this._onSearchIconPress.bind(this);
-        this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
     }
     async componentDidMount(){
-          
-    }
-    async init(){
         this.setState({isLoading: true})
         let privilege = await getBasic("privileges?page=1&pagesize=20",{});
         let tabsList = await getBasic('privilege/groups',{});
@@ -57,7 +53,7 @@ export default class PrivilegeScreen extends Component{
                 privilegeOrg: privilege.data,
                 isLoading: false,
             });
-        }    
+        }       
     }
     openDetail(item){
         this.props.navigator.push({
@@ -196,18 +192,6 @@ export default class PrivilegeScreen extends Component{
         let response = await getBasic(`privileges?search=${this.state.searchValue}&page=1&pagesize=20`,{});
         this.setState({privilege: response.data,isLoading: false});
     }
-    onNavigatorEvent(event) {
-    
-        if (event.id === 'bottomTabSelected') {
-            this.init();
-        }
-        if (event.id === 'willDisappear') {
-         
-        }
-        if (event.id === 'didAppear') {
-          this.init();
-        }
-    }
 
     render(){
         return(
@@ -226,7 +210,7 @@ export default class PrivilegeScreen extends Component{
                     placeholder='ค้นหาสิทธิพิเศษที่คุณต้องการ'
                 />
                  <View style={{flex: 1}}>
-                    <View style={{zIndex:3,flex:1}}>
+                    <ScrollView style={{zIndex:3}}>
                     
                             <LifeStyleTabs
                                 tabChildren={this.renderPrivilegeList()}
@@ -243,7 +227,7 @@ export default class PrivilegeScreen extends Component{
                                     resizeMode='stretch'
                                 />
                             </View>
-                    </View>
+                    </ScrollView>
                 </View>
                 {this.state.isLoading && <Spinner visible={this.state.isLoading}  textStyle={{color: '#FFF'}} />}
             </View>

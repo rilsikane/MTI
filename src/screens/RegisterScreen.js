@@ -758,7 +758,6 @@ export default class RegisterScreen extends Component{
                                 this.props.navigator.pop()
                             }else{
                                 if(this.state.pageNumber==2 && this.props.user){
-                                    this.props.registerStore.register = {};
                                     this.props.navigator.resetTo({
                                         screen: 'mti.LoginScreen', // unique ID registered with Navigation.registerScreen
                                         title: undefined, // navigation bar title of the pushed screen (optional)

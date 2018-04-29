@@ -22,16 +22,16 @@ export default class DashboardScreen extends Component{
         this.state={
             hotDealDefault:[
                 {
-                    bannerUri: require('./../source/images/pic-default.jpg'),
+                    bannerUri: require('./../source/images/wefitness-logo.png'),
                     iconUri: require('./../source/icons/iconHealthySelected.png'),
                     iconTitleText: 'Lifestyle',
-                    activityTitleText: ''
+                    activityTitleText: 'ออกกำลังกายฟรี ที่ WE Fitness 2 วัน พร้อมลด 10% เมื่อสมัครสมาชิก'
                 },
                 {
-                    bannerUri: require('./../source/images/pic-default.jpg'),
+                    bannerUri: require('./../source/images/wefitness-logo.png'),
                     iconUri: require('./../source/icons/iconHealthySelected.png'),
                     iconTitleText: 'Lifestyle',
-                    activityTitleText: ''
+                    activityTitleText: 'ออกกำลังกายฟรี ที่ WE Fitness 2 วัน พร้อมลด 10% เมื่อสมัครสมาชิก'
                 },
             ],
 
@@ -55,13 +55,8 @@ export default class DashboardScreen extends Component{
         this.openDetail = this.openDetail.bind(this);
         this.goToPrivilleges = this.goToPrivilleges.bind(this);
         this.app = app;
-        this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
     }
     async componentDidMount(){
-      
-       
-    };
-    async init(){
         let user = await store.get("user");
         this.setState({isLoading:true});
         if(user){
@@ -85,7 +80,7 @@ export default class DashboardScreen extends Component{
                     this.setState({myLifeStyle:myLife.data});
                 }
             }else{
-                // this.setState({isLoading:false});
+                this.setState({isLoading:false});
                 setTimeout(()=>{
                     this.app.logout();
                 },500)
@@ -94,22 +89,11 @@ export default class DashboardScreen extends Component{
            
         }else{
             this.setState({isLoading:false});
-            let privilegeGroup = await getBasic("privilege/groups",{});
-            if(privilegeGroup){
-                await store.save("privilegeGroup",privilegeGroup.data);
-            }
-            let hotDeal = await getBasic("privileges?filter_set=hotdeal&page=1&pagesize=5",{});
-            if(hotDeal){
-                this.setState({hotDeal:hotDeal.data});
-            }
-            let myLife = await getBasic("privileges?filter_set=lifestyle&page=1&pagesize=5",{});
-            if(myLife){
-                this.setState({myLifeStyle:myLife.data});
-            }
         }
           // await store.save("policy",response2);
                         // get("me/policy",{})
-    }
+       
+    };
     openDetail(item){
         this.props.navigator.push({
             screen: "mti.PrivilegeDetailScreen", // unique ID registered with Navigation.registerScreen
@@ -224,8 +208,8 @@ export default class DashboardScreen extends Component{
                     rightIconName='iconBell'
                     notify='2'
                 />
-                {!this.state.isLoading && <UserShortDetailCard showQr navigator={this.props.navigator}/>}
                 <ScrollView style={{flex: 1}}>
+                    {!this.state.isLoading && <UserShortDetailCard showQr navigator={this.props.navigator}/>}
                     <View style={styles.dashboardDetailTopContainerStyle}>
                         <View style={styles.hotDealTitleTextContainerStyle}>
                             <Text style={styles.dashboardSectionTitleTextStyle}>HOT DEAL</Text>
@@ -272,18 +256,6 @@ export default class DashboardScreen extends Component{
                 {this.state.isLoading && <Spinner visible={this.state.isLoading}  textStyle={{color: '#FFF'}} />}
             </View>
         )
-    }
-    onNavigatorEvent(event) {
-    
-        if (event.id === 'bottomTabSelected') {
-            this.init();
-        }
-        if (event.id === 'willDisappear') {
-         
-        }
-        if (event.id === 'didAppear') {
-          this.init();
-        }
     }
 }
 

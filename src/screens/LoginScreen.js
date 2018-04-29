@@ -226,7 +226,7 @@ export default class LoginScreen extends Component{
                     </View>}
                     <View style={styles.bannerImageContainerStyle}>
                         <Animated.Image
-                            source={require('./../source/images/bannerImg.jpg')}
+                            source={require('./../source/images/bannerImg.png')}
                             resizeMode='stretch'
                             style={[styles.bannerImageStyle,{ height: this.imageHeight,width:null}]}  
                         />
@@ -312,7 +312,7 @@ export default class LoginScreen extends Component{
                                     </TouchableOpacity>
                                     
                                 </View>
-                                <Text style={{color:"#fff"}}>Version : 1.41</Text>
+                                <Text style={{color:"#fff"}}>Version : 1.38</Text>
                                 <View style={styles.registerBottomContainerStyle}>
                                     <TouchableOpacity onPress={this.gotoRegister}>
                                         <Text style={styles.registerBottomTextStyle}>ลงทะเบียนสมาชิก</Text>
@@ -337,7 +337,7 @@ export default class LoginScreen extends Component{
 }
 
 const {height,width} = Dimensions.get('window')
-const textColor = '#f2eded'
+const textColor = '#81cae9'
 const secondFlex = 0.3,thirdFlex = 0.9
 
 const styles={

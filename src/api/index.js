@@ -85,7 +85,7 @@ export async function post(path,param){
         try{
             console.log("param: "+JSON.stringify(param));
   
-            let BasicAuth = token ? ('Bearer ' + token):null;
+            let BasicAuth = 'Bearer ' + token;
   
             const response = await  axios.post(requestURL, param,{headers: {'Authorization':BasicAuth,timeout:timeout}});
             if(response && response.data){
@@ -260,9 +260,8 @@ export async function put(path,param){
 
 export async function get(path,param){
   const token = await store.get("token");
-  //const token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1MjQ5MTcwMTcsImV4cCI6MTUyNDkxODgxNywiaWQiOjY2NCwiY2lkIjoiMzEwMTgwMTA4NTIyMCIsImxldmVsIjoiIn0.LNuX6Om2Ayk06jtGJSTC77QftQNJEDSVUZFL9xNG-ts"
   var config = {
-    headers: { 'Authorization': `${token ? 'Bearer '+token:null}` },
+    headers: { 'Authorization': 'Bearer '+token },
     timeout:timeout
   }
   let requestURL = `${endpoint}${path}`;
