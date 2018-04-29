@@ -35,28 +35,44 @@ export default class ServiceSearchCorpCenterScreen extends Component{
                     isLoading: false
                 });
             }
+        }else{
+            animationTimeout = setTimeout(() => {
+                this.focus();
+            },1000);
         }
+    }
+
+    focus=()=> {    
+        let corpId = this.props.data.map(data=>data.id);
+        this.mapRef.fitToSuppliedMarkers(corpId,true);
     }
 
     renderContent(){
         if(this.props.isMap){
             return(
                 <MapView
+                    ref={(ref) => { this.mapRef = ref; }}
+                    minZoomLevel={5}
+                    maxZoomLevel={18}
                     initialRegion={{
-                        latitude: 13.697567,
-                        longitude: 100.53758300000004,
+                        latitude: 15.870032,
+                        longitude: 100.99254100000007,
                         latitudeDelta: 15.870032,
                         longitudeDelta: 100.99254100000007,
                     }}
                     style={{flex: 1,}}
                 >
-                    <Marker
-                        coordinate={{
-                            latitude: 13.697567,
-                            longitude: 100.53758300000004
-                        }}
-                        image={require('../source/icons/iconMapMarker.png')}
-                    />
+                    {this.props.data.map((data)=>
+                        <Marker
+                            identifier={data.id}
+                            key={data.id}
+                            coordinate={{
+                                latitude: 13.697567,
+                                longitude: 100.53758300000004
+                            }}
+                            image={require('../source/icons/iconMapMarker.png')}
+                        />
+                    )}
                 </MapView>
             )
         }else{

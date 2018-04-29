@@ -11,19 +11,39 @@ export default class ContactUsScreen extends Component{
 
     constructor(props){
         super(props)
-        this.gotoBranchSearch = this.gotoBranchSearch.bind(this);
     }
 
-    gotoBranchSearch(){
-        this.props.navigator.push({
-            screen: 'mti.ServiceSearchBranchScreen', // unique ID registered with Navigation.registerScreen
-            passProps:{},
-            title: undefined, // navigation bar title of the pushed screen (optional)
-            titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
-            animated: false, // does the push have transition animation or does it happen immediately (optional)
-            backButtonTitle: undefined, // override the back button title (optional)
-            backButtonHidden: false, // hide the back button altogether (optional)
-        })
+    gotoBranchSearch(isMap){
+        if(isMap){
+            this.props.navigator.showModal({
+                screen: 'mti.ServiceSearchBranchScreen', // unique ID registered with Navigation.registerScreen
+                title: undefined, // navigation bar title of the pushed screen (optional)
+                titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
+                passProps: {
+                    isMap: isMap,
+                    isDirect: true,
+                    data:{
+                        id: '1234',
+                        coordinate:{latitude: 13.697567,longitude: 100.53758300000004},
+                    },
+                    navigator:this.props.navigator,
+                }, // Object that will be passed as props to the pushed screen (optional)
+                animated: true, // does the push have transition animation or does it happen immediately (optional)
+                backButtonTitle: undefined, // override the back button title (optional)
+                backButtonHidden: false, // hide the back button altogether (optional)
+                
+            })
+        }else{
+            this.props.navigator.push({
+                screen: 'mti.ServiceSearchBranchScreen', // unique ID registered with Navigation.registerScreen
+                passProps:{},
+                title: undefined, // navigation bar title of the pushed screen (optional)
+                titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
+                animated: false, // does the push have transition animation or does it happen immediately (optional)
+                backButtonTitle: undefined, // override the back button title (optional)
+                backButtonHidden: false, // hide the back button altogether (optional)
+            })
+        }
     }
 
     render(){
@@ -42,7 +62,7 @@ export default class ContactUsScreen extends Component{
                         />
                     </View>
                     <View style={styles.contactListContainerStyle}>
-                        <Text style={styles.contactTitleTextStyle}>ติดต่อเมืองไทยประกันภัย</Text>
+                        <Text style={styles.contactTitleTextStyle}>ติดต่อเมืองไทยประกันภัย โทร. 1484</Text>
                         <Text style={styles.contactDesciptionTextStyle}>252 ถ.รัชดาภิเษก แขวงห้วยขวาง เขตห้วยขวาง กรุงเทพฯ  103101 โทร. 1484   แฟกซ์ : 0-2665-4166, 0-2274-9511, 0-2276-2033</Text>
                         <View style={styles.contactListSectionStyle}>
                             <View style={styles.iconGroupContainerStyle}>
@@ -60,7 +80,7 @@ export default class ContactUsScreen extends Component{
                                         style={styles.iconImageStyle}
                                     />
                                 </TouchableOpacity>
-                                <TouchableOpacity>
+                                <TouchableOpacity onPress={()=>this.gotoBranchSearch(true)}>
                                     <Image
                                         source={require('../source/icons/iconMapMarker01.png')}
                                         resizeMode='contain'
@@ -92,7 +112,7 @@ export default class ContactUsScreen extends Component{
                                         style={styles.iconImageStyle}
                                     />
                                 </TouchableOpacity>
-                                <TouchableOpacity>
+                                <TouchableOpacity onPress={()=>this.gotoBranchSearch(true)}>
                                     <Image
                                         source={require('../source/icons/iconMapMarker01.png')}
                                         resizeMode='contain'
@@ -116,7 +136,7 @@ export default class ContactUsScreen extends Component{
                         />
                         <MainSubmitButton
                             buttonTitleText='ค้นหาสาขาย่อย'
-                            onPress={this.gotoBranchSearch}
+                            onPress={()=>this.gotoBranchSearch(false)}
                         />
                     </View>
                     <TouchableOpacity onPress={()=>Linking.openURL('http://www.muangthaiinsurance.com/index_mti.html')} style={styles.topBannerImageContainerStyle} style={styles.topBannerImageContainerStyle}>
