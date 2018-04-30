@@ -18,10 +18,13 @@ export default class ServiceSearchCorpCenterScreen extends Component{
         this.state={
             serviceList:[],
             orgServiceList:[],
+            userLatitude: '',
+            userLongitude: '',
             isLoading: false,
             searchValue: '',
         }
         this._onSearchIconPress = this._onSearchIconPress.bind(this);
+        this.onNearByPress = this.onNearByPress.bind(this);
     }
 
     async componentDidMount(){
@@ -32,9 +35,30 @@ export default class ServiceSearchCorpCenterScreen extends Component{
                 this.setState({
                     serviceList:serviceList.data,
                     orgServiceList:serviceList.data,
-                    isLoading: false
                 });
             }
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                  this.setState({
+                    latitude: position.coords.latitude,
+                    longitude: position.coords.longitude,
+                    isLoading: false,
+                  })
+                },
+                (error) => {
+                    Alert.alert(
+                        'เกิดข้อผิดพลาด',
+                        error.message,
+                        [
+                        {text: 'OK', onPress: () => {this.setState({
+                            isLoading: false,
+                            serviceList: this.state.orgServiceList,
+                        })}},
+                        ]
+                    )
+                },
+                {maximumAge:60000, timeout:20000, enableHighAccuracy:true },
+              );
         }else{
             animationTimeout = setTimeout(() => {
                 this.focus();
@@ -113,6 +137,29 @@ export default class ServiceSearchCorpCenterScreen extends Component{
 
     }
 
+    async onNearByPress(){
+        if(!this.props.isMap){
+            this.setState({isLoading:true});
+            let nearBy = await getBasic(`services?nearby=y&lat=${this.state.userLatitude}&lng=${this.state.userLongitude}&filter_type_id=2&page=1&pagesize=20`,{});
+            this.props.navigator.showModal({
+                screen: 'mti.ServiceSearchCorpCenterScreen', // unique ID registered with Navigation.registerScreen
+                title: undefined, // navigation bar title of the pushed screen (optional)
+                titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
+                passProps: {
+                    navigator:this.props.navigator,
+                    data: nearBy.data,
+                    isMap: true,
+                }, // Object that will be passed as props to the pushed screen (optional)
+                animated: true, // does the push have transition animation or does it happen immediately (optional)
+                backButtonTitle: undefined, // override the back button title (optional)
+                backButtonHidden: false, // hide the back button altogether (optional)
+            })
+            this.setState({isLoading:false});
+        }else{
+            
+        }
+    }
+
     render(){
         return(
             <View style={styles.serviceSearchCorpCenterScreenContainerStyle}>
@@ -127,7 +174,7 @@ export default class ServiceSearchCorpCenterScreen extends Component{
                     value={this.state.searchValue}
                     onChangeText={(searchValue)=>this.setState({searchValue})}
                     onSearchIconPress={this._onSearchIconPress}
-                    onPress={()=>alert('search')}
+                    onPress={this.onNearByPress}
                     placeholder='ค้นหาศูนย์และอู่ในพื้นที่ที่คุณต้องการ'
                 />
                 <View style={styles.serviceSearchCorpCenterContainerStyle}>
