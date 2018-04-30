@@ -130,8 +130,8 @@ export default class MenuScreen extends Component{
                                 />
                                 <Text style={styles.menuTitleTextStyle}>สิทธิพิเศษ</Text> 
                             </TouchableOpacity>
-                        </View> */}
-                        <View style={styles.subBorderStyle}/>
+                        </View>
+                        <View style={styles.subBorderStyle}/> */}
                         <View style={styles.menuSectionStyle}>        
                             <TouchableOpacity style={styles.menuSubSectionStyle}>
                                 <Image

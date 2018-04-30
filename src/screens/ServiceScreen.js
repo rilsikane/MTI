@@ -313,8 +313,8 @@ const styles={
     dotSectionImageStyle:{
         width: '100%',
         opacity: 0.3,
-        marginTop: responsiveHeight(3),
-        marginBottom: responsiveHeight(3),
+        marginTop: responsiveHeight(2.5),
+        marginBottom: responsiveHeight(2.5),
     },
     popupContainerStyle:{
         borderRadius: 3,

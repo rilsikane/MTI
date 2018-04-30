@@ -195,8 +195,8 @@ const styles={
     dotSectionImageStyle:{
         width: '100%',
         opacity: 0.3,
-        marginTop: responsiveHeight(3),
-        marginBottom: responsiveHeight(3),
+        marginTop: responsiveHeight(1),
+        marginBottom: responsiveHeight(1),
     },
     iconImageStyle:{
         height: responsiveHeight(4.22),
