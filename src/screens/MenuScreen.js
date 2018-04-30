@@ -64,10 +64,10 @@ export default class MenuScreen extends Component{
                         </View>
                         <View style={styles.userShortDetailSectionStyle}>
                             <Text style={styles.userNameTextStyle}>{`${this.state.user.name} ${this.state.user.surname}`}</Text>
-                            {this.state.user.name != "GUEST" && <TouchableOpacity onPress={()=>this.gotoMenu("mti.ProfileScreen")
+                            <TouchableOpacity onPress={()=>this.gotoMenu("mti.ProfileScreen")
                             }>
                                 <Text style={styles.userPrivateDetailTextStyle}>ข้อมูลส่วนตัว</Text>
-                            </TouchableOpacity>}
+                            </TouchableOpacity>
                         </View>
                     </View>
                
@@ -120,7 +120,7 @@ export default class MenuScreen extends Component{
                             </TouchableOpacity>
                         </View>
                         <View style={styles.mainBorderStyle}/>
-                        {/* <View style={styles.menuSectionStyle}>        
+                        <View style={styles.menuSectionStyle}>        
                             <TouchableOpacity style={styles.menuSubSectionStyle} 
                             onPress={()=>this.gotoMenu("mti.PrivilegeScreen")}>
                                 <Image
@@ -130,7 +130,7 @@ export default class MenuScreen extends Component{
                                 />
                                 <Text style={styles.menuTitleTextStyle}>สิทธิพิเศษ</Text> 
                             </TouchableOpacity>
-                        </View> */}
+                        </View>
                         <View style={styles.subBorderStyle}/>
                         <View style={styles.menuSectionStyle}>        
                             <TouchableOpacity style={styles.menuSubSectionStyle}>
@@ -188,7 +188,6 @@ export default class MenuScreen extends Component{
                                     {text: "ออกจากระบบ", onPress: ()=> {
                                         store.delete("user");
                                         store.delete("token");
-                                        this.props.userStore.user = {};
                                         this.app.logout();
                                     }},
                                     ],

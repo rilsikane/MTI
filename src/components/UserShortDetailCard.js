@@ -72,7 +72,7 @@ class UserShortDetailCard extends Component{
                         </TouchableOpacity>}
                     </View>
                 </View>
-                {this.state.user.name!="GUEST" && this.state.user.member_type!='FRIEND' && <View style={styles.userQrContainerStyle}>
+                <View style={styles.userQrContainerStyle}>
                     {this.props.showQr?    
                         <TouchableOpacity onPress={()=>    
                             this.props.navigator.push({
@@ -92,7 +92,7 @@ class UserShortDetailCard extends Component{
                         <Text style={styles.myCardTextStyle}>My Card</Text>
                         </TouchableOpacity>:<View/>
                     }
-                </View>}
+                </View>
             </View>
         )
     }

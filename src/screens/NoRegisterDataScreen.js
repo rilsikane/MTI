@@ -232,8 +232,8 @@ export default class NoRegisterDataScreen extends Component{
                         style={styles.logoImageStyle}
                     />
                 </View>
-                <Text style={styles.noDataTitleTextStyle}>ขออภัยค่ะ ไม่พบข้อมูลในระบบ</Text>
-                <Text style={styles.noDataDetailTextStyle}>กรุณาตรวจสอบข้อมูลของท่านหรือฝากข้อมูลติดต่อกลับ  </Text>
+                <Text style={styles.noDataTitleTextStyle}>ขออภัยค่ะ ไม่พบข้อมูลสมาชิกของคุณ</Text>
+                <Text style={styles.noDataDetailTextStyle}>กรุณาตรวจสอบข้อมูลสมาชิกของคุณให้ถูกต้อง{'\n'}หรือ {<Text onPress={()=>this.leavingDialog.show()} style={styles.leaveContactTextStyle}>ฝากข้อมูลให้เราติดต่อกลับ</Text>} หากคุณเคยเป็นสมาชิกแล้ว</Text>
                 <View style={styles.contactButtonGroupContainerStyle}>
                     <MainSubmitButton
                         buttonTitleText='Call Now'

@@ -6,15 +6,12 @@ import {
   Platform
 } from 'react-native';
 import {setCustomText,setCustomTextInput,setCustomStatusBar} from 'react-native-global-props';
-import {Text,TextInput} from 'react-native';
 
 
 registerScreens();
 registerScreenVisibilityListener();
 export default class App {
  constructor() {
-  Text.defaultProps.allowFontScaling=false
-  TextInput.defaultProps.allowFontScaling=false
   const customTextProps = {
     style: {
       fontFamily: Platform.OS === 'android' ?'DBHelvethaicaX':'DBHelvethaicaX-Reg',

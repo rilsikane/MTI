@@ -23,20 +23,18 @@ export default class PrivilegeDetailScreen extends Component{
             detail:{},
             recommend:[],
             isLoading:true,
-            groups:[],
-            user:{}
+            groups:[]
         }
         this.retrivePrivillege = this.retrivePrivillege.bind(this);
         this.renderRecommendPrivilegeList = this.renderRecommendPrivilegeList.bind(this);
     }
     async componentDidMount(){
-        const user = await store.get("user");
         let response = await getBasic(`privilege/${this.props.data.id}`,{})
         let response2 = await getBasic(`privileges?filter_group_id=${this.props.data.group_id}&page=1&pagesize=3`,{});
         let group = await store.get("privilegeGroup");
         //let response2 = await post(`privilege/redeem`,{"privilege_id":this.props.id});
         //console.log(response2);
-        this.setState({detail:response,isLoading:false,recommend:response2.data,groups:group,user:user})
+        this.setState({detail:response,isLoading:false,recommend:response2.data,groups:group})
         //this.setState({isLoading:false})
     }
     getTitleText(){
@@ -248,11 +246,11 @@ export default class PrivilegeDetailScreen extends Component{
                                 <Text style={styles.privilegeDurationTextStyle}>ระยะเวลาสิทธิพิเศษ : {this.getexpireDate()}</Text>
                                 <Text style={styles.privilegeDetailTextStyle}>รายละเอียดสิทธิพิเศษ</Text>
                                 {this.renderPrivilegeDetailList()}
-                                {this.state.user && this.state.user.name!="GUEST" && <MainSubmitButton
+                                <MainSubmitButton
                                     buttonTitleText='ขอรับสิทธิ'
                                     onPress={this.retrivePrivillege}
                                     style={styles.submitButtonStyle}
-                                />}
+                                />
                                 {this.state.showComment&&this.renderCommentSection()}
                             </View>
                         </View>
