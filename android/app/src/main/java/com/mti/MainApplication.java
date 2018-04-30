@@ -7,7 +7,6 @@ import com.facebook.react.ReactApplication;
 import com.rnfs.RNFSPackage;
 import fr.bamlab.rnimageresizer.ImageResizerPackage;
 import com.imagepicker.ImagePickerPackage;
-import com.dylanvann.fastimage.FastImageViewPackage;
 import io.invertase.firebase.RNFirebasePackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.RNTextInputMask.RNTextInputMaskPackage;
@@ -40,7 +39,6 @@ public class MainApplication extends NavigationApplication {
             new RNFSPackage(),
             new ImageResizerPackage(),
             new ImagePickerPackage(),
-            new FastImageViewPackage(),
             new RNFirebasePackage(),
             //new SplashScreenReactPackage(),
             //new BlurViewPackage(),

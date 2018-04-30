@@ -66,7 +66,7 @@ export default class MyCardScreen extends Component{
                             <Text style={styles.myCardTitleTextStyle}>MTI MY CARD</Text>
                             <View style={styles.myCardDetailTextContainerStyle}>
                                 <Text style={styles.userNameTextStyle}>{`${this.state.userDetail.name} ${this.state.userDetail.surname}`}</Text>
-                                <Text style={styles.cardIdTextStyle}>รหัส {this.state.userDetail.idcard}</Text>
+                                {!this.state.isLoading  && <Text style={styles.cardIdTextStyle}>รหัส {this.state.userDetail.card.code}</Text>}
                             </View>
                         </View>
                         <View style={styles.checkBoxContainerStyle}>

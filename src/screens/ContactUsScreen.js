@@ -105,7 +105,7 @@ export default class ContactUsScreen extends Component{
                         <Text style={styles.contactTitleTextStyle}>ติดต่อแผนกลูกค้าสัมพันธ์ โทร. 1484 กด 3</Text>
                         <View style={styles.contactListSectionStyle}>
                             <View style={styles.iconGroupContainerStyle}>
-                                <TouchableOpacity onPress={()=>Linking.openURL('mailto:incrm@muangthaiinsurance.com?subject=ติดต่อเรา&body=ติดต่อเรา')}>
+                                <TouchableOpacity onPress={()=>Linking.openURL('mailto:crm@muangthaiinsurance.com?subject=ติดต่อเรา&body=ติดต่อเรา')}>
                                     <Image
                                         source={require('../source/icons/iconMessage01.png')}
                                         resizeMode='contain'

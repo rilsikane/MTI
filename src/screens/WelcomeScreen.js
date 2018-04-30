@@ -36,7 +36,7 @@ class WelcomeScreen extends Component{
                  </View>}
                 <View>
                     <ImageBackground
-                        source={require('./../source/images/banner.png')}
+                        source={require('./../source/images/banner.jpg')}
                         resizeMode='stretch'
                         style={styles.bannerImageStyle}
                     >
@@ -50,15 +50,15 @@ class WelcomeScreen extends Component{
                     </ImageBackground>
                 </View>
                 <View style={styles.welcomeDetailContainerStyle}>
-                    <ImageBackground
+                    {/* <ImageBackground
                         source={require('./../source/images/bgGradient.png')}
                         resizeMode='stretch'
                         style={styles.welcomeContentBackgroundImageStyle}
-                    >
+                    > */}
                         <View style={styles.bannerBottomLineStyle}/>
                         <View style={styles.logoContainerStyle}>
                             <Image
-                                source={require('./../source/images/Logo.png')}
+                                source={require('./../source/images/welcome_06.jpg')}
                                 style={styles.logoImageStyle}
                                 resizeMode='contain'
                             />
@@ -66,24 +66,24 @@ class WelcomeScreen extends Component{
                         <View style={styles.welcomeTextContainerStyle}>
                             <Text style={styles.welcomeTitleTextStyle}>ยินดีต้อนรับเข้าสู่ เมืองไทย เฟรนด์ คลับ</Text>
                             <View>
-                                <Image
+                                {/* <Image
                                     source={require('./../source/icons/quote1.png')}
                                     style={styles.quoteImageStyle}
                                     resizeMode='contain'
-                                />
+                                /> */}
                             </View>
                             <View>
-                                <Text style={styles.welcomeDetailTextStyle}>เพื่อนสนิทที่สร้างแรงบันดาลใจและเติมเต็มทุกความสุขของคุณ</Text>
+                                <Text style={styles.welcomeDetailTextStyle}>" เพื่อนสนิทที่สร้างแรงบันดาลใจและเติมเต็มทุกความสุขของคุณ "</Text>
                             </View>
                             <View>
-                                <Image
+                                {/* <Image
                                     source={require('./../source/icons/quote2.png')}
                                     style={styles.quoteImageStyle}
                                     resizeMode='contain'
-                                />
+                                /> */}
                             </View>
                         </View>
-                    </ImageBackground>
+                    {/* </ImageBackground> */}
                 </View>
             </View>
         )
@@ -134,7 +134,7 @@ const styles={
 
     },
     welcomeTitleTextStyle:{
-        color: textColor,
+        color: "#1494d2",
         fontSize: responsiveFontSize(3),
         marginTop: responsiveHeight(2),
         marginBottom: responsiveHeight(2),
@@ -144,7 +144,7 @@ const styles={
         height: responsiveHeight(2)
     },
     welcomeDetailTextStyle:{
-        color: '#FFF',
+        color: '#0194d2',
         fontSize: responsiveFontSize(4),
         textAlign: 'center',
         marginLeft: responsiveWidth(5),

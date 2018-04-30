@@ -145,7 +145,6 @@ dependencies {
     compile project(':react-native-image-resizer')
     compile project(':react-native-image-picker')
     implementation project(':react-native-maps')
-    compile project(':react-native-fast-image')
     compile project(':react-native-navigation')
     compile project(':react-native-vector-icons')
     compile project(':react-native-text-input-mask')

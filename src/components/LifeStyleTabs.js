@@ -67,9 +67,9 @@ class LifeStyleTabs extends Component{
                     </TabHeading>
                 }
             >
-                <View style={styles.tabContentStyle}>
+                <ScrollView contentContainerStyle={styles.tabContentStyle}>
                     {this.props.tabChildren}
-                </View>
+                </ScrollView>
             </Tab>
         )
     }
@@ -124,7 +124,7 @@ const styles={
         color: '#1595d3',
     },
     tabContentStyle:{
-        flex: 1,
+        // flex: 1,
         alignItems: 'center',
         marginTop: responsiveHeight(3)
     }
