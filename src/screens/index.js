@@ -35,6 +35,7 @@ import ServiceSearchHospitalScreen from './ServiceSearchHospitalScreen';
 import ServiceSearchCorpCenterScreen from './ServiceSearchCorpCenterScreen';
 import ServiceSearchBranchScreen from './ServiceSearchBranchScreen';
 import ContactUsScreen from './ContactUsScreen';
+import ActivitySubmitScreen from './ActivitySubmitScreen';
 
 import app from '../stores/app';
 
@@ -75,6 +76,7 @@ export function registerScreens() {
   Navigation.registerComponent('mti.ServiceSearchCorpCenterScreen', () => ServiceSearchCorpCenterScreen, Store, Provider);
   Navigation.registerComponent('mti.ServiceSearchBranchScreen', () => ServiceSearchBranchScreen, Store, Provider);
   Navigation.registerComponent('mti.ContactUsScreen', () => ContactUsScreen, Store, Provider);
+  Navigation.registerComponent('mti.ActivitySubmitScreen', () => ActivitySubmitScreen, Store, Provider);
 }
 export function registerScreenVisibilityListener() {
   new ScreenVisibilityListener({
