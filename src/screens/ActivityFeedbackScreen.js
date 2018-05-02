@@ -1,6 +1,7 @@
 import React,{Component} from 'react';
 import {Text,View,FlatList,Image,ScrollView,TouchableOpacity} from 'react-native';
 import PropTypes from "prop-types";
+import {Item,Input} from 'native-base';
 import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
 import {Pages} from 'react-native-pages';
 
@@ -10,6 +11,7 @@ import {MainRadioButton} from '../components/MainRadioButton';
 import {MainSubmitButton} from './../components/MainSubmitButton';
 import {CommentCard} from '../components/CommentCard';
 import {PastEventCard} from '../components/PastEventCard';
+import {CheckBoxes} from './../components/CheckBoxes';
 
 export default class ActivityFeedbackScreen extends Component{
 
@@ -19,6 +21,49 @@ export default class ActivityFeedbackScreen extends Component{
             pageNumber: 1,
             enable: true,
             questionGroup:[],
+            checkBoxData: [
+                {
+                    id: 1,
+                    title: 'ทำบุญไหว้พระ'
+                },
+                {
+                    id: 2,
+                    title: 'ท่องเที่ยว'
+                },
+                {
+                    id: 3,
+                    title: 'สัมมนาต่างๆ'
+                },
+                {
+                    id: 4,
+                    title: 'ปั่นจักรยาน'
+                },
+                {
+                    id: 5,
+                    title: 'กิจกรรมอาสา'
+                },
+                {
+                    id: 6,
+                    title: 'ทำอาหาร'
+                },
+                {
+                    id: 7,
+                    title: 'ดูคอนเสิร์ต'
+                },
+                {
+                    id: 8,
+                    title: 'เดิน-วิ่ง มาราธอน'
+                },
+                {
+                    id: 9,
+                    title: 'แต่งหน้า'
+                },
+                {
+                    id: 10,
+                    title: 'อื่นๆ'
+                },
+            ],
+
         }
         this.onScrollEnd = this.onScrollEnd.bind(this);
         this.updateRef = this.updateRef.bind(this);
@@ -142,6 +187,35 @@ export default class ActivityFeedbackScreen extends Component{
         )
     }
 
+    renderCheckBoxList(data){
+        return(
+            <FlatList
+                data={data}
+                contentContainerStyle={{flexDirection: 'row',marginBottom: responsiveHeight(1)}}
+                keyExtractor={this._checkBoxKeyExtractor}
+                renderItem={this._renderCheckBox}
+            />
+        )
+    }
+
+    _renderCheckBox=({item,index})=>(
+        <CheckBoxes
+            checkBoxTitleText={item.title}
+            checked={item.isSelected}
+            checkedColor='#d9d9d9'
+            uncheckedColor='#d9d9d9'
+            checkBoxTextStyle={styles.checkBoxTextStyle}
+            containerStyle={[index==0&&{width: responsiveWidth(30)},index==1&&{width: responsiveWidth(32)}]}
+            onIconPress={()=>this._onCheckBoxIconPress(item.id)}
+        />
+    )
+
+    _checkBoxKeyExtractor = (item, index) => index.toString();
+
+    _onCheckBoxIconPress(id){
+        
+    }
+
     render(){
         return(
             <View style={styles.activityFeedbackScreenContainerStyle}>
@@ -189,7 +263,41 @@ export default class ActivityFeedbackScreen extends Component{
                                 />
                             </View>
                             <View style={styles.contentContainerStyle}>
-                            
+                                <Image
+                                    source={require('../source/images/dotSectionHorizontal.png')}
+                                    resizeMode='contain'
+                                    style={styles.dotSectionHorizontalStyle}
+                                />
+                                <View style={styles.checkBoxContainerStyle}>
+                                    {this.renderCheckBoxList(this.state.checkBoxData.slice(0,3))}
+                                    {this.renderCheckBoxList(this.state.checkBoxData.slice(3,6))}
+                                    {this.renderCheckBoxList(this.state.checkBoxData.slice(6,9))}
+                                    {this.renderCheckBoxList(this.state.checkBoxData.slice(9))}
+                                </View>
+                                <Image
+                                    source={require('../source/images/dotSectionHorizontal.png')}
+                                    resizeMode='contain'
+                                    style={styles.dotSectionBottomHorizontalStyle}
+                                />
+                                <Text style={styles.activitySubtitleTextStyle}>ข้อเสนอแนะในการร่วมกิจกรรมครั้งนี้</Text>
+                                <Item>
+                                    <Input 
+                                        placeholder="พิมพ์ข้อเสนอแนะของคุณ" 
+                                        placeholderTextColor='rgba(145, 145, 149, 0.8)'
+                                    />
+                                </Item>
+                                <View style={styles.submitButtonContainerStyle}> 
+                                    <MainSubmitButton
+                                        buttonTitleText='ย้อนกลับ'
+                                        onPress={()=>{}}
+                                        style={styles.mainSubmitButtonStyle}
+                                    />
+                                    <MainSubmitButton
+                                        buttonTitleText='ส่ง'
+                                        onPress={()=>{}}
+                                        style={styles.mainSubmitButtonStyle}
+                                    />
+                                </View>
                             </View>
                         </Pages>
                         {/* <View style={styles.commentContainerStyle}>
@@ -282,11 +390,21 @@ const styles={
         marginRight: responsiveWidth(5),
         backgroundColor: 'transparent',
     },
+    checkBoxContainerStyle:{
+
+    },
     dotSectionHorizontalStyle:{
         width: '100%',
         opacity: 0.3,
         alignSelf: 'center',
         marginTop: responsiveHeight(2),
+        marginBottom: responsiveHeight(2),
+    },
+    dotSectionBottomHorizontalStyle:{
+        width: '100%',
+        opacity: 0.3,
+        alignSelf: 'center',
+        marginTop: responsiveHeight(1),
         marginBottom: responsiveHeight(2),
     },
     submitButtonStyle:{
@@ -320,5 +438,20 @@ const styles={
     otherActivityListContainerStyle:{
         flex: 1,
         marginBottom: responsiveHeight(2),
+    },
+    checkBoxTextStyle:{
+        color: "#919195",
+        letterSpacing: 0,
+        fontSize: responsiveFontSize(2.2),
+    },
+    submitButtonContainerStyle:{
+        marginTop: responsiveHeight(2),
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+    },
+    mainSubmitButtonStyle:{
+        width: responsiveWidth(42.5),
+
     }
 }
