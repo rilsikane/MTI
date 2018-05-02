@@ -68,6 +68,7 @@ export default class ServicePolicyScreen extends Component{
 const styles={
     servicePolicyScreenContainerStyle:{
         flex: 1,
+        backgroundColor: '#FFF',
     },
     policyContentContainerStyle:{
         flex: 1,

@@ -37,6 +37,8 @@ import ServiceSearchBranchScreen from './ServiceSearchBranchScreen';
 import ContactUsScreen from './ContactUsScreen';
 import ActivitySubmitScreen from './ActivitySubmitScreen';
 import ActivityOnNextDetailScreen from './ActivityOnNextDetailScreen';
+import SettingScreen from './SettingScreen';
+import SettingAppLockingScreen from './SettingAppLockingScreen';
 
 import app from '../stores/app';
 
@@ -79,6 +81,8 @@ export function registerScreens() {
   Navigation.registerComponent('mti.ContactUsScreen', () => ContactUsScreen, Store, Provider);
   Navigation.registerComponent('mti.ActivitySubmitScreen', () => ActivitySubmitScreen, Store, Provider);
   Navigation.registerComponent('mti.ActivityOnNextDetailScreen', () => ActivityOnNextDetailScreen, Store, Provider);
+  Navigation.registerComponent('mti.SettingScreen', () => SettingScreen, Store, Provider);
+  Navigation.registerComponent('mti.SettingAppLockingScreen', () => SettingAppLockingScreen, Store, Provider);
 }
 export function registerScreenVisibilityListener() {
   new ScreenVisibilityListener({
