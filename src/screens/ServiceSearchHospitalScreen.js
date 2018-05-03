@@ -93,8 +93,8 @@ export default class ServiceSearchHospitalScreen extends Component{
                             identifier={data.id}
                             key={data.id}
                             coordinate={{
-                                latitude: 13.697567,
-                                longitude: 100.53758300000004
+                                latitude: data.latitude?parseFloat(data.latitude):13.7864983,
+                                longitude: data.longtitude?parseFloat(data.longtitude):100.57462710000004
                             }}
                             image={require('../source/icons/iconMapMarker.png')}
                         />
@@ -140,9 +140,9 @@ export default class ServiceSearchHospitalScreen extends Component{
     }
 
     async onNearByPress(){
+        this.setState({isLoading:true});
+        let nearBy = await getBasic(`services?nearby=y&lat=${this.state.userLatitude}&lng=${this.state.userLongitude}&filter_type_id=1&page=1&pagesize=20`,{});
         if(!this.props.isMap){
-            this.setState({isLoading:true});
-            let nearBy = await getBasic(`services?nearby=y&lat=${this.state.userLatitude}&lng=${this.state.userLongitude}&filter_type_id=1&page=1&pagesize=20`,{});
             this.props.navigator.showModal({
                 screen: 'mti.ServiceSearchHospitalScreen', // unique ID registered with Navigation.registerScreen
                 title: undefined, // navigation bar title of the pushed screen (optional)
@@ -158,7 +158,11 @@ export default class ServiceSearchHospitalScreen extends Component{
             })
             this.setState({isLoading:false});
         }else{
-
+            let nearBy = await getBasic(`services?nearby=y&lat=${this.state.userLatitude}&lng=${this.state.userLongitude}&filter_type_id=1&page=1&pagesize=20`,{});
+            this.setState({
+                serviceList: nearBy.data,
+                isLoading:false
+            });
         }
 
     }
@@ -170,16 +174,18 @@ export default class ServiceSearchHospitalScreen extends Component{
                     leftIconName={this.props.isMap?'close':'back'}
                     headerTitleText='ค้นหาโรงพยาบาลเครือข่าย MTI'
                     rightIconName='iconBell'
-                    withSearch
+                    withSearch={this.props.isMap?false:true}
                     longTitle
                 />
-                <MainSearchBox
-                    value={this.state.searchValue}
-                    onChangeText={(searchValue)=>this.setState({searchValue})}
-                    onSearchIconPress={this._onSearchIconPress}
-                    onPress={this.onNearByPress}
-                    placeholder='ค้นหาโรงพบาบาลในพื้นที่ที่คุณต้องการ'
-                />
+                {!this.props.isMap&&
+                    <MainSearchBox
+                        value={this.state.searchValue}
+                        onChangeText={(searchValue)=>this.setState({searchValue})}
+                        onSearchIconPress={this._onSearchIconPress}
+                        onPress={this.onNearByPress}
+                        placeholder='ค้นหาโรงพบาบาลในพื้นที่ที่คุณต้องการ'
+                    />
+                }
                 <View style={styles.serviceSearchHospitalContainerStyle}>
                     {this.renderContent()}
                 </View>
