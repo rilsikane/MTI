@@ -64,7 +64,7 @@ export default class ServiceSearchHospitalScreen extends Component{
         }else{
             animationTimeout = setTimeout(() => {
                 this.focus();
-            },1000);
+            },3000);
         }
     }
 

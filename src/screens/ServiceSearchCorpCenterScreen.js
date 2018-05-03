@@ -62,7 +62,7 @@ export default class ServiceSearchCorpCenterScreen extends Component{
         }else{
             animationTimeout = setTimeout(() => {
                 this.focus();
-            },1000);
+            },3000);
         }
     }
 

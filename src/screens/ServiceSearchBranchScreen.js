@@ -61,7 +61,7 @@ export default class ServiceSearchBranchScreen extends Component{
         }else{
             animationTimeout = setTimeout(() => {
                 this.focus();
-            },1000);
+            },3000);
         }
     }
 
