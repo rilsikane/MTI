@@ -44,7 +44,7 @@ export default class LoginScreen extends Component{
     async login(){
         if(this.state.userEmail=='' || this.state.userPassword==''){
             Alert.alert(
-            'เกิดข้อผิดพลาด',
+            'แจ้งเตือน',
             `Invalid Username and Passowrd`,
             [
             {text: 'OK', onPress: () => console.log('OK Pressed!')},
@@ -75,7 +75,7 @@ export default class LoginScreen extends Component{
                     },500)
                 }
             }else{
-
+ 
                 let token = response.token;
                 await store.save("token",token);
                 let user = await get("me",{});
@@ -312,7 +312,7 @@ export default class LoginScreen extends Component{
                                     </TouchableOpacity>
                                     
                                 </View>
-                                <Text style={{color:"#fff"}}>Version : 1.41</Text>
+                                <Text style={{color:"#fff"}}>Version : 1.43</Text>
                                 <View style={styles.registerBottomContainerStyle}>
                                     <TouchableOpacity onPress={this.gotoRegister}>
                                         <Text style={styles.registerBottomTextStyle}>ลงทะเบียนสมาชิก</Text>

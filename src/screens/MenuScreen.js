@@ -119,7 +119,7 @@ export default class MenuScreen extends Component{
                                 <Text style={styles.menuTitleTextStyle}>การแจ้งเตือน</Text> 
                             </TouchableOpacity>
                         </View>
-                        <View style={styles.mainBorderStyle}/>
+                        {/* <View style={styles.mainBorderStyle}/> */}
                         {/* <View style={styles.menuSectionStyle}>        
                             <TouchableOpacity style={styles.menuSubSectionStyle} 
                             onPress={()=>this.gotoMenu("mti.PrivilegeScreen")}>
@@ -132,6 +132,7 @@ export default class MenuScreen extends Component{
                             </TouchableOpacity>
                         </View>
                         <View style={styles.subBorderStyle}/> */}
+                        <View style={styles.subBorderStyle}/>
                         <View style={styles.menuSectionStyle}>        
                             <TouchableOpacity style={styles.menuSubSectionStyle}>
                                 <Image
@@ -143,7 +144,7 @@ export default class MenuScreen extends Component{
                             </TouchableOpacity>
                         </View>
                         <View style={styles.subBorderStyle}/>
-                        <View style={styles.menuSectionStyle}>        
+                        {/* <View style={styles.menuSectionStyle}>        
                             <TouchableOpacity onPress={()=>this.gotoMenu("mti.ServiceScreen")} style={styles.menuSubSectionStyle}>
                                 <Image
                                     source={require('./../source/icons/iconServiceWhite.png')}
@@ -152,8 +153,8 @@ export default class MenuScreen extends Component{
                                 />
                                 <Text style={styles.menuTitleTextStyle}>บริการ</Text> 
                             </TouchableOpacity>
-                        </View>
-                        <View style={styles.mainBorderStyle}/>
+                        </View> */}
+                        {/* <View style={styles.mainBorderStyle}/> */}
                         <View style={styles.menuSectionStyle}>        
                             <TouchableOpacity style={styles.menuSubSectionStyle}
                                 onPress={()=>this.gotoMenu("mti.ContactUsScreen")}
@@ -189,7 +190,16 @@ export default class MenuScreen extends Component{
                                         store.delete("user");
                                         store.delete("token");
                                         this.props.userStore.user = {};
+                                        this.props.naviStore.navigation.resetTo({
+                                            screen: "mti.LoginScreen", // unique ID registered with Navigation.registerScreen
+                                            title: undefined, // navigation bar title of the pushed screen (optional)
+                                            titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
+                                            animated: false, // does the push have transition animation or does it happen immediately (optional)
+                                            backButtonTitle: undefined, // override the back button title (optional)
+                                            backButtonHidden: false, // hide the back button altogether (optional)
+                                        })
                                         this.app.logout();
+                                        
                                     }},
                                     ],
                                     { cancelable: false }

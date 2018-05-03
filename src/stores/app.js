@@ -3,6 +3,8 @@ import store from 'react-native-simple-store';
 class AppStore {
   @observable root = undefined; // 'login' / 'after-login'
   @observable isLoading = false; // 'login' / 'after-login'
+  @observable fontSize = 1;
+
   constructor() {
    
   }
@@ -10,11 +12,13 @@ class AppStore {
   async appInitialized() {
     
     let userData = await store.get("user");
+    let setting = await store.get("setting");
     if (userData == null) {
       this.root = 'login';
     }else{
       this.root = 'after-login';
     }
+    this.fontSize = 'large'==setting.fontSize ? 2 :1;
   }
 
   login() {

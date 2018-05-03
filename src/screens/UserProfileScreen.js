@@ -360,7 +360,7 @@ export default class UserProfileScreen extends Component{
             console.log(this.state.userLifeStyle)
         }else{
             Alert.alert(
-                'เกิดข้อผิดพลาด',
+                'แจ้งเตือน',
                 'กรุณาเลือกอย่างน้อย 1 รายการ',
                 [
                 {text: 'OK', onPress: () => console.log('OK Pressed!')},

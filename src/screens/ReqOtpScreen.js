@@ -54,7 +54,7 @@ class ReqOtpScreen extends Component{
                     })
                 }else{
                     Alert.alert(
-                        'เกิดข้อผิดพลาด',
+                        'แจ้งเตือน',
                         response.message,
                         [
                         {text: 'OK', onPress: () => console.log('OK Pressed!')},

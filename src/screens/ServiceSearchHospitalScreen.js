@@ -48,7 +48,7 @@ export default class ServiceSearchHospitalScreen extends Component{
                 },
                 (error) => {
                     Alert.alert(
-                        'เกิดข้อผิดพลาด',
+                        'แจ้งเตือน',
                         error.message,
                         [
                         {text: 'OK', onPress: () => {this.setState({
@@ -122,7 +122,7 @@ export default class ServiceSearchHospitalScreen extends Component{
                 })
             }else{
                 Alert.alert(
-                    'เกิดข้อผิดพลาด',
+                    'แจ้งเตือน',
                     'ไม่พบข้อมูลที่ค้นหา',
                     [
                     {text: 'OK', onPress: () => {this.setState({

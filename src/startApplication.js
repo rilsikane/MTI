@@ -90,6 +90,8 @@ export default async function startApplication(root) {
               tabBarSelectedLabelColor: 'rgb(253, 98, 98)', // iOS only. change the color of the selected tab text
               forceTitlesDisplay: true, // Android only. If true - Show all bottom tab labels. If false - only the selected tab's label is visible.
               tabBarTextFontFamily: 'DBHelvethaicaX-Reg',
+              tabFontSize: responsiveFontSize(5),
+              selectedTabFontSize: responsiveFontSize(5),
             },
             appStyle: {
             orientation: 'portrait',
