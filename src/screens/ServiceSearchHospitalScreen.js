@@ -29,7 +29,7 @@ export default class ServiceSearchHospitalScreen extends Component{
     async componentDidMount(){
         if(!this.props.isMap){
             this.setState({isLoading: true});
-            let serviceList = await getBasic('services?filter_type_id=1&page=1&pagesize=20',{});
+            let serviceList = await getBasic('services?filter_type_id=1&page=1&pagesize=200',{});
             console.log(serviceList.data)
             if(serviceList){
                 this.setState({
@@ -114,7 +114,7 @@ export default class ServiceSearchHospitalScreen extends Component{
     async _onSearchIconPress(){
         if(!this.props.isMap){
             this.setState({isLoading:true});
-            let search = await getBasic(`services?filter_type_id=1&search=${this.state.searchValue}&page=1&pagesize=20`,{});
+            let search = await getBasic(`services?filter_type_id=1&search=${this.state.searchValue}&page=1&pagesize=200`,{});
             if(search.data.length>0){
                 this.setState({
                     serviceList: search.data,
@@ -141,7 +141,7 @@ export default class ServiceSearchHospitalScreen extends Component{
 
     async onNearByPress(){
         this.setState({isLoading:true});
-        let nearBy = await getBasic(`services?nearby=y&lat=${this.state.userLatitude}&lng=${this.state.userLongitude}&filter_type_id=1&page=1&pagesize=20`,{});
+        let nearBy = await getBasic(`services?nearby=y&lat=${this.state.userLatitude}&lng=${this.state.userLongitude}&filter_type_id=1&page=1&pagesize=200`,{});
         if(!this.props.isMap){
             this.props.navigator.showModal({
                 screen: 'mti.ServiceSearchHospitalScreen', // unique ID registered with Navigation.registerScreen

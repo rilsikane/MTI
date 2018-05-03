@@ -29,7 +29,7 @@ export default class ServiceSearchBranchScreen extends Component{
     async componentDidMount(){
         if(!this.props.isMap){
             this.setState({isLoading: true});
-            let branchList = await getBasic('services?filter_type_id=5&page=1&pagesize=20',{});
+            let branchList = await getBasic('services?filter_type_id=5&page=1&pagesize=200',{});
             if(branchList){
                 this.setState({
                     branchList:branchList.data,
@@ -122,7 +122,7 @@ export default class ServiceSearchBranchScreen extends Component{
     async _onSearchIconPress(){
         if(!this.props.isMap){
             this.setState({isLoading:true});
-            let search = await getBasic(`services?filter_type_id=5&search=${this.state.searchValue}&page=1&pagesize=20`,{});
+            let search = await getBasic(`services?filter_type_id=5&search=${this.state.searchValue}&page=1&pagesize=200`,{});
             if(search.data.length>0){
                 this.setState({
                     branchList: search.data,
@@ -149,7 +149,7 @@ export default class ServiceSearchBranchScreen extends Component{
 
     async onNearByPress(){
         this.setState({isLoading:true});
-        let nearBy = await getBasic(`services?nearby=y&lat=${this.state.userLatitude}&lng=${this.state.userLongitude}&filter_type_id=5&page=1&pagesize=20`,{});
+        let nearBy = await getBasic(`services?nearby=y&lat=${this.state.userLatitude}&lng=${this.state.userLongitude}&filter_type_id=5&page=1&pagesize=200`,{});
         if(!this.props.isMap){
             this.props.navigator.showModal({
                 screen: 'mti.ServiceSearchBranchScreen', // unique ID registered with Navigation.registerScreen
