@@ -39,11 +39,11 @@ export default class ServiceSearchCorpCenterScreen extends Component{
             }
             navigator.geolocation.getCurrentPosition(
                 (position) => {
-                  this.setState({
-                    latitude: position.coords.latitude,
-                    longitude: position.coords.longitude,
-                    isLoading: false,
-                  })
+                    this.setState({
+                        userLatitude: position.coords.latitude,
+                        userLongitude: position.coords.longitude,
+                        isLoading: false,
+                    })
                 },
                 (error) => {
                     Alert.alert(
@@ -91,8 +91,8 @@ export default class ServiceSearchCorpCenterScreen extends Component{
                             identifier={data.id}
                             key={data.id}
                             coordinate={{
-                                latitude: 13.697567,
-                                longitude: 100.53758300000004
+                                latitude: data.latitude?parseFloat(data.latitude):13.7864983,
+                                longitude: data.longtitude?parseFloat(data.longtitude):100.57462710000004
                             }}
                             image={require('../source/icons/iconMapMarker.png')}
                         />
@@ -110,8 +110,8 @@ export default class ServiceSearchCorpCenterScreen extends Component{
     }
 
     async _onSearchIconPress(){
+        this.setState({isLoading:true});
         if(!this.props.isMap){
-            this.setState({isLoading:true});
             let search = await getBasic(`services?filter_type_id=2&search=${this.state.searchValue}&page=1&pagesize=20`,{});
             if(search.data.length>0){
                 this.setState({
@@ -132,15 +132,17 @@ export default class ServiceSearchCorpCenterScreen extends Component{
                 )
             }
         }else{
-
+     
         }
 
     }
 
     async onNearByPress(){
+        this.setState({isLoading:true});
+        console.log(this.state.userLatitude)
+        console.log(this.state.userLongitude)
+        let nearBy = await getBasic(`services?nearby=y&lat=${this.state.userLatitude}&lng=${this.state.userLongitude}&filter_type_id=2&page=1&pagesize=20`,{});
         if(!this.props.isMap){
-            this.setState({isLoading:true});
-            let nearBy = await getBasic(`services?nearby=y&lat=${this.state.userLatitude}&lng=${this.state.userLongitude}&filter_type_id=2&page=1&pagesize=20`,{});
             this.props.navigator.showModal({
                 screen: 'mti.ServiceSearchCorpCenterScreen', // unique ID registered with Navigation.registerScreen
                 title: undefined, // navigation bar title of the pushed screen (optional)
@@ -156,7 +158,10 @@ export default class ServiceSearchCorpCenterScreen extends Component{
             })
             this.setState({isLoading:false});
         }else{
-            
+            this.setState({
+                serviceList: nearBy.data,
+                isLoading:false
+            });
         }
     }
 
@@ -167,16 +172,18 @@ export default class ServiceSearchCorpCenterScreen extends Component{
                     leftIconName={this.props.isMap?'close':'back'}
                     headerTitleText='ค้นหาศูนย์และอู่รับงานบริษัท'
                     rightIconName='iconBell'
-                    withSearch
+                    withSearch={this.props.isMap?false:true}
                     longTitle
                 />
-                <MainSearchBox
-                    value={this.state.searchValue}
-                    onChangeText={(searchValue)=>this.setState({searchValue})}
-                    onSearchIconPress={this._onSearchIconPress}
-                    onPress={this.onNearByPress}
-                    placeholder='ค้นหาศูนย์และอู่ในพื้นที่ที่คุณต้องการ'
-                />
+                {!this.props.isMap&&
+                    <MainSearchBox
+                        value={this.state.searchValue}
+                        onChangeText={(searchValue)=>this.setState({searchValue})}
+                        onSearchIconPress={this._onSearchIconPress}
+                        onPress={this.onNearByPress}
+                        placeholder='ค้นหาศูนย์และอู่ในพื้นที่ที่คุณต้องการ'
+                    />
+                }
                 <View style={styles.serviceSearchCorpCenterContainerStyle}>
                     {this.renderContent()}
                 </View>

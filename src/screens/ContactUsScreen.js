@@ -24,7 +24,7 @@ export default class ContactUsScreen extends Component{
                     isDirect: true,
                     data:{
                         id: '1234',
-                        coordinate:{latitude: 13.697567,longitude: 100.53758300000004},
+                        coordinate:{latitude: 13.7864983,longitude: 100.57462710000004},
                     },
                     navigator:this.props.navigator,
                 }, // Object that will be passed as props to the pushed screen (optional)

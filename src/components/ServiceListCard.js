@@ -2,12 +2,13 @@ import React,{Component} from 'react';
 import {Text,View,FlatList,TouchableOpacity,Image} from 'react-native';
 import PropTypes from "prop-types";
 import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
+import Communications from 'react-native-communications';
 
 class ServiceListCard extends Component{
 
     constructor(props){
         super(props)
-
+        this.callCenter = this.callCenter.bind(this);
     }
 
     _keyExtractor = (item, index) => item.id;
@@ -18,14 +19,14 @@ class ServiceListCard extends Component{
             <Text style={styles.serviceAddressTextStyle}>{item.address}</Text>
             <Text style={styles.serviceAddressTextStyle}>โทร: {item.tel}</Text>
             <View style={styles.mapIconContainerStyle}>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={()=>this.callCenter(item.tel)}>
                     <Image
                         source={require('../source/icons/iconPhone02.png')}
                         resizeMode='contain'
                         style={styles.mapIconStyle}
                     />
                 </TouchableOpacity>
-                <TouchableOpacity onPress={()=>this.gotoMap(item.type_id)}>
+                <TouchableOpacity onPress={()=>this.gotoMap(item)}>
                     <Image
                         source={require('../source/icons/iconMapMarker01.png')}
                         resizeMode='contain'
@@ -41,15 +42,19 @@ class ServiceListCard extends Component{
         </View>
     );
 
-    gotoMap(type){
-        if(type==='1'){
+    callCenter(tel){
+        Communications.phonecall(tel, true);
+    }
+
+    gotoMap(item){
+        if(item.type_id==='1'){
             this.props.navigator.showModal({
                 screen: 'mti.ServiceSearchHospitalScreen', // unique ID registered with Navigation.registerScreen
                 title: undefined, // navigation bar title of the pushed screen (optional)
                 titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
                 passProps: {
                     navigator:this.props.navigator,
-                    data:this.props.data,
+                    data:[item],
                     isMap: true,
                 }, // Object that will be passed as props to the pushed screen (optional)
                 animated: true, // does the push have transition animation or does it happen immediately (optional)
@@ -57,14 +62,14 @@ class ServiceListCard extends Component{
                 backButtonHidden: false, // hide the back button altogether (optional)
                 
             })
-        }else if(type==='2'){
+        }else if(item.type_id==='2'){
             this.props.navigator.showModal({
                 screen: 'mti.ServiceSearchCorpCenterScreen', // unique ID registered with Navigation.registerScreen
                 title: undefined, // navigation bar title of the pushed screen (optional)
                 titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
                 passProps: {
                     navigator:this.props.navigator,
-                    data:this.props.data,
+                    data:[item],
                     isMap: true,
                 }, // Object that will be passed as props to the pushed screen (optional)
                 animated: true, // does the push have transition animation or does it happen immediately (optional)
@@ -72,14 +77,14 @@ class ServiceListCard extends Component{
                 backButtonHidden: false, // hide the back button altogether (optional)
                 
             })
-        }else if(type==='5'){
+        }else if(item.type_id==='5'){
             this.props.navigator.showModal({
                 screen: 'mti.ServiceSearchBranchScreen', // unique ID registered with Navigation.registerScreen
                 title: undefined, // navigation bar title of the pushed screen (optional)
                 titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
                 passProps: {
                     navigator:this.props.navigator,
-                    data:this.props.data,
+                    data:[item],
                     isMap: true,
                 }, // Object that will be passed as props to the pushed screen (optional)
                 animated: true, // does the push have transition animation or does it happen immediately (optional)
