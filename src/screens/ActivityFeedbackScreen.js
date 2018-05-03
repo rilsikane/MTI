@@ -213,7 +213,15 @@ export default class ActivityFeedbackScreen extends Component{
     _checkBoxKeyExtractor = (item, index) => index.toString();
 
     _onCheckBoxIconPress(id){
-        
+        let itemIndex = this.state.checkBoxData.findIndex((data)=>data.id==id)
+        let filterCheckbox = [...this.state.checkBoxData]
+        if(filterCheckbox[itemIndex].isSelected){
+            filterCheckbox[itemIndex].isSelected = false
+        }else{
+            filterCheckbox[itemIndex].isSelected = true
+        }
+       
+        this.setState({checkBoxData: filterCheckbox})
     }
 
     render(){
