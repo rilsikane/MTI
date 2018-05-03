@@ -30,7 +30,7 @@ export default class ServiceSearchCorpCenterScreen extends Component{
     async componentDidMount(){
         if(!this.props.isMap){
             this.setState({isLoading: true});
-            let serviceList = await getBasic('services?filter_type_id=2&page=1&pagesize=20',{});
+            let serviceList = await getBasic('services?filter_type_id=2&page=1&pagesize=200',{});
             if(serviceList){
                 this.setState({
                     serviceList:serviceList.data,
@@ -62,7 +62,7 @@ export default class ServiceSearchCorpCenterScreen extends Component{
         }else{
             animationTimeout = setTimeout(() => {
                 this.focus();
-            },1000);
+            },3000);
         }
     }
 
@@ -112,7 +112,7 @@ export default class ServiceSearchCorpCenterScreen extends Component{
     async _onSearchIconPress(){
         this.setState({isLoading:true});
         if(!this.props.isMap){
-            let search = await getBasic(`services?filter_type_id=2&search=${this.state.searchValue}&page=1&pagesize=20`,{});
+            let search = await getBasic(`services?filter_type_id=2&search=${this.state.searchValue}&page=1&pagesize=200`,{});
             if(search.data.length>0){
                 this.setState({
                     serviceList: search.data,
@@ -139,9 +139,7 @@ export default class ServiceSearchCorpCenterScreen extends Component{
 
     async onNearByPress(){
         this.setState({isLoading:true});
-        console.log(this.state.userLatitude)
-        console.log(this.state.userLongitude)
-        let nearBy = await getBasic(`services?nearby=y&lat=${this.state.userLatitude}&lng=${this.state.userLongitude}&filter_type_id=2&page=1&pagesize=20`,{});
+        let nearBy = await getBasic(`services?nearby=y&lat=${this.state.userLatitude}&lng=${this.state.userLongitude}&filter_type_id=2&page=1&pagesize=200`,{});
         if(!this.props.isMap){
             this.props.navigator.showModal({
                 screen: 'mti.ServiceSearchCorpCenterScreen', // unique ID registered with Navigation.registerScreen
