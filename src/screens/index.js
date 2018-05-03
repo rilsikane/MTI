@@ -39,6 +39,7 @@ import ActivitySubmitScreen from './ActivitySubmitScreen';
 import ActivityOnNextDetailScreen from './ActivityOnNextDetailScreen';
 import SettingScreen from './SettingScreen';
 import SettingAppLockingScreen from './SettingAppLockingScreen';
+import PassCodeScreen from './PassCodeScreen';
 
 import app from '../stores/app';
 
@@ -83,6 +84,7 @@ export function registerScreens() {
   Navigation.registerComponent('mti.ActivityOnNextDetailScreen', () => ActivityOnNextDetailScreen, Store, Provider);
   Navigation.registerComponent('mti.SettingScreen', () => SettingScreen, Store, Provider);
   Navigation.registerComponent('mti.SettingAppLockingScreen', () => SettingAppLockingScreen, Store, Provider);
+  Navigation.registerComponent('mti.PassCodeScreen', () => PassCodeScreen, Store, Provider);
 }
 export function registerScreenVisibilityListener() {
   new ScreenVisibilityListener({
