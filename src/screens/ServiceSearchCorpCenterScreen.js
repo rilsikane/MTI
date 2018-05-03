@@ -39,11 +39,11 @@ export default class ServiceSearchCorpCenterScreen extends Component{
             }
             navigator.geolocation.getCurrentPosition(
                 (position) => {
-                  this.setState({
-                    latitude: position.coords.latitude,
-                    longitude: position.coords.longitude,
-                    isLoading: false,
-                  })
+                    this.setState({
+                        userLatitude: position.coords.latitude,
+                        userLongitude: position.coords.longitude,
+                        isLoading: false,
+                    })
                 },
                 (error) => {
                     Alert.alert(
@@ -139,6 +139,8 @@ export default class ServiceSearchCorpCenterScreen extends Component{
 
     async onNearByPress(){
         this.setState({isLoading:true});
+        console.log(this.state.userLatitude)
+        console.log(this.state.userLongitude)
         let nearBy = await getBasic(`services?nearby=y&lat=${this.state.userLatitude}&lng=${this.state.userLongitude}&filter_type_id=2&page=1&pagesize=20`,{});
         if(!this.props.isMap){
             this.props.navigator.showModal({

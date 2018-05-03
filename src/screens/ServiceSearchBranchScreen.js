@@ -39,8 +39,8 @@ export default class ServiceSearchBranchScreen extends Component{
             navigator.geolocation.getCurrentPosition(
                 (position) => {
                   this.setState({
-                    latitude: position.coords.latitude,
-                    longitude: position.coords.longitude,
+                    userLatitude: position.coords.latitude,
+                    userLongitude: position.coords.longitude,
                     isLoading: false,
                   })
                 },
