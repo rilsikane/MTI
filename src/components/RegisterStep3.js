@@ -44,7 +44,7 @@ class RegisterStep3 extends Component{
             }
         }else{
             var regex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$/
-            if(this.state.userPassword.length ==8 && regex.test(this.state.userPassword)){
+            if(this.state.userPassword.length >=8 && regex.test(this.state.userPassword)){
                 this.setState({errorPassowrd:false})
             }else{
                 this.setState({errorPassowrd:true})
@@ -69,6 +69,10 @@ class RegisterStep3 extends Component{
     onSubmitButtonPress(){
         //this.props.registerStore.register.username = this.state.userEmail;
         this.props.registerStore.register.password = this.state.userPassword;
+        this.setState({
+            userPassword: '',
+            userConfirmPassword: '',
+        })
         this.props.onSubmitRegister3Press();
     }
     isShowSubmit(){
@@ -139,7 +143,7 @@ class RegisterStep3 extends Component{
                             onEndEditing={this.onPasswordChange.bind(this)}
                             returnKeyType='next'
                             blurOnSubmit={true}
-                            
+                            maxLength={16}
                         />
                         {this.state.errorPassowrd && <Text style={styles.errorMsg}>รหัสผ่านไม่ถูกรูปแบบ</Text>}
                         <TextInputIcon
@@ -155,6 +159,7 @@ class RegisterStep3 extends Component{
                             onEndEditing={this.onPasswordChange.bind(this)}
                             returnKeyType='next'
                             blurOnSubmit={true}
+                            maxLength={16}
                         />
                         <Text style={styles.errorTextStyle}>{this.state.errorText}</Text>
                         <Text style={styles.directionTextStyle}>รหัสผ่านจะต้องมี 8 หลัก ประกอบไปด้วยตัวอักษรภาษาอังกฤษพิมพ์ใหญ่และตัวพิมพ์เล็กและตัวเลข</Text>
