@@ -141,6 +141,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-touch-id')
     compile project(':react-native-fs')
     compile project(':react-native-image-resizer')
     compile project(':react-native-image-picker')

@@ -3,7 +3,7 @@ import {Text,View,TextInput,Image,TouchableOpacity} from 'react-native';
 import PropTypes from "prop-types";
 import { Container, Header, Content, Item, Input, Icon } from 'native-base';
 import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
-import SelectInput from 'react-native-select-input-ios';
+import SelectInput from './SelectInput';
 import TextInputMask from 'react-native-text-input-mask';
 
 import {post,authen,get} from '../api';
