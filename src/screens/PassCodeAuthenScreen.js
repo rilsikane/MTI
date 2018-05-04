@@ -25,23 +25,24 @@ export default class PassCodeAuthenScreen extends Component{
         TouchID.isSupported()
         .then(biometryType => {
             this.setState({touchSupport:true})
+            const optionalConfigObject = {
+                title: "เช้าสู่ระบบด้วย Touch ID", // Android
+                color: "#e00606", // Android,
+                failbackLabel: "" // iOS (if empty, then label is hidden)
+              }
+            TouchID.authenticate('ใช้ Touch ID เพื่อเข้าสู่ระบบ', optionalConfigObject)
+            .then(success => {
+               this.next();
+            })
+            .catch(error => {
+                // Failure code
+            });
         })
         .catch(error => {
             // Failure code
             this.setState({touchSupport:false})
         });
-        const optionalConfigObject = {
-            title: "เช้าสู่ระบบด้วย Touch ID", // Android
-            color: "#e00606", // Android,
-            failbackLabel: "" // iOS (if empty, then label is hidden)
-          }
-        TouchID.authenticate('ใช้ Touch ID เพื่อเข้าสู่ระบบ', optionalConfigObject)
-        .then(success => {
-           this.next();
-        })
-        .catch(error => {
-            // Failure code
-        });
+       
     }
     async next(){
         let param = {};
@@ -54,7 +55,10 @@ export default class PassCodeAuthenScreen extends Component{
                 let token = response.token;
                 store.save("token",token);
                 if(token){
-                    this.app.login();
+                    setTimeout(()=>{
+                        this.app.login();
+                    },500)
+                    
                 }else{
                      setTimeout(()=>{
                         this.setState({isLoading:false});
