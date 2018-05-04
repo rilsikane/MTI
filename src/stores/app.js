@@ -16,7 +16,11 @@ class AppStore {
     if (userData == null) {
       this.root = 'login';
     }else{
-      this.root = 'pincode';
+      if(userData.pinCode){
+        this.root = 'pincode';
+      }else{
+        this.root = 'after-login';
+      }
     }
     this.fontSize = 'large'==setting.fontSize ? 2 :1;
   }
