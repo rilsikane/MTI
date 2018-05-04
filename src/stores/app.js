@@ -34,9 +34,12 @@ class AppStore {
     //store.delete("user");
     store.delete("policy");
     store.delete("token");
-    if(userData.pinCode){
+    if(userData && userData.pinCode){
       this.root = 'pincode';
     }else{
+      if(userData){
+        store.delete("user");
+      }
       this.root = 'login';
     }
 

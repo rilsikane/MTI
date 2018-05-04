@@ -116,14 +116,14 @@ export default class PassCodePress extends Component{
                             <Text style={styles.resetTextStyle}>{this.props.cancelText}</Text>
                         </TouchableOpacity>}
                         {this.renderNumberButton(0)}
-                        {(this.props.isTouch && this.props.canTouch) && 
+                        {(this.props.isTouch && this.props.canTouch) ? 
                         <TouchableOpacity>
                             <Image
                                 source={require('../source/icons/iconTouchID01.png')}
                                 resizeMode='contain'
                                 style={styles.touchImageStyle}
                             />
-                        </TouchableOpacity>}
+                        </TouchableOpacity>:!this.props.isNext && <View style={styles.touchImageStyle}></View>}
                         {this.props.isNext &&
                          
                         <TouchableOpacity  onPress={()=>this.onDelNumber()}>
@@ -193,5 +193,6 @@ const styles={
         height: responsiveWidth(20),
         width: responsiveWidth(20),
         margin: responsiveWidth(3),
+        
     }
 }

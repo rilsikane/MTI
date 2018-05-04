@@ -45,9 +45,11 @@ export default class SettingAppLockingScreen extends Component{
        }else{
         this.setState({openModal:true});
         let user = await store.get("user");
-        user.pinCode = undefined;
-        await store.update("user",user);
-        this.setState({user:user,lockingIndex:0,openModal:false});
+        let tmpUser = {...user};
+        tmpUser.pinCode = null;
+        tmpUser.passCode = undefined;
+        await store.update("user",tmpUser);
+        this.setState({user:tmpUser,lockingIndex:0,openModal:false});
        }
     }
     cancelSetPincode(){
