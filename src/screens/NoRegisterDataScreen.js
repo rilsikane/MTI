@@ -145,13 +145,14 @@ export default class NoRegisterDataScreen extends Component{
                             thirdFlex={thirdFlex}
                             keyboardType='phone-pad'
                             onBlur={()=>{
-                                if(this.state.tel.length!=10 && this.state.tel.length!=12){
+                                if(this.state.tel.length!=10){
                                     this.setState({telErr:true})
                                 }else{
                                     this.setState({telErr:false})
                                 }
                             }}
                             blurOnSubmit={true}
+                            maxLength={10}
                         />
                         {this.state.telErr && <Text style={styles.errorMsg}>เบอร์โทรศัพท์ ไม่ถูกต้อง</Text>}
                         <TextInputIcon

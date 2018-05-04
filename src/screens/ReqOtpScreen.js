@@ -122,13 +122,14 @@ class ReqOtpScreen extends Component{
                             thirdFlex={thirdFlex}
                             keyboardType='phone-pad'
                             onBlur={()=>{
-                                if(this.state.tel.length!=10 && this.state.tel.length!=12){
+                                if(this.state.tel.length!=10){
                                     this.setState({telErr:true})
                                 }else{
                                     this.setState({telErr:false})
                                 }
                             }}
                             blurOnSubmit={true}
+                            maxLength={10}
                         />
                         {this.state.telErr && <Text style={styles.errorMsg}>เบอร์โทรศัพท์ ไม่ถูกต้อง</Text>}
                         <TextInputIcon
@@ -323,6 +324,7 @@ const styles={
     submitButtonContainerStyle:{
         flex: 1,
         marginTop: responsiveHeight(2),
+        zIndex: 5,
         // justifyContent: 'center',
     },
     errorMsg:{
@@ -344,7 +346,8 @@ const styles={
     },
     popupLayoutContainerStyle:{
         justifyContent: 'flex-start',
-        paddingTop: responsiveHeight(10)
+        paddingTop: responsiveHeight(10),
+        zIndex: 999,
     },
     popupTitleTextStyle:{
         fontSize: responsiveFontSize(3),
@@ -366,6 +369,10 @@ const styles={
         color: '#1595d3',
         textAlign: 'center',
         textDecorationLine: 'underline'
+    },
+    btnCloseImageStyle:{
+        height: responsiveHeight(2.81),
+        alignSelf: 'flex-end'
     },
 }
 

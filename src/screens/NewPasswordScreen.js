@@ -95,6 +95,7 @@ export default class NewPasswordScreen extends Component{
                         thirdFlex={thirdFlex}
                         secureTextEntry
                         onEndEditing={this.onPasswordChange.bind(this)}
+                        maxLength={8}
                     />
                     {this.state.errorPassowrd && <Text style={styles.errorMsg}>รหัสผ่านไม่ถูกรูปแบบ</Text>}
                     <TextInputIcon
@@ -106,6 +107,7 @@ export default class NewPasswordScreen extends Component{
                         secondFlex={secondFlex}
                         thirdFlex={thirdFlex}
                         secureTextEntry
+                        maxLength={8}
                     />
                      <Text style={styles.errorTextStyle}>{this.state.errorText}</Text>
                      <Text style={styles.directionTextStyle}>รหัสผ่านจะต้องมี 8 หลัก ประกอบไปด้วยตัวอักษรภาษาอังกฤษพิมพ์ใหญ่และตัวพิมพ์เล็กและตัวเลข</Text>
