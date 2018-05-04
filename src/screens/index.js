@@ -40,6 +40,9 @@ import ActivityOnNextDetailScreen from './ActivityOnNextDetailScreen';
 import SettingScreen from './SettingScreen';
 import SettingAppLockingScreen from './SettingAppLockingScreen';
 import PassCodeScreen from './PassCodeScreen';
+import PassConfirmCodeScreen from './PassConfirmCodeScreen';
+import PassCodeChangeScreen from './PassCodeChangeScreen';
+import PassCodeAuthenScreen from './PassCodeAuthenScreen'
 
 import app from '../stores/app';
 
@@ -85,6 +88,9 @@ export function registerScreens() {
   Navigation.registerComponent('mti.SettingScreen', () => SettingScreen, Store, Provider);
   Navigation.registerComponent('mti.SettingAppLockingScreen', () => SettingAppLockingScreen, Store, Provider);
   Navigation.registerComponent('mti.PassCodeScreen', () => PassCodeScreen, Store, Provider);
+  Navigation.registerComponent('mti.PassConfirmCodeScreen', () => PassConfirmCodeScreen, Store, Provider);
+  Navigation.registerComponent('mti.PassCodeChangeScreen', () => PassCodeChangeScreen, Store, Provider);
+  Navigation.registerComponent('mti.PassCodeAuthenScreen', () => PassCodeAuthenScreen, Store, Provider);
 }
 export function registerScreenVisibilityListener() {
   new ScreenVisibilityListener({

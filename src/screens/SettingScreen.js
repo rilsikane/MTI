@@ -5,6 +5,8 @@ import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-nat
 
 import {Headers} from '../components/Headers';
 import SwitchSelector from '../components/SwitchSelector';
+import store from 'react-native-simple-store';
+import app from '../stores/app';
 
 export default class SettingScreen extends Component{
 
@@ -77,10 +79,16 @@ export default class SettingScreen extends Component{
         )
     }
 
-    onFontSizeButtonPress(index){
+    async onFontSizeButtonPress(index){
         this.setState({
             fontSizeIndex: index,
         })
+        if(index==1){
+            store.save("setting",{fontSize:"large"})
+            app.fontSize =1.2;
+        }else{
+            store.save("setting",{fontSize:"small"})
+        }
     }
 
     gotoScreen(link){
@@ -136,7 +144,7 @@ export default class SettingScreen extends Component{
                         />
                         <TouchableOpacity
                             onPress={()=>     
-                                this.props.navigator.push({
+                                this.props.navigator.showModal({
                                     screen: 'mti.ServicePolicyScreen', // unique ID registered with Navigation.registerScreen
                                     title: undefined, // navigation bar title of the pushed screen (optional)
                                     titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)

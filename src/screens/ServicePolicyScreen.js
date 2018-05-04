@@ -56,7 +56,9 @@ export default class ServicePolicyScreen extends Component{
                     {this.renderPolicyDetail()}
                     <MainSubmitButton
                         buttonTitleText='ตกลง'
-                        onPress={()=>alert('Submit')}
+                        onPress={()=>this.props.navigator.dismissModal({
+                            animationType: 'slide-down' // 'none' / 'slide-down' , dismiss animation for the modal (optional, default 'slide-down')
+                          })}
                         style={styles.submitButtonStyle}
                     />
                 </View>

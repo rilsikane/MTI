@@ -5,7 +5,7 @@ import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-nat
 import store from 'react-native-simple-store';
 
 import { observer, inject } from 'mobx-react';
-
+import app from '../stores/app';
 @inject('userStore')
 @observer
 class UserShortDetailCard extends Component{
@@ -135,12 +135,12 @@ const styles={
         justifyContent: 'space-between',
     },
     userNameTextStyle:{
-        fontSize: responsiveFontSize(3.2),
+        fontSize: responsiveFontSize(3.2*app.fontSize),
         color: '#1595d3',
         letterSpacing: 0,
     },
     userLevelTextStyle:{
-        fontSize: responsiveFontSize(2),
+        fontSize: responsiveFontSize(2*app.fontSize),
         color: '#919195',
         letterSpacing: 0,
     },
@@ -158,7 +158,7 @@ const styles={
         width: responsiveWidth(3.28),
     },
     userDetailLinkTextStyle:{
-        fontSize: responsiveFontSize(2),
+        fontSize: responsiveFontSize(2*app.fontSize),
         color: '#919195',
         letterSpacing: 0,
         marginLeft: responsiveWidth(1.2),
@@ -176,7 +176,7 @@ const styles={
 
     },
     myCardTextStyle:{
-        fontSize: responsiveFontSize(2),
+        fontSize: responsiveFontSize(2*app.fontSize),
         color: '#919195',
         letterSpacing: 0,
         textAlign: 'center',

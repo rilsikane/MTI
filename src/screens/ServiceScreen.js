@@ -248,7 +248,7 @@ export default class ServiceScreen extends Component{
         return(
             <View style={styles.serviceScreenContainerStyle}>
                 <Headers
-                    leftIconName='menu'
+                    leftIconName=''
                     headerTitleText='บริการ'
                     rightIconName='iconBell'
                 />

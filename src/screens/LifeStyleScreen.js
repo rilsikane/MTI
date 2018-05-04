@@ -85,7 +85,7 @@ export default class LifeStyleScreen extends Component{
                 await this.login();
             }else{
                 Alert.alert(
-                    'เกิดข้อผิดพลาด',
+                    'แจ้งเตือน',
                     'กรุณาเลือกอย่างน้อย 1 รายการ',
                     [
                     {text: 'OK', onPress: () => console.log('OK Pressed!')},
@@ -113,6 +113,8 @@ export default class LifeStyleScreen extends Component{
                         if(response1){
                             let response2 = await put("me/profile",response1);
                             if(response2){
+                                response1.username = this.props.registerStore.register.username;
+                                response1.password = this.props.registerStore.register.password;
                                 await store.save("user",response1);
                                 this.app.isLoading = false;
                                 this.props.registerStore.register={};

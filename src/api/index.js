@@ -35,7 +35,7 @@ export async function authen(param){
             }else{
                
                     setTimeout(()=>{Alert.alert(
-                    'เกิดข้อผิดพลาด',
+                    'แจ้งเตือน',
                     response.data ? response.data.message:response.message,
                     [
                     {text: 'OK', onPress: () => false},
@@ -46,7 +46,7 @@ export async function authen(param){
             }
         }else{
             setTimeout(()=>{Alert.alert(
-                'เกิดข้อผิดพลาด',
+                'แจ้งเตือน',
                 `${path}:ไม่สามารถเชื่อมต่อกับระบบได้`,
                 [
                 {text: 'OK', onPress: () => console.log('OK Pressed!')},
@@ -58,7 +58,7 @@ export async function authen(param){
       }catch(e){
         if(e && "ECONNABORTED"!=e.code){
             setTimeout(()=>{Alert.alert(
-            'เกิดข้อผิดพลาด',
+            'แจ้งเตือน',
             (e.response && e.response.data) ? e.response.data.message:'ไม่สามารถเชื่อมต่อกับ Server ได้',
             [
             {text: 'OK', onPress: () => console.log('OK Pressed!')},
@@ -67,7 +67,7 @@ export async function authen(param){
             return false;
         }else{
             setTimeout(()=>{Alert.alert(
-                'เกิดข้อผิดพลาด',
+                'แจ้งเตือน',
                    'เกินกำหนดระยะเวลาเชื่อมต่อกับ Server',
                 [
                 {text: 'OK', onPress: () => console.log('OK Pressed!')},
@@ -96,7 +96,7 @@ export async function post(path,param){
                     app.isLoading = false;
                     console.log(response.data.message);
                     setTimeout(()=>{Alert.alert(
-                        'เกิดข้อผิดพลาด',
+                        'แจ้งเตือน',
                         response.data.message,
                         [
                         {text: 'OK', onPress: () => console.log('OK Pressed!')},
@@ -106,7 +106,7 @@ export async function post(path,param){
                 }
             }else{
                 setTimeout(()=>{Alert.alert(
-                    'เกิดข้อผิดพลาด',
+                    'แจ้งเตือน',
                     `${path}:ไม่สามารถเชื่อมต่อกับระบบได้`,
                     [
                     {text: 'OK', onPress: () => console.log('OK Pressed!')},
@@ -118,7 +118,7 @@ export async function post(path,param){
             app.isLoading = false;
             if(e && "ECONNABORTED"!=e.code){
                 setTimeout(()=>{Alert.alert(
-                'เกิดข้อผิดพลาด',
+                'แจ้งเตือน',
                 (e.response && e.response.data) ? e.response.data.message:'ไม่สามารถเชื่อมต่อกับ Server ได้',
                 [
                 {text: 'OK', onPress: () => console.log('OK Pressed!')},
@@ -126,7 +126,7 @@ export async function post(path,param){
                 ),200});
             }else{
                 setTimeout(()=>{Alert.alert(
-                    'เกิดข้อผิดพลาด',
+                    'แจ้งเตือน',
                        'เกินกำหนดระยะเวลาเชื่อมต่อกับ Server',
                     [
                     {text: 'OK', onPress: () => console.log('OK Pressed!')},
@@ -156,7 +156,7 @@ export async function postBasic(path,param,customError){
                 
                 if(!customError){
                     setTimeout(()=>{Alert.alert(
-                        'เกิดข้อผิดพลาด',
+                        'แจ้งเตือน',
                         response.data.message,
                         [
                         {text: 'OK', onPress: () => console.log('OK Pressed!')},
@@ -168,7 +168,7 @@ export async function postBasic(path,param,customError){
             }
         }else{
             setTimeout(()=>{Alert.alert(
-                'เกิดข้อผิดพลาด',
+                'แจ้งเตือน',
                 `${path}:ไม่สามารถเชื่อมต่อกับระบบได้`,
                 [
                 {text: 'OK', onPress: () => console.log('OK Pressed!')},
@@ -181,7 +181,7 @@ export async function postBasic(path,param,customError){
         app.isLoading = false;
         if(e && "ECONNABORTED"!=e.code){
             setTimeout(()=>{Alert.alert(
-            'เกิดข้อผิดพลาด',
+            'แจ้งเตือน',
             (e.response && e.response.data) ? e.response.data.message:'ไม่สามารถเชื่อมต่อกับ Server ได้',
             [
             {text: 'OK', onPress: () => console.log('OK Pressed!')},
@@ -189,7 +189,7 @@ export async function postBasic(path,param,customError){
             ),200});
         }else{
             setTimeout(()=>{Alert.alert(
-                'เกิดข้อผิดพลาด',
+                'แจ้งเตือน',
                    'เกินกำหนดระยะเวลาเชื่อมต่อกับ Server',
                 [
                 {text: 'OK', onPress: () => console.log('OK Pressed!')},
@@ -217,7 +217,7 @@ export async function put(path,param){
                     app.isLoading = false;
                     console.log(response.data.message);
                     setTimeout(()=>{Alert.alert(
-                        'เกิดข้อผิดพลาด',
+                        'แจ้งเตือน',
                         response.data.message,
                         [
                         {text: 'OK', onPress: () => console.log('OK Pressed!')},
@@ -227,7 +227,7 @@ export async function put(path,param){
                 }
             }else{
                 setTimeout(()=>{Alert.alert(
-                    'เกิดข้อผิดพลาด',
+                    'แจ้งเตือน',
                     `${path}:ไม่สามารถเชื่อมต่อกับระบบได้`,
                     [
                     {text: 'OK', onPress: () => console.log('OK Pressed!')},
@@ -239,7 +239,7 @@ export async function put(path,param){
             app.isLoading = false;
             if(e && "ECONNABORTED"!=e.code){
                 setTimeout(()=>{Alert.alert(
-                'เกิดข้อผิดพลาด',
+                'แจ้งเตือน',
                 (e.response && e.response.data) ? e.response.data.message:'ไม่สามารถเชื่อมต่อกับ Server ได้',
                 [
                 {text: 'OK', onPress: () => console.log('OK Pressed!')},
@@ -247,7 +247,7 @@ export async function put(path,param){
                 ),200});
             }else{
                 setTimeout(()=>{Alert.alert(
-                    'เกิดข้อผิดพลาด',
+                    'แจ้งเตือน',
                        'เกินกำหนดระยะเวลาเชื่อมต่อกับ Server',
                     [
                     {text: 'OK', onPress: () => console.log('OK Pressed!')},
@@ -278,7 +278,7 @@ export async function get(path,param){
                 app.isLoading = false;
                 console.log(response.data.message);
                 setTimeout(()=>{Alert.alert(
-                    'เกิดข้อผิดพลาด',
+                    'แจ้งเตือน',
                     response.message,
                     [
                     {text: 'OK', onPress: () => console.log('OK Pressed!')},
@@ -288,7 +288,7 @@ export async function get(path,param){
             }
             }else{
                 setTimeout(()=>{Alert.alert(
-                    'เกิดข้อผิดพลาด',
+                    'แจ้งเตือน',
                     `${path}:ไม่สามารถเชื่อมต่อกับระบบได้`,
                     [
                     {text: 'OK', onPress: () => console.log('OK Pressed!')},
@@ -300,7 +300,7 @@ export async function get(path,param){
         app.isLoading = false;
         if(e && "ECONNABORTED"!=e.code){
             setTimeout(()=>{Alert.alert(
-            'เกิดข้อผิดพลาด',
+            'แจ้งเตือน',
             (e.response && e.response.data) ? e.response.data.message:'ไม่สามารถเชื่อมต่อกับ Server ได้',
             [
             {text: 'OK', onPress: () => console.log('OK Pressed!')},
@@ -308,7 +308,7 @@ export async function get(path,param){
             ),200});
         }else{
             setTimeout(()=>{Alert.alert(
-                'เกิดข้อผิดพลาด',
+                'แจ้งเตือน',
                    'เกินกำหนดระยะเวลาเชื่อมต่อกับ Server',
                 [
                 {text: 'OK', onPress: () => console.log('OK Pressed!')},
@@ -336,7 +336,7 @@ export async function getBasic(path,param){
                   app.isLoading = false;
                   console.log(response.data.message);
                   setTimeout(()=>{Alert.alert(
-                      'เกิดข้อผิดพลาด',
+                      'แจ้งเตือน',
                       response.message,
                       [
                       {text: 'OK', onPress: () => console.log('OK Pressed!')},
@@ -346,7 +346,7 @@ export async function getBasic(path,param){
               }
               }else{
                   setTimeout(()=>{Alert.alert(
-                      'เกิดข้อผิดพลาด',
+                      'แจ้งเตือน',
                       `${path}:ไม่สามารถเชื่อมต่อกับระบบได้`,
                       [
                       {text: 'OK', onPress: () => console.log('OK Pressed!')},
@@ -358,7 +358,7 @@ export async function getBasic(path,param){
           app.isLoading = false;
           if(e && "ECONNABORTED"!=e.code){
               setTimeout(()=>{Alert.alert(
-              'เกิดข้อผิดพลาด',
+              'แจ้งเตือน',
               (e.response && e.response.data) ? e.response.data.message:'ไม่สามารถเชื่อมต่อกับ Server ได้',
               [
               {text: 'OK', onPress: () => console.log('OK Pressed!')},
@@ -366,7 +366,7 @@ export async function getBasic(path,param){
               ),200});
           }else{
               setTimeout(()=>{Alert.alert(
-                  'เกิดข้อผิดพลาด',
+                  'แจ้งเตือน',
                      'เกินกำหนดระยะเวลาเชื่อมต่อกับ Server',
                   [
                   {text: 'OK', onPress: () => console.log('OK Pressed!')},

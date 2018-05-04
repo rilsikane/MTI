@@ -7,8 +7,7 @@ import {
 } from 'react-native';
 import {setCustomText,setCustomTextInput,setCustomStatusBar} from 'react-native-global-props';
 import {Text,TextInput} from 'react-native';
-
-
+import localStorage from 'react-native-sync-localstorage'
 registerScreens();
 registerScreenVisibilityListener();
 export default class App {
@@ -24,7 +23,8 @@ export default class App {
     backgroundColor: 'transparent',
     translucent: true
   }
-
+  
+  localStorage.getAllFromLocalStorage();
   setCustomText(customTextProps);
   setCustomTextInput(customTextProps);
   setCustomStatusBar(customStatusBar)

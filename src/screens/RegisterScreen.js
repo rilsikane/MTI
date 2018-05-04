@@ -633,7 +633,7 @@ export default class RegisterScreen extends Component{
                     this.setState({enable:false});
                 }else{
                     Alert.alert(
-                        'เกิดข้อผิดพลาด',
+                        'แจ้งเตือน',
                         response.message,
                         [
                         {text: 'OK', onPress: () => console.log('OK Pressed!')},
@@ -681,7 +681,7 @@ export default class RegisterScreen extends Component{
                         }else{
                             this.setState({isLoading:false});
                             Alert.alert(
-                                'เกิดข้อผิดพลาด',
+                                'แจ้งเตือน',
                                 response.message,
                                 [
                                 {text: 'OK', onPress: () => console.log('OK Pressed!')},
@@ -694,7 +694,7 @@ export default class RegisterScreen extends Component{
             }else{
                 this.setState({isLoading:false});
                 Alert.alert(
-                    'เกิดข้อผิดพลาด',
+                    'แจ้งเตือน',
                     response.message,
                     [
                     {text: 'OK', onPress: () => console.log('OK Pressed!')},
