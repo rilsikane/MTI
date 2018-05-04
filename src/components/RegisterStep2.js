@@ -153,6 +153,7 @@ class RegisterStep2 extends Component{
                         checkBoxTextStyle={styles.checkBoxTextStyle}
                         textUnderLine={true}
                         onIconPress={()=>this.setState({checkBoxIsSelected: !this.state.checkBoxIsSelected})}
+                        onHyperLinkPress={this.props.onHyperLinkPress}
                     />
                     </View>
                     <View style={{flexDirection: 'row',padding:5}}>

@@ -209,7 +209,7 @@ export default class RegisterScreen extends Component{
                             thirdFlex={thirdFlex}
                             keyboardType='phone-pad'
                             onBlur={()=>{
-                                if(this.state.tel.length!=10 && this.state.tel.length!=12){
+                                if(this.state.tel.length!=10){
                                     this.setState({telErr:true})
                                 }else{
                                     this.setState({telErr:false})
@@ -468,7 +468,7 @@ export default class RegisterScreen extends Component{
                         />
                     </ScrollView>
                 </View>
-                <CheckBoxes
+                {/* <CheckBoxes
                     checkBoxTitleText='ยอบรับ เงื่อนไขการให้บริการ'
                     checked={this.state.agreementCheckBoxSelected}
                     checkedColor='#81c5e3'
@@ -483,13 +483,14 @@ export default class RegisterScreen extends Component{
                     {this.state.agreementCheckBoxSelected&&
                     <MainSubmitButton
                         buttonTitleText='ยืนยันข้อมูล'
-                        onPress={()=>alert('ยืนยันข้อมูล')}
+                        onPress={()=>this.agreementDialog.dismiss()}
                     />}
-                </View>
+                </View> */}
             </PopupDialog>
         )
     }
 
+    
     _renderAgreements = ({item,index}) => (
         <View>
             <Text style={[styles.popupAgreementSubTitleTextStyle,{textAlign: 'left'}]}>{`${++index}.   ${item.title}`}</Text>
@@ -571,7 +572,6 @@ export default class RegisterScreen extends Component{
     }
 
     async _onSubmitRegister2Press(){
-        this.agreementDialog.show();
         if (this._pages) {
             let param = {};
             param.mobile_no = this.props.registerStore.register.tel;
@@ -797,6 +797,7 @@ export default class RegisterScreen extends Component{
                         onSubmitRegister2Press={this._onSubmitRegister2Press.bind(this)} 
                         openLeavingDialog={this.openLeavingContactPopup} 
                         closeLeavingDialog={()=>this.leavingDialog.close()}
+                        onHyperLinkPress={()=>this.agreementDialog.show()}
                     />     
                     <RegisterStep3
                         onSubmitRegister3Press={this._onSubmitRegister3Press.bind(this)}
@@ -838,7 +839,8 @@ const styles={
     },
     popupLayoutContainerStyle:{
         justifyContent: 'flex-start',
-        paddingTop: responsiveHeight(10)
+        paddingTop: responsiveHeight(10),
+        paddingBottom: responsiveHeight(10)
     },
     btnCloseImageStyle:{
         height: responsiveHeight(2.81),
@@ -899,4 +901,9 @@ const styles={
         letterSpacing: 0,
         fontSize: responsiveFontSize(2.64),
     },
+    errorMsg:{
+        fontSize:responsiveFontSize(2.2),
+        color:"red",
+        padding:2
+    }
 }

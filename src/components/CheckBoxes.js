@@ -18,7 +18,7 @@ class CheckBoxes extends Component{
             return(
                 <View style={styles.textUnderLineContainerStyle}>
                     <Text style={this.props.checkBoxTextStyle}>{checkBoxTitleText.split(' ')[0]} </Text>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={this.props.onHyperLinkPress}>
                         <Text style={[this.props.checkBoxTextStyle,styles.textUnderLineStyle]}>{checkBoxTitleText.split(' ')[1]}</Text>
                     </TouchableOpacity>
                 </View>
