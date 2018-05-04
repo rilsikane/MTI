@@ -113,7 +113,7 @@ export default class PrivilegeScreen extends Component{
 
     async getPrivilegeForEachTabs(index){
         if(index==7){
-            index = 10;
+            index = 9;
         }
         let filter_group_id = index;
         let privilege = [];
@@ -170,7 +170,7 @@ export default class PrivilegeScreen extends Component{
             }else{
                 this.setState({privilege:this.state.privilegeEntertain});
             }
-        }else if(index==10){
+        }else if(index==9){
             if(this.state.privilegeOther.length==0){
                 this.setState({privilege: privilege.data,privilegeOther:privilege.data});
             }else{
@@ -213,7 +213,7 @@ export default class PrivilegeScreen extends Component{
         return(
             <View style={styles.privilegeScreenContainerStyle}>
                 <Headers
-                    leftIconName='menu'
+                    leftIconName=''
                     headerTitleText='สิทธิพิเศษ'
                     rightIconName='iconBell'
                     withSearch

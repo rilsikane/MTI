@@ -209,7 +209,9 @@ export default class PrivilegeDetailScreen extends Component{
         return !this.state.isLoading ? (
             <View style={styles.privilegeDetailScreenContainerStyle}>
                 <Headers
-                    leftIconName='back'
+                    leftIconName='cancel'
+                    cancelTxt={'กลับ'}
+                    cancel={()=>this.props.navigator.pop()}
                     headerTitleText='รายละเอียดสิทธิพิเศษ'
                 />
                 <ScrollView style={{flex: 1,}}>

@@ -30,7 +30,7 @@ export default class ServiceSearchCorpCenterScreen extends Component{
     async componentDidMount(){
         if(!this.props.isMap){
             this.setState({isLoading: true});
-            let serviceList = await getBasic('services?filter_type_id=2&page=1&pagesize=200',{});
+            let serviceList = await getBasic('services?filter_type_id=2&page=1&pagesize=400',{});
             if(serviceList){
                 this.setState({
                     serviceList:serviceList.data,
@@ -62,7 +62,7 @@ export default class ServiceSearchCorpCenterScreen extends Component{
         }else{
             animationTimeout = setTimeout(() => {
                 this.focus();
-            },3000);
+            },1500);
         }
     }
 
@@ -76,13 +76,13 @@ export default class ServiceSearchCorpCenterScreen extends Component{
             return(
                 <MapView
                     ref={(ref) => { this.mapRef = ref; }}
-                    minZoomLevel={5}
+                    minZoomLevel={this.props.nearBy ? 13:5}
                     maxZoomLevel={18}
                     initialRegion={{
-                        latitude: 15.870032,
-                        longitude: 100.99254100000007,
-                        latitudeDelta: 15.870032,
-                        longitudeDelta: 100.99254100000007,
+                        latitude: this.props.nearBy && this.props.data ?this.props.data[0].latitude:15.870032,
+                        longitude:  this.props.nearBy && this.props.data ?this.props.data[0].longtitude:100.99254100000007,
+                        latitudeDelta: this.props.nearBy && this.props.data ?this.props.data[0].latitude:15.870032,
+                        longitudeDelta: this.props.nearBy && this.props.data ?this.props.data[0].longtitude:100.99254100000007,
                     }}
                     style={{flex: 1,}}
                 >
@@ -94,6 +94,8 @@ export default class ServiceSearchCorpCenterScreen extends Component{
                                 latitude: data.latitude?parseFloat(data.latitude):13.7864983,
                                 longitude: data.longtitude?parseFloat(data.longtitude):100.57462710000004
                             }}
+                            title={data.title}
+                            description={data.address}
                             image={require('../source/icons/iconMapMarker.png')}
                         />
                     )}
@@ -112,7 +114,7 @@ export default class ServiceSearchCorpCenterScreen extends Component{
     async _onSearchIconPress(){
         this.setState({isLoading:true});
         if(!this.props.isMap){
-            let search = await getBasic(`services?filter_type_id=2&search=${this.state.searchValue}&page=1&pagesize=200`,{});
+            let search = await getBasic(`services?filter_type_id=2&search=${this.state.searchValue}&page=1&pagesize=400`,{});
             if(search.data.length>0){
                 this.setState({
                     serviceList: search.data,
@@ -139,22 +141,29 @@ export default class ServiceSearchCorpCenterScreen extends Component{
 
     async onNearByPress(){
         this.setState({isLoading:true});
-        let nearBy = await getBasic(`services?nearby=y&lat=${this.state.userLatitude}&lng=${this.state.userLongitude}&filter_type_id=2&page=1&pagesize=200`,{});
+        let nearBy = await getBasic(`services?nearby=y&lat=${this.state.userLatitude}&lng=${this.state.userLongitude}&filter_type_id=2&page=1&pagesize=10`,{});
         if(!this.props.isMap){
-            this.props.navigator.showModal({
-                screen: 'mti.ServiceSearchCorpCenterScreen', // unique ID registered with Navigation.registerScreen
-                title: undefined, // navigation bar title of the pushed screen (optional)
-                titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
-                passProps: {
-                    navigator:this.props.navigator,
-                    data: nearBy.data,
-                    isMap: true,
-                }, // Object that will be passed as props to the pushed screen (optional)
-                animated: true, // does the push have transition animation or does it happen immediately (optional)
-                backButtonTitle: undefined, // override the back button title (optional)
-                backButtonHidden: false, // hide the back button altogether (optional)
-            })
             this.setState({isLoading:false});
+            setTimeout(()=>{
+                this.props.navigator.showModal({
+                    screen: 'mti.ServiceSearchCorpCenterScreen', // unique ID registered with Navigation.registerScreen
+                    title: undefined, // navigation bar title of the pushed screen (optional)
+                    titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
+                    passProps: {
+                        navigator:this.props.navigator,
+                        data: nearBy.data,
+                        isMap: true,
+                        nearBy:true,
+                        userLatitude:this.state.userLatitude,
+                        userLongitude:this.state.userLongitude
+                    }, // Object that will be passed as props to the pushed screen (optional)
+                    animated: true, // does the push have transition animation or does it happen immediately (optional)
+                    backButtonTitle: undefined, // override the back button title (optional)
+                    backButtonHidden: false, // hide the back button altogether (optional)
+                })
+            },100)
+           
+           
         }else{
             this.setState({
                 serviceList: nearBy.data,
@@ -167,7 +176,9 @@ export default class ServiceSearchCorpCenterScreen extends Component{
         return(
             <View style={styles.serviceSearchCorpCenterScreenContainerStyle}>
                 <Headers
-                    leftIconName={this.props.isMap?'close':'back'}
+                    leftIconName={this.props.isMap?'close':'cancel'}
+                    cancelTxt={'กลับ'}
+                    cancel={()=>this.props.navigator.pop()}
                     headerTitleText='ค้นหาศูนย์และอู่รับงานบริษัท'
                     rightIconName='iconBell'
                     withSearch={this.props.isMap?false:true}

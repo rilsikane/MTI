@@ -16,7 +16,7 @@ class AppStore {
     if (userData == null) {
       this.root = 'login';
     }else{
-      this.root = 'after-login';
+      this.root = 'pincode';
     }
     this.fontSize = 'large'==setting.fontSize ? 2 :1;
   }
@@ -24,11 +24,17 @@ class AppStore {
   login() {
     this.root = 'after-login';
   }
-  logout() {
-    store.delete("user");
+
+  async logout() {
+    let userData = await store.get("user");
+    //store.delete("user");
     store.delete("policy");
     store.delete("token");
-    this.root = 'login';
+    if(userData.pinCode){
+      this.root = 'pincode';
+    }else{
+      this.root = 'login';
+    }
 
   }
  

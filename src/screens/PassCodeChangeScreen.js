@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
 import PassCodePress from '../components/PassCodePress';
 
-export default class PassCodeScreen extends Component{
+export default class PassCodeChangeScreen extends Component{
 
     constructor(props){
         super(props)
@@ -14,8 +14,8 @@ export default class PassCodeScreen extends Component{
     render(){
         return(
             <View style={{flex:1}}>
-                <PassCodePress cancelText="ยกเลิก" cancel={this.props.cancel} 
-                isNext={true} title="ตั้งรหัส Pincode" next={this.props.next}/>
+                <PassCodePress cancelText="กลับ" cancel={this.props.cancel} next={this.props.next}
+                isNext={true} title="ใส่่รหัส Pincode เดิม" passCode={this.props.passCode}/>
             </View>
         )
     }

@@ -14,8 +14,8 @@ export default class PassCodeScreen extends Component{
     render(){
         return(
             <View style={{flex:1}}>
-                <PassCodePress cancelText="ยกเลิก" cancel={this.props.cancel} 
-                isNext={true} title="ตั้งรหัส Pincode" next={this.props.next}/>
+                <PassCodePress cancelText="กลับ" cancel={this.props.cancel} next={this.props.next}
+                isNext={true} title="ยืนยันรหัส Pincode" passCode={this.props.passCode}/>
             </View>
         )
     }

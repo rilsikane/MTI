@@ -187,7 +187,7 @@ export default class MenuScreen extends Component{
                                     [
                                     {text: "ยกเลิก"},
                                     {text: "ออกจากระบบ", onPress: ()=> {
-                                        store.delete("user");
+                                        // store.delete("user");
                                         store.delete("token");
                                         this.props.userStore.user = {};
                                         this.props.naviStore.navigation.resetTo({
