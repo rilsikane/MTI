@@ -790,14 +790,14 @@ export default class RegisterScreen extends Component{
                     isDragging={false} 
                     scrollEnabled={this.state.enable}
                 >
-                    {/* <RegisterStep1
+                    <RegisterStep1
                         onSubmitRegister1Press={this._onSubmitRegister1Press.bind(this)}
                     />
                     <RegisterStep2 firstLogon={this.state.firstLogon} pageNumber={this.state.pageNumber}
                         onSubmitRegister2Press={this._onSubmitRegister2Press.bind(this)} 
                         openLeavingDialog={this.openLeavingContactPopup} 
                         closeLeavingDialog={()=>this.leavingDialog.close()}
-                    />      */}
+                    />     
                     <RegisterStep3
                         onSubmitRegister3Press={this._onSubmitRegister3Press.bind(this)}
                     />
