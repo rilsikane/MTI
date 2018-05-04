@@ -134,7 +134,7 @@ class RegisterStep2 extends Component{
                         keyboardType='phone-pad'
                         returnKeyType='done'
                         onBlur={()=>{
-                            if(this.state.userPhone.length!=10 && this.state.userPhone.length!=12){
+                            if(this.state.userPhone.length!=10){
                                 this.setState({telErr:true})
                             }else{
                                 this.setState({telErr:false})
@@ -142,6 +142,7 @@ class RegisterStep2 extends Component{
                         }}
                         blurOnSubmit={true}
                         editable={!this.props.firstLogon}
+                        maxLength={10}
                     />
                     {this.state.telErr && <Text style={styles.errorMsg}>เบอร์โทรศัพท์ ไม่ถูกต้อง</Text>}
                     <View style={{flexDirection: 'row',paddingTop:10}}>
