@@ -8,6 +8,7 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import {Headers} from './../components/Headers';
 import {MainSearchBox} from '../components/MainSearchBox';
 import {ServiceListCard} from '../components/ServiceListCard';
+import {MapCalloutPopup} from '../components/MapCalloutPopup';
 import {getBasic} from '../api'
 
 export default class ServiceSearchHospitalScreen extends Component{
@@ -21,6 +22,8 @@ export default class ServiceSearchHospitalScreen extends Component{
             userLongitude: '',
             isLoading: false,
             searchValue: '',
+            calloutData:{},
+            showCallout: false,
         }
         this._onSearchIconPress = this._onSearchIconPress.bind(this);
         this.onNearByPress = this.onNearByPress.bind(this);
@@ -80,10 +83,10 @@ export default class ServiceSearchHospitalScreen extends Component{
                     minZoomLevel={this.props.nearBy ? 13:5}
                     maxZoomLevel={18}
                     initialRegion={{
-                        latitude: this.props.nearBy && (this.props.data && this.props.data.length>0)  ?Number(this.props.data[0].latitude):15.870032,
-                        longitude:  this.props.nearBy && (this.props.data && this.props.data.length>0)  ?Number(this.props.data[0].longtitude):100.99254100000007,
-                        latitudeDelta: this.props.nearBy && (this.props.data && this.props.data.length>0)  ?Number(this.props.data[0].latitude):15.870032,
-                        longitudeDelta: this.props.nearBy && (this.props.data && this.props.data.length>0)  ?Number(this.props.data[0].longtitude):100.99254100000007,
+                        latitude: this.props.nearBy && (this.props.data && this.props.data.length>0)  ?parseFloat(this.props.data[0].latitude):15.870032,
+                        longitude:  this.props.nearBy && (this.props.data && this.props.data.length>0)  ?parseFloat(this.props.data[0].longtitude):100.99254100000007,
+                        latitudeDelta: this.props.nearBy && (this.props.data && this.props.data.length>0)  ?parseFloat(this.props.data[0].latitude):15.870032,
+                        longitudeDelta: this.props.nearBy && (this.props.data && this.props.data.length>0)  ?parseFloat(this.props.data[0].longtitude):100.99254100000007,
                     }}
                     style={{flex: 1,}}
                 >
@@ -95,9 +98,8 @@ export default class ServiceSearchHospitalScreen extends Component{
                                 latitude: data.latitude?parseFloat(data.latitude):13.7864983,
                                 longitude: data.longtitude?parseFloat(data.longtitude):100.57462710000004
                             }}
-                            title={data.title}
-                            description={data.address}
                             image={require('../source/icons/iconMapMarker.png')}
+                            onPress={()=>this.onMarkerPress(data)}
                         />
                     )}
                 </MapView>
@@ -110,6 +112,25 @@ export default class ServiceSearchHospitalScreen extends Component{
                 />
             )
         }
+    }
+
+    onMarkerPress(data){
+        this.setState({
+            showCallout: true,
+            calloutData: data,
+        })
+    }
+
+    renderMapCallout(){
+        return(
+            <View style={styles.calloutContainerStyle}>
+                <MapCalloutPopup
+                    data={this.state.calloutData}
+                    show={this.state.showCallout}
+                    onClose={()=>this.setState({showCallout: false})}
+                />
+            </View>
+        )
     }
 
     async _onSearchIconPress(){
@@ -166,7 +187,6 @@ export default class ServiceSearchHospitalScreen extends Component{
             
            
         }else{
-            let nearBy = await getBasic(`services?nearby=y&lat=${this.state.userLatitude}&lng=${this.state.userLongitude}&filter_type_id=1&page=1&pagesize=20`,{});
             this.setState({
                 serviceList: nearBy.data,
                 isLoading:false
@@ -200,6 +220,7 @@ export default class ServiceSearchHospitalScreen extends Component{
                     {this.renderContent()}
                 </View>
                 {this.state.isLoading && <Spinner visible={this.state.isLoading}  textStyle={{color: '#FFF'}} />}
+                {this.props.isMap&&this.renderMapCallout()}
             </View>
         )
     }
@@ -212,4 +233,10 @@ const styles={
     serviceSearchHospitalContainerStyle:{
         flex: 1,
     },
+    calloutContainerStyle:{
+        height: responsiveHeight(30),
+        width: responsiveWidth(90),
+        position: 'absolute',
+        bottom: 10,
+    }
 }
