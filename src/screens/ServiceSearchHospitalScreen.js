@@ -33,7 +33,6 @@ export default class ServiceSearchHospitalScreen extends Component{
         if(!this.props.isMap){
             this.setState({isLoading: true});
             let serviceList = await getBasic('services?filter_type_id=1&page=1&pagesize=400',{});
-            console.log(serviceList.data)
             if(serviceList){
                 this.setState({
                     serviceList:serviceList.data,
@@ -61,7 +60,7 @@ export default class ServiceSearchHospitalScreen extends Component{
                         ]
                     )
                 },
-                {maximumAge:60000, timeout:20000, enableHighAccuracy:true },
+                {maximumAge:60000, timeout:20000, enableHighAccuracy:false },
               );
 
         }else{
@@ -164,7 +163,7 @@ export default class ServiceSearchHospitalScreen extends Component{
 
     async onNearByPress(){
         this.setState({isLoading:true});
-        let nearBy = await getBasic(`services?nearby=y&lat=${this.state.userLatitude}&lng=${this.state.userLongitude}&filter_type_id=1&page=1&pagesize=400`,{});
+        let nearBy = await getBasic(`services?nearby=y&lat=${this.state.userLatitude}&lng=${this.state.userLongitude}&filter_type_id=1&page=1&pagesize=20`,{});
         if(!this.props.isMap){
             this.setState({isLoading:false});
             setTimeout(()=>{

@@ -26,13 +26,13 @@ class ServiceListCard extends Component{
                         style={styles.mapIconStyle}
                     />
                 </TouchableOpacity>
-                {(item.latitude && item.longtitude) && <TouchableOpacity onPress={()=>this.gotoMap(item)}>
+                {(item.latitude && item.longtitude) ? <TouchableOpacity onPress={()=>this.gotoMap(item)}>
                     <Image
                         source={require('../source/icons/iconMapMarker01.png')}
                         resizeMode='contain'
                         style={styles.mapIconStyle}
                     />
-                </TouchableOpacity>}
+                </TouchableOpacity>:null}
             </View>
             <Image
                 source={require('../source/images/dotSectionHorizontal.png')}

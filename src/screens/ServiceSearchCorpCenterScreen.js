@@ -60,7 +60,7 @@ export default class ServiceSearchCorpCenterScreen extends Component{
                         ]
                     )
                 },
-                {maximumAge:60000, timeout:20000, enableHighAccuracy:true },
+                {enableHighAccuracy: true,timeout: 20000,maxAge: 0,istanceFilter: 1 },
               );
         }else{
             animationTimeout = setTimeout(() => {

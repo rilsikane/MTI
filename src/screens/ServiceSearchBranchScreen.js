@@ -59,7 +59,7 @@ export default class ServiceSearchBranchScreen extends Component{
                         ]
                     )
                 },
-                {maximumAge:60000, timeout:20000, enableHighAccuracy:true },
+                {maximumAge:60000, timeout:20000, enableHighAccuracy:false },
             );
         }else{
             animationTimeout = setTimeout(() => {
