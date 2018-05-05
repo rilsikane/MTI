@@ -96,7 +96,7 @@ class RegisterStep1 extends Component{
                 <View style={styles.registerStep1ContainerStyle}>
         
                     <Animated.Image
-                        source={require('./../source/images/mascot.png')}
+                        source={require('./../source/images/mtiMainLogoImg.png')}
                         style={[styles.mascotImageStyle,{ height: this.imageHeight }]}
                         resizeMode='contain'
                     />

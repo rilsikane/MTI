@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Text,View,TouchableOpacity} from 'react-native';
+import {Text,View,TouchableOpacity,ScrollView} from 'react-native';
 import PropTypes from "prop-types";
 import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
 
@@ -46,23 +46,26 @@ export default class PrivilegeAgreementScreen extends Component{
             <View style={styles.privilegeAgreementScreenContainerStyle}>
                 <Headers
                     headerTitleText='เงื่อนไขสำหรับใช้สิทธิ์'
+                    leftIconName='close'
                 />
-                <View style={styles.privilegeAgreementContainerStyle}>
-                    <Text style={styles.privilegeTitleTextStyle}>{this.props.data.name}</Text>
-                    <Text style={styles.privilegeDurationTextStyle}></Text>
-                    <Text style={styles.agreementTitleTextStyle}>เงื่อนไขสำหรับใช้สิทธิ์</Text>
-                    {this.renderAgreementList()}
-                    <MainSubmitButton
-                        buttonTitleText='ตกลง'
-                        onPress={this.redeem}
-                        style={styles.submitButtonStyle}
-                    />
-                    <TouchableOpacity onPress={()=>this.props.navigator.dismissModal({
-                        animationType: 'slide-down' // 'none' / 'slide-down' , dismiss animation for the modal (optional, default 'slide-down')
-                    })}>
-                        <Text style={styles.cancelTextStyle}>ยกเลิก</Text>
-                    </TouchableOpacity>
-                </View>
+                <ScrollView style={{flex: 1,}}>
+                    <View style={styles.privilegeAgreementContainerStyle}>
+                        <Text style={styles.privilegeTitleTextStyle}>{this.props.data.name}</Text>
+                        <Text style={styles.privilegeDurationTextStyle}></Text>
+                        <Text style={styles.agreementTitleTextStyle}>เงื่อนไขสำหรับใช้สิทธิ์</Text>
+                        {this.renderAgreementList()}
+                        <MainSubmitButton
+                            buttonTitleText='ตกลง'
+                            onPress={this.redeem}
+                            style={styles.submitButtonStyle}
+                        />
+                        {/* <TouchableOpacity onPress={()=>this.props.navigator.dismissModal({
+                            animationType: 'slide-down' // 'none' / 'slide-down' , dismiss animation for the modal (optional, default 'slide-down')
+                        })}>
+                            <Text style={styles.cancelTextStyle}>ยกเลิก</Text>
+                        </TouchableOpacity> */}
+                    </View>
+                </ScrollView>
             </View>
         )
     }
