@@ -22,6 +22,7 @@
     "react-native-fast-image": "^4.0.4",
     "react-native-firebase": "^4.0.4",
     "react-native-fs": "^2.9.12",
+    "react-native-geolocation-service": "^1.0.4",
     "react-native-global-props": "^1.1.3",
     "react-native-htmlview": "^0.12.1",
     "react-native-image-picker": "^0.26.7",

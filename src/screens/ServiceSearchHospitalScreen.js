@@ -30,7 +30,6 @@ export default class ServiceSearchHospitalScreen extends Component{
         if(!this.props.isMap){
             this.setState({isLoading: true});
             let serviceList = await getBasic('services?filter_type_id=1&page=1&pagesize=400',{});
-            console.log(serviceList.data)
             if(serviceList){
                 this.setState({
                     serviceList:serviceList.data,
@@ -58,7 +57,7 @@ export default class ServiceSearchHospitalScreen extends Component{
                         ]
                     )
                 },
-                {maximumAge:60000, timeout:20000, enableHighAccuracy:true },
+                {maximumAge:60000, timeout:20000, enableHighAccuracy:false },
               );
 
         }else{
@@ -81,10 +80,10 @@ export default class ServiceSearchHospitalScreen extends Component{
                     minZoomLevel={this.props.nearBy ? 13:5}
                     maxZoomLevel={18}
                     initialRegion={{
-                        latitude: this.props.nearBy && (this.props.data && this.props.data.length>0)  ?this.props.data[0].latitude:15.870032,
-                        longitude:  this.props.nearBy && (this.props.data && this.props.data.length>0)  ?this.props.data[0].longtitude:100.99254100000007,
-                        latitudeDelta: this.props.nearBy && (this.props.data && this.props.data.length>0)  ?this.props.data[0].latitude:15.870032,
-                        longitudeDelta: this.props.nearBy && (this.props.data && this.props.data.length>0)  ?this.props.data[0].longtitude:100.99254100000007,
+                        latitude: this.props.nearBy && (this.props.data && this.props.data.length>0)  ?Number(this.props.data[0].latitude):15.870032,
+                        longitude:  this.props.nearBy && (this.props.data && this.props.data.length>0)  ?Number(this.props.data[0].longtitude):100.99254100000007,
+                        latitudeDelta: this.props.nearBy && (this.props.data && this.props.data.length>0)  ?Number(this.props.data[0].latitude):15.870032,
+                        longitudeDelta: this.props.nearBy && (this.props.data && this.props.data.length>0)  ?Number(this.props.data[0].longtitude):100.99254100000007,
                     }}
                     style={{flex: 1,}}
                 >
@@ -143,7 +142,7 @@ export default class ServiceSearchHospitalScreen extends Component{
 
     async onNearByPress(){
         this.setState({isLoading:true});
-        let nearBy = await getBasic(`services?nearby=y&lat=${this.state.userLatitude}&lng=${this.state.userLongitude}&filter_type_id=1&page=1&pagesize=400`,{});
+        let nearBy = await getBasic(`services?nearby=y&lat=${this.state.userLatitude}&lng=${this.state.userLongitude}&filter_type_id=1&page=1&pagesize=20`,{});
         if(!this.props.isMap){
             this.setState({isLoading:false});
             setTimeout(()=>{
