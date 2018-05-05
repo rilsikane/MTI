@@ -8,6 +8,7 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import {Headers} from './../components/Headers';
 import {MainSearchBox} from '../components/MainSearchBox';
 import {ServiceListCard} from '../components/ServiceListCard';
+import {MapCalloutPopup} from '../components/MapCalloutPopup';
 
 import {getBasic} from '../api'
 
@@ -22,6 +23,8 @@ export default class ServiceSearchCorpCenterScreen extends Component{
             userLongitude: '',
             isLoading: false,
             searchValue: '',
+            calloutData:{},
+            showCallout: false,
         }
         this._onSearchIconPress = this._onSearchIconPress.bind(this);
         this.onNearByPress = this.onNearByPress.bind(this);
@@ -79,10 +82,10 @@ export default class ServiceSearchCorpCenterScreen extends Component{
                     minZoomLevel={this.props.nearBy ? 13:5}
                     maxZoomLevel={18}
                     initialRegion={{
-                        latitude: this.props.nearBy && this.props.data ?this.props.data[0].latitude:15.870032,
-                        longitude:  this.props.nearBy && this.props.data ?this.props.data[0].longtitude:100.99254100000007,
-                        latitudeDelta: this.props.nearBy && this.props.data ?this.props.data[0].latitude:15.870032,
-                        longitudeDelta: this.props.nearBy && this.props.data ?this.props.data[0].longtitude:100.99254100000007,
+                        latitude: this.props.nearBy && this.props.data ?parseFloat(this.props.data[0].latitude):15.870032,
+                        longitude:  this.props.nearBy && this.props.data ?parseFloat(this.props.data[0].longtitude):100.99254100000007,
+                        latitudeDelta: this.props.nearBy && this.props.data ?parseFloat(this.props.data[0].latitude):15.870032,
+                        longitudeDelta: this.props.nearBy && this.props.data ?parseFloat(this.props.data[0].longtitude):100.99254100000007,
                     }}
                     style={{flex: 1,}}
                 >
@@ -94,9 +97,8 @@ export default class ServiceSearchCorpCenterScreen extends Component{
                                 latitude: data.latitude?parseFloat(data.latitude):13.7864983,
                                 longitude: data.longtitude?parseFloat(data.longtitude):100.57462710000004
                             }}
-                            title={data.title}
-                            description={data.address}
                             image={require('../source/icons/iconMapMarker.png')}
+                            onPress={()=>this.onMarkerPress(data)}
                         />
                     )}
                 </MapView>
@@ -109,6 +111,13 @@ export default class ServiceSearchCorpCenterScreen extends Component{
                 />
             )
         }
+    }
+
+    onMarkerPress(data){
+        this.setState({
+            showCallout: true,
+            calloutData: data,
+        })
     }
 
     async _onSearchIconPress(){
@@ -142,6 +151,7 @@ export default class ServiceSearchCorpCenterScreen extends Component{
     async onNearByPress(){
         this.setState({isLoading:true});
         let nearBy = await getBasic(`services?nearby=y&lat=${this.state.userLatitude}&lng=${this.state.userLongitude}&filter_type_id=2&page=1&pagesize=10`,{});
+        //let nearBy = await getBasic(`services?nearby=y&lat=13.7864983&lng=100.57462710000004&filter_type_id=2&page=1&pagesize=10`,{});
         if(!this.props.isMap){
             this.setState({isLoading:false});
             setTimeout(()=>{
@@ -172,6 +182,18 @@ export default class ServiceSearchCorpCenterScreen extends Component{
         }
     }
 
+    renderMapCallout(){
+        return(
+            <View style={styles.calloutContainerStyle}>
+                <MapCalloutPopup
+                    data={this.state.calloutData}
+                    show={this.state.showCallout}
+                    onClose={()=>this.setState({showCallout: false})}
+                />
+            </View>
+        )
+    }
+
     render(){
         return(
             <View style={styles.serviceSearchCorpCenterScreenContainerStyle}>
@@ -197,6 +219,7 @@ export default class ServiceSearchCorpCenterScreen extends Component{
                     {this.renderContent()}
                 </View>
                 {this.state.isLoading && <Spinner visible={this.state.isLoading}  textStyle={{color: '#FFF'}} />}
+                {this.props.isMap&&this.renderMapCallout()}
             </View>
         )
     }
@@ -208,6 +231,12 @@ const styles={
     },
     serviceSearchCorpCenterContainerStyle:{
         flex: 1,
-  
     },
+    calloutContainerStyle:{
+        height: responsiveHeight(30),
+        width: responsiveWidth(90),
+        position: 'absolute',
+        bottom: 10,
+    }
+
 }
