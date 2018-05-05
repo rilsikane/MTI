@@ -120,26 +120,37 @@ export default class LoginScreen extends Component{
             navigatorStyle: {
                 drawUnderStatusBar: true,
                 statusBarColor: 'transparent',
+                tabBarHidden: true,
             },
 		});
     }
     async gotoWelcome(){
-    // this.props.navigator.resetTo({
-    // 	screen: 'mti.WelcomeScreen', // unique ID registered with Navigation.registerScreen
-    // 	title: undefined, // navigation bar title of the pushed screen (optional)
-    // 	titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
-    // 	passProps: {}, // Object that will be passed as props to the pushed screen (optional)
-    // 	animated: true, // does the push have transition animation or does it happen immediately (optional)
-    // 	backButtonTitle: undefined, // override the back button title (optional)
-    // 	backButtonHidden: false, // hide the back button altogether (optional)
-    // });
-    setTimeout(()=>{
-        this.app.login();
-    },300)
-   
-    
-    //this.setState({isLoading:false});
-}
+        if(this.props.fromGuest){
+            this.props.navigator.resetTo({
+                screen: 'mti.DashboardScreen', // unique ID registered with Navigation.registerScreen
+                title: undefined, // navigation bar title of the pushed screen (optional)
+                titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
+                passProps: {}, // Object that will be passed as props to the pushed screen (optional)
+                animated: true, // does the push have transition animation or does it happen immediately (optional)
+                backButtonTitle: undefined, // override the back button title (optional)
+                backButtonHidden: false, // hide the back button altogether (optional)
+            });
+        }else{
+            setTimeout(()=>{
+                this.app.login();
+            },300)
+        }
+        // this.props.navigator.resetTo({
+        // 	screen: 'mti.WelcomeScreen', // unique ID registered with Navigation.registerScreen
+        // 	title: undefined, // navigation bar title of the pushed screen (optional)
+        // 	titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
+        // 	passProps: {}, // Object that will be passed as props to the pushed screen (optional)
+        // 	animated: true, // does the push have transition animation or does it happen immediately (optional)
+        // 	backButtonTitle: undefined, // override the back button title (optional)
+        // 	backButtonHidden: false, // hide the back button altogether (optional)
+        // });
+        //this.setState({isLoading:false});
+    }
     keyboardWillShow = async (event) => {
     this.setState({keyboardShow:true});
     await Animated.timing(this.imageHeight, {

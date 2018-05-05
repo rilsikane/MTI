@@ -46,6 +46,7 @@ export default class RegisterScreen extends Component{
         this.app = app;
         this.requestContact = this.requestContact.bind(this);
         this.openLeavingContactPopup = this.openLeavingContactPopup.bind(this);
+        this.onCancel = this.onCancel.bind(this);
     }
     async componentDidMount(){
         if(this.props.user){
@@ -745,38 +746,57 @@ export default class RegisterScreen extends Component{
 		});
     }
 
+    onCancel(){
+        console.log(this.state.pageNumber);
+        if(this.state.pageNumber==1){
+            if(this.props.fromGuest){
+                this.props.navigator.resetTo({
+                    screen: 'mti.LoginScreen', // unique ID registered with Navigation.registerScreen
+                    title: undefined, // navigation bar title of the pushed screen (optional)
+                    titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
+                    passProps: {
+                        fromGuest: true,
+                    }, // Object that will be passed as props to the pushed screen (optional)
+                    navigatorStyle: {
+                        drawUnderStatusBar: true,
+                        statusBarColor: 'transparent',
+                        tabBarHidden: true,
+                    },
+                    animated: true, // does the push have transition animation or does it happen immediately (optional)
+                    backButtonTitle: undefined, // override the back button title (optional)
+                    backButtonHidden: false, // hide the back button altogether (optional)
+                })
+            }else{
+                this.props.navigator.pop()
+            }
+        }else{
+            if(this.state.pageNumber==2 && this.props.user){
+                this.props.registerStore.register = {};
+                this.props.navigator.resetTo({
+                    screen: 'mti.LoginScreen', // unique ID registered with Navigation.registerScreen
+                    title: undefined, // navigation bar title of the pushed screen (optional)
+                    titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
+                    passProps: {}, // Object that will be passed as props to the pushed screen (optional)
+                    animated: true, // does the push have transition animation or does it happen immediately (optional)
+                    backButtonTitle: undefined, // override the back button title (optional)
+                    backButtonHidden: false, // hide the back button altogether (optional)
+                })
+            }else{
+                this.setState({enable:true});
+                this._pages.scrollToPage(this.state.pageNumber-2);
+                this.setState({enable:false,pageNumber:this.state.pageNumber-1});
+            }
+        }
+
+    }
+
     render(){
         return(
             <View style={styles.registerScreenContainerStyle}>
                 <Headers
                     leftIconName='cancel'
                     headerTitleText='ลงทะเบียนสมาชิก'
-                    cancel={()=>
-                        {
-                            console.log(this.state.pageNumber);
-                            if(this.state.pageNumber==1){
-                                this.props.navigator.pop()
-                            }else{
-                                if(this.state.pageNumber==2 && this.props.user){
-                                    this.props.registerStore.register = {};
-                                    this.props.navigator.resetTo({
-                                        screen: 'mti.LoginScreen', // unique ID registered with Navigation.registerScreen
-                                        title: undefined, // navigation bar title of the pushed screen (optional)
-                                        titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
-                                        passProps: {}, // Object that will be passed as props to the pushed screen (optional)
-                                        animated: true, // does the push have transition animation or does it happen immediately (optional)
-                                        backButtonTitle: undefined, // override the back button title (optional)
-                                        backButtonHidden: false, // hide the back button altogether (optional)
-                                    })
-                                }else{
-                                    this.setState({enable:true});
-                                    this._pages.scrollToPage(this.state.pageNumber-2);
-                                    this.setState({enable:false,pageNumber:this.state.pageNumber-1});
-                                }
-                            }
-                        }
-                    
-                    }
+                    cancel={this.onCancel}
                     cancelTxt={this.state.pageNumber==1?'ยกเลิก':'กลับ'}
                     //rightIconName='iconBell'
                 />

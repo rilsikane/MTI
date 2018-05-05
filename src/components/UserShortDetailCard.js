@@ -13,6 +13,7 @@ class UserShortDetailCard extends Component{
     constructor(props){
         super(props)
         this.state = {user:{}};
+        this.gotoRegister = this.gotoRegister.bind(this);
     }
     async componentDidMount(){
         let user = await store.get("user");
@@ -22,6 +23,25 @@ class UserShortDetailCard extends Component{
             user.surname = "GUEST";
         }
         this.setState({user:user});
+    }
+
+    gotoRegister(user){
+        this.props.navigator.resetTo({
+			screen: 'mti.RegisterScreen', // unique ID registered with Navigation.registerScreen
+			title: undefined, // navigation bar title of the pushed screen (optional)
+			titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
+            passProps: {
+                fromGuest: true
+            }, 
+            animated: true, // does the push have transition animation or does it happen immediately (optional)
+			backButtonTitle: undefined, // override the back button title (optional)
+            backButtonHidden: false, // hide the back button altogether (optional)
+            navigatorStyle: {
+                drawUnderStatusBar: true,
+                statusBarColor: 'transparent',
+                tabBarHidden: true,
+            },
+		});
     }
 
     render(){
@@ -36,9 +56,15 @@ class UserShortDetailCard extends Component{
                         />
                     </View>
                 </View>
-                <View style={styles.userShortDetailContainerStyle}>
+                <View style={[styles.userShortDetailContainerStyle,this.state.user.name==="GUEST"&&{flex: 0.7,}]}>
                     <Text ellipsizeMode='tail' numberOfLines={1} style={styles.userNameTextStyle}>{`${this.state.user.name} ${this.state.user.surname}`}</Text>
                     <Text style={styles.userLevelTextStyle}>สมาชิกระดับ {this.state.user.member_type||' - '}</Text>
+                    {this.state.user.name==="GUEST"&&
+                        <TouchableOpacity onPress={this.gotoRegister}>
+                            <Text style={styles.userGuestRecommendTextStyle}>เพื่อใช้งานแอพพลิเคชั่นแบบเต็มรูปแบบ กรุณาลงทะเบียนสมัครสมาชิก</Text>
+                        </TouchableOpacity>
+                    }
+              
                      <View style={styles.seeUserDetailLinkContainerStyle}>
                         {this.state.user.name!="GUEST" && <TouchableOpacity style={styles.seeUserDetailLinkSectionStyle} onPress={()=>this.props.navigator.push({
                                     screen: 'mti.ProfileScreen', 
@@ -142,6 +168,11 @@ const styles={
     userLevelTextStyle:{
         fontSize: responsiveFontSize(2*app.fontSize),
         color: '#919195',
+        letterSpacing: 0,
+    },
+    userGuestRecommendTextStyle:{
+        fontSize: responsiveFontSize(2*app.fontSize),
+        color: '#1595d3',
         letterSpacing: 0,
     },
     seeUserDetailLinkContainerStyle:{
