@@ -187,6 +187,7 @@ export default class ServiceSearchCorpCenterScreen extends Component{
             <View style={styles.calloutContainerStyle}>
                 <MapCalloutPopup
                     data={this.state.calloutData}
+                    userLocation={{lat:this.state.userLatitude,long:this.state.userLongitude}}
                     show={this.state.showCallout}
                     onClose={()=>this.setState({showCallout: false})}
                 />

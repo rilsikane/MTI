@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
 import PopupDialog,{ SlideAnimation }  from 'react-native-popup-dialog';
 import Communications from 'react-native-communications';
-import { OpenMapDirections } from 'react-native-navigation-directions';
+import getDirections from 'react-native-google-maps-directions'
 
 class MapCalloutPopup extends Component{
 
@@ -16,6 +16,29 @@ class MapCalloutPopup extends Component{
     
     callCenter(tel){
         Communications.phonecall(tel, true);
+    }
+    _callShowDirections = (data) => {
+        let mapData = {
+            source: {
+             latitude: this.props.userLocation.lat,
+             longitude: this.props.userLocation.long
+           },
+           destination: {
+             latitude: parseFloat(data.latitude),
+             longitude:  parseFloat(data.longtitude)
+           },
+           params: [
+             {
+               key: "travelmode",
+               value: "driving"        // may be "walking", "bicycling" or "transit" as well
+             },
+             {
+               key: "dir_action",
+               value: "navigate"       // this instantly initializes navigation using the given travel mode 
+             }
+           ]
+        }
+        getDirections(mapData) 
     }
 
     render(){
@@ -59,7 +82,7 @@ class MapCalloutPopup extends Component{
                     />
                     <View style={styles.buttonGroupContainerStyle}>
                         <View style={styles.calloutButtonSectionStyle}>
-                            <TouchableOpacity style={styles.calloutButtonStyle} >
+                            <TouchableOpacity style={styles.calloutButtonStyle} onPress={()=>this._callShowDirections(this.props.data)}>
                                     <Image
                                         source={require('../source/icons/iconDirection.png')}
                                         resizeMode='contain'
