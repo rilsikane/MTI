@@ -287,8 +287,9 @@ export default class UserProfileScreen extends Component{
                 ref={(popupDialog) => { this.popupDialog = popupDialog; }}
                 //dialogAnimation={slideAnimation}
                 width={responsiveWidth(90.15)}
-                height={responsiveHeight(63)}
+                height={responsiveHeight(68)}
                 dialogStyle={styles.popupContainerStyle}
+                containerStyle={styles.lifestylePopupContainerStyle}
             >
                 <View>
                     <TouchableOpacity onPress={this.onCloseModalPress}>
@@ -298,7 +299,7 @@ export default class UserProfileScreen extends Component{
                             resizeMode='contain'
                         />
                     </TouchableOpacity>
-           
+                    <Text style={styles.lifestylePopupTitleTextStyle}>กรุณาเลือกไลฟ์ไตล์ที่ตรงกับคุณ{'\n'}(เลือกได้มากกว่า1 ข้อ)</Text>
                     <View style={styles.lifestyleBoxList1ContainerStyle}>
                         {this.renderLifeStyleBoxList1()}
                     </View>
@@ -545,13 +546,13 @@ export default class UserProfileScreen extends Component{
     render(){
         return(
             <View style={styles.userProfileScreenContainerStyle}>
+                <Headers
+                    leftIconName='back'
+                    headerTitleText='ข้อมูลส่วนตัว'
+                    rightIconName='iconBell'
+                    //notify='2'
+                />
                 <ScrollView style={{flex: 1}}>
-                    <Headers
-                        leftIconName='back'
-                        headerTitleText='ข้อมูลส่วนตัว'
-                        rightIconName='iconBell'
-                        //notify='2'
-                    />
                     <View style={styles.userShortDetailContainerStyle}>
                         <View style={styles.userAvatarContainerStyle}>
                             <TouchableOpacity disabled={!this.state.canEditProfile} onPress={this.onUpdatePictureProfilePress} style={styles.userAvatarSectionStyle}>
@@ -562,13 +563,15 @@ export default class UserProfileScreen extends Component{
                                     style={styles.userAvatarImageStyle}
                                     borderRadius= {responsiveHeight(5.235)}
                                 >
-                                    <View style={styles.activityCardOverlayImageStyle}>
-                                        <Image
-                                            source={require('./../source/icons/iconCamera.png')}
-                                            resizeMode='contain'
-                                            style={styles.cameraIconStyle}
-                                        />
-                                    </View>
+                                    {this.state.canEditProfile&&
+                                        <View style={styles.activityCardOverlayImageStyle}>
+                                            <Image
+                                                source={require('./../source/icons/iconCamera.png')}
+                                                resizeMode='contain'
+                                                style={styles.cameraIconStyle}
+                                            />
+                                        </View>
+                                    }
                                 </ImageBackground>
                             </TouchableOpacity>
                             <Text style={styles.userNameTextStyle}>{`${this.state.userFirstName} ${this.state.userLastName}`}</Text>
@@ -694,6 +697,7 @@ export default class UserProfileScreen extends Component{
                                     secondFlex={secondFlex}
                                     thirdFlex={thirdFlex}
                                     editable={false}
+                                    disabled={this.state.canEditProfile}
                                     rightIconName='pen'
                                 />
                             </View>
@@ -837,11 +841,20 @@ const styles={
     popupContainerStyle:{
         borderRadius: 3,
         padding: responsiveWidth(4),
-
+    },
+    lifestylePopupContainerStyle:{
+        justifyContent: 'flex-start',
+        paddingTop: responsiveHeight(10),
     },
     btnCloseImageStyle:{
         height: responsiveHeight(2.81),
         alignSelf: 'flex-end'
+    },
+    lifestylePopupTitleTextStyle:{
+        fontSize: responsiveFontSize(3),
+        letterSpacing: -0.24,
+        textAlign: "center",
+        color: "#1595d3",
     },
     lifestyleBoxList1ContainerStyle:{
         flexDirection: 'row',

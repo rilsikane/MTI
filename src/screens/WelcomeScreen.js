@@ -64,7 +64,7 @@ class WelcomeScreen extends Component{
                             />
                         </View>
                         <View style={styles.welcomeTextContainerStyle}>
-                            <Text style={styles.welcomeTitleTextStyle}>ยินดีต้อนรับเข้าสู่ เมืองไทย เฟรนด์ คลับ</Text>
+                            <Text style={styles.welcomeTitleTextStyle}>ยินดีต้อนรับเข้าสู่ เมืองไทย เฟรนด์ส คลับ</Text>
                             <View>
                                 {/* <Image
                                     source={require('./../source/icons/quote1.png')}
@@ -73,7 +73,7 @@ class WelcomeScreen extends Component{
                                 /> */}
                             </View>
                             <View>
-                                <Text style={styles.welcomeDetailTextStyle}>" เพื่อนสนิทที่สร้างแรงบันดาลใจและเติมเต็มทุกความสุขของคุณ "</Text>
+                                <Text style={styles.welcomeDetailTextStyle}>“ เพื่อนสนิทที่สร้างแรงบันดาลใจ{'\n'}และเติมเต็มทุกความสุขของคุณ ”</Text>
                             </View>
                             <View>
                                 {/* <Image
@@ -113,7 +113,7 @@ const styles={
     },
     welcomeDetailContainerStyle:{
         flex: 1,
-        backgroundColor:"#fff"
+        backgroundColor: '#FFF',
     },
     bannerBottomLineStyle:{
         height: responsiveHeight(0.35),

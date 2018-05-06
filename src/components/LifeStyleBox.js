@@ -15,13 +15,13 @@ class LifeStyleBox extends Component{
         if(isSelected){
             return(
                 <TouchableOpacity style={[styles.boxContainerStyle,{backgroundColor: '#1595d3'},this.props.style]} onPress={this.props.onPress}>
-                    <TouchableOpacity onPress={this.props.onCloseButtonPress} style={styles.closeIconContainerStyle}>
+                    {/* <TouchableOpacity onPress={this.props.onCloseButtonPress} style={styles.closeIconContainerStyle}>
                         <Image
                             source={require('./../source/icons/btnCloseWhite.png')}
                             style={styles.closeButtonImageStyle}
                             resizeMode='contain'
                         />
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                     <TouchableOpacity onPress={this.props.onPress} style={styles.iconImageContainerStyle}>
                         <Image
                             source={this.props.imageUri}

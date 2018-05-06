@@ -136,7 +136,7 @@ export default class DashboardScreen extends Component{
                     iconTitleText={hotdeal.iconTitleText}
                     activityTitleText={hotdeal.name}
                     groupId={hotdeal.group_id}
-                    style={{marginLeft: responsiveWidth(3)}}
+                    style={[{marginRight: responsiveWidth(3)},i==0&&{marginLeft: responsiveWidth(3)}]}
                     onPress={()=>this.openDetail(hotdeal)}
                 />
             )
@@ -148,7 +148,7 @@ export default class DashboardScreen extends Component{
                     iconUri={hotdeal.iconUri}
                     iconTitleText={hotdeal.iconTitleText}
                     activityTitleText={hotdeal.activityTitleText}
-                    style={{marginLeft: responsiveWidth(3)}}
+                    style={[{marginRight: responsiveWidth(3)},i==0&&{marginLeft: responsiveWidth(3)}]}
                     groupId={hotdeal.group_id}
                 />
             )
@@ -164,7 +164,7 @@ export default class DashboardScreen extends Component{
                 iconUri={myLifeStyle.iconUri}
                 iconTitleText={myLifeStyle.iconTitleText}
                 activityTitleText={myLifeStyle.name}
-                style={{marginLeft: responsiveWidth(3)}}
+                style={[{marginRight: responsiveWidth(3)},i==0&&{marginLeft: responsiveWidth(3)}]}
                 groupId={myLifeStyle.group_id}
                 onPress={()=>this.openDetail(myLifeStyle)}
             />
@@ -177,7 +177,7 @@ export default class DashboardScreen extends Component{
                     iconUri={hotdeal.iconUri}
                     iconTitleText={hotdeal.iconTitleText}
                     activityTitleText={hotdeal.activityTitleText}
-                    style={{marginLeft: responsiveWidth(3)}}
+                    style={[{marginRight: responsiveWidth(3)},i==0&&{marginLeft: responsiveWidth(3)}]}
                     groupId={hotdeal.group_id}
                 />
             )
@@ -204,7 +204,7 @@ export default class DashboardScreen extends Component{
                 bannerUri={pastEvent.bannerUri}
                 eventTitleText={pastEvent.eventTitleText}
                 eventDetailText={pastEvent.eventDetailText}
-                style={{marginLeft: responsiveWidth(3)}}
+                style={[{marginRight: responsiveWidth(3)},i==0&&{marginLeft: responsiveWidth(3)}]}
             />
         )
     }
