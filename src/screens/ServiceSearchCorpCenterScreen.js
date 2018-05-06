@@ -79,7 +79,7 @@ export default class ServiceSearchCorpCenterScreen extends Component{
             return(
                 <MapView
                     ref={(ref) => { this.mapRef = ref; }}
-                    minZoomLevel={this.props.nearBy ? 13:5}
+                    minZoomLevel={this.props.nearBy ? 14:5}
                     maxZoomLevel={18}
                     initialRegion={{
                         latitude: this.props.nearBy && this.props.data ?parseFloat(this.props.data[0].latitude):15.870032,
@@ -89,6 +89,14 @@ export default class ServiceSearchCorpCenterScreen extends Component{
                     }}
                     style={{flex: 1,}}
                 >
+                    {this.props.nearBy && <Marker
+                            identifier={'current'}
+                            coordinate={{
+                                latitude: parseFloat(this.props.userLatitude),
+                                longitude: parseFloat(this.props.userLongitude),
+                            }}
+                            image={require('../source/icons/current.png')}
+                        />}
                     {this.props.data.map((data)=>
                         <Marker
                             identifier={data.id}

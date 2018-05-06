@@ -11,6 +11,11 @@ import {postBasic} from '../api'
 import {MainSubmitButton} from '../components/MainSubmitButton';
 import Communications from 'react-native-communications';
 
+import { observer, inject } from 'mobx-react';
+import app from '../stores/app';
+
+@inject('naviStore')
+@observer
 export default class ServiceScreen extends Component{
 
     constructor(props){
@@ -23,8 +28,11 @@ export default class ServiceScreen extends Component{
         this.onServicePress = this.onServicePress.bind(this);
         this.openLeavingContactPopup = this.openLeavingContactPopup.bind(this);
         this.callCenter = this.callCenter.bind(this);
+        this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
     }
-
+    init(){
+        this.props.naviStore.navigation = this.props.navigator;
+    }
     renderServiceList(){
         let serviceList = [
             {
@@ -248,7 +256,7 @@ export default class ServiceScreen extends Component{
         return(
             <View style={styles.serviceScreenContainerStyle}>
                 <Headers
-                    leftIconName=''
+                    leftIconName='menu'
                     headerTitleText='บริการ'
                     rightIconName='iconBell'
                 />
@@ -272,6 +280,22 @@ export default class ServiceScreen extends Component{
                 {this.renderLeavingContactPopup()}
             </View>
         )
+    }
+    onNavigatorEvent(event) {
+    
+        if (event.id === 'bottomTabSelected') {
+            this.props.naviStore.navigation.popToRoot({
+                animated: true, // does the popToRoot have transition animation or does it happen immediately (optional)
+                animationType: 'fade', // 'fade' (for both) / 'slide-horizontal' (for android) does the popToRoot have different transition animation (optional)
+              });
+            this.init();
+        }
+        if (event.id === 'willDisappear') {
+         
+        }
+        if (event.id === 'didAppear') {
+          this.init();
+        }
     }
 }
 

@@ -66,6 +66,7 @@ export default class DashboardScreen extends Component{
         BackHandler.removeEventListener('hardwareBackPress', this.backPress)
     }
     async init(){
+        this.props.naviStore.navigation = this.props.navigator;
         let user = await store.get("user");
         this.setState({isLoading:true});
         if(user){
@@ -278,8 +279,14 @@ export default class DashboardScreen extends Component{
         )
     }
     onNavigatorEvent(event) {
-    
+        if (event.id === 'bottomTabReselected') {
+           
+        }
         if (event.id === 'bottomTabSelected') {
+            this.props.naviStore.navigation.popToRoot({
+                animated: true, // does the popToRoot have transition animation or does it happen immediately (optional)
+                animationType: 'fade', // 'fade' (for both) / 'slide-horizontal' (for android) does the popToRoot have different transition animation (optional)
+              });
             this.init();
         }
         if (event.id === 'willDisappear') {

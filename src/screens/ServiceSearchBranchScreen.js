@@ -93,6 +93,14 @@ export default class ServiceSearchBranchScreen extends Component{
                     }}
                     style={{flex: 1,}}
                 >
+                     {this.props.nearBy && <Marker
+                            identifier={'current'}
+                            coordinate={{
+                                latitude: parseFloat(this.props.userLatitude),
+                                longitude: parseFloat(this.props.userLongitude),
+                            }}
+                            image={require('../source/icons/current.png')}
+                    />}
                     {this.props.isDirect?   
                         <Marker
                             identifier={this.props.data.id}

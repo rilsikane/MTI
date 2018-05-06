@@ -10,6 +10,7 @@ import {LifeStyleTabs} from '../components/LifeStyleTabs';
 import {DashboardActivityCard} from '../components/DashboardActivityCard';
 import {post,authen,get,getBasic} from '../api';
 import { observer, inject } from 'mobx-react';
+import app from '../stores/app';
 
 @inject('naviStore','userStore')
 @observer
@@ -45,6 +46,7 @@ export default class PrivilegeScreen extends Component{
           
     }
     async init(){
+        this.props.naviStore.navigation = this.props.navigator;
         this.setState({isLoading: true})
         if(this.state.tabIndex==0){
             let privilege = await getBasic("privileges?page=1&pagesize=20",{});
@@ -210,6 +212,10 @@ export default class PrivilegeScreen extends Component{
     onNavigatorEvent(event) {
     
         if (event.id === 'bottomTabSelected') {
+            this.props.naviStore.navigation.popToRoot({
+                animated: true, // does the popToRoot have transition animation or does it happen immediately (optional)
+                animationType: 'fade', // 'fade' (for both) / 'slide-horizontal' (for android) does the popToRoot have different transition animation (optional)
+              });
             this.init();
         }
         if (event.id === 'willDisappear') {
@@ -224,7 +230,7 @@ export default class PrivilegeScreen extends Component{
         return(
             <View style={styles.privilegeScreenContainerStyle}>
                 <Headers
-                    leftIconName=''
+                    leftIconName='menu'
                     headerTitleText='สิทธิพิเศษ'
                     rightIconName='iconBell'
                     withSearch

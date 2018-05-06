@@ -50,7 +50,7 @@ export default class ContactUsScreen extends Component{
         return(
             <View style={styles.contactUsScreenContainerStyle}>
                 <Headers
-                    leftIconName='menu'
+                    leftIconName='back'
                     headerTitleText='ติดต่อเรา'
                     rightIconName='iconBell'
                 />

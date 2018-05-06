@@ -90,6 +90,14 @@ export default class ServiceSearchHospitalScreen extends Component{
                     }}
                     style={{flex: 1,}}
                 >
+                     {this.props.nearBy && <Marker
+                            identifier={'current'}
+                            coordinate={{
+                                latitude: parseFloat(this.props.userLatitude),
+                                longitude: parseFloat(this.props.userLongitude),
+                            }}
+                            image={require('../source/icons/current.png')}
+                    />}
                     {this.props.data.map((data)=>
                         <Marker
                             identifier={data.id}
