@@ -9,8 +9,10 @@ import {MainSearchBox} from '../components/MainSearchBox';
 import {LifeStyleTabs} from '../components/LifeStyleTabs';
 import {DashboardActivityCard} from '../components/DashboardActivityCard';
 import {post,authen,get,getBasic} from '../api';
+import { observer, inject } from 'mobx-react';
 
-
+@inject('naviStore','userStore')
+@observer
 export default class PrivilegeScreen extends Component{
 
     constructor(props){

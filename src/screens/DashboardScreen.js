@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Text,View,ScrollView,TouchableOpacity,Image} from 'react-native';
+import {Text,View,ScrollView,TouchableOpacity,Image,BackHandler} from 'react-native';
 import PropTypes from "prop-types";
 import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
 
@@ -56,11 +56,15 @@ export default class DashboardScreen extends Component{
         this.goToPrivilleges = this.goToPrivilleges.bind(this);
         this.app = app;
         this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+        this.backPress = this.backPress.bind(this);
     }
     async componentDidMount(){
-      
+        BackHandler.addEventListener('hardwareBackPress', this.backPress)
        
     };
+    componentWillUnmount(){
+        BackHandler.removeEventListener('hardwareBackPress', this.backPress)
+    }
     async init(){
         let user = await store.get("user");
         this.setState({isLoading:true});
@@ -284,6 +288,10 @@ export default class DashboardScreen extends Component{
         if (event.id === 'didAppear') {
           this.init();
         }
+    }
+    backPress = () => {
+        this.props.navigator.pop();
+        return true;
     }
 }
 

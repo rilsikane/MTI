@@ -22,7 +22,6 @@ class AppStore {
         this.root = 'after-login';
       }
     }
-    this.fontSize = 'large'==setting.fontSize ? 2 :1;
   }
 
   login() {

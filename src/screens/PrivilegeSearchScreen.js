@@ -22,6 +22,7 @@ export default class PrivilegeSearchScreen extends Component{
                     headerTitleText='ค้นหาสิทธิพิเศษ'
                     rightIconName='iconBell'
                     withSearch
+                    back={()=>this.props.navigator.pop()}
                 />
                 <MainSearchBox
                     //value={}
