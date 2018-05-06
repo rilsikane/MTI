@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Text,View,Image,ImageBackground,Platform,TouchableOpacity,StatusBar} from 'react-native';
+import {Text,View,Image,ImageBackground,Platform,TouchableOpacity,StatusBar,TouchableWithoutFeedback} from 'react-native';
 import PropTypes from "prop-types";
 import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
 import { ifIphoneX,isIphoneX } from 'react-native-iphone-x-helper'
@@ -25,67 +25,69 @@ class WelcomeScreen extends Component{
 
     render(){
         return(
-            <View style={styles.welcomeScreenContainerStyle}>
-                <StatusBar/>
-                 {isIphoneX() && <View style={{height:40}}>
+            <TouchableWithoutFeedback style={styles.welcomeScreenContainerStyle} onPress={this.gotoLogin}>
+                <View style={styles.welcomeScreenContainerStyle}>
+                    <StatusBar/>
+                    {isIphoneX() && <View style={{height:40}}>
+                            <ImageBackground
+                                source={require('./../source/images/bgGradient.png')}
+                                style={styles.welcomeContentBackgroundImageStyle}
+                                resizeMode='stretch'
+                            />
+                    </View>}
+                    <View>
                         <ImageBackground
-                            source={require('./../source/images/bgGradient.png')}
-                            style={styles.welcomeContentBackgroundImageStyle}
+                            source={require('./../source/images/banner.jpg')}
                             resizeMode='stretch'
-                        />
-                 </View>}
-                <View>
-                    <ImageBackground
-                        source={require('./../source/images/banner.jpg')}
-                        resizeMode='stretch'
-                        style={styles.bannerImageStyle}
-                    >
-                        <TouchableOpacity onPress={this.gotoLogin}>
-                            <Image
-                            source={require('./../source/icons/btnCloseWhite.png')}
-                            style={styles.closeButtonImageStyle}
-                            resizeMode='contain'
-                            />
-                        </TouchableOpacity>
-                    </ImageBackground>
-                </View>
-                <View style={styles.welcomeDetailContainerStyle}>
-                    {/* <ImageBackground
-                        source={require('./../source/images/bgGradient.png')}
-                        resizeMode='stretch'
-                        style={styles.welcomeContentBackgroundImageStyle}
-                    > */}
-                        <View style={styles.bannerBottomLineStyle}/>
-                        <View style={styles.logoContainerStyle}>
-                            <Image
-                                source={require('./../source/images/welcome_06.jpg')}
-                                style={styles.logoImageStyle}
+                            style={styles.bannerImageStyle}
+                        >
+                            <TouchableOpacity onPress={this.gotoLogin}>
+                                <Image
+                                source={require('./../source/icons/btnCloseWhite.png')}
+                                style={styles.closeButtonImageStyle}
                                 resizeMode='contain'
-                            />
-                        </View>
-                        <View style={styles.welcomeTextContainerStyle}>
-                            <Text style={styles.welcomeTitleTextStyle}>ยินดีต้อนรับเข้าสู่ เมืองไทย เฟรนด์ส คลับ</Text>
-                            <View>
-                                {/* <Image
-                                    source={require('./../source/icons/quote1.png')}
-                                    style={styles.quoteImageStyle}
+                                />
+                            </TouchableOpacity>
+                        </ImageBackground>
+                    </View>
+                    <View style={styles.welcomeDetailContainerStyle}>
+                        {/* <ImageBackground
+                            source={require('./../source/images/bgGradient.png')}
+                            resizeMode='stretch'
+                            style={styles.welcomeContentBackgroundImageStyle}
+                        > */}
+                            <View style={styles.bannerBottomLineStyle}/>
+                            <View style={styles.logoContainerStyle}>
+                                <Image
+                                    source={require('./../source/images/welcome_06.jpg')}
+                                    style={styles.logoImageStyle}
                                     resizeMode='contain'
-                                /> */}
+                                />
                             </View>
-                            <View>
-                                <Text style={styles.welcomeDetailTextStyle}>“ เพื่อนสนิทที่สร้างแรงบันดาลใจ{'\n'}และเติมเต็มทุกความสุขของคุณ ”</Text>
+                            <View style={styles.welcomeTextContainerStyle}>
+                                <Text style={styles.welcomeTitleTextStyle}>ยินดีต้อนรับเข้าสู่ เมืองไทย เฟรนด์ส คลับ</Text>
+                                <View>
+                                    {/* <Image
+                                        source={require('./../source/icons/quote1.png')}
+                                        style={styles.quoteImageStyle}
+                                        resizeMode='contain'
+                                    /> */}
+                                </View>
+                                <View>
+                                    <Text style={styles.welcomeDetailTextStyle}>“ เพื่อนสนิทที่สร้างแรงบันดาลใจ{'\n'}และเติมเต็มทุกความสุขของคุณ ”</Text>
+                                </View>
+                                <View>
+                                    {/* <Image
+                                        source={require('./../source/icons/quote2.png')}
+                                        style={styles.quoteImageStyle}
+                                        resizeMode='contain'
+                                    /> */}
+                                </View>
                             </View>
-                            <View>
-                                {/* <Image
-                                    source={require('./../source/icons/quote2.png')}
-                                    style={styles.quoteImageStyle}
-                                    resizeMode='contain'
-                                /> */}
-                            </View>
-                        </View>
-                    {/* </ImageBackground> */}
+                        {/* </ImageBackground> */}
+                    </View>
                 </View>
-            </View>
+            </TouchableWithoutFeedback>
         )
     }
 }

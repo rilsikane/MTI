@@ -218,6 +218,7 @@ export default class LoginScreen extends Component{
                     // keyboardShouldPersistTaps='always'
                     contentContainerStyle={{flex: 1,}}
                     style={{flex: 1}}
+                    scrollEnabled={false}
                 >
                     <StatusBar/>
                     {isIphoneX() && <View style={{height:40}}>

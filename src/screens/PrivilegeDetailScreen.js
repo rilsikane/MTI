@@ -247,7 +247,7 @@ export default class PrivilegeDetailScreen extends Component{
                             />
                             <View style={styles.detailContainerStyle}>
                                 <Text style={styles.privilegeTitleTextStyle}>{this.state.detail.name}</Text>
-                                <Text style={styles.privilegeDurationTextStyle}>ระยะเวลาสิทธิพิเศษ : {this.getexpireDate()}</Text>
+                                <Text style={styles.privilegeDurationTextStyle}>ระยะเวลาการใช้สิทธิ์ : {this.getexpireDate()}</Text>
                                 <Text style={styles.privilegeDetailTextStyle}>รายละเอียดสิทธิพิเศษ</Text>
                                 {this.renderPrivilegeDetailList()}
                                 {this.state.user && this.state.user.name!="GUEST" && <MainSubmitButton
