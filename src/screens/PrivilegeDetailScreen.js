@@ -56,7 +56,9 @@ export default class PrivilegeDetailScreen extends Component{
         }
     }
     renderPrivilegeDetailList(){
-        let data = this.state.detail.content1.split("|");
+        let content1 = this.state.detail.content1;
+        content1 +=this.state.detail.content3;
+        let data = content1.split("|");
         if(data.length>0){
             return data.map((data,i)=>
                 <View key={i} style={styles.privilegeTextContainerStyle}>
@@ -64,6 +66,7 @@ export default class PrivilegeDetailScreen extends Component{
                 </View>
             
             )
+
         }else{
             return <View style={styles.privilegeTextContainerStyle}><Text style={styles.privilegeDetailSubTextStyle}>{this.state.detail.content1}</Text></View>
         }

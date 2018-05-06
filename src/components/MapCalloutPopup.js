@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
 import PopupDialog,{ SlideAnimation }  from 'react-native-popup-dialog';
 import Communications from 'react-native-communications';
+import { OpenMapDirections } from 'react-native-navigation-directions';
 
 class MapCalloutPopup extends Component{
 
@@ -58,7 +59,7 @@ class MapCalloutPopup extends Component{
                     />
                     <View style={styles.buttonGroupContainerStyle}>
                         <View style={styles.calloutButtonSectionStyle}>
-                            <TouchableOpacity style={styles.calloutButtonStyle}>
+                            <TouchableOpacity style={styles.calloutButtonStyle} >
                                     <Image
                                         source={require('../source/icons/iconDirection.png')}
                                         resizeMode='contain'

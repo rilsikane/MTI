@@ -113,6 +113,7 @@ const styles={
     },
     welcomeDetailContainerStyle:{
         flex: 1,
+        backgroundColor:"#fff"
     },
     bannerBottomLineStyle:{
         height: responsiveHeight(0.35),

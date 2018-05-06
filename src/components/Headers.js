@@ -43,7 +43,7 @@ class Headers extends Component{
         }else if(this.props.leftIconName=='back'){
             return(
                 <TouchableOpacity style={{backgroundColor:"transparent",flexDirection:"column",justifyContent:"flex-start",paddingRight:5}} 
-                onPress={(e)=> this.props.naviStore.navigation.pop()}>
+                onPress={this.props.back ? (e)=> this.props.back():(e)=> this.props.naviStore.navigation.pop()}>
                     <Text style={{fontSize: responsiveFontSize(3),color: '#FFF'}}>กลับ</Text>
                 </TouchableOpacity>
             )
