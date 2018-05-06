@@ -676,7 +676,11 @@ export default class RegisterScreen extends Component{
                                 passProps: {}, // simple serializable object that will pass as props to the pushed screen (optional)
                                 animated: true, // does the resetTo have transition animation or does it happen immediately (optional)
                                 animationType: 'fade', // 'fade' (for both) / 'slide-horizontal' (for android) does the resetTo have different transition animation (optional)
-                                navigatorStyle: {}, // override the navigator style for the pushed screen (optional)
+                                navigatorStyle: {
+                                    drawUnderStatusBar: true,
+                                    statusBarColor: 'transparent',
+                                    tabBarHidden: true,
+                                }, // override the navigator style for the pushed screen (optional)
                                 navigatorButtons: {} // override the nav buttons for the pushed screen (optional)
                               });
                         }else{

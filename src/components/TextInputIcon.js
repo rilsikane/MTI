@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Text,View,TextInput,Image,TouchableOpacity} from 'react-native';
+import {Text,View,TextInput,Image,TouchableOpacity,Platform} from 'react-native';
 import PropTypes from "prop-types";
 import { Container, Header, Content, Item, Input, Icon } from 'native-base';
 import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
@@ -80,6 +80,25 @@ class TextInputIcon extends Component{
         ]
     }
 
+    renderRightLabel(){
+        if(this.props.rightIconName=='pen'&&this.props.disabled){
+            return(
+                <Image
+                    source={require('../source/icons/iconTextEdit.png')}
+                    resizeMode='contain'
+                    style={styles.iconPenStyle}
+                />
+            )
+        }else if(Platform.OS==='ios'&&this.props.inputType=='selector'&&this.props.editable!==false){
+            return(
+                <Image
+                    source={require('../source/icons/iconTextEdit.png')}
+                    resizeMode='contain'
+                    style={styles.iconPenStyle}
+                />
+            )
+        }
+    }
 
     render(){
         return(
@@ -94,7 +113,7 @@ class TextInputIcon extends Component{
                     />
                     {this.renderLeftLabel()}
                     {this.renderInput()}
-
+                    {this.renderRightLabel()}
                 </Item> 
             </View>
         )
@@ -145,6 +164,9 @@ const styles={
     },
     itemStyle:{
 
+    },
+    iconPenStyle:{
+        height: responsiveHeight(2.11)
     }
 }
 export {TextInputIcon};

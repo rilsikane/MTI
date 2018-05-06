@@ -61,7 +61,7 @@ class UserShortDetailCard extends Component{
                     <Text style={styles.userLevelTextStyle}>สมาชิกระดับ {this.state.user.member_type||' - '}</Text>
                     {this.state.user.name==="GUEST"&&
                         <TouchableOpacity onPress={this.gotoRegister}>
-                            <Text style={styles.userGuestRecommendTextStyle}>เพื่อใช้งานแอพพลิเคชั่นแบบเต็มรูปแบบ กรุณาลงทะเบียนสมัครสมาชิก</Text>
+                            <Text style={styles.userGuestRecommendTextStyle}>เพื่อใช้งานแอพพลิเคชั่นแบบเต็มรูปแบบ กรุณาลงทะเบียน{'\n'}สมัครสมาชิก</Text>
                         </TouchableOpacity>
                     }
               

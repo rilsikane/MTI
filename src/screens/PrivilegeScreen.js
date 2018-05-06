@@ -44,20 +44,28 @@ export default class PrivilegeScreen extends Component{
     }
     async init(){
         this.setState({isLoading: true})
-        let privilege = await getBasic("privileges?page=1&pagesize=20",{});
-        let tabsList = await getBasic('privilege/groups',{});
-        tabsList.data.unshift({id: '99',name: 'All',icon:require("../source/icons/iconTabsInActiveAll.png")});
-        this.setState({
-            tabsList: tabsList.data
-        })
-        if(privilege){
-            console.log(privilege.data);
+        if(this.state.tabIndex==0){
+            let privilege = await getBasic("privileges?page=1&pagesize=20",{});
+            let tabsList = await getBasic('privilege/groups',{});
+            tabsList.data.unshift({id: '99',name: 'All',icon:require("../source/icons/iconTabsInActiveAll.png")});
             this.setState({
-                privilege:privilege.data,
-                privilegeOrg: privilege.data,
+                tabsList: tabsList.data
+            })
+            if(privilege){
+                console.log(privilege.data);
+                this.setState({
+                    privilege:privilege.data,
+                    privilegeOrg: privilege.data,
+                    isLoading: false,
+                });
+            }
+        }else{
+            await this.getPrivilegeForEachTabs(this.state.tabIndex)    
+            this.setState({
                 isLoading: false,
-            });
-        }    
+            })
+        }
+
     }
     openDetail(item){
         this.props.navigator.push({
@@ -74,6 +82,7 @@ export default class PrivilegeScreen extends Component{
         return(
             <FlatList
                 style={{flexGrow: 0}}
+                contentContainerStyle={styles.flatListContainerStyle}
                 scrollEnabled={false}
                 data={this.state.privilege}
                 keyExtractor={this._keyExtractor}
@@ -236,13 +245,13 @@ export default class PrivilegeScreen extends Component{
                                 data={this.state.tabsList}
                                 page={this.state.tabIndex}
                             />
-                            <View style={styles.privilegeListContainerStyle}>
+                            {/* <View style={styles.privilegeListContainerStyle}>
                                 <Image
                                     source={require('./../source/images/promotionImg.png')}
                                     style={styles.promotionImageStyle}
                                     resizeMode='stretch'
                                 />
-                            </View>
+                            </View> */}
                     </View>
                 </View>
                 {this.state.isLoading && <Spinner visible={this.state.isLoading}  textStyle={{color: '#FFF'}} />}
@@ -265,5 +274,8 @@ const styles={
     },
     dashboardActivityCardContainerStyle:{
         marginBottom: responsiveHeight(2),
+    },
+    flatListContainerStyle:{
+        marginBottom: responsiveHeight(4),
     }
 }
