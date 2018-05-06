@@ -24,7 +24,7 @@ export default class PrivilegeDetailScreen extends Component{
             recommend:[],
             isLoading:true,
             groups:[],
-            user:{}
+            user:{},
         }
         this.retrivePrivillege = this.retrivePrivillege.bind(this);
         this.renderRecommendPrivilegeList = this.renderRecommendPrivilegeList.bind(this);
@@ -193,7 +193,7 @@ export default class PrivilegeDetailScreen extends Component{
                         activityTitleText={data.name}
                         groupId={data.group_id}
                         onPress={()=>this.openDetail(data)}
-                        style={[styles.dashboardActivityCardContainerStyle,i==0&&{marginLeft: responsiveWidth(4.6)}]}
+                        style={[styles.dashboardActivityCardContainerStyle,i==this.state.recommend.length-1&&styles.lastItemStyle]}
                         />
                     }
                 }))
@@ -258,16 +258,18 @@ export default class PrivilegeDetailScreen extends Component{
                                 {this.state.showComment&&this.renderCommentSection()}
                             </View>
                         </View>
-                        <View style={styles.recommendPrivilegeContainerStyle}>
-                            <View style={styles.recommendTitleContainerStyle}>
-                                <Text style={styles.recommendTitleTextStyle}>สิทธิพิเศษที่แนะนำให้คุณ</Text>
+                        {this.state.recommend.length==1?<View/>:
+                            <View style={styles.recommendPrivilegeContainerStyle}>
+                                <View style={styles.recommendTitleContainerStyle}>
+                                    <Text style={styles.recommendTitleTextStyle}>สิทธิพิเศษที่แนะนำให้คุณ</Text>
+                                </View>
+                                <View style={styles.recommendPrivilegeListContainerStyle}>
+                                    <ScrollView horizontal style={{flex: 1}} contentContainerStyle={{marginLeft: responsiveWidth(4.6)}} showsHorizontalScrollIndicator={false}>
+                                        {!this.state.isLoading && this.renderRecommendPrivilegeList()}
+                                    </ScrollView>
+                                </View>
                             </View>
-                            <View style={styles.recommendPrivilegeListContainerStyle}>
-                                <ScrollView horizontal style={{flex: 1,}} showsHorizontalScrollIndicator={false}>
-                                    {!this.state.isLoading && this.renderRecommendPrivilegeList()}
-                                </ScrollView>
-                            </View>
-                        </View>
+                        }
                     </View>
                 </ScrollView>
             </View>
@@ -482,6 +484,9 @@ const styles={
     },
     dashboardActivityCardContainerStyle:{
         marginRight: responsiveWidth(4.6),
+    },
+    lastItemStyle:{
+        marginRight: responsiveWidth(9.12),
     }
 
 }

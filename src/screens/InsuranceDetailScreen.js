@@ -98,6 +98,7 @@ export default class InsuranceDetailScreen extends Component{
                     <View style={styles.insuranceShortDetailContainerStyle}>
                         <Text style={styles.insuranceIdTextStyle}>เลขที่กรมธรรม์ : {header.Policy_NO}</Text>
                         <Text style={styles.insuranceIdTextStyle}>ชื่อกรมธรรม์ :{header.Product_Name}</Text>
+                        <Text style={styles.insuranceRemarkTextStyle}>*หมายเหตุ: ข้อมูลในนี้เป็นเพียงข้อมูลสรุปเบื้องต้น กรุณาอ่านเงื่อนไข{'\n'}ในกรมธรรม์</Text>
                     </View>
                     <View style={styles.insuranceDetailContainerStyle}>
                         {header.FLAG == 'Y' && <View style={styles.insuranceDetailStyle}>
@@ -184,6 +185,10 @@ const styles={
     insuranceIdTextStyle:{
         color: '#1595d3',
         fontSize: responsiveFontSize(2.5),
+    },
+    insuranceRemarkTextStyle:{
+        color: 'rgb(253,98,98)',
+        fontSize: responsiveFontSize(2.1),
     },
     insuranceTitleTextStyle:{
         color: '#1595d3',
