@@ -103,6 +103,8 @@ PODS:
     - React/Core
     - React/fishhook
     - React/RCTBlob
+  - TouchID (4.0.1):
+    - React
   - yoga (0.54.2.React)
 
 DEPENDENCIES:
@@ -129,6 +131,7 @@ DEPENDENCIES:
   - React/RCTText (from `../node_modules/react-native`)
   - React/RCTVibration (from `../node_modules/react-native`)
   - React/RCTWebSocket (from `../node_modules/react-native`)
+  - TouchID (from `../node_modules/react-native-touch-id`)
   - yoga (from `../node_modules/react-native/ReactCommon/yoga/yoga.podspec`)
 
 SPEC REPOS:
@@ -158,6 +161,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-maps"
   react-native-maps:
     :path: "../node_modules/react-native-maps"
+  TouchID:
+    :path: "../node_modules/react-native-touch-id"
   yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga/yoga.podspec"
 
@@ -179,8 +184,9 @@ SPEC CHECKSUMS:
   React: c237e42de9c70e5cac6eeb52b4cfd3a0910c1f00
   react-native-google-maps: 2cfe3b01f8422c7dae51d8764139fd70f888cfce
   react-native-maps: 066c2afcc89e18726377bcc685315f989ca22449
+  TouchID: b0640fedb86fa2db2fe1df15b61594ad49e76288
   yoga: 55da126afc384965b96bff46652464373b330add
 
-PODFILE CHECKSUM: 95cf50d0b861754c0b9bfcee2c274ef6a97544e1
+PODFILE CHECKSUM: fcfd51b4977cb2e7ff038faee1e6ca427bec4965
 
 COCOAPODS: 1.5.0

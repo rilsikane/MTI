@@ -2,7 +2,7 @@ import React,{Component} from 'react';
 import {Text,View,Image,ScrollView,TouchableOpacity,Animated,Keyboard,KeyboardAvoidingView} from 'react-native';
 import PropTypes from "prop-types";
 import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
-import DateTimePicker from 'react-native-modal-datetime-picker';
+import DateTimePicker from '../components/react-native-modal-datetime-picker';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import {TextInputIcon} from './../components/TextInputIcon';

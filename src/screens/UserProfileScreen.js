@@ -2,7 +2,7 @@ import React,{Component} from 'react';
 import {Text,View,Image,ImageBackground,TouchableOpacity,ScrollView,Alert} from 'react-native';
 import PropTypes from "prop-types";
 import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
-import DateTimePicker from 'react-native-modal-datetime-picker';
+import DateTimePicker from '../components/react-native-modal-datetime-picker';
 import PopupDialog,{ SlideAnimation }  from 'react-native-popup-dialog';
 import Spinner from 'react-native-loading-spinner-overlay';
 

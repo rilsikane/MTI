@@ -46,6 +46,8 @@ target 'MTI' do
   pod 'Google-Maps-iOS-Utils' # Remove this line if you don't want to support GoogleMaps on iOS
 
 
+  pod 'TouchID', :path => '../node_modules/react-native-touch-id'
+
 end
 
 post_install do |installer|
