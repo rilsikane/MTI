@@ -71,7 +71,7 @@ class ReqOtpScreen extends Component{
             <PopupDialog
                 ref={(leavingDialog) => { this.leavingDialog = leavingDialog; }}
                 width={responsiveWidth(90)}
-                height={responsiveHeight(60)}
+                height={responsiveHeight(75)}
                 dialogStyle={styles.popupContainerStyle}
                 containerStyle={styles.popupLayoutContainerStyle}
             >
@@ -122,7 +122,7 @@ class ReqOtpScreen extends Component{
                             thirdFlex={thirdFlex}
                             keyboardType='phone-pad'
                             onBlur={()=>{
-                                if(this.state.tel.length!=10){
+                                if(this.state.tel.length<9 && this.state.tel.length>10){
                                     this.setState({telErr:true})
                                 }else{
                                     this.setState({telErr:false})
@@ -155,12 +155,12 @@ class ReqOtpScreen extends Component{
                         />
                         {this.state.emailErr && <Text style={styles.errorMsg}>Email ไม่ถูกต้อง</Text>}
                     </View>
-                    {this.isShowSumbit() && <View style={styles.submitButtonContainerStyle}>
-                        <MainSubmitButton
+                    <View style={styles.submitButtonContainerStyle}>
+                    {this.isShowSumbit() &&<MainSubmitButton
                             buttonTitleText='ตกลง'
                             onPress={()=>this.requestContact()}
-                        />
-                    </View>}
+                        />}
+                    </View>
                 </KeyboardAwareScrollView>
             </PopupDialog>
         )

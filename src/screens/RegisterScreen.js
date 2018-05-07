@@ -159,7 +159,7 @@ export default class RegisterScreen extends Component{
             <PopupDialog
                 ref={(leavingDialog) => { this.leavingDialog = leavingDialog; }}
                 width={responsiveWidth(90)}
-                height={responsiveHeight(60)}
+                height={responsiveHeight(75)}
                 dialogStyle={styles.popupContainerStyle}
                 containerStyle={styles.popupLayoutContainerStyle}
             >

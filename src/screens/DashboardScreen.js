@@ -91,9 +91,9 @@ export default class DashboardScreen extends Component{
                 }
             }else{
                 // this.setState({isLoading:false});
-                setTimeout(()=>{
-                    this.app.logout();
-                },500)
+                // setTimeout(()=>{
+                //     this.app.logout();
+                // },2500)
                
             }
            

@@ -33,18 +33,19 @@ export async function authen(param){
                 //let token = response.data;
                 return response.data;
             }else{
-               
+                    app.isLoading = false;
                     setTimeout(()=>{Alert.alert(
                     'แจ้งเตือน',
                     response.data ? response.data.message:response.message,
                     [
-                    {text: 'OK', onPress: () => false},
+                    {text: 'OK', onPress: () => app.isLoading = false},
                     ]
                     ),500});
                 
                 
             }
         }else{
+            app.isLoading = false;
             setTimeout(()=>{Alert.alert(
                 'แจ้งเตือน',
                 `${path}:ไม่สามารถเชื่อมต่อกับระบบได้`,
@@ -94,15 +95,25 @@ export async function post(path,param){
                 return response.data;
                 }else{
                     app.isLoading = false;
-                    console.log(response.data.message);
-                    setTimeout(()=>{Alert.alert(
-                        'แจ้งเตือน',
-                        response.data.message,
-                        [
-                        {text: 'OK', onPress: () => console.log('OK Pressed!')},
-                        ]
-                    )},200);
-                    return false;
+                    
+                    if("002"==response.data.error_code ||"001"==response.data.error_code){
+                        Alert.alert(
+                            'แจ้งเตือน',
+                            response.data ?  response.data.message :response.message,
+                            [
+                            {text: 'OK', onPress: () => app.logout()},
+                            ]
+                        )
+                    }else{
+                        setTimeout(()=>{Alert.alert(
+                            'แจ้งเตือน',
+                            response.data ?  response.data.message :response.message,
+                            [
+                            {text: 'OK', onPress: () => console.log('OK Pressed!')},
+                            ]
+                        ),200});
+                        return false;
+                    }
                 }
             }else{
                 setTimeout(()=>{Alert.alert(
@@ -276,15 +287,24 @@ export async function get(path,param){
                 return response.data;
             }else{
                 app.isLoading = false;
-                console.log(response.data.message);
+                if("002"==response.data.error_code ||"001"==response.data.error_code){
+                    Alert.alert(
+                        'แจ้งเตือน',
+                        response.data ?  response.data.message :response.message,
+                        [
+                        {text: 'OK', onPress: () => app.logout()},
+                        ]
+                    )
+                }else{
                 setTimeout(()=>{Alert.alert(
                     'แจ้งเตือน',
-                    response.message,
+                    response.data ?  response.data.message :response.message,
                     [
                     {text: 'OK', onPress: () => console.log('OK Pressed!')},
                     ]
                 ),200});
                 return false;
+                }
             }
             }else{
                 setTimeout(()=>{Alert.alert(

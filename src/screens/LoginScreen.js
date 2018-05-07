@@ -57,12 +57,14 @@ export default class LoginScreen extends Component{
         param.password = this.state.userPassword;
         this.setState({isLoading:true});
         let response = await authen(param);
+        this.setState({isLoading:false});
         if(response){
             if(response.first_logon=="N"){
             // if(false){
                 let token = response.token;
                 store.save("token",token);
                 if(token){
+                    this.setState({isLoading:true});
                     let [response1] = await Promise.all([get("me",{})]);
                     this.setState({isLoading:false});
                     if(response1){

@@ -60,7 +60,7 @@ export default class NewPasswordScreen extends Component{
     }
     onPasswordChange(){
         var regex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$/
-        if(this.state.newPassword.length ==8 && regex.test(this.state.newPassword)){
+        if(this.state.newPassword.length >=8 && regex.test(this.state.newPassword)){
             this.setState({errorPassowrd:false})
         }else{
             this.setState({errorPassowrd:true})
