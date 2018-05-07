@@ -44,8 +44,10 @@ class AbstractSelectInput extends Component {
         return object.label;
       }
     });
-
-    return label || '';
+    if(!label || label==''||label[0]==''){
+      label = placeholder;
+    }
+    return label;
   }
 }
 

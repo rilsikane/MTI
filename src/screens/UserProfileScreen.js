@@ -60,7 +60,7 @@ export default class UserProfileScreen extends Component{
             canEditProfile: false,
             isLifestyleModalVisible: false,
             isDateTimePickerVisible: false,
-            isLoading: false,
+            isLoading: true,
             userImageBase64:"",
             user:{},
             profileImage:""
@@ -157,7 +157,7 @@ export default class UserProfileScreen extends Component{
             userGender:user.gender,
             userCareer:user.career,
             userEducation:user.education,
-            userIncome:user.income,
+            userIncome:undefined,
             userLifeStyle:user.lifestyle.map(data=>data.title),
             orgUserLifeStyleId: user.lifestyle.map(data=>data.id),
             isLoading: false,
@@ -552,7 +552,7 @@ export default class UserProfileScreen extends Component{
                     rightIconName='iconBell'
                     //notify='2'
                 />
-                <ScrollView style={{flex: 1}}>
+                {!this.state.isLoading && <ScrollView style={{flex: 1}}>
                     <View style={styles.userShortDetailContainerStyle}>
                         <View style={styles.userAvatarContainerStyle}>
                             <TouchableOpacity disabled={!this.state.canEditProfile} onPress={this.onUpdatePictureProfilePress} style={styles.userAvatarSectionStyle}>
@@ -731,7 +731,7 @@ export default class UserProfileScreen extends Component{
                         />
                     </View>
                 
-                </ScrollView>
+                </ScrollView>}
                 {this.renderLifestyleModal()}
                 {this.state.isLoading && <Spinner visible={this.state.isLoading}  textStyle={{color: '#FFF'}} />}
             </View>

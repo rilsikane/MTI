@@ -30,9 +30,6 @@ class SelectInput extends AbstractSelectInput {
   }
 
   focus() {
-    if(!this.props.enabled){
-      return false;
-    }
     let props = this.props;
     let pickerKeyboard = this.pickerKeyboard;
 
@@ -45,15 +42,15 @@ class SelectInput extends AbstractSelectInput {
 
     // TODO: - add fully customizable styles
     return (
-      <TouchableWithoutFeedback onPress={this.focus.bind(this)}>
+      <TouchableWithoutFeedback onPress={this.props.enabled && this.focus.bind(this)}>
         <View style={props.style}>
           <Text
-            style={props.labelStyle || styles.defaultlabelstyle}
+            style={(props.value != '' ? props.labelStyle:{color:'gray',fontSize:20})}
             adjustFontSizeToFit={true}
             allowFontScaling={false}
             numberOfLines={1}
             >
-            {this.getValueLabel()}
+            {this.getValueLabel(props.placeholder)}
           </Text>
 
           <PickerKeyboard
@@ -63,8 +60,6 @@ class SelectInput extends AbstractSelectInput {
             onCancel={this.onCancel.bind(this)}
             onSubmit={this.onSubmit.bind(this)}
             buttonsBackgroundColor={props.buttonsBackgroundColor}
-            buttonsBorderColor={props.buttonsBorderColor}
-            buttonsBorderWidth={props.buttonsBorderWidth}
             buttonsTextColor={props.buttonsTextColor}
             buttonsTextSize={props.buttonsTextSize}
             keyboardBackgroundColor={props.keyboardBackgroundColor}
@@ -79,13 +74,11 @@ class SelectInput extends AbstractSelectInput {
 
 SelectInput.propTypes = {
   buttonsBackgroundColor:  PropTypes.string,
-  buttonsBorderColor:      PropTypes.string,
-  buttonsBorderWidth:      PropTypes.number,
   buttonsTextColor:        PropTypes.string,
   buttonsTextSize:         PropTypes.number,
   cancelKeyText:           PropTypes.string,
   keyboardBackgroundColor: PropTypes.string,
-  labelStyle:              PropTypes.any , // FIXME: - use real proptype
+  labelStyle:              PropTypes.object,
   onEndEditing:            PropTypes.func,
   onSubmitEditing:         PropTypes.func,
   options:                 PropTypes.array,
@@ -99,8 +92,6 @@ SelectInput.defaultProps = {
   keyboardBackgroundColor: '#FFFFFF',
   buttonsBackgroundColor:  '#CCCFD6',
   buttonsTextColor:        '#006BFF',
-  buttonsBorderColor:      '#CCCFD6',
-  buttonsBorderWidth:      0,
   options:                 [{ value: 0, label: '0' }],
   submitKeyText:           'Done',
   value:                   0,
