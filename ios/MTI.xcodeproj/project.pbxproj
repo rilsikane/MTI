@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -49,6 +48,7 @@
 		D99EE1166E924E56A3ADA0D9 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E0EDDE29AE9D4F308C7E0DD3 /* MaterialIcons.ttf */; };
 		DA3A6C99561B4F479E1006DE /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EB3D8AF180004910BD21BF94 /* Foundation.ttf */; };
 		E0485A0723C94FBF88A661FA /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 38F5167009484273BB10F20E /* Zocial.ttf */; };
+		CA97AE8E3A7141169B520B3E /* DBHelvethaicaX-Bd.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F14EFDE940B84FB1A8E04670 /* DBHelvethaicaX-Bd.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -431,6 +431,8 @@
 		E9A188753335402E9E6D8F0F /* RNTextInputMask.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNTextInputMask.xcodeproj; path = "../node_modules/react-native-text-input-mask/ios/RNTextInputMask/RNTextInputMask.xcodeproj"; sourceTree = "<group>"; };
 		EB3D8AF180004910BD21BF94 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/native-base/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
 		FA8CD1D16E154623B70A30F2 /* libRNTextInputMask.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNTextInputMask.a; sourceTree = "<group>"; };
+		F14EFDE940B84FB1A8E04670 /* DBHelvethaicaX-Bd.ttf */ = {isa = PBXFileReference; name = "DBHelvethaicaX-Bd.ttf"; path = "../assets/fonts/DBHelvethaicaX-Bd.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		CCD9A744558F4D9884F5BB98 /* RNFirebase.xcodeproj */ = {isa = PBXFileReference; name = "RNFirebase.xcodeproj"; path = "../node_modules/react-native-firebase/ios/RNFirebase.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -639,6 +641,7 @@
 				E9A188753335402E9E6D8F0F /* RNTextInputMask.xcodeproj */,
 				28C054AC925C4B49BFF22267 /* RNVectorIcons.xcodeproj */,
 				14260121B23243EAB348394D /* ReactNativeNavigation.xcodeproj */,
+				CCD9A744558F4D9884F5BB98 /* RNFirebase.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -697,6 +700,7 @@
 				45657C33271C49218FB59032 /* MaterialCommunityIcons.ttf */,
 				E500098BB1C54824AB7C7DB1 /* DBHelvethaicaX.ttf */,
 				117B7CA6F6E44588A03B38A6 /* DBHelvethaicaX-Med.ttf */,
+				F14EFDE940B84FB1A8E04670 /* DBHelvethaicaX-Bd.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1237,6 +1241,7 @@
 				3747BF347C6D4C52BD966B7B /* MaterialCommunityIcons.ttf in Resources */,
 				5D3CFAEBF10141C99B99B221 /* DBHelvethaicaX.ttf in Resources */,
 				10B8A1292C4F4B01ACEF0B49 /* DBHelvethaicaX-Med.ttf in Resources */,
+				CA97AE8E3A7141169B520B3E /* DBHelvethaicaX-Bd.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1349,6 +1354,7 @@
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/react-native-navigation/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
+					"$(SRCROOT)\..\node_modules\react-native-firebase\ios\RNFirebase/**",
 				);
 				INFOPLIST_FILE = MTI/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
@@ -1385,6 +1391,7 @@
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/react-native-navigation/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
+					"$(SRCROOT)\..\node_modules\react-native-firebase\ios\RNFirebase/**",
 				);
 				INFOPLIST_FILE = MTI/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
