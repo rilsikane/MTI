@@ -112,7 +112,7 @@ export default class SettingScreen extends Component{
                     rightIconName='iconBell'
                 />
                 <View style={styles.settingContainerStyle}>
-                    <View style={styles.switchSectionStyle}>
+                    {/* <View style={styles.switchSectionStyle}>
                         <Text style={styles.settingTitleTextStyle}>ภาษา</Text>
                         {this.renderLanguageSwitch()}
                     </View>
@@ -123,19 +123,19 @@ export default class SettingScreen extends Component{
                     <View style={styles.switchSectionStyle}>
                         <Text style={styles.settingTitleTextStyle}>ขนาดตัวหนังสือ</Text>
                         {this.renderFontSizeRadio()}
-                    </View>
-                    <View style={styles.switchSectionStyle}>
+                    </View> */}
+                    <TouchableOpacity style={styles.switchSectionStyle}  onPress={()=>this.gotoScreen('mti.SettingAppLockingScreen')}>
                         <Text style={styles.settingTitleTextStyle}>การล็อกรหัสและ Touch ID</Text>
-                        <TouchableOpacity
-                            onPress={()=>this.gotoScreen('mti.SettingAppLockingScreen')}
-                        >
+                        {/* <TouchableOpacity */}
+                           
+                        {/* > */}
                             <Image
                                 source={require('../source/icons/iconRightArrow01.png')}
                                 resizeMode='contain'
                                 style={styles.rightArrowIconStyle}
                             />
-                        </TouchableOpacity>
-                    </View>
+                        {/* </TouchableOpacity> */}
+                    </TouchableOpacity>
                     <View style={styles.servicePolicyButtonContainerStyle}>
                         <Image
                             source={require('../source/icons/iconContact01.png')}

@@ -236,12 +236,12 @@ export default class PrivilegeDetailScreen extends Component{
                                     />
                                     <Text style={styles.titleTextStyle}>{this.getTitleText()}</Text>
                                 </View>
-                                <View style={styles.eventButtonGroupContainerStyle}>
+                                {/* <View style={styles.eventButtonGroupContainerStyle}>
                                     <EventButtonGroup
                                         isFavorite
                                         isShareSelected
                                     />
-                                </View>
+                                </View> */}
                             </View>
                             <Image
                                 source={require('../source/images/dotSectionHorizontal.png')}
@@ -258,7 +258,7 @@ export default class PrivilegeDetailScreen extends Component{
                                     onPress={this.retrivePrivillege}
                                     style={styles.submitButtonStyle}
                                 />}
-                                {this.state.showComment&&this.renderCommentSection()}
+                                {/* {this.state.showComment&&this.renderCommentSection()} */}
                             </View>
                         </View>
                         {this.state.recommend.length==1?<View/>:

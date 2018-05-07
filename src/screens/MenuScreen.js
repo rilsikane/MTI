@@ -86,7 +86,7 @@ export default class MenuScreen extends Component{
                                 <Text style={styles.menuTitleTextStyle}>ข้อมูลกรมธรรม์</Text> 
                             </TouchableOpacity>
                         </View>
-                        <View style={styles.subBorderStyle}/>
+                        {/* <View style={styles.subBorderStyle}/>
                         <View style={styles.menuSectionStyle}>        
                             <TouchableOpacity style={styles.menuSubSectionStyle}>
                                 <Image
@@ -96,8 +96,8 @@ export default class MenuScreen extends Component{
                                 />
                                 <Text style={styles.menuTitleTextStyle}>ประวัติการใช้งาน</Text> 
                             </TouchableOpacity>
-                        </View>
-                        <View style={styles.subBorderStyle}/>
+                        </View> */}
+                        {/* <View style={styles.subBorderStyle}/>
                         <View style={styles.menuSectionStyle}>        
                             <TouchableOpacity style={styles.menuSubSectionStyle}>
                                 <Image
@@ -107,8 +107,8 @@ export default class MenuScreen extends Component{
                                 />
                                 <Text style={styles.menuTitleTextStyle}>รายการโปรด</Text> 
                             </TouchableOpacity>
-                        </View>
-                        <View style={styles.subBorderStyle}/>
+                        </View> */}
+                        {/* <View style={styles.subBorderStyle}/>
                         <View style={styles.menuSectionStyle}>        
                             <TouchableOpacity style={styles.menuSubSectionStyle}>
                                 <Image
@@ -118,7 +118,7 @@ export default class MenuScreen extends Component{
                                 />
                                 <Text style={styles.menuTitleTextStyle}>การแจ้งเตือน</Text> 
                             </TouchableOpacity>
-                        </View>
+                        </View> */}
                         {/* <View style={styles.mainBorderStyle}/> */}
                         {/* <View style={styles.menuSectionStyle}>        
                             <TouchableOpacity style={styles.menuSubSectionStyle} 
