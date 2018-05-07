@@ -26,6 +26,7 @@ export default class ContactUsScreen extends Component{
                         id: '1234',
                         coordinate:{latitude: 13.7864983,longitude: 100.57462710000004},
                     },
+                    headerTitleText: 'ติดต่อเมืองไทยประกันภัย',
                     navigator:this.props.navigator,
                 }, // Object that will be passed as props to the pushed screen (optional)
                 animated: true, // does the push have transition animation or does it happen immediately (optional)

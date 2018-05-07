@@ -167,8 +167,9 @@ export default class MenuScreen extends Component{
                                 <Text style={styles.menuTitleTextStyle}>ติดต่อเรา</Text> 
                             </TouchableOpacity>
                         </View>
-                        <View style={styles.subBorderStyle}/>
-                        {this.state.user.name != "GUEST" && <View style={styles.menuSectionStyle}>        
+                        {this.state.user.name != "GUEST"&&<View style={styles.subBorderStyle}/>}
+                        {this.state.user.name != "GUEST" && 
+                        <View style={styles.menuSectionStyle}>        
                             <TouchableOpacity onPress={()=>this.gotoMenu("mti.SettingScreen")} style={styles.menuSubSectionStyle}>
                                 <Image
                                     source={require('./../source/icons/iconSettingWhite.png')}
@@ -183,7 +184,7 @@ export default class MenuScreen extends Component{
                             <TouchableOpacity onPress={()=>{
                                  Alert.alert(
                                     "คำเตือน",
-                                    "ยืนยันการออกจาจากระบบใช่หรือไหม่",
+                                    "ยืนยันการออกจากระบบใช่หรือไหม่",
                                     [
                                     {text: "ยกเลิก"},
                                     {text: "ออกจากระบบ", onPress: ()=> {
@@ -284,6 +285,7 @@ const styles={
     },
     menuSectionStyle:{
         flex: 1,
+        justifyContent: 'center',
     },
     menuSubSectionStyle:{
         flexDirection: 'row',

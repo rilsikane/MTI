@@ -145,7 +145,7 @@ export default class NoRegisterDataScreen extends Component{
                             thirdFlex={thirdFlex}
                             keyboardType='phone-pad'
                             onBlur={()=>{
-                                if(this.state.tel.length!=10){
+                                if(this.state.tel.length<9){
                                     this.setState({telErr:true})
                                 }else{
                                     this.setState({telErr:false})

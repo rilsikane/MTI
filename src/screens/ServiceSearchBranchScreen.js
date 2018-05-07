@@ -215,7 +215,7 @@ export default class ServiceSearchBranchScreen extends Component{
             <View style={styles.serviceSearchBranchScreenContainerStyle}>
                 <Headers
                     leftIconName={this.props.isMap?'close':'back'}
-                    headerTitleText='ค้นหาสาขาย่อย'
+                    headerTitleText={this.props.headerTitleText?this.props.headerTitleText:'ค้นหาสาขาย่อย'}
                     rightIconName='iconBell'
                     withSearch={this.props.isMap?false:true}
                 />

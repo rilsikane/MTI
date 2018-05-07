@@ -134,7 +134,7 @@ class RegisterStep2 extends Component{
                         keyboardType='phone-pad'
                         returnKeyType='done'
                         onBlur={()=>{
-                            if(this.state.userPhone.length!=10){
+                            if(this.state.userPhone.length<9){
                                 this.setState({telErr:true})
                             }else{
                                 this.setState({telErr:false})

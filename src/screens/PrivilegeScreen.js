@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Text,View,Image,ScrollView,TouchableOpacity,FlatList} from 'react-native';
+import {Text,View,Image,ScrollView,TouchableOpacity,FlatList,Alert} from 'react-native';
 import PropTypes from "prop-types";
 import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
 import Spinner from 'react-native-loading-spinner-overlay';
@@ -121,7 +121,6 @@ export default class PrivilegeScreen extends Component{
         this.setState({
             tabIndex: index.i,
         })
-        
     }
 
     async getPrivilegeForEachTabs(index){
@@ -205,10 +204,37 @@ export default class PrivilegeScreen extends Component{
     }
 
     async _onSearchIconPress(){
-        this.setState({tabIndex: 0,isLoading: true,privilege:[]});
-        let response = await getBasic(`privileges?search=${this.state.searchValue}&page=1&pagesize=20`,{});
-        this.setState({privilege: response.data,isLoading: false});
+        this.setState({isLoading: true,privilege:[]});
+        let response = {};
+        if(this.state.tabIndex==0){
+            response = await getBasic(`privileges?search=${this.state.searchValue}&page=1&pagesize=20`,{});
+        }else{
+            let index = this.state.tabIndex
+            if(index==7){
+                index = 9
+            }
+            response = await getBasic(`privileges?filter_group_id=${index}&search=${this.state.searchValue}&page=1&pagesize=20`,{});
+            console.log(response)
+        }
+       
+        if(response.data.length==0){
+            Alert.alert(
+                'แจ้งเตือน',
+                'ไม่พบข้อมูลที่ค้นหา',
+                [
+                {text: 'OK', onPress: () => {this.setState({
+                    isLoading: false,
+                    searchValue: '',
+                    //privilege: this.state.privilegeOrg,
+                })}},
+                ]
+            )
+        }else{
+            this.setState({privilege: response.data,isLoading: false,searchValue: ''});
+        }
+      
     }
+
     onNavigatorEvent(event) {
     
         if (event.id === 'bottomTabSelected') {

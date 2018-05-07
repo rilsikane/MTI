@@ -1,10 +1,11 @@
 import React,{Component} from 'react';
-import {Text,View} from 'react-native';
+import {Text,View,ScrollView,FlatList} from 'react-native';
 import PropTypes from "prop-types";
 import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
 
 import {Headers} from './../components/Headers';
 import {MainSubmitButton} from './../components/MainSubmitButton';
+import {agreements} from './RegisterScreen';
 
 export default class ServicePolicyScreen extends Component{
 
@@ -14,23 +15,32 @@ export default class ServicePolicyScreen extends Component{
     }
 
     renderPolicyDetail(){
-        let policy=[
-            {
-                title: 'คำนิยาม',
-                detail:[
-                    'ระบบคอมพิวเตอร์ หมายถึง อุปกรณ์หรือชุดอุปกรณ์ของคอมพิวเตอร์ที่เชื่อมการทำงานเข้าด้วยกัน โดยได้มีการกำหนดคำสั่ง ชุดคำสั่ง หรือสิ่งอื่นใด และแนวทางปฏิบัติงานให้อุปกรณ์หรือชุดอุปกรณ์ทำหน้าที่ประมวลผลข้อมูลอัตโนมัติที่ใช้ประกอบการจัดทำระบบ my AIS',
-                    '“ผู้ใช้บริการ” หมายถึง ผู้ใช้บริการหมายเลขโทรศัพท์เคลื่อนที่ และ/หรือบริการต่างๆ ที่เกี่ยวข้องของผู้ให้บริการ และหรือบริษัทในเครือของผู้ให้บริการ รวมทั้งผู้ครอบครองใช้บริการหมายเลขโทรศัพท์เคลื่อนที่ ตลอดจนผู้ใช้หมายเลขโทรศัพท์เคลื่อนที่ และ OTP ของผู้ใช้บริการเพื่อทำธุรกรรมอิเล็กทรอนิกส์ในระบบ my AIS นี้'
-                ]
-            }
-        ]
-
-        return policy.map((policy,i)=>
-            <View key={i}>
-                <Text style={styles.policyTitleTextStyle}>{++i}. {policy.title}</Text>
-                {policy.detail.map((detail,j)=><Text key={j} style={styles.policyDetailTextStyle}>{'\u0009'}({++j}) {detail}</Text>)}
-            </View>
+        return(
+            <FlatList
+                data={agreements}
+                keyExtractor={this._keyExtractor}
+                renderItem={this._renderAgreements}
+            />
         )
     }
+
+    _renderAgreements = ({item,index}) => (
+        <View>
+            <Text style={[styles.popupAgreementSubTitleTextStyle,{textAlign: 'left'}]}>{`${++index}.   ${item.title}`}</Text>
+            {item.titleDesc&&<Text style={[styles.popupAgreementDetailTextStyle,{marginLeft: responsiveWidth(3)}]}>{`${item.titleDesc}`}</Text>}      
+            <FlatList
+                data={item.subTitle}
+                keyExtractor={this._keyExtractor}
+                renderItem={this._renderSubTitle}
+            />
+        </View>
+    );
+
+    _keyExtractor = (item, index) => index.toString();
+
+    _renderSubTitle=({item,index})=>(
+        <Text style={[styles.popupAgreementDetailTextStyle,{marginLeft: responsiveWidth(2)}]}>{`${item}`}</Text>
+    )
 
     render(){
 
@@ -39,29 +49,23 @@ export default class ServicePolicyScreen extends Component{
                 <Headers
                     leftIconName='cancel'
                     headerTitleText='เงื่อนไขการให้บริการ'
-                    cancel={()=>this.props.navigator.pop()}
+                    cancel={()=>this.props.navigator.dismissModal()}
                 />
-                <View style={styles.policyContentContainerStyle}>
-                    <Text style={styles.agreementTitleTextStyle}>ข้อตกลงและเงื่อนไขการใช้ Muang Thai Friends Club</Text>
-                    <Text style={styles.policyDescriptionTextStyle}>ขอต้อนรับและขอขอบคุณท่านในการใช้ my AIS หรือระบบคอมพิวเตอร์ที่ช่วย
-                            อำนวยความสะดวกให้แก่ผู้ใช้บริการในการทำธุรกรรม-อิเล็กทรอนิกส์รายการ
-                            ต่างๆ อันเกี่ยวกับการใช้บริการโทรศัพท์เคลื่อนที่ บริการอินเตอร์เน็ท บริการ
-                            mPAY รวมทั้งบริการต่างๆ ที่เกี่ยวข้อง เช่น เลือกดูรายการส่งเสริมการขาย
-                            (Promotion Package) สมัคร-เปลี่ยนแปลง-ยกเลิกการใช้บริการ เรียกดูราย
-                            ละเอียดการใช้บริการ และหรือสิทธิประโยชน์ (Privilege) ของการใช้บริการ
-                            ต่างๆ ดังล่าวข้างต้น หากมีผู้ใดกระทำการใดๆ ให้เกิดความเสียหายแก่ระบบ
-                            my AIS หรือผู้ใช้บริการ หรือบุคคลใดผ่าน my AIS นี้ ผู้กระทำการดังกล่าว
-                            จะต้องรับผิดทั้งทางแพ่งและทางอาญา
-                    </Text>
-                    {this.renderPolicyDetail()}
-                    <MainSubmitButton
-                        buttonTitleText='ตกลง'
-                        onPress={()=>this.props.navigator.dismissModal({
-                            animationType: 'slide-down' // 'none' / 'slide-down' , dismiss animation for the modal (optional, default 'slide-down')
-                          })}
-                        style={styles.submitButtonStyle}
-                    />
-                </View>
+                <ScrollView style={{flex: 1,}}>
+                    <View style={styles.policyContentContainerStyle}>
+                        <Text style={styles.agreementTitleTextStyle}>ข้อตกลงและเงื่อนไขของสมาชิก Muang Thai {'\n'}Friends Club (เมืองไทย เฟรนด์สส คลับ)</Text>
+                        <Text style={styles.popupAgreementDetailTextStyle}>โปรดอ่านข้อตกลงและเงื่อนไขการเป็นสมาชิก Muang Thai Friends Club (เมืองไทย เฟรนด์ส คลับ) อย่างระมัดระวัง  เนื่องจากข้อตกลงและเงื่อนไขนี้ระบุถึงข้อมูลสำคัญเกี่ยวกับสิทธิและหน้าที่ต่างๆของท่าน  รวมถึงข้อจำกัดและข้อยกเว้นต่างๆ ซึ่งมีผลใช้บังคับการธุรกรรมและกิจกรรมทั้งหมด{'\n'}</Text>
+                        <Text style={styles.popupAgreementDetailTextStyle}>การที่ท่านสมัครใช้บริการ  ไม่ว่าในลักษณะใดๆ หรือโดยการเลือก “ตกลง”  เพื่อยอมรับตามข้อตกลงและเงื่อนไขนี้  ถือว่าท่านได้รับทราบและรับรู้ถึงเนื้อหาของข้อตกลงและเงื่อนไขนี้โดยครบถ้วนสมบูรณ์แล้ว  และตกลงที่จะผูกพันโดยข้อตกลงและเงื่อนไขนี้ด้วย  รวมถึงกฎระเบียบ นโยบายและมาตรการต่างๆที่ Muang Thai Friends Club (เมืองไทย เฟรนด์ส คลับ)ที่จัดการจาก Muang Thai Friends Club (เมืองไทย เฟรนด์ส คลับ) อาจประกาศบนเว็บไซต์และแอปพลิเคชันเป็นครั้งคราว  ซึ่งการประกาศดังกล่าวถือเป็นส่วนหนึ่งของข้อตกลงและเงื่อนไขโดยการอ้างอิง และMuang Thai Friends Club (เมืองไทย เฟรนด์ส คลับ) อาจแก้ไขประกาศดังกล่าวได้เป็นครั้งคราวโดยไม่จำเป็นต้องแจ้งให้ทราบล่วงหน้า  นอกจากนี้สิทธิประโยชน์/บริการบางอย่างที่เสนอให้กับสมาชิกได้ใช้งานผ่านเว็บไซต์หรือโปรแกรม อาจอยู่ภายใต้ข้อบังคับของข้อตกลงและเงื่อนไขเฉพาะเพิ่มเติมซึ่งการใช้สิทธิประโยชน์/บริการของท่านจะต้องอยู่ภายใต้บังคับของข้อตกลงและเงื่อนไขเพิ่มเติมดังกล่าวด้วย  โดยถือเป็นส่วนหนึ่งของข้อตกลงและเงื่อนไขนี้โดยการอ้างอิง  นอกจากนี้ท่านตกลงว่าธุรกรรมอิเล็กทรอนิกส์/อินเตอร์เน็ต (Electronic/internet transactions) ที่ได้มีการประมวลผลและดำเนินการจนเสร็จสิ้นแล้ว  โดยผ่านทางเว็บไซต์หรือโปรแกรมนี้  มีผลบังคับใช้ได้อย่างสมบูรณ์ตามกฏหมายและผูกพันคู่สัญญาตามพระราชบัญญัติว่าด้วยธุรกรรมทางอิเล็กทรอนิกส์ พุทธศักราช 2544 ของประเทศไทย{'\n'}</Text>
+                        {this.renderPolicyDetail()}
+                        <MainSubmitButton
+                            buttonTitleText='ตกลง'
+                            onPress={()=>this.props.navigator.dismissModal({
+                                animationType: 'slide-down' // 'none' / 'slide-down' , dismiss animation for the modal (optional, default 'slide-down')
+                            })}
+                            style={styles.submitButtonStyle}
+                        />
+                    </View>
+                </ScrollView>
             </View>
         )
     }
@@ -85,6 +89,10 @@ const styles={
         marginTop: responsiveHeight(2.5),
         marginBottom: responsiveHeight(2.5),
     },
+    popupAgreementDetailTextStyle:{
+        fontSize: responsiveFontSize(2.1),
+        color: '#919195',
+    },
     policyDescriptionTextStyle:{
         color: '#919195',
         fontSize: responsiveFontSize(2.1),
@@ -102,5 +110,15 @@ const styles={
     },
     submitButtonStyle:{
         height: responsiveHeight(7.04),
-    }
+        marginBottom: responsiveHeight(2),
+    },
+    popupAgreementSubTitleTextStyle:{
+        fontSize: responsiveFontSize(2.1),
+        color: '#1595d3',
+        textAlign: 'center',
+    },
+    popupAgreementDetailTextStyle:{
+        fontSize: responsiveFontSize(2.1),
+        color: '#919195',
+    },
 }
