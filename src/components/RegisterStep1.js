@@ -118,7 +118,7 @@ class RegisterStep1 extends Component{
                             keyboardType='numeric'
                             returnKeyType = {"next"}
                             onBlur={()=>{
-                                if(this.state.userIdNumber.trim().length<13){
+                                if(this.state.userIdNumber.replace(/ /g,'').length<13){
                                     this.setState({idNumberError:true})
                                 }else{
                                     this.setState({idNumberError:false})
