@@ -122,7 +122,7 @@ const styles={
     },
     frontCardContainerStyle:{
         borderRadius: 15,
-        borderStyle: "solid",
+        //borderStyle: "solid",
         borderWidth: 1,
         borderColor: "#dddddd",
         justifyContent: 'space-between',

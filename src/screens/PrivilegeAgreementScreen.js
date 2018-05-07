@@ -24,21 +24,41 @@ export default class PrivilegeAgreementScreen extends Component{
         //return <Text style={styles.agreementTitleTextStyle}>{this.props.data.content2}</Text>
     }
     async redeem(){
-        let response2 = await post(`redeem`,{"privilege_id":this.props.data.id});
-        console.log(JSON.stringify(response2));
-        if(response2){
-            this.props.navigator.showModal({
-                screen: 'mti.PrivilegeQrCodeScreen', // unique ID registered with Navigation.registerScreen
+        if(this.props.data.type=='BARTER'){
+           
+            setTimeout(()=>{
+                this.props.navigator.dismissModal({
+                    animationType: 'none' // 'none' / 'slide-down' , dismiss animation for the modal (optional, default 'slide-down')
+                });
+            },500)
+
+            this.props.navigator.push({
+                screen: "mti.MyCardScreen", // unique ID registered with Navigation.registerScreen
+                passProps:{navigator:this.props.navigator},
                 title: undefined, // navigation bar title of the pushed screen (optional)
                 titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
-                passProps: {navigator:this.props.navigator,redeem:response2,data:this.props.data,item:this.props.item}, // Object that will be passed as props to the pushed screen (optional)
-                animated: true, // does the push have transition animation or does it happen immediately (optional)
+                animated: false, // does the push have transition animation or does it happen immediately (optional)
                 backButtonTitle: undefined, // override the back button title (optional)
                 backButtonHidden: false, // hide the back button altogether (optional)
-                
             })
+        }else{
+            let response2 = await post(`redeem`,{"privilege_id":this.props.data.id});
+            console.log(JSON.stringify(response2));
+    
+            if(response2){
+                this.props.navigator.showModal({
+                    screen: 'mti.PrivilegeQrCodeScreen', // unique ID registered with Navigation.registerScreen
+                    title: undefined, // navigation bar title of the pushed screen (optional)
+                    titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
+                    passProps: {navigator:this.props.navigator,redeem:response2,data:this.props.data,item:this.props.item}, // Object that will be passed as props to the pushed screen (optional)
+                    animated: true, // does the push have transition animation or does it happen immediately (optional)
+                    backButtonTitle: undefined, // override the back button title (optional)
+                    backButtonHidden: false, // hide the back button altogether (optional)
+                    
+                })
+            }
         }
-        console.log(response2);
+   
     }
 
     render(){
