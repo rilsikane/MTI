@@ -107,7 +107,7 @@ export default class SettingScreen extends Component{
         return(
             <View style={styles.settingScreenContainerStyle}>
                 <Headers
-                    leftIconName='menu'
+                    leftIconName='back'
                     headerTitleText='ตั้งค่า'
                     rightIconName='iconBell'
                 />

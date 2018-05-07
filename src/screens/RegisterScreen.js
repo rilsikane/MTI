@@ -56,7 +56,7 @@ export default class RegisterScreen extends Component{
                 this.setState({pageNumber:2,firstLogon:true});
                 this._pages.scrollToPage(1);
                 this.setState({isLoading:false});
-            },1500)
+            },2500)
          
         }
     }

@@ -184,7 +184,7 @@ class RegisterStep1 extends Component{
                             isVisible={this.state.isDateTimePickerVisible}
                             onConfirm={this._handleDatePicked}
                             onCancel={this._hideDateTimePicker}
-                            date={moment().set('year', 1990).toDate()}
+                            date={this.state.userBirthDate||moment().set('year', 1990).toDate()}
                             maximumDate={new Date()}
                         />
                     </View>

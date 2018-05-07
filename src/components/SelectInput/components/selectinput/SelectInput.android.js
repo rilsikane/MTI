@@ -35,9 +35,14 @@ class SelectInput extends AbstractSelectInput {
           mode={props.mode}
           selectedValue={state.selectedValue}
           onValueChange={this.onSubmit.bind(this)}
-          style={props.labelStyle || styles.defaultLabelStyle}
+          style={(props.value != '' ? props.labelStyle:{color:'gray',fontSize:20})}
           enabled={this.props.enabled}
           >
+            <Picker.Item
+                  key={""}
+                  value={undefined}
+                  label={props.placeholder}
+            />
             {props.options.map((option, index) => {
               return (
                 <Picker.Item

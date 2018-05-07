@@ -116,7 +116,7 @@ export default class UserProfileScreen extends Component{
 
     async init(){
         this.setState({isLoading:true});
-        let user = await store.get("user");
+        let user = await get("me",{});
         console.log(user)
         if(!user){
             user = {};

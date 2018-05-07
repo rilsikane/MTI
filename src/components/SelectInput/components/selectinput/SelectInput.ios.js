@@ -50,7 +50,7 @@ class SelectInput extends AbstractSelectInput {
             allowFontScaling={false}
             numberOfLines={1}
             >
-            {this.getValueLabel(props.placeholder)}
+            {props.value ? this.getValueLabel():props.placeholder}
           </Text>
 
           <PickerKeyboard
