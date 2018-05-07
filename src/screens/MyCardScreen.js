@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Text,View,Image} from 'react-native';
+import {Text,View,Image,ImageBackground} from 'react-native';
 import PropTypes from "prop-types";
 import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
 import Spinner from 'react-native-loading-spinner-overlay';
@@ -56,19 +56,19 @@ export default class MyCardScreen extends Component{
                     headerTitleText='My Card'
                     rightIconName='iconBell'
                 />
-                <View style={styles.myCardContainerStyle}>
+                {!this.state.isLoading  && <View style={styles.myCardContainerStyle}>
                     <UserShortDetailCard
                         showQr={false}
                         navigator={this.props.navigator}
                     />
                     <View style={styles.myCardSectionStyle}>
-                        <View style={styles.frontCardContainerStyle}>
-                            <Text style={styles.myCardTitleTextStyle}>MTI MY CARD</Text>
-                            <View style={styles.myCardDetailTextContainerStyle}>
-                                <Text style={styles.userNameTextStyle}>{`${this.state.userDetail.name} ${this.state.userDetail.surname}`}</Text>
-                                {!this.state.isLoading  && <Text style={styles.cardIdTextStyle}>รหัส {this.state.userDetail.card.code}</Text>}
-                            </View>
-                        </View>
+                            <ImageBackground style={styles.cardImgStyle} imageStyle={styles.frontCardContainerStyle}  source={{uri:this.state.userDetail.card.design.front}} >
+                                <Text style={styles.myCardTitleTextStyle}>MTI MY CARD</Text>
+                                <View style={styles.myCardDetailTextContainerStyle}>
+                                    <Text style={styles.userNameTextStyle}>{`${this.state.userDetail.name} ${this.state.userDetail.surname}`}</Text>
+                                    {!this.state.isLoading  && <Text style={styles.cardIdTextStyle}>รหัส {this.state.userDetail.card.code}</Text>}
+                                </View>
+                            </ImageBackground>
                         <View style={styles.checkBoxContainerStyle}>
                             <Text style={styles.checkTitleTextStyle}>ข้อมูลหลังบัตร :</Text>
                             <CheckBoxes
@@ -92,16 +92,16 @@ export default class MyCardScreen extends Component{
                                 containerStyle={styles.checkBoxStyle}
                             />
                         </View>
-                        <View style={styles.backCardContainerStyle}>
+                        <ImageBackground style={styles.cardImgStyle} imageStyle={styles.backCardContainerStyle}  source={{uri:this.state.userDetail.card.design.rear}} >
                             {!this.state.isLoading  && <Image
                                 source={{uri:this.state.qrChecked?this.state.userDetail.card.qrcode:this.state.userDetail.card.barcode}}
                                 resizeMode='contain'
                                 style={styles.qrImageStyle}
                             />}
                             <Text style={styles.myCardTitleTextStyle}>MTI MY CARD</Text>
-                        </View>
+                        </ImageBackground>
                     </View>
-                </View>
+                </View>}
                 {this.state.isLoading && <Spinner visible={this.state.isLoading}  textStyle={{color: '#FFF'}} />}
             </View>
         )
@@ -121,27 +121,25 @@ const styles={
         paddingTop: responsiveHeight(3),
     },
     frontCardContainerStyle:{
-        height: responsiveHeight(25),
-        width: responsiveWidth(85),
         borderRadius: 15,
-        backgroundColor: "#f6f6f6",
         borderStyle: "solid",
         borderWidth: 1,
         borderColor: "#dddddd",
         justifyContent: 'space-between',
     },
+    cardImgStyle:{
+        height: responsiveHeight(28),
+        width: responsiveWidth(85),
+    },
     qrImageStyle:{
         height: responsiveHeight(14.43),
         width: responsiveHeight(30),
         alignSelf: 'center',
-        marginTop: responsiveHeight(3),
+        marginTop: responsiveHeight(4),
     },
     backCardContainerStyle:{
-        height: responsiveHeight(25),
-        width: responsiveWidth(85),
         borderRadius: 15,
         backgroundColor: "#f6f6f6",
-        borderStyle: "solid",
         borderWidth: 1,
         borderColor: "#dddddd",
         justifyContent: 'space-around',
@@ -149,20 +147,21 @@ const styles={
     myCardTitleTextStyle:{
         letterSpacing: 0,
         textAlign: "center",
-        color: "rgba(145, 145, 149, 0.27)",
+        color: "transparent",
         //opacity: 0.27,
         fontSize: responsiveFontSize(7.5),
     },
     myCardDetailTextContainerStyle:{
         marginLeft: responsiveWidth(7),
         marginBottom: responsiveWidth(7),
+        marginTop: responsiveHeight(8),
     },
     userNameTextStyle:{
-        color: "#1595d3",
+        color: "#FFF",
         fontSize: responsiveFontSize(3),
     },
     cardIdTextStyle:{
-        color: "#1595d3",
+        color: "#FFF",
         fontSize: responsiveFontSize(2.2),
     },
     checkBoxContainerStyle:{

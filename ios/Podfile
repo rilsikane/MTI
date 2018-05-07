@@ -48,10 +48,6 @@ target 'MTI' do
 
   pod 'TouchID', :path => '../node_modules/react-native-touch-id'
 
-  pod 'ReactNativeFabric', :path => '../node_modules/react-native-fabric'
-
-  pod 'react-native-fast-image', :path => '../node_modules/react-native-fast-image'
-
 end
 
 post_install do |installer|
