@@ -157,7 +157,7 @@ export default class UserProfileScreen extends Component{
             userGender:user.gender,
             userCareer:user.career,
             userEducation:user.education,
-            userIncome:undefined,
+            userIncome:user.income,
             userLifeStyle:user.lifestyle.map(data=>data.title),
             orgUserLifeStyleId: user.lifestyle.map(data=>data.id),
             isLoading: false,
