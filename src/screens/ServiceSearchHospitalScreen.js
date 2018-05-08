@@ -27,6 +27,7 @@ export default class ServiceSearchHospitalScreen extends Component{
         }
         this._onSearchIconPress = this._onSearchIconPress.bind(this);
         this.onNearByPress = this.onNearByPress.bind(this);
+        this.renderMapCallout = this.renderMapCallout.bind(this);
     }
 
     async componentDidMount(){
@@ -60,7 +61,7 @@ export default class ServiceSearchHospitalScreen extends Component{
                         ]
                     )
                 },
-                {maximumAge:60000, timeout:20000, enableHighAccuracy:false },
+                {enableHighAccuracy: true,timeout: 20000,maxAge: 0,istanceFilter: 1 },
               );
 
         }else{

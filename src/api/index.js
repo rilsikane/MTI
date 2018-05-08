@@ -319,13 +319,23 @@ export async function get(path,param){
       }catch(e){
         app.isLoading = false;
         if(e && "ECONNABORTED"!=e.code){
-            setTimeout(()=>{Alert.alert(
-            'แจ้งเตือน',
-            (e.response && e.response.data) ? e.response.data.message:'ไม่สามารถเชื่อมต่อกับ Server ได้',
-            [
-            {text: 'OK', onPress: () => console.log('OK Pressed!')},
-            ]
-            ),200});
+            if(e.response && e.response.data && "001"==e.response.data.error_code){
+                Alert.alert(
+                    'แจ้งเตือน',
+                    e.response.data ?  e.response.data.message :e.response.message,
+                    [
+                    {text: 'OK', onPress: () => app.logout()},
+                    ]
+                )
+            }else{
+                setTimeout(()=>{Alert.alert(
+                'แจ้งเตือน',
+                (e.response && e.response.data) ? e.response.data.message:'ไม่สามารถเชื่อมต่อกับ Server ได้',
+                [
+                {text: 'OK', onPress: () => console.log('OK Pressed!')},
+                ]
+                ),200});
+            }
         }else{
             setTimeout(()=>{Alert.alert(
                 'แจ้งเตือน',
