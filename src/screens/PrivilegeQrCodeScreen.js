@@ -157,7 +157,7 @@ const styles={
         letterSpacing: 0,
         textAlign: "center",
         color: "#919195",
-        fontSize: responsiveFontSize(2.15),
+        fontSize: responsiveFontSize(1.9),
         marginLeft: responsiveWidth(11),
         marginRight: responsiveWidth(11),
     },

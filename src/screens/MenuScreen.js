@@ -180,6 +180,8 @@ export default class MenuScreen extends Component{
                             </TouchableOpacity>
                         </View>}
                         <View style={styles.subBorderStyle}/>
+                        <View style={{flex: 1}}/>
+                        <View style={styles.subBorderStyle}/>
                         <View style={styles.menuSectionStyle}>        
                             <TouchableOpacity onPress={()=>{
                                  Alert.alert(
@@ -284,7 +286,7 @@ const styles={
         paddingRight: responsiveWidth(5)
     },
     menuSectionStyle:{
-        flex: 1,
+        //flex: 1,
         justifyContent: 'center',
     },
     menuSubSectionStyle:{
