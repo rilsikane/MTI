@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Text,View,Image,ScrollView,TouchableOpacity,FlatList} from 'react-native';
+import {Text,View,Image,ScrollView,TouchableOpacity,FlatList,ImageBackground} from 'react-native';
 import PropTypes from "prop-types";
 import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
 
@@ -8,6 +8,7 @@ import {EventButtonGroup} from '../components/EventButtonGroup';
 import {MainSubmitButton} from '../components/MainSubmitButton';
 import {CommentCard} from '../components/CommentCard';
 import {DashboardActivityCard} from './../components/DashboardActivityCard';
+import {ImageListPopup} from '../components/ImageListPopup';
 
 export default class ActivityOnNextDetailScreen extends Component{
 
@@ -15,6 +16,7 @@ export default class ActivityOnNextDetailScreen extends Component{
         super(props)
         this.state={
             showComment: true,
+            showMoreImage: false,
         }
     }
 
@@ -59,6 +61,37 @@ export default class ActivityOnNextDetailScreen extends Component{
 
     _keyExtractor = (item, index) => index.toString();
 
+    
+    renderMoreImagePopup(){
+        const imageUriList=[
+            {
+                uri: require('../source/images/latestActImg.png')
+            },
+            {
+                uri: require('../source/images/activityImg04.png')
+            },
+            {
+                uri: require('../source/images/activityImg04.png')
+            },
+            {
+                uri: require('../source/images/activityImg04.png')
+            },
+            {
+                uri: require('../source/images/activityImg04.png')
+            }
+        ]
+        return(
+            <ImageListPopup
+                data={imageUriList}
+                show={this.state.showMoreImage}
+                onClose={()=>this.setState({showMoreImage: false})}
+                onDismissed={()=>this.setState({showMoreImage: false})}
+                title={'Cupcake Workshops & Master classes'}
+            />
+        )
+
+    }
+
     render(){
         let comment = [
             {
@@ -79,12 +112,18 @@ export default class ActivityOnNextDetailScreen extends Component{
                 <ScrollView style={{flex: 1,}}>
                     <View style={styles.activityDetailContainerStyle}>
                         <View style={styles.activityBannerImageContainerStyle}>
-                            <Image
+                            <ImageBackground
                                 source={require('../source/images/newEventImg.png')}
                                 //resizeMode='stretch'
                                 borderRadius={3}
                                 style={styles.bannerImageStyle}
-                            />
+                            >
+                                <View style={styles.morePictureContainerStyle}/>
+                                <TouchableOpacity style={styles.morePictureTextContainerStyle} onPress={()=>this.setState({showMoreImage: true})}>
+                                    <Text style={styles.moreTextNumberStyle}>+ 5</Text>
+                                    <Text style={styles.moreTextStyle}>ชมภาพเพิ่มเติม</Text>
+                                </TouchableOpacity>
+                            </ImageBackground>
                         </View>
                         <View style={styles.activityContentContainerStyle}>
                             <Text style={styles.activityDescriptionTextStyle}>Chef for a Day</Text>
@@ -128,6 +167,7 @@ export default class ActivityOnNextDetailScreen extends Component{
                         </View>
                     </View>
                 </ScrollView>
+                {this.renderMoreImagePopup()}
             </View>
         )
     }
@@ -154,6 +194,8 @@ const styles={
     bannerImageStyle:{
         height: responsiveHeight(23.23),
         width: responsiveWidth(90),
+        alignItems: 'flex-end',
+        justifyContent: 'flex-end'
     },
     activityContentContainerStyle:{
         marginLeft: responsiveWidth(5),
@@ -232,4 +274,25 @@ const styles={
         width: responsiveWidth(90),
         marginBottom: responsiveHeight(2),
     },
+    morePictureContainerStyle:{
+        height: responsiveHeight(7),
+        width: responsiveWidth(20),
+        opacity: 0.6,
+        backgroundColor: '#000',
+    },
+    morePictureTextContainerStyle:{
+        width: responsiveWidth(20),
+        height: responsiveHeight(7),
+        position: 'absolute',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    moreTextNumberStyle:{
+        color: '#FFF',
+        fontSize: responsiveFontSize(3.5),
+    },
+    moreTextStyle:{
+        color: '#FFF',
+        fontSize: responsiveFontSize(1.8),
+    }
 }
