@@ -97,6 +97,7 @@ export default class ServiceSearchHospitalScreen extends Component{
                                 longitude: parseFloat(this.props.userLongitude),
                             }}
                             image={require('../source/icons/current.png')}
+                            onPress={()=>this.onMarkerPress(this.props.data)}
                     />}
                     {this.props.data.map((data)=>
                         <Marker
@@ -134,6 +135,7 @@ export default class ServiceSearchHospitalScreen extends Component{
             <View style={styles.calloutContainerStyle}>
                 <MapCalloutPopup
                     data={this.state.calloutData}
+                    userLocation={{lat:this.state.userLatitude,long:this.state.userLongitude}}
                     show={this.state.showCallout}
                     onClose={()=>this.setState({showCallout: false})}
                 />
@@ -184,8 +186,8 @@ export default class ServiceSearchHospitalScreen extends Component{
                         data: nearBy.data,
                         isMap: true,
                         nearBy:true,
-                        userLatitude:this.state.userLatitude,
-                        userLongitude:this.state.userLongitude
+                        userLatitude: this.state.userLatitude,
+                        userLongitude: this.state.userLongitude,
                     }, // Object that will be passed as props to the pushed screen (optional)
                     animated: true, // does the push have transition animation or does it happen immediately (optional)
                     backButtonTitle: undefined, // override the back button title (optional)

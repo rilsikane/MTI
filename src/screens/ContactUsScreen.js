@@ -1,7 +1,8 @@
 import React,{Component} from 'react';
-import {Text,View,Image,TouchableOpacity,Linking} from 'react-native';
+import {Text,View,Image,TouchableOpacity,Linking,Alert} from 'react-native';
 import PropTypes from "prop-types";
 import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 import {Headers} from '../components/Headers';
 import {MainSubmitButton} from '../components/MainSubmitButton';
@@ -11,29 +12,46 @@ export default class ContactUsScreen extends Component{
 
     constructor(props){
         super(props)
+        this.state={
+            isLoading: false,
+            userLatitude: '',
+            userLongitude: '',
+        }
+        this.getUserLocation = this.getUserLocation.bind(this);
     }
 
-    gotoBranchSearch(isMap){
+    async gotoBranchSearch(isMap,title){
         if(isMap){
-            this.props.navigator.showModal({
-                screen: 'mti.ServiceSearchBranchScreen', // unique ID registered with Navigation.registerScreen
-                title: undefined, // navigation bar title of the pushed screen (optional)
-                titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
-                passProps: {
-                    isMap: isMap,
-                    isDirect: true,
-                    data:{
-                        id: '1234',
-                        coordinate:{latitude: 13.7864983,longitude: 100.57462710000004},
-                    },
-                    headerTitleText: 'ติดต่อเมืองไทยประกันภัย',
-                    navigator:this.props.navigator,
-                }, // Object that will be passed as props to the pushed screen (optional)
-                animated: true, // does the push have transition animation or does it happen immediately (optional)
-                backButtonTitle: undefined, // override the back button title (optional)
-                backButtonHidden: false, // hide the back button altogether (optional)
-                
-            })
+            this.setState({isLoading: true})
+            this.getUserLocation()
+            if(this.state.userLatitude!=''&&this.state.userLongitude!=''){
+                this.props.navigator.showModal({
+                    screen: 'mti.ServiceSearchBranchScreen', // unique ID registered with Navigation.registerScreen
+                    title: undefined, // navigation bar title of the pushed screen (optional)
+                    titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
+                    passProps: {
+                        isMap: isMap,
+                        isDirect: true,
+                        data:{
+                            id: '1234',
+                            coordinate:{latitude: 13.7864983,longitude: 100.57462710000004},
+                            title: title,
+                            address: '252 ถ.รัชดาภิเษก แขวงห้วยขวาง เขตห้วยขวาง กรุงเทพฯ  103101',
+                            tel: '1484',
+                        },
+                        userLocation:{
+                            lat: this.state.userLatitude,
+                            long: this.state.userLongitude,
+                        },
+                        headerTitleText: title,
+                        navigator:this.props.navigator,
+                    }, // Object that will be passed as props to the pushed screen (optional)
+                    animated: true, // does the push have transition animation or does it happen immediately (optional)
+                    backButtonTitle: undefined, // override the back button title (optional)
+                    backButtonHidden: false, // hide the back button altogether (optional)
+                    
+                })
+            }
         }else{
             this.props.navigator.push({
                 screen: 'mti.ServiceSearchBranchScreen', // unique ID registered with Navigation.registerScreen
@@ -44,7 +62,31 @@ export default class ContactUsScreen extends Component{
                 backButtonTitle: undefined, // override the back button title (optional)
                 backButtonHidden: false, // hide the back button altogether (optional)
             })
-        }
+        }   
+    }
+
+    getUserLocation(){
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+              this.setState({
+                userLatitude: position.coords.latitude,
+                userLongitude: position.coords.longitude,
+                isLoading: false,
+              })
+            },
+            (error) => {
+                Alert.alert(
+                    'แจ้งเตือน',
+                    error.message,
+                    [
+                    {text: 'OK', onPress: () => {this.setState({
+                        isLoading: false,
+                    })}},
+                    ]
+                )
+            },
+            {maximumAge:60000, timeout:20000, enableHighAccuracy:false },
+        )
     }
 
     render(){
@@ -81,7 +123,7 @@ export default class ContactUsScreen extends Component{
                                         style={styles.iconImageStyle}
                                     />
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={()=>this.gotoBranchSearch(true)}>
+                                <TouchableOpacity onPress={()=>this.gotoBranchSearch(true,'ติดต่อเมืองไทยประกันภัย')}>
                                     <Image
                                         source={require('../source/icons/iconMapMarker01.png')}
                                         resizeMode='contain'
@@ -113,7 +155,7 @@ export default class ContactUsScreen extends Component{
                                         style={styles.iconImageStyle}
                                     />
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={()=>this.gotoBranchSearch(true)}>
+                                <TouchableOpacity onPress={()=>this.gotoBranchSearch(true,'ติดต่อแผนกลูกค้าสัมพันธ์')}>
                                     <Image
                                         source={require('../source/icons/iconMapMarker01.png')}
                                         resizeMode='contain'
@@ -147,6 +189,7 @@ export default class ContactUsScreen extends Component{
                         />
                     </TouchableOpacity>
                 </View>
+                {this.state.isLoading && <Spinner visible={this.state.isLoading}  textStyle={{color: '#FFF'}} />}
             </View>
         )
     }
