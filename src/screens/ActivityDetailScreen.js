@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Text,View,Image,ScrollView,TouchableOpacity} from 'react-native';
+import {Text,View,Image,ScrollView,TouchableOpacity,ImageBackground} from 'react-native';
 import PropTypes from "prop-types";
 import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
 
@@ -8,6 +8,7 @@ import {EventButtonGroup} from '../components/EventButtonGroup';
 import {MainSubmitButton} from '../components/MainSubmitButton';
 import {CommentCard} from '../components/CommentCard';
 import {PastEventCard} from '../components/PastEventCard';
+import {ImageListPopup} from '../components/ImageListPopup';
 
 export default class ActivityDetailScreen extends Component{
 
@@ -15,6 +16,7 @@ export default class ActivityDetailScreen extends Component{
         super(props)
         this.state={
             showComment: true,
+            showMoreImage: false,
         }
     }
 
@@ -43,6 +45,36 @@ export default class ActivityDetailScreen extends Component{
         )
     }
 
+    renderMoreImagePopup(){
+        const imageUriList=[
+            {
+                uri: require('../source/images/latestActImg.png')
+            },
+            {
+                uri: require('../source/images/activityImg04.png')
+            },
+            {
+                uri: require('../source/images/activityImg04.png')
+            },
+            {
+                uri: require('../source/images/activityImg04.png')
+            },
+            {
+                uri: require('../source/images/activityImg04.png')
+            }
+        ]
+        return(
+            <ImageListPopup
+                data={imageUriList}
+                show={this.state.showMoreImage}
+                onClose={()=>this.setState({showMoreImage: false})}
+                onDismissed={()=>this.setState({showMoreImage: false})}
+                title={'MTI 8 Anniversary "ยิ้มรับความสำเร็จ..ฉลอง ก้าวแห่งความภาคภูมิใจ"'}
+            />
+        )
+
+    }
+
     render(){
         let comment = [
             {
@@ -62,12 +94,18 @@ export default class ActivityDetailScreen extends Component{
                 <ScrollView style={{flex: 1,}}>
                     <View style={styles.activityDetailContainerStyle}>
                         <View style={styles.activityBannerImageContainerStyle}>
-                            <Image
+                            <ImageBackground
                                 source={require('../source/images/latestActImg.png')}
                                 //resizeMode='stretch'
                                 borderRadius={3}
                                 style={styles.bannerImageStyle}
-                            />
+                            >
+                                <View style={styles.morePictureContainerStyle}/>
+                                <TouchableOpacity style={styles.morePictureTextContainerStyle} onPress={()=>this.setState({showMoreImage: true})}>
+                                    <Text style={styles.moreTextNumberStyle}>+ 5</Text>
+                                    <Text style={styles.moreTextStyle}>ชมภาพเพิ่มเติม</Text>
+                                </TouchableOpacity>
+                            </ImageBackground>
                         </View>
                         <View style={styles.activityContentContainerStyle}>
                             <Text style={styles.activityTitleTextStyle}>MTI 8 Anniversary "ยิ้มรับความสำเร็จ..ฉลอง ก้าวแห่งความภาคภูมิใจ"</Text>
@@ -110,6 +148,7 @@ export default class ActivityDetailScreen extends Component{
                         </View>
                     </View>
                 </ScrollView>
+                {this.renderMoreImagePopup()}
             </View>
         )
     }
@@ -135,6 +174,8 @@ const styles={
     bannerImageStyle:{
         height: responsiveHeight(23.23),
         width: responsiveWidth(90),
+        alignItems: 'flex-end',
+        justifyContent: 'flex-end'
     },
     activityContentContainerStyle:{
         marginLeft: responsiveWidth(5),
@@ -202,5 +243,26 @@ const styles={
     otherActivityListContainerStyle:{
         flex: 1,
         marginBottom: responsiveHeight(2),
+    },
+    morePictureContainerStyle:{
+        height: responsiveHeight(7),
+        width: responsiveWidth(20),
+        opacity: 0.6,
+        backgroundColor: '#000',
+    },
+    morePictureTextContainerStyle:{
+        width: responsiveWidth(20),
+        height: responsiveHeight(7),
+        position: 'absolute',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    moreTextNumberStyle:{
+        color: '#FFF',
+        fontSize: responsiveFontSize(3.5),
+    },
+    moreTextStyle:{
+        color: '#FFF',
+        fontSize: responsiveFontSize(1.8),
     }
 }
