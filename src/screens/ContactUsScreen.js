@@ -34,9 +34,9 @@ export default class ContactUsScreen extends Component{
                         isDirect: true,
                         data:{
                             id: '1234',
-                            coordinate:{latitude: 13.7864983,longitude: 100.57462710000004},
+                            coordinate:{latitude: 13.787275,longitude: 100.574589},
                             title: title,
-                            address: '252 ถ.รัชดาภิเษก แขวงห้วยขวาง เขตห้วยขวาง กรุงเทพฯ  103101',
+                            address: '252 ถ.รัชดาภิเษก แขวงห้วยขวาง เขตห้วยขวาง กรุงเทพฯ  10310',
                             tel: '1484',
                         },
                         userLocation:{

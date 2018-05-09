@@ -45,7 +45,7 @@ export default class ServiceScreen extends Component{
             },
             {
                 iconUri: require('../source/icons/iconWork01.png'),
-                title: 'ค้นหาศูนย์และอู่รับงานบริษัท'
+                title: 'ค้นหาอู่และศูนย์'
             },
             {
                 iconUri: require('../source/icons/iconQuestion01.png'),
