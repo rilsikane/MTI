@@ -105,6 +105,7 @@ class ServiceListCard extends Component{
                     data={this.props.data}
                     keyExtractor={this._keyExtractor}
                     renderItem={this._renderItem}
+                    style={{flexGrow: 0}}
                 />
             </View>
         )

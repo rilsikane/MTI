@@ -16,12 +16,11 @@ class CheckBoxes extends Component{
         let checkBoxTitleText = this.props.checkBoxTitleText
         if(textUnderLine){
             return(
-                <View style={styles.textUnderLineContainerStyle}>
+                <TouchableOpacity onPress={this.props.onHyperLinkPress} style={styles.textUnderLineContainerStyle}>
                     <Text style={this.props.checkBoxTextStyle}>{checkBoxTitleText.split(' ')[0]} </Text>
-                    <TouchableOpacity onPress={this.props.onHyperLinkPress}>
+                   
                         <Text style={[this.props.checkBoxTextStyle,styles.textUnderLineStyle]}>{checkBoxTitleText.split(' ')[1]}</Text>
-                    </TouchableOpacity>
-                </View>
+                </TouchableOpacity>
             )
         }else{
             return(

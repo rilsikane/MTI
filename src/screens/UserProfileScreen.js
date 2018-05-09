@@ -526,14 +526,14 @@ export default class UserProfileScreen extends Component{
             }
             else {
               const {originalRotation } = response;
-              let rotation = 0
-              if ( originalRotation === 90 ) {
-                rotation = 90
-              } else if ( originalRotation === 270 ) {
-                rotation = -90
-              }
+            //   let rotation = 0
+            //   if ( originalRotation === 90 ) {
+            //     rotation = 90
+            //   } else if ( originalRotation === 270 ) {
+            //     rotation = -90
+            //   }
       
-              const fileResize = await ImageResizer.createResizedImage(response.uri, 720, 960, "JPEG",60,rotation);
+              const fileResize = await ImageResizer.createResizedImage(response.uri, 720, 960, "JPEG",60,originalRotation);
               if(fileResize){
                 let base64Img = await RNFS.readFile(fileResize.uri, "base64")  
                 let success = await RNFS.unlink(fileResize.uri)

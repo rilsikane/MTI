@@ -103,8 +103,8 @@ export default class ServiceSearchCorpCenterScreen extends Component{
                             identifier={data.id}
                             key={data.id}
                             coordinate={{
-                                latitude: data.latitude?parseFloat(data.latitude):13.7864983,
-                                longitude: data.longtitude?parseFloat(data.longtitude):100.57462710000004
+                                latitude: data.latitude?parseFloat(data.latitude):13.787275,
+                                longitude: data.longtitude?parseFloat(data.longtitude):100.574589
                             }}
                             image={require('../source/icons/iconMapMarker.png')}
                             onPress={()=>this.onMarkerPress(data)}
@@ -113,12 +113,12 @@ export default class ServiceSearchCorpCenterScreen extends Component{
                 </MapView>
             )
         }else{
-            return(
+            return!this.state.isLoading ?(
                 <ServiceListCard
                     data={this.state.serviceList}
                     navigator={this.props.navigator}
                 />
-            )
+            ):null
         }
     }
 
@@ -160,7 +160,7 @@ export default class ServiceSearchCorpCenterScreen extends Component{
     async onNearByPress(){
         this.setState({isLoading:true});
         let nearBy = await getBasic(`services?nearby=y&lat=${this.state.userLatitude}&lng=${this.state.userLongitude}&filter_type_id=2&page=1&pagesize=10`,{});
-        //let nearBy = await getBasic(`services?nearby=y&lat=13.7864983&lng=100.57462710000004&filter_type_id=2&page=1&pagesize=10`,{});
+        //let nearBy = await getBasic(`services?nearby=y&lat=13.787275&lng=100.574589&filter_type_id=2&page=1&pagesize=10`,{});
         if(!this.props.isMap){
             this.setState({isLoading:false});
             setTimeout(()=>{

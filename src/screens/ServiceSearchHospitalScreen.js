@@ -105,8 +105,8 @@ export default class ServiceSearchHospitalScreen extends Component{
                             identifier={data.id}
                             key={data.id}
                             coordinate={{
-                                latitude: data.latitude?parseFloat(data.latitude):13.7864983,
-                                longitude: data.longtitude?parseFloat(data.longtitude):100.57462710000004
+                                latitude: data.latitude?parseFloat(data.latitude):13.787275,
+                                longitude: data.longtitude?parseFloat(data.longtitude):100.574589
                             }}
                             image={require('../source/icons/iconMapMarker.png')}
                             onPress={()=>this.onMarkerPress(data)}
@@ -115,12 +115,12 @@ export default class ServiceSearchHospitalScreen extends Component{
                 </MapView>
             )
         }else{
-            return(
+            return !this.state.isLoading ?(
                 <ServiceListCard
                     data={this.state.serviceList}
                     navigator={this.props.navigator}
                 />
-            )
+            ):null
         }
     }
 
@@ -224,11 +224,11 @@ export default class ServiceSearchHospitalScreen extends Component{
                         onChangeText={(searchValue)=>this.setState({searchValue})}
                         onSearchIconPress={this._onSearchIconPress}
                         onPress={this.onNearByPress}
-                        placeholder='ค้นหาโรงพบาบาลในพื้นที่ที่คุณต้องการ'
+                        placeholder='ค้นหาโรงพยาบาลในพื้นที่ที่คุณต้องการ'
                     />
                 }
                 <View style={styles.serviceSearchHospitalContainerStyle}>
-                    {this.renderContent()}
+                    {!this.state.isLoading && this.renderContent()}
                 </View>
                 {this.state.isLoading && <Spinner visible={this.state.isLoading}  textStyle={{color: '#FFF'}} />}
                 {this.props.isMap&&this.renderMapCallout()}
