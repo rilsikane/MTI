@@ -20,6 +20,8 @@ export default class NewPasswordScreen extends Component{
             confirmNewPassword: '',
             errorPassowrd:false
         }
+        this.focusNextField = this.focusNextField.bind(this); 
+        this.inputs = {};
     }
 
     async onSubmitButtonPress(){
@@ -68,6 +70,10 @@ export default class NewPasswordScreen extends Component{
 
     }
 
+    focusNextField(key){
+        this.inputs[key].focus();
+    }
+
     render(){
         return(
             <View style={styles.newPasswordScreenContainerStyle}>
@@ -96,9 +102,19 @@ export default class NewPasswordScreen extends Component{
                         secureTextEntry
                         onEndEditing={this.onPasswordChange.bind(this)}
                         maxLength={16}
+                        blurOnSubmit={ false }
+                        onSubmitEditing={() => {
+                            setTimeout(()=>{
+                            this.focusNextField('confirmPass');
+                            },200);
+                        }}
+                        returnKeyType = {"next"}
                     />
                     {this.state.errorPassowrd && <Text style={styles.errorMsg}>รหัสผ่านไม่ถูกรูปแบบ</Text>}
                     <TextInputIcon
+                        refs={ input => {
+                            this.inputs['confirmPass'] = input;
+                        }}
                         value={this.state.confirmNewPassword}
                         onChangeText={(confirmNewPassword)=>this.setState({confirmNewPassword})}
                         leftLabelText='ยืนยันรหัสผ่านใหม่'
@@ -108,9 +124,10 @@ export default class NewPasswordScreen extends Component{
                         thirdFlex={thirdFlex}
                         secureTextEntry
                         maxLength={16}
+                        blurOnSubmit={true}
                     />
                      <Text style={styles.errorTextStyle}>{this.state.errorText}</Text>
-                     <Text style={styles.directionTextStyle}>รหัสผ่านจะต้องมี 8 หลัก ประกอบไปด้วยตัวอักษรภาษาอังกฤษพิมพ์ใหญ่และตัวพิมพ์เล็กและตัวเลข</Text>
+                     <Text style={styles.directionTextStyle}>กำหนดรหัสผ่านต้องมีอักขระอย่างน้อย 8 ตัวและประกอบไปด้วย ตัวอักษร{'\n'}ภาษาอังกฤษ พิมพ์เล็ก พิมพ์ใหญ่ และตัวเลข</Text>
                      {!this.state.errorPassowrd && this.state.newPassword!=''&& this.state.confirmNewPassword!='' 
                      &&<MainSubmitButton
                         buttonTitleText='ตกลง'

@@ -27,6 +27,8 @@ class ReqOtpScreen extends Component{
         }
         this.reqOtp = this.reqOtp.bind(this);
         this.requestContact = this.requestContact.bind(this);
+        this.inputs = {};
+        this.focusNextField = this.focusNextField.bind(this);
     }
     componentDidMount(){
       this.setState({tel:this.props.data.tel});
@@ -83,6 +85,7 @@ class ReqOtpScreen extends Component{
                 contentContainerStyle={{flexGrow:1,}}
                 //style={{flex: 1}}
                 scrollEnabled={true}
+                showsVerticalScrollIndicator={false}
                 >
                     <TouchableOpacity onPress={()=> this.leavingDialog.dismiss()}>
                         <Image
@@ -102,8 +105,17 @@ class ReqOtpScreen extends Component{
                             containerStyle={styles.inputContainerStyle}
                             secondFlex={secondFlex}
                             thirdFlex={thirdFlex}
+                            returnKeyType='next'
+                            onSubmitEditing={() => {
+                                setTimeout(()=>{
+                                this.focusNextField('surname');
+                                },200);
+                            }}
                         />
                         <TextInputIcon
+                            refs={ input => {
+                                this.inputs['surname'] = input;
+                            }}
                             value={this.state.surname}
                             onChangeText={(userLastName)=>this.setState({surname:userLastName})}
                             leftLabelText='นามสกุล'
@@ -111,8 +123,17 @@ class ReqOtpScreen extends Component{
                             containerStyle={styles.inputContainerStyle}
                             secondFlex={secondFlex}
                             thirdFlex={thirdFlex}
+                            returnKeyType='next'
+                            onSubmitEditing={() => {
+                                setTimeout(()=>{
+                                this.focusNextField('phone');
+                                },200);
+                            }}
                         />
                         <TextInputIcon
+                            refs={ input => {
+                                this.inputs['phone'] = input;
+                            }}
                             value={this.state.tel}
                             onChangeText={(userPhone)=>this.setState({tel:userPhone})}
                             leftLabelText='เบอร์โทรศัพท์'
@@ -122,17 +143,26 @@ class ReqOtpScreen extends Component{
                             thirdFlex={thirdFlex}
                             keyboardType='phone-pad'
                             onBlur={()=>{
-                                if(this.state.tel.length<9 && this.state.tel.length>10){
+                                if(this.state.tel.length<9){
                                     this.setState({telErr:true})
                                 }else{
                                     this.setState({telErr:false})
                                 }
                             }}
-                            blurOnSubmit={true}
+                            //blurOnSubmit={true}
                             maxLength={10}
+                            returnKeyType='next'
+                            onSubmitEditing={() => {
+                                setTimeout(()=>{
+                                this.focusNextField('email');
+                                },200);
+                            }}
                         />
                         {this.state.telErr && <Text style={styles.errorMsg}>เบอร์โทรศัพท์ ไม่ถูกต้อง</Text>}
                         <TextInputIcon
+                            refs={ input => {
+                                this.inputs['email'] = input;
+                            }}
                             value={this.state.email}
                             onChangeText={(email)=>this.setState({email:email})}
                             leftLabelText='อีเมล'
@@ -212,6 +242,11 @@ class ReqOtpScreen extends Component{
             return false;
         }
     }
+
+    focusNextField(key){
+        this.inputs[key].focus();
+    }
+
     render(){
         return(
             <View style={styles.registerStep1ContainerStyle}>

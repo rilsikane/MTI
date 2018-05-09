@@ -18,6 +18,7 @@ export default class ActivityDetailScreen extends Component{
             showComment: true,
             showMoreImage: false,
         }
+        this.onMorePicturePress = this.onMorePicturePress.bind(this);
     }
 
     renderOtherActivityList(){
@@ -75,6 +76,20 @@ export default class ActivityDetailScreen extends Component{
 
     }
 
+    onMorePicturePress(){
+        this.props.navigator.push({
+            screen: "mti.ActivityImageListScreen", // unique ID registered with Navigation.registerScreen
+            passProps:{
+                navigator: this.props.navigator
+            },
+            title: undefined, // navigation bar title of the pushed screen (optional)
+            titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
+            animated: false, // does the push have transition animation or does it happen immediately (optional)
+            backButtonTitle: undefined, // override the back button title (optional)
+            backButtonHidden: false, // hide the back button altogether (optional)
+        })
+    }
+
     render(){
         let comment = [
             {
@@ -100,23 +115,31 @@ export default class ActivityDetailScreen extends Component{
                                 borderRadius={3}
                                 style={styles.bannerImageStyle}
                             >
-                                <View style={styles.morePictureContainerStyle}/>
+                                {/* <View style={styles.morePictureContainerStyle}/>
                                 <TouchableOpacity style={styles.morePictureTextContainerStyle} onPress={()=>this.setState({showMoreImage: true})}>
                                     <Text style={styles.moreTextNumberStyle}>+ 5</Text>
                                     <Text style={styles.moreTextStyle}>ชมภาพเพิ่มเติม</Text>
-                                </TouchableOpacity>
+                                </TouchableOpacity> */}
                             </ImageBackground>
                         </View>
                         <View style={styles.activityContentContainerStyle}>
                             <Text style={styles.activityTitleTextStyle}>MTI 8 Anniversary "ยิ้มรับความสำเร็จ..ฉลอง ก้าวแห่งความภาคภูมิใจ"</Text>
                             <Text style={styles.activityDescriptionTextStyle}>เมืองไทยประกันภัยเชิญลูกค้า ร่วมกิจกรรม"เฉลิมฉลองครบรอบ 8 ปี พร้อมก้าวสู่ปีที่ 9 กับเมืองไทยประกันภัย"  โดยนำลูกค้าล่องเรือชมบรรยากาศริมแม่น้ำเจ้าพระยา พร้อมรับประทานอาหารค่ำและชมมินิคอนเสิร์ต จากศิลปินคู่ดูโอ แอน(ธิติมา) - ปิงปอง(ศิรศักดิ์) พร้อมกันนี้ ยังมีกิจกรรมให้ร่วมสนุกกันอย่างสนุกสนานอีกด้วย</Text>
+                            <Text style={styles.activityDateTextStyle}>วันที่ 12 กุมภาพันธ์ 2061</Text>
                             <Image
                                 source={require('../source/images/dotSectionHorizontal.png')}
                                 resizeMode='contain'
                                 style={styles.dotSectionImageStyle}
                             />
                             <View style={styles.eventButtonGroupContainerStyle}>
-                                <Text style={styles.activityDateTextStyle}>วันที่ 12 กุมภาพันธ์ 2061</Text>
+                                <TouchableOpacity style={styles.morePictureContainerStyle} onPress={this.onMorePicturePress}>
+                                    <Image
+                                        source={require('../source/icons/iconAlbum01.png')}
+                                        resizeMode='contain'
+                                        style={styles.albumIconStyle}
+                                    />
+                                    <Text style={styles.activityDateTextStyle}>ดูรูปกิจกรรมนี้</Text>
+                                </TouchableOpacity>
                                 <EventButtonGroup
                                     isFavorite
                                     isShareSelected
@@ -148,7 +171,7 @@ export default class ActivityDetailScreen extends Component{
                         </View>
                     </View>
                 </ScrollView>
-                {this.renderMoreImagePopup()}
+                {/* {this.renderMoreImagePopup()} */}
             </View>
         )
     }
@@ -192,7 +215,8 @@ const styles={
     activityDescriptionTextStyle:{
         fontSize: responsiveFontSize(2.15),
         letterSpacing: 0.28,
-        color: "#919195"
+        color: "#919195",
+        marginBottom: responsiveHeight(1),
     },
     dotSectionImageStyle:{
         width: '100%',
@@ -210,6 +234,9 @@ const styles={
     eventButtonGroupContainerStyle:{
         flexDirection: 'row',
         justifyContent: 'space-between',
+    },
+    albumIconStyle:{
+        height: responsiveHeight(3.16),
     },
     activityDateTextStyle:{
         fontSize: responsiveFontSize(2.15),
@@ -245,10 +272,7 @@ const styles={
         marginBottom: responsiveHeight(2),
     },
     morePictureContainerStyle:{
-        height: responsiveHeight(7),
-        width: responsiveWidth(20),
-        opacity: 0.6,
-        backgroundColor: '#000',
+        flexDirection: 'row'
     },
     morePictureTextContainerStyle:{
         width: responsiveWidth(20),

@@ -119,6 +119,7 @@ export default class LoginScreen extends Component{
 			animated: true, // does the push have transition animation or does it happen immediately (optional)
 			backButtonTitle: undefined, // override the back button title (optional)
             backButtonHidden: false, // hide the back button altogether (optional)
+            passProps:{navigator:this.props.navigator},
             navigatorStyle: {
                 drawUnderStatusBar: true,
                 statusBarColor: 'transparent',
@@ -452,16 +453,16 @@ const styles={
         paddingBottom: responsiveHeight(3),
     },
     touchIdDetailTextStyle:{
-        color: '#9fbfcf',
+        color: '#FFF',
         fontSize: responsiveFontSize(2),
         flex:1,
-        textAlign:'center'
-
+        textAlign:'center',
+        opacity: 0.9,
     },
     registerBottomTextStyle:{
-        color: '#9fbfcf',
+        color: '#FFF',
         fontSize: responsiveFontSize(2.93),
-
+        opacity: 0.9,
     },
     popupContainerStyle:{
         borderRadius: 3,

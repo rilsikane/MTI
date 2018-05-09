@@ -24,6 +24,8 @@ class RegisterStep3 extends Component{
             userEmailErr:false
         }
         this.onSubmitButtonPress = this.onSubmitButtonPress.bind(this);
+        this.focusNextField = this.focusNextField.bind(this);
+        this.inputs = {};
     }
     componentDidMount(){
       this.setState({userEmail:this.props.registerStore.register.tel})
@@ -85,6 +87,10 @@ class RegisterStep3 extends Component{
         }
     }
 
+    focusNextField(key){
+        this.inputs[key].focus();
+    }
+
     render(){
         return(
             <View style={styles.registerStep1ContainerStyle}>
@@ -142,11 +148,19 @@ class RegisterStep3 extends Component{
                             onChangeText={(userPassword)=> this.setState({userPassword})}
                             onEndEditing={this.onPasswordChange.bind(this)}
                             returnKeyType='next'
-                            blurOnSubmit={true}
+                            blurOnSubmit={false}
                             maxLength={16}
+                            onSubmitEditing={() => {
+                                setTimeout(()=>{
+                                this.focusNextField('confirmPass');
+                                },200);
+                            }}
                         />
                         {this.state.errorPassowrd && <Text style={styles.errorMsg}>รหัสผ่านไม่ถูกรูปแบบ</Text>}
                         <TextInputIcon
+                            refs={ input => {
+                                this.inputs['confirmPass'] = input;
+                            }}
                             value={this.state.userConfirmPassword}
                             leftLabelText='ยืนยันรหัสผ่าน'
                             iconUri={require('./../source/icons/iconPass.png')}
@@ -157,7 +171,7 @@ class RegisterStep3 extends Component{
                             secureTextEntry={true}
                             onChangeText={(userConfirmPassword)=> this.setState({userConfirmPassword})}
                             onEndEditing={this.onPasswordChange.bind(this)}
-                            returnKeyType='next'
+                            returnKeyType='done'
                             blurOnSubmit={true}
                             maxLength={16}
                         />

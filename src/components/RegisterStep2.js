@@ -23,9 +23,12 @@ class RegisterStep2 extends Component{
             userPhone: '',
             checkBoxIsSelected: false,
             emailErr:false,
-            phoneErr:false
+            phoneErr:false,
+            genderErr: false,
         }
         this.submitRegister = this.submitRegister.bind(this);
+        this.focusNextField = this.focusNextField.bind(this);
+        this.inputs = {};
     }
    componentWillReceiveProps(nextProps){
     if(nextProps.pageNumber==2){
@@ -42,7 +45,7 @@ class RegisterStep2 extends Component{
         if(''!=this.props.registerStore.register.name && ''!=this.props.registerStore.register.surname
             && ''!=this.state.userGender && ''!=this.state.userEmail
             && ''!=this.state.userPhone && this.state.checkBoxIsSelected
-            && !this.state.emailErr && !this.state.telErr){
+            && !this.state.emailErr && !this.state.telErr&&!this.state.genderErr){
                 return true;
         }else{
             return false;
@@ -54,23 +57,36 @@ class RegisterStep2 extends Component{
         this.props.registerStore.register.tel = this.state.userPhone;
         this.props.onSubmitRegister2Press();
     }
-    
+
+    onGenderSubmit(gender){
+        if(gender===undefined){
+            this.setState({genderErr:true})
+        }else{
+            this.setState({userGender:gender,genderErr:false})
+        }   
+    }
+
+    focusNextField(key){
+        this.inputs[key].focus();
+    }
+
     render(){
         return(
             <KeyboardAwareScrollView
                 resetScrollToCoords={{ x: 0, y: 0 }}
                 automaticallyAdjustContentInsets={false}
-                //keyboardShouldPersistTaps='always'
+                // //keyboardShouldPersistTaps='always'
                 enableOnAndroid={true}
                 contentContainerStyle={{flexGrow:1,}}
-                //style={{flex: 1}}
+                // //style={{flex: 1}}
                 scrollEnabled={true}
+                extraScrollHeight={responsiveHeight(9)}
             >
                 
             <View style={styles.registerStep1ContainerStyle}>
                 <View style={styles.registerDirectionContainerStyle}>
                     <Text style={styles.registerTitleTextStyle}>ข้อมูลส่วนตัว</Text>
-                    <Text style={styles.directionTextStyle}>กรุณากอรกข้อมูลส่วนตัวให้ครบถ้วน เพื่อสิทธิประโยชน์ของสมาชิก</Text>
+                    <Text style={styles.directionTextStyle}>กรุณากรอกข้อมูลส่วนตัวให้ครบถ้วน เพื่อสิทธิประโยชน์ของสมาชิก</Text>
                 </View>
                 <View style={styles.userDetailContainerStyle}>
                     <TextInputIcon
@@ -95,7 +111,7 @@ class RegisterStep2 extends Component{
                     />
                     <TextInputIcon
                         genderValue={this.state.userGender}
-                        onSubmitEditing={(userGender)=>{this.setState({userGender:userGender})}}
+                        onSubmitEditing={(userGender)=>this.onGenderSubmit(userGender)}
                         leftLabelText='เพศ'
                         iconUri={require('./../source/icons/iconGender.png')}
                         containerStyle={styles.inputContainerStyle}
@@ -103,6 +119,7 @@ class RegisterStep2 extends Component{
                         thirdFlex={thirdFlex}
                         inputType='selector'
                     />
+                    {this.state.genderErr && <Text style={styles.errorMsg}>กรุณาเลือกเพศที่ถูกต้อง</Text>}
                     <TextInputIcon
                         value={this.state.userEmail}
                         onChangeText={(userEmail)=>this.setState({userEmail:userEmail})}
@@ -121,9 +138,19 @@ class RegisterStep2 extends Component{
                             }
                         }}
                         editable={!this.props.firstLogon}
+                        blurOnSubmit={false}
+                        onSubmitEditing={() => {
+                            setTimeout(()=>{
+                            this.focusNextField('phone');
+                            },200);
+                        }}
+                        returnKeyType='next'
                     />
                      {this.state.emailErr && <Text style={styles.errorMsg}>Email ไม่ถูกต้อง</Text>}
                     <TextInputIcon
+                        refs={ input => {
+                            this.inputs['phone'] = input;
+                        }}
                         value={this.state.userPhone}
                         onChangeText={(userPhone)=>this.setState({userPhone:userPhone})}
                         leftLabelText='โทรศัพท์'
