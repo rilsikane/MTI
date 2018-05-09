@@ -24,8 +24,9 @@ class CheckBoxes extends Component{
             )
         }else{
             return(
-            
-                <Text style={this.props.checkBoxTextStyle}>{checkBoxTitleText}</Text>
+                <TouchableOpacity onPress={this.props.onIconPress}>
+                    <Text style={this.props.checkBoxTextStyle}>{checkBoxTitleText}</Text>
+                </TouchableOpacity>
             )
         }
       
@@ -67,7 +68,7 @@ const styles={
     },
     textUnderLineContainerStyle:{
         flexDirection: 'row',
-
+        flex:1
     },
     textUnderLineStyle:{
         textDecorationLine: 'underline',

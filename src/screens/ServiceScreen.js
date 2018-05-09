@@ -13,6 +13,7 @@ import Communications from 'react-native-communications';
 
 import { observer, inject } from 'mobx-react';
 import app from '../stores/app';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 @inject('naviStore')
 @observer
@@ -22,7 +23,7 @@ export default class ServiceScreen extends Component{
         super(props)
         this.state={
             emailErr:false,telErr:false,
-            name:'',surname:'',email:'',tel:''
+            name:'',surname:'',email:'',tel:'',isLoading:false
         }
         this.gotoService = this.gotoService.bind(this);
         this.onServicePress = this.onServicePress.bind(this);
@@ -32,6 +33,11 @@ export default class ServiceScreen extends Component{
     }
     init(){
         this.props.naviStore.navigation = this.props.navigator;
+        this.setState({isLoading:true});
+        setTimeout(()=>{
+            this.setState({isLoading:false});
+        },1000)
+       
     }
     renderServiceList(){
         let serviceList = [
@@ -253,7 +259,7 @@ export default class ServiceScreen extends Component{
     }
 
     render(){
-        return(
+        return (
             <View style={styles.serviceScreenContainerStyle}>
                 <Headers
                     leftIconName='menu'
@@ -278,6 +284,7 @@ export default class ServiceScreen extends Component{
                     </TouchableOpacity>
                 </View>
                 {this.renderLeavingContactPopup()}
+                {this.state.isLoading && <Spinner visible={this.state.isLoading}  textStyle={{color: '#FFF'}} />}
             </View>
         )
     }
@@ -285,7 +292,7 @@ export default class ServiceScreen extends Component{
     
         if (event.id === 'bottomTabSelected') {
             this.props.naviStore.navigation.popToRoot({
-                animated: true, // does the popToRoot have transition animation or does it happen immediately (optional)
+                animated: false, // does the popToRoot have transition animation or does it happen immediately (optional)
                 animationType: 'fade', // 'fade' (for both) / 'slide-horizontal' (for android) does the popToRoot have different transition animation (optional)
               });
             this.init();
@@ -304,6 +311,7 @@ const secondFlex = 0.3,thirdFlex = 0.9
 const styles={
     serviceScreenContainerStyle:{
         flex: 1,
+        backgroundColor:"#fff"
     },
     serviceContainerStyle:{
         flex: 1,

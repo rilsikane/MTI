@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Text,View,Image,ImageBackground} from 'react-native';
+import {Text,View,Image,ImageBackground,ScrollView} from 'react-native';
 import PropTypes from "prop-types";
 import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
 import Spinner from 'react-native-loading-spinner-overlay';
@@ -50,12 +50,14 @@ export default class MyCardScreen extends Component{
 
     render(){
         return(
-            <View style={styles.myCardScreenContainerStyle}>
-                <Headers
-                    leftIconName='back'
-                    headerTitleText='My Card'
-                    rightIconName='iconBell'
-                />
+            <View style={{flex:1}}>
+            <Headers
+            leftIconName='back'
+            headerTitleText='My Card'
+            rightIconName='iconBell'
+            />
+            <ScrollView style={styles.myCardScreenContainerStyle}>
+               
                 {!this.state.isLoading  && <View style={styles.myCardContainerStyle}>
                     <UserShortDetailCard
                         showQr={false}
@@ -92,7 +94,7 @@ export default class MyCardScreen extends Component{
                                 containerStyle={styles.checkBoxStyle}
                             />
                         </View>
-                        <ImageBackground style={styles.cardImgStyle} imageStyle={styles.backCardContainerStyle}  source={{uri:this.state.userDetail.card.design.rear}} >
+                        <ImageBackground style={{height: responsiveHeight(31),width: responsiveWidth(85)}} imageStyle={styles.backCardContainerStyle}  source={{uri:this.state.userDetail.card.design.rear}} >
                             {!this.state.isLoading  && <Image
                                 source={{uri:this.state.qrChecked?this.state.userDetail.card.qrcode:this.state.userDetail.card.barcode}}
                                 resizeMode='contain'
@@ -103,6 +105,7 @@ export default class MyCardScreen extends Component{
                     </View>
                 </View>}
                 {this.state.isLoading && <Spinner visible={this.state.isLoading}  textStyle={{color: '#FFF'}} />}
+            </ScrollView>
             </View>
         )
     }
@@ -118,7 +121,7 @@ const styles={
     myCardSectionStyle:{
         flex: 1,
         alignItems: 'center',
-        paddingTop: responsiveHeight(3),
+        paddingTop: responsiveHeight(1),
     },
     frontCardContainerStyle:{
         borderRadius: 15,
@@ -128,7 +131,7 @@ const styles={
         justifyContent: 'space-between',
     },
     cardImgStyle:{
-        height: responsiveHeight(28),
+        height: responsiveHeight(30),
         width: responsiveWidth(85),
     },
     qrImageStyle:{
@@ -154,7 +157,7 @@ const styles={
     myCardDetailTextContainerStyle:{
         marginLeft: responsiveWidth(7),
         marginBottom: responsiveWidth(7),
-        marginTop: responsiveHeight(8),
+        marginTop: responsiveHeight(12),
     },
     userNameTextStyle:{
         color: "#FFF",
@@ -163,6 +166,7 @@ const styles={
     cardIdTextStyle:{
         color: "#FFF",
         fontSize: responsiveFontSize(2.2),
+        marginTop: -responsiveHeight(1),
     },
     checkBoxContainerStyle:{
         flexDirection: 'row',

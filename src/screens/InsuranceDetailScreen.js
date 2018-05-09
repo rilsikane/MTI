@@ -156,11 +156,11 @@ export default class InsuranceDetailScreen extends Component{
                             onPress={()=>this.openPolicyDocument(header.Policy_NO,header.TranNo)}
                         />}
                     </View> 
-                    <Image
+                    {/* <Image
                         source={require('../source/images/promotionImg.png')}
                         resizeMode='stretch'
                         style={styles.advertiseImageStyle}
-                    />
+                    /> */}
                 </ScrollView>
                 {this.state.isLoading && <Spinner visible={this.state.isLoading}  textStyle={{color: '#FFF'}} />}
             </View>

@@ -86,7 +86,7 @@ export default class PrivilegeQrCodeScreen extends Component{
                         <Text style={styles.lifeStyleTextStyle}>{this.getTitleText()}</Text>
                     </View>
                     <Text style={styles.privilegeTitleTextStyle}>{this.props.data.name}</Text>
-                    <Text style={styles.privilegeDetailTextStyle}>คุณสามารถรับสิทธิโดยการแสดง QRcode ได้ที่จุดชำระเงิน{'\n'} หรือบันทึก QR Code. เพื่อใช้สิทธิพิเศษนี้ภายหลัง</Text>
+                    <Text style={styles.privilegeDetailTextStyle}>คุณสามารถรับสิทธิโดยการแสดง QRcode ได้ที่จุดชำระเงิน{'\n'}</Text>
                     <Text style={styles.timerTextStyle}>{this.state.timeCount}</Text>
                 </View>
                 <View style={styles.qrCodeContainerStyle}>

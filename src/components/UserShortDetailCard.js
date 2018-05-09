@@ -58,7 +58,7 @@ class UserShortDetailCard extends Component{
                 </View>
                 <View style={[styles.userShortDetailContainerStyle,this.state.user.name==="GUEST"&&{flex: 0.7,}]}>
                     <Text ellipsizeMode='tail' numberOfLines={1} style={styles.userNameTextStyle}>{`${this.state.user.name} ${this.state.user.surname}`}</Text>
-                    <Text style={styles.userLevelTextStyle}>สมาชิกระดับ {this.state.user.member_type||' - '}</Text>
+                    {/* s<Text style={styles.userLevelTextStyle}>สมาชิกระดับ {this.state.user.member_type||' - '}</Text> */}
                     {this.state.user.name==="GUEST"&&
                         <View style={{flexDirection: 'row',right: responsiveWidth(5),top: responsiveHeight(2)}}>
                             <Text style={styles.registerLinkTitleStyle}>เพื่อใช้งานแอพพลิเคชั่นแบบเต็มรูปแบบ  </Text>
