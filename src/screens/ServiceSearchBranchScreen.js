@@ -114,8 +114,8 @@ export default class ServiceSearchBranchScreen extends Component{
                                 identifier={data.id}
                                 key={data.id}
                                 coordinate={{
-                                    latitude: data.latitude?parseFloat(data.latitude):13.787275,
-                                    longitude: data.longtitude?parseFloat(data.longtitude):100.574589
+                                    latitude: data.latitude?parseFloat(data.latitude):13.7858124,
+                                    longitude: data.longtitude?parseFloat(data.longtitude):100.5738654
                                 }}
                                 image={require('../source/icons/iconMapMarker.png')}
                                 onPress={()=>this.onMarkerPress(data)}

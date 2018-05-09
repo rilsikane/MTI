@@ -34,7 +34,8 @@ export default class ContactUsScreen extends Component{
                         isDirect: true,
                         data:{
                             id: '1234',
-                            coordinate:{latitude: 13.787275,longitude: 100.574589},
+                            //13.7858124 100.5738654
+                            coordinate:{latitude: 13.7858124,longitude: 100.5738654},
                             title: title,
                             address: '252 ถ.รัชดาภิเษก แขวงห้วยขวาง เขตห้วยขวาง กรุงเทพฯ  10310',
                             tel: '1484',
@@ -106,7 +107,7 @@ export default class ContactUsScreen extends Component{
                     </View>
                     <View style={styles.contactListContainerStyle}>
                         <Text style={styles.contactTitleTextStyle}>ติดต่อเมืองไทยประกันภัย โทร. 1484</Text>
-                        <Text style={styles.contactDesciptionTextStyle}>252 ถ.รัชดาภิเษก แขวงห้วยขวาง เขตห้วยขวาง กรุงเทพฯ  103101 โทร. 1484   แฟกซ์ : 0-2665-4166, 0-2274-9511, 0-2276-2033</Text>
+                        <Text style={styles.contactDesciptionTextStyle}>252 ถ.รัชดาภิเษก แขวงห้วยขวาง เขตห้วยขวาง กรุงเทพฯ  10310 โทร. 1484   แฟกซ์ : 0-2665-4166, 0-2274-9511, 0-2276-2033</Text>
                         <View style={styles.contactListSectionStyle}>
                             <View style={styles.iconGroupContainerStyle}>
                                 <TouchableOpacity onPress={()=>Linking.openURL('mailto:info@muangthaiinsurance.com?subject=ติดต่อเรา&body=ติดต่อเรา')}>
