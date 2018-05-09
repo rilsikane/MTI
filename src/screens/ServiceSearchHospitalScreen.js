@@ -105,8 +105,8 @@ export default class ServiceSearchHospitalScreen extends Component{
                             identifier={data.id}
                             key={data.id}
                             coordinate={{
-                                latitude: data.latitude?parseFloat(data.latitude):13.7861549,
-                                longitude: data.longtitude?parseFloat(data.longtitude):100.5724432
+                                latitude: data.latitude?parseFloat(data.latitude):13.7863725,
+                                longitude: data.longtitude?parseFloat(data.longtitude):100.5745153
                             }}
                             image={require('../source/icons/iconMapMarker.png')}
                             onPress={()=>this.onMarkerPress(data)}
