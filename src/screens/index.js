@@ -44,6 +44,7 @@ import PassConfirmCodeScreen from './PassConfirmCodeScreen';
 import PassCodeChangeScreen from './PassCodeChangeScreen';
 import PassCodeAuthenScreen from './PassCodeAuthenScreen'
 import ActivityImageListScreen from './ActivityImageListScreen';
+import ActivityScreen from './ActivityScreen';
 
 import app from '../stores/app';
 
@@ -93,6 +94,7 @@ export function registerScreens() {
   Navigation.registerComponent('mti.PassCodeChangeScreen', () => PassCodeChangeScreen, Store, Provider);
   Navigation.registerComponent('mti.PassCodeAuthenScreen', () => PassCodeAuthenScreen, Store, Provider);
   Navigation.registerComponent('mti.ActivityImageListScreen', () => ActivityImageListScreen, Store, Provider);
+  Navigation.registerComponent('mti.ActivityScreen', () => ActivityScreen, Store, Provider);
 }
 export function registerScreenVisibilityListener() {
   new ScreenVisibilityListener({
