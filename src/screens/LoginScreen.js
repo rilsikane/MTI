@@ -119,6 +119,7 @@ export default class LoginScreen extends Component{
 			animated: true, // does the push have transition animation or does it happen immediately (optional)
 			backButtonTitle: undefined, // override the back button title (optional)
             backButtonHidden: false, // hide the back button altogether (optional)
+            passProps:{navigator:this.props.navigator},
             navigatorStyle: {
                 drawUnderStatusBar: true,
                 statusBarColor: 'transparent',
@@ -294,7 +295,7 @@ export default class LoginScreen extends Component{
                                         <Text style={styles.forgotPasswordTextStyle}>ลืมรหัสผ่าน ?</Text>
                                     </TouchableOpacity>
                                 </Item>
-                                <CheckBoxes
+                                {/* <CheckBoxes
                                     checkBoxTitleText='จำรหัสผ่านเพื่อเข้าใช้งานในครั้งต่อไป'
                                     checked={this.state.remember}
                                     checkedColor='#81c5e3'
@@ -302,12 +303,13 @@ export default class LoginScreen extends Component{
                                     checkBoxTextStyle={styles.checkBoxTextStyle}
                                     onIconPress={()=>this.setState({remember: !this.state.remember})}
                                     containerStyle={styles.checkBoxStyle}
-                                />
+                                /> */}
                                 <MainSubmitButton
                                     buttonTitleText='เข้าสู่ระบบ'
                                     onPress={this.login}
+                                    style={styles.buttonStyle}
                                 />
-                                <View style={styles.touchIdContainerStyle}>
+                                {/* <View style={styles.touchIdContainerStyle}>
                                     <Image
                                         source={require('./../source/icons/IconTouchID.png')}
                                         style={styles.touchIdIconStyle}
@@ -317,7 +319,7 @@ export default class LoginScreen extends Component{
                                         <Text style={styles.touchIdDetailTextStyle}>เข้าใช้งานได้ง่ายๆ ด้วย Passcode Lock & Touch ID คลิก</Text>
                                     </TouchableOpacity>
                                     
-                                </View>
+                                </View> */}
                                 <Text style={{color:"#fff"}}>Version : 1.48</Text>
                                 <View style={styles.registerBottomContainerStyle}>
                                     <TouchableOpacity onPress={this.gotoRegister}>
@@ -447,19 +449,20 @@ const styles={
         flex: 1,
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'center',
+        alignItems: 'flex-end',
+        paddingBottom: responsiveHeight(3),
     },
     touchIdDetailTextStyle:{
-        color: '#9fbfcf',
+        color: '#FFF',
         fontSize: responsiveFontSize(2),
         flex:1,
-        textAlign:'center'
-
+        textAlign:'center',
+        opacity: 0.9,
     },
     registerBottomTextStyle:{
-        color: '#9fbfcf',
+        color: '#FFF',
         fontSize: responsiveFontSize(2.93),
-
+        opacity: 0.9,
     },
     popupContainerStyle:{
         borderRadius: 3,
@@ -496,5 +499,9 @@ const styles={
         justifyContent: 'center',
         marginTop: responsiveHeight(2),
 
+    },
+    buttonStyle:{
+        marginTop: responsiveHeight(3.5),
+        marginBottom: responsiveHeight(1.5),
     }
 }

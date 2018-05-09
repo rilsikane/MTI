@@ -38,6 +38,7 @@ class RegisterStep1 extends Component{
         this.keyboardWillHideSub.remove();
       }
     _showDateTimePicker = () => {
+        Keyboard.dismiss()
         this.setState({ isDateTimePickerVisible: true })
     }
 
@@ -124,9 +125,18 @@ class RegisterStep1 extends Component{
                                     this.setState({idNumberError:false})
                                 }
                             }}
+                            blurOnSubmit={ false }
+                            onSubmitEditing={() => {
+                                setTimeout(()=>{
+                                this.focusNextField('userName');
+                                },200);
+                            }}
                         />
                         {this.state.idNumberError && <Text style={styles.errorMsg}>เลขบัตรประชาชนต้องมี 13 ตำแหน่ง</Text>}
                         <TextInputIcon
+                            refs={ input => {
+                                this.inputs['userName'] = input;
+                            }}
                             value={this.state.userFirstName}
                             onChangeText={(userFirstName)=>this.setState({userFirstName})}
                             leftLabelText='ชื่อ'
@@ -153,10 +163,8 @@ class RegisterStep1 extends Component{
                             containerStyle={styles.inputContainerStyle}
                             secondFlex={secondFlex}
                             thirdFlex={thirdFlex}
-                            returnKeyType = {"done"}
-                            onSubmitEditing={() => {
-                                Keyboard.dismiss();
-                            }}
+                            returnKeyType = {"next"}
+                            onSubmitEditing={this._showDateTimePicker}
                         />
 
                         <TouchableOpacity  onPress={this._showDateTimePicker}>

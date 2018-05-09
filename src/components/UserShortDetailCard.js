@@ -60,9 +60,12 @@ class UserShortDetailCard extends Component{
                     <Text ellipsizeMode='tail' numberOfLines={1} style={styles.userNameTextStyle}>{`${this.state.user.name} ${this.state.user.surname}`}</Text>
                     <Text style={styles.userLevelTextStyle}>สมาชิกระดับ {this.state.user.member_type||' - '}</Text>
                     {this.state.user.name==="GUEST"&&
-                        <TouchableOpacity onPress={this.gotoRegister}>
-                            <Text style={styles.userGuestRecommendTextStyle}>เพื่อใช้งานแอพพลิเคชั่นแบบเต็มรูปแบบ กรุณาลงทะเบียน{'\n'}สมัครสมาชิก</Text>
-                        </TouchableOpacity>
+                        <View style={{flexDirection: 'row',right: responsiveWidth(5),top: responsiveHeight(2)}}>
+                            <Text style={styles.registerLinkTitleStyle}>เพื่อใช้งานแอพพลิเคชั่นแบบเต็มรูปแบบ  </Text>
+                            <TouchableOpacity onPress={this.gotoRegister}>
+                                <Text style={styles.userGuestRecommendTextStyle}>กรุณาลงทะเบียนสมัครสมาชิก</Text>
+                            </TouchableOpacity>
+                        </View>
                     }
               
                      <View style={styles.seeUserDetailLinkContainerStyle}>
@@ -170,10 +173,16 @@ const styles={
         color: '#919195',
         letterSpacing: 0,
     },
+    registerLinkTitleStyle:{
+        fontSize: responsiveFontSize(1.8*app.fontSize),
+        // color: '#1595d3',
+        letterSpacing: 0,
+    },
     userGuestRecommendTextStyle:{
-        fontSize: responsiveFontSize(2*app.fontSize),
+        fontSize: responsiveFontSize(1.8*app.fontSize),
         color: '#1595d3',
         letterSpacing: 0,
+        textDecorationLine: 'underline'
     },
     seeUserDetailLinkContainerStyle:{
         flexDirection: 'row',

@@ -28,6 +28,8 @@ export default class NoRegisterDataScreen extends Component{
         // this.props.registerStore.contact.tel = '';
         this.app = app;
         this.gotoWelcome = this.gotoWelcome.bind(this);
+        this.inputs = {};
+        this.focusNextField = this.focusNextField.bind(this);
     }
 
 
@@ -88,6 +90,10 @@ export default class NoRegisterDataScreen extends Component{
         
     }
 
+    focusNextField(key){
+        this.inputs[key].focus();
+    }
+
     renderLeavingContactPopup(){
         return(
             <PopupDialog
@@ -106,6 +112,7 @@ export default class NoRegisterDataScreen extends Component{
                 contentContainerStyle={{flexGrow:1,}}
                 //style={{flex: 1}}
                 scrollEnabled={true}
+                showsVerticalScrollIndicator={false}
                 >
                     <TouchableOpacity onPress={()=> this.leavingDialog.dismiss()}>
                         <Image
@@ -125,8 +132,17 @@ export default class NoRegisterDataScreen extends Component{
                             containerStyle={styles.inputContainerStyle}
                             secondFlex={secondFlex}
                             thirdFlex={thirdFlex}
+                            returnKeyType='next'
+                            onSubmitEditing={() => {
+                                setTimeout(()=>{
+                                this.focusNextField('surname');
+                                },200);
+                            }}
                         />
                         <TextInputIcon
+                            refs={ input => {
+                                this.inputs['surname'] = input;
+                            }}
                             value={this.state.surname}
                             onChangeText={(userLastName)=>this.setState({surname:userLastName})}
                             leftLabelText='นามสกุล'
@@ -134,8 +150,17 @@ export default class NoRegisterDataScreen extends Component{
                             containerStyle={styles.inputContainerStyle}
                             secondFlex={secondFlex}
                             thirdFlex={thirdFlex}
+                            returnKeyType='next'
+                            onSubmitEditing={() => {
+                                setTimeout(()=>{
+                                this.focusNextField('phone');
+                                },200);
+                            }}
                         />
                         <TextInputIcon
+                            refs={ input => {
+                                this.inputs['phone'] = input;
+                            }}
                             value={this.state.tel}
                             onChangeText={(userPhone)=>this.setState({tel:userPhone})}
                             leftLabelText='เบอร์โทรศัพท์'
@@ -151,11 +176,20 @@ export default class NoRegisterDataScreen extends Component{
                                     this.setState({telErr:false})
                                 }
                             }}
-                            blurOnSubmit={true}
+                            //blurOnSubmit={true}
                             maxLength={10}
+                            returnKeyType='next'
+                            onSubmitEditing={() => {
+                                setTimeout(()=>{
+                                this.focusNextField('email');
+                                },200);
+                            }}
                         />
                         {this.state.telErr && <Text style={styles.errorMsg}>เบอร์โทรศัพท์ ไม่ถูกต้อง</Text>}
                         <TextInputIcon
+                            refs={ input => {
+                                this.inputs['email'] = input;
+                            }}
                             value={this.state.email}
                             onChangeText={(email)=>this.setState({email:email})}
                             leftLabelText='อีเมล'
