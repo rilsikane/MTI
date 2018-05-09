@@ -115,12 +115,12 @@ export default class ServiceSearchHospitalScreen extends Component{
                 </MapView>
             )
         }else{
-            return(
+            return !this.state.isLoading ?(
                 <ServiceListCard
                     data={this.state.serviceList}
                     navigator={this.props.navigator}
                 />
-            )
+            ):null
         }
     }
 
@@ -228,7 +228,7 @@ export default class ServiceSearchHospitalScreen extends Component{
                     />
                 }
                 <View style={styles.serviceSearchHospitalContainerStyle}>
-                    {this.renderContent()}
+                    {!this.state.isLoading && this.renderContent()}
                 </View>
                 {this.state.isLoading && <Spinner visible={this.state.isLoading}  textStyle={{color: '#FFF'}} />}
                 {this.props.isMap&&this.renderMapCallout()}

@@ -113,12 +113,12 @@ export default class ServiceSearchCorpCenterScreen extends Component{
                 </MapView>
             )
         }else{
-            return(
+            return!this.state.isLoading ?(
                 <ServiceListCard
                     data={this.state.serviceList}
                     navigator={this.props.navigator}
                 />
-            )
+            ):null
         }
     }
 

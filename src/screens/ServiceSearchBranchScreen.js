@@ -124,12 +124,12 @@ export default class ServiceSearchBranchScreen extends Component{
                 </MapView>
             )
         }else{
-            return(
+            return!this.state.isLoading ?(
                 <ServiceListCard
                     data={this.state.branchList}
                     navigator={this.props.navigator}
                 />
-            )
+            ):null
         }
     }
     
