@@ -45,7 +45,7 @@ class SelectInput extends AbstractSelectInput {
       <TouchableWithoutFeedback onPress={this.props.enabled && this.focus.bind(this)}>
         <View style={props.style}>
           <Text
-            style={(props.value != '' ? props.labelStyle:{color:'#e2e2e2',fontSize:20})}
+            style={((props.value!==undefined && props.value != '')? props.labelStyle:{color:'#e2e2e2',fontSize:20})}
             adjustFontSizeToFit={true}
             allowFontScaling={false}
             numberOfLines={1}
