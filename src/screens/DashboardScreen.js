@@ -66,6 +66,7 @@ export default class DashboardScreen extends Component{
         BackHandler.removeEventListener('hardwareBackPress', this.backPress)
     }
     async init(){
+        try{
         this.props.naviStore.navigation = this.props.navigator;
         let user = await store.get("user");
         this.setState({isLoading:true});
@@ -114,6 +115,9 @@ export default class DashboardScreen extends Component{
         }
           // await store.save("policy",response2);
                         // get("me/policy",{})
+        }catch(e){
+            alert(e)
+        }
     }
     openDetail(item){
         this.props.navigator.push({
@@ -287,6 +291,7 @@ export default class DashboardScreen extends Component{
                 animated: true, // does the popToRoot have transition animation or does it happen immediately (optional)
                 animationType: 'fade', // 'fade' (for both) / 'slide-horizontal' (for android) does the popToRoot have different transition animation (optional)
               });
+              this.props.naviStore.navigation = undefined;
             this.init();
         }
         if (event.id === 'willDisappear') {
@@ -305,7 +310,7 @@ export default class DashboardScreen extends Component{
 const styles={
     dashboardScreenContainerStyle:{
         flex: 1,
-
+        backgroundColor:"#fff"
     },
     hotDealTitleTextContainerStyle:{
         flexDirection: 'row',

@@ -245,6 +245,7 @@ export default class ServiceSearchBranchScreen extends Component{
 const styles={
     serviceSearchBranchScreenContainerStyle:{
         flex: 1,
+        backgroundColor:"#fff"
     },
     serviceSearchBranchContainerStyle:{
         flex: 1,

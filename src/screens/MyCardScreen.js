@@ -50,7 +50,7 @@ export default class MyCardScreen extends Component{
 
     render(){
         return(
-            <View style={{flex:1}}>
+            <View style={{flex:1,backgroundColor:"#fff"}}>
             <Headers
             leftIconName='back'
             headerTitleText='My Card'
@@ -114,6 +114,7 @@ export default class MyCardScreen extends Component{
 const styles={
     myCardScreenContainerStyle:{
         flex: 1,
+        backgroundColor:"#fff"
     },
     myCardContainerStyle:{
         flex: 1,

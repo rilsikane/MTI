@@ -109,6 +109,7 @@ export default class QAndAScreen extends Component{
 const styles={
     qAndAScreenContainerStyle:{
         flex: 1,
+        backgroundColor:"#fff"
     },
     qAndAContainerStyle:{
         flex: 1,

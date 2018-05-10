@@ -744,7 +744,7 @@ const secondFlex = 0.3,thirdFlex = 0.9
 const styles={
     userProfileScreenContainerStyle:{
         flex: 1,
-
+        backgroundColor:"#fff"
     },
     userShortDetailContainerStyle:{
         height: responsiveHeight(26.05),
