@@ -31,6 +31,7 @@
     "react-native-keyboard-aware-scroll-view": "^0.4.4",
     "react-native-keyboard-aware-scrollview": "^2.0.0",
     "react-native-loading-spinner-overlay": "^0.5.2",
+    "react-native-looped-carousel": "^0.1.10",
     "react-native-maps": "^0.21.0",
     "react-native-modal-datetime-picker": "^4.13.0",
     "react-native-navigation": "^1.1.384",
