@@ -230,6 +230,7 @@ export default class ActivityFeedbackScreen extends Component{
                 <Headers
                     leftIconName='cancel'
                     headerTitleText='แบบฟอร์มกิจกรรม'
+                    cancel={()=>this.props.navigator.dismissModal()}
                 />
                 {/* <ScrollView 
                     style={{flex: 1}}

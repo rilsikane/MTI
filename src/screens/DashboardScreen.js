@@ -22,14 +22,14 @@ export default class DashboardScreen extends Component{
         this.state={
             hotDealDefault:[
                 {
-                    bannerUri: require('./../source/images/pic-default.jpg'),
-                    iconUri: require('./../source/icons/iconHealthySelected.png'),
+                    bannerUri: require('../source/images/pic-default.jpg'),
+                    iconUri: require('../source/icons/iconHealthySelected.png'),
                     iconTitleText: 'Lifestyle',
                     activityTitleText: ''
                 },
                 {
-                    bannerUri: require('./../source/images/pic-default.jpg'),
-                    iconUri: require('./../source/icons/iconHealthySelected.png'),
+                    bannerUri: require('../source/images/pic-default.jpg'),
+                    iconUri: require('../source/icons/iconHealthySelected.png'),
                     iconTitleText: 'Lifestyle',
                     activityTitleText: ''
                 },
@@ -38,12 +38,12 @@ export default class DashboardScreen extends Component{
             myLifeStyle:[],
             pastEvent:[
                 {
-                    bannerUri: require('./../source/images/latestActImg.png'),
+                    bannerUri: require('../source/images/pic-default.jpg'),
                     eventTitleText: 'MTI 8 Anniversary "ยิ้มรับความสำเร็จ..ฉลอง ก้าวแห่งความภาคภูมิใจ" กับเมืองไทยประกันภัย',
                     eventDetailText: 'นำลูกค้าล่องเรือชมบรรยากาศริมแม่น้ำเจ้าพระยา พร้อมรับประทานอาหารค่ำและชมมินิคอนเสิร์ต จากศิลปินคู่ ดูโอ แอน(ธิติมา) - ปิงปอง(ศิรศักดิ์) พร้อมกันนี้ ยังมีกิจกรรม...'
                 },
                 {
-                    bannerUri: require('./../source/images/latestActImg.png'),
+                    bannerUri: require('../source/images/pic-default.jpg'),
                     eventTitleText: 'MTI 8 Anniversary "ยิ้มรับความสำเร็จ..ฉลอง ก้าวแห่งความภาคภูมิใจ" กับเมืองไทยประกันภัย',
                     eventDetailText: 'นำลูกค้าล่องเรือชมบรรยากาศริมแม่น้ำเจ้าพระยา พร้อมรับประทานอาหารค่ำและชมมินิคอนเสิร์ต จากศิลปินคู่ ดูโอ แอน(ธิติมา) - ปิงปอง(ศิรศักดิ์) พร้อมกันนี้ ยังมีกิจกรรม...'
                 }
@@ -90,6 +90,11 @@ export default class DashboardScreen extends Component{
                 if(myLife){
                     this.setState({myLifeStyle:myLife.data});
                 }
+                let activityList = await getBasic('activity?filter_type_id=1&page=1&pagesize=5',{});
+                if(activityList){
+                    //console.log(activityList.data)
+                    this.setState({pastEvent:activityList.data})
+                }
             }else{
                 // this.setState({isLoading:false});
                 // setTimeout(()=>{
@@ -112,6 +117,11 @@ export default class DashboardScreen extends Component{
             if(myLife){
                 this.setState({myLifeStyle:myLife.data});
             }
+            let activityList = await getBasic('activity?filter_type_id=1&page=1&pagesize=5',{});
+            if(activityList){
+                //console.log(activityList.data)
+                this.setState({pastEvent:activityList.data})
+            }
         }
           // await store.save("policy",response2);
                         // get("me/policy",{})
@@ -119,9 +129,9 @@ export default class DashboardScreen extends Component{
             alert(e)
         }
     }
-    openDetail(item){
+    openDetail(link,item){
         this.props.navigator.push({
-            screen: "mti.PrivilegeDetailScreen", // unique ID registered with Navigation.registerScreen
+            screen: link, // unique ID registered with Navigation.registerScreen
             passProps:{data:item},
             title: undefined, // navigation bar title of the pushed screen (optional)
             titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
@@ -142,7 +152,7 @@ export default class DashboardScreen extends Component{
                     activityTitleText={hotdeal.name}
                     groupId={hotdeal.group_id}
                     style={[{marginRight: responsiveWidth(3)},i==0&&{marginLeft: responsiveWidth(3)}]}
-                    onPress={()=>this.openDetail(hotdeal)}
+                    onPress={()=>this.openDetail('mti.PrivilegeDetailScreen',hotdeal)}
                 />
             )
         }else{
@@ -171,7 +181,7 @@ export default class DashboardScreen extends Component{
                 activityTitleText={myLifeStyle.name}
                 style={[{marginRight: responsiveWidth(3)},i==0&&{marginLeft: responsiveWidth(3)}]}
                 groupId={myLifeStyle.group_id}
-                onPress={()=>this.openDetail(myLifeStyle)}
+                onPress={()=>this.openDetail('mti.PrivilegeDetailScreen',myLifeStyle)}
             />
             )
         }else{
@@ -206,10 +216,11 @@ export default class DashboardScreen extends Component{
         return this.state.pastEvent.map((pastEvent,i)=>
             <PastEventCard
                 key={i}
-                bannerUri={pastEvent.bannerUri}
-                eventTitleText={pastEvent.eventTitleText}
-                eventDetailText={pastEvent.eventDetailText}
+                bannerUri={pastEvent.picture ? {uri:pastEvent.picture}:require('../source/images/pic-default.jpg')}
+                eventTitleText={pastEvent.title}
+                eventDetailText={pastEvent.title}
                 style={[{marginRight: responsiveWidth(3)},i==0&&{marginLeft: responsiveWidth(3)}]}
+                onPress={()=>this.openDetail('mti.ActivityDetailScreen',pastEvent)}
             />
         )
     }
