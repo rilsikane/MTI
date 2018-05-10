@@ -302,7 +302,6 @@ export default class DashboardScreen extends Component{
                 animated: true, // does the popToRoot have transition animation or does it happen immediately (optional)
                 animationType: 'fade', // 'fade' (for both) / 'slide-horizontal' (for android) does the popToRoot have different transition animation (optional)
               });
-              this.props.naviStore.navigation = undefined;
             this.init();
         }
         if (event.id === 'willDisappear') {

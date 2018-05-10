@@ -3,9 +3,9 @@ import {Text,View,Image,ImageBackground,Platform,TouchableOpacity,SafeAreaView} 
 import PropTypes from "prop-types";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather'
+import Icon from 'react-native-vector-icons/FontAwesome'
 import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
 import { ifIphoneX,isIphoneX } from 'react-native-iphone-x-helper'
-import Icon from 'react-native-vector-icons/FontAwesome';
 import { observer, inject } from 'mobx-react';
 
 @inject('naviStore')
@@ -37,14 +37,15 @@ class Headers extends Component{
             return(
                 <TouchableOpacity style={{backgroundColor:"transparent",flexDirection:"column",justifyContent:"flex-start",paddingRight:5}} 
                   onPress={(e)=> this.props.cancel()}>
-                      <Text style={{fontSize: responsiveFontSize(3),color: '#FFF'}}>{this.props.cancelTxt||'ยกเลิก'}</Text>
+                      {!this.props.cancelTxt ? <Text style={{fontSize: responsiveFontSize(3),color: '#FFF'}}>ยกเลิก</Text>: 
+                      <Icon name="chevron-left" style={{fontSize: responsiveFontSize(3),color: '#FFF'}}></Icon>}
                   </TouchableOpacity>
             )
         }else if(this.props.leftIconName=='back'){
             return(
                 <TouchableOpacity style={{backgroundColor:"transparent",flexDirection:"column",justifyContent:"flex-start",paddingRight:5}} 
                 onPress={this.props.back ? (e)=> this.props.back():(e)=> this.props.naviStore.navigation.pop()}>
-                    <Text style={{fontSize: responsiveFontSize(3),color: '#FFF'}}>กลับ</Text>
+                   <Icon name="chevron-left" style={{fontSize: responsiveFontSize(3),color: '#FFF'}}></Icon>
                 </TouchableOpacity>
             )
         }
@@ -54,7 +55,8 @@ class Headers extends Component{
                 onPress={(e)=> this.props.naviStore.navigation.dismissModal({
                     animationType: 'slide-down' // 'none' / 'slide-down' , dismiss animation for the modal (optional, default 'slide-down')
                   })}>
-                    <Text style={{fontSize: responsiveFontSize(3),color: '#FFF'}}>กลับ</Text>
+                    <Icon name="chevron-left" style={{fontSize: responsiveFontSize(3),color: '#FFF'}}></Icon>
+                    
                 </TouchableOpacity>
             )
         }else{
