@@ -173,9 +173,8 @@ const styles={
         flexDirection: 'row',
         alignItems: 'center',
         width: responsiveWidth(85),
-        marginTop: responsiveHeight(2),
-        marginBottom: responsiveHeight(2),
-        height: responsiveHeight(5),
+        marginTop: responsiveHeight(2.2),
+        marginBottom: responsiveHeight(2.2),
     },
     checkTitleTextStyle:{
         color: '#1595d3',
@@ -187,6 +186,6 @@ const styles={
         fontSize: responsiveFontSize(2.2),
     },
     checkBoxStyle:{
-        height: responsiveHeight(2.8),
+        height: responsiveHeight(3),
     }
 }

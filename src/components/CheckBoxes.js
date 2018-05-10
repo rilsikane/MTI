@@ -39,7 +39,7 @@ class CheckBoxes extends Component{
                     {...this.props} 
                     fontFamily={Platform.OS === 'android' ?'DBHelvethaicaX':'DBHelvethaicaX-Reg'}
                     containerStyle={styles.checkBoxContainerStyle}
-                    size={responsiveFontSize(3)}
+                    size={responsiveFontSize(2.7)}
                     iconType='material-community'
                     checkedIcon='checkbox-marked-outline'
                     uncheckedIcon='checkbox-blank-outline'
