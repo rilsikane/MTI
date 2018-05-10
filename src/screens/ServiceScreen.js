@@ -54,10 +54,10 @@ export default class ServiceScreen extends Component{
                 iconUri: require('../source/icons/iconWork01.png'),
                 title: 'ค้นหาอู่และศูนย์'
             },
-            {
-                iconUri: require('../source/icons/iconQuestion01.png'),
-                title: 'คำถามที่พบบ่อย'
-            }
+            // {
+            //     iconUri: require('../source/icons/iconQuestion01.png'),
+            //     title: 'คำถามที่พบบ่อย'
+            // }
         ]
 
         return serviceList.map((data,i)=>
