@@ -94,7 +94,7 @@ export default class MyCardScreen extends Component{
                                 containerStyle={styles.checkBoxStyle}
                             />
                         </View>
-                        <ImageBackground borderRadius={15} style={{height: responsiveHeight(31),width: responsiveWidth(85)}} imageStyle={styles.backCardContainerStyle}  source={{uri:this.state.userDetail.card.design.rear}} >
+                        <ImageBackground borderRadius={15} style={{height: responsiveHeight(31),width: responsiveWidth(85),marginBottom: responsiveHeight(1)}} imageStyle={styles.backCardContainerStyle}  source={{uri:this.state.userDetail.card.design.rear}} >
                             {!this.state.isLoading  && <Image
                                 source={{uri:this.state.qrChecked?this.state.userDetail.card.qrcode:this.state.userDetail.card.barcode}}
                                 resizeMode='contain'
@@ -173,8 +173,8 @@ const styles={
         flexDirection: 'row',
         alignItems: 'center',
         width: responsiveWidth(85),
-        marginTop: responsiveHeight(2),
-        marginBottom: responsiveHeight(2),
+        marginTop: responsiveHeight(2.2),
+        marginBottom: responsiveHeight(2.2),
     },
     checkTitleTextStyle:{
         color: '#1595d3',

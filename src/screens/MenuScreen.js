@@ -133,7 +133,7 @@ export default class MenuScreen extends Component{
                         </View>
                         <View style={styles.subBorderStyle}/> */}
                         <View style={styles.subBorderStyle}/>
-                        <View style={styles.menuSectionStyle}>        
+                        {/* <View style={styles.menuSectionStyle}>        
                             <TouchableOpacity style={styles.menuSubSectionStyle}>
                                 <Image
                                     source={require('./../source/icons/iconActivityWhite.png')}
@@ -143,7 +143,7 @@ export default class MenuScreen extends Component{
                                 <Text style={styles.menuTitleTextStyle}>กิจกรรม</Text> 
                             </TouchableOpacity>
                         </View>
-                        <View style={styles.subBorderStyle}/>
+                        <View style={styles.subBorderStyle}/> */}
                         {/* <View style={styles.menuSectionStyle}>        
                             <TouchableOpacity onPress={()=>this.gotoMenu("mti.ServiceScreen")} style={styles.menuSubSectionStyle}>
                                 <Image
