@@ -31,23 +31,24 @@ export default class PrivilegeAgreementScreen extends Component{
         this.setState({isLoading: true})
         if(this.props.data.type.toLowerCase()=='barter'){
             let checkBarter = await post('redeem/check/barter',{})
+            this.setState({isLoading: false})
             if(checkBarter&&checkBarter.status=='ok'){
                 setTimeout(()=>{
                     this.props.navigator.dismissModal({
                         animationType: 'none' // 'none' / 'slide-down' , dismiss animation for the modal (optional, default 'slide-down')
                     });
-                },500)
+                },50)
                 setTimeout(()=>{
-                this.props.navigator.push({
-                    screen: "mti.MyCardScreen", // unique ID registered with Navigation.registerScreen
-                    passProps:{navigator:this.props.navigator},
-                    title: undefined, // navigation bar title of the pushed screen (optional)
-                    titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
-                    animated: false, // does the push have transition animation or does it happen immediately (optional)
-                    backButtonTitle: undefined, // override the back button title (optional)
-                    backButtonHidden: false, // hide the back button altogether (optional)
-                })
-                },500);
+                    this.props.navigator.push({
+                        screen: "mti.MyCardScreen", // unique ID registered with Navigation.registerScreen
+                        passProps:{navigator:this.props.navigator},
+                        title: undefined, // navigation bar title of the pushed screen (optional)
+                        titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
+                        animated: false, // does the push have transition animation or does it happen immediately (optional)
+                        backButtonTitle: undefined, // override the back button title (optional)
+                        backButtonHidden: false, // hide the back button altogether (optional)
+                    })
+                },200);
                 //this.setState({isLoading: false})
             }else{
                 console.log('redeem error')
@@ -59,16 +60,18 @@ export default class PrivilegeAgreementScreen extends Component{
             console.log(JSON.stringify(response2));
              this.setState({isLoading: false});
             if(response2){
-                this.props.navigator.showModal({
-                    screen: 'mti.PrivilegeQrCodeScreen', // unique ID registered with Navigation.registerScreen
-                    title: undefined, // navigation bar title of the pushed screen (optional)
-                    titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
-                    passProps: {navigator:this.props.navigator,redeem:response2,data:this.props.data,item:this.props.item}, // Object that will be passed as props to the pushed screen (optional)
-                    animated: true, // does the push have transition animation or does it happen immediately (optional)
-                    backButtonTitle: undefined, // override the back button title (optional)
-                    backButtonHidden: false, // hide the back button altogether (optional)
-                    
-                })
+                setTimeout(()=>{
+                    this.props.navigator.showModal({
+                        screen: 'mti.PrivilegeQrCodeScreen', // unique ID registered with Navigation.registerScreen
+                        title: undefined, // navigation bar title of the pushed screen (optional)
+                        titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
+                        passProps: {navigator:this.props.navigator,redeem:response2,data:this.props.data,item:this.props.item}, // Object that will be passed as props to the pushed screen (optional)
+                        animated: true, // does the push have transition animation or does it happen immediately (optional)
+                        backButtonTitle: undefined, // override the back button title (optional)
+                        backButtonHidden: false, // hide the back button altogether (optional)
+                        
+                    })
+                },500);
                
             }
         }
