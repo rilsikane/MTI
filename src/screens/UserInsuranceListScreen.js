@@ -118,7 +118,7 @@ export default class UserInsuranceListScreen extends Component{
                         </View>
                         {this.state.policys && this.state.policys.length >0  && this.renderInsuranceShortDetailCard()}
                     </View>
-                    <Image
+                    {/* <Image
                         source={require('../source/images/promotionImg.png')}
                         resizeMode='stretch'
                         style={styles.advertiseImageStyle}
@@ -132,7 +132,7 @@ export default class UserInsuranceListScreen extends Component{
                                 borderRadius={2}
                             />
                         </TouchableOpacity>
-                    </View>
+                    </View> */}
                     {this.state.isLoading && <Spinner visible={this.state.isLoading}  textStyle={{color: '#FFF'}} />}
                 </ScrollView>
                 

@@ -126,7 +126,7 @@ class Headers extends Component{
                             {this.renderCenterItems()}
                         </View>
                         <View style={[styles.headerRightItemContainerStyle,this.props.longTitle&&styles.sideItemWithLongTitleStyle,this.props.withSearch&&styles.rightItemWithSearchStyle]}>
-                            {this.renderRightButton()}
+                            {/* {this.renderRightButton()} */}
                         </View>
                     </View>
                     <View style={styles.bannerBottomLineStyle}/>

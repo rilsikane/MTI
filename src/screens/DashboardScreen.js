@@ -266,11 +266,11 @@ export default class DashboardScreen extends Component{
                             {this.renderMyLifeStyleList()}
                         </ScrollView>
                     </View>
-                    <Image
+                    {/* <Image
                         source={require('./../source/images/promotionImg.png')}
                         style={styles.promotionImageStyle}
                         resizeMode='stretch'
-                    />
+                    /> */}
                     <View style={styles.dashboardDetailTopContainerStyle}>
                         <View style={styles.hotDealTitleTextContainerStyle}>
                             <Text style={styles.dashboardSectionTitleTextStyle}>กิจกรรมที่มาใหม่</Text>
@@ -278,7 +278,7 @@ export default class DashboardScreen extends Component{
                         <View style={{alignItems: 'center'}}>
                             {this.renderNewEventCard()}
                         </View>
-                        <View style={styles.hotDealTitleTextContainerStyle}>
+                        {/* <View style={styles.hotDealTitleTextContainerStyle}>
                             <Text style={styles.dashboardSectionTitleTextStyle}>กิจกรรมที่ผ่านมา</Text>
                             <TouchableOpacity style={styles.showAllContainerStyle}>
                                 <Text style={styles.showAllTextStyle}>ดูทั้งหมด</Text>
@@ -286,7 +286,7 @@ export default class DashboardScreen extends Component{
                         </View>
                         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.scrollViewActivityCardContainerStyle}>
                             {this.renderPastEventCard()}
-                        </ScrollView>
+                        </ScrollView> */}
                     </View>
                 </ScrollView>
                 {this.state.isLoading && <Spinner visible={this.state.isLoading}  textStyle={{color: '#FFF'}} />}
@@ -331,7 +331,7 @@ const styles={
     },
     dashboardDetailTopContainerStyle:{
         flex: 1,
-      
+
     },
     dashboardSectionTitleTextStyle:{
         fontSize: responsiveFontSize(3),
@@ -340,7 +340,7 @@ const styles={
     },
     newEventImageStyle:{
         width: responsiveWidth(90),
-
+        marginBottom: responsiveHeight(1),
     },
     showAllContainerStyle:{
         marginRight: responsiveWidth(3),
