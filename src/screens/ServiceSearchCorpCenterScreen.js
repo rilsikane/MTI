@@ -96,7 +96,7 @@ export default class ServiceSearchCorpCenterScreen extends Component{
                                 longitude: parseFloat(this.props.userLongitude),
                             }}
                             image={require('../source/icons/current.png')}
-                            onPress={()=>this.onMarkerPress(this.props.data)}
+                            //onPress={()=>this.onMarkerPress(this.props.data)}
                         />}
                     {this.props.data.map((data)=>
                         <Marker
@@ -159,10 +159,10 @@ export default class ServiceSearchCorpCenterScreen extends Component{
 
     async onNearByPress(){
         this.setState({isLoading:true});
+        //console.log(this.state.userLatitude,this.state.userLongitude)
         let nearBy = await getBasic(`services?nearby=y&lat=${this.state.userLatitude}&lng=${this.state.userLongitude}&filter_type_id=2&page=1&pagesize=10`,{});
         //let nearBy = await getBasic(`services?nearby=y&lat=13.7863725&lng=100.5745153&filter_type_id=2&page=1&pagesize=10`,{});
-        if(!this.props.isMap){
-            this.setState({isLoading:false});
+        if(!this.props.isMap){     
             setTimeout(()=>{
                 this.props.navigator.showModal({
                     screen: 'mti.ServiceSearchCorpCenterScreen', // unique ID registered with Navigation.registerScreen
@@ -180,9 +180,8 @@ export default class ServiceSearchCorpCenterScreen extends Component{
                     backButtonTitle: undefined, // override the back button title (optional)
                     backButtonHidden: false, // hide the back button altogether (optional)
                 })
-            },100)
-           
-           
+            },100) 
+            this.setState({isLoading:false});
         }else{
             this.setState({
                 serviceList: nearBy.data,

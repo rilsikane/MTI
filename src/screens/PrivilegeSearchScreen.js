@@ -24,12 +24,12 @@ export default class PrivilegeSearchScreen extends Component{
                     withSearch
                     back={()=>this.props.navigator.pop()}
                 />
-                <MainSearchBox
+                {/* <MainSearchBox
                     //value={}
                     //onChangeText={}
                     onPress={()=>alert('search')}
                     placeholder='ค้นหาสิทธิพิเศษที่คุณต้องการ'
-                />
+                /> */}
                 <View style={styles.privilegeSearchContainerStyle}>
                     <MapView
                         initialRegion={{

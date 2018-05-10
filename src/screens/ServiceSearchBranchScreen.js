@@ -62,6 +62,7 @@ export default class ServiceSearchBranchScreen extends Component{
                 {enableHighAccuracy: true,timeout: 20000,maxAge: 0,istanceFilter: 1 },
             );
         }else{
+            //console.log(this.props.data)
             animationTimeout = setTimeout(() => {
                 this.focus();
             },3000);
@@ -83,7 +84,7 @@ export default class ServiceSearchBranchScreen extends Component{
             return(
                 <MapView
                     ref={(ref) => { this.mapRef = ref; }}
-                    minZoomLevel={this.props.nearBy ? 13:5}
+                    minZoomLevel={this.props.nearBy ? 5:5}
                     maxZoomLevel={18}
                     initialRegion={{
                         latitude: this.props.nearBy && (this.props.data && this.props.data.length>0)  ?parseFloat(this.props.data[0].latitude):15.870032,
@@ -100,15 +101,17 @@ export default class ServiceSearchBranchScreen extends Component{
                                 longitude: parseFloat(this.props.userLongitude),
                             }}
                             image={require('../source/icons/current.png')}
-                            onPress={()=>this.onMarkerPress(this.props.data)}
+                            //onPress={()=>this.onMarkerPress(this.props.data)}
                     />}
-                    {this.props.isDirect?   
+                    {this.props.isDirect&&   
                         <Marker
                             identifier={this.props.data.id}
                             coordinate={this.props.data.coordinate}
                             image={require('../source/icons/iconMapMarker.png')}
                             onPress={()=>this.onMarkerPress(this.props.data)}
-                        />:
+                        />
+                    }
+                    {!this.props.isDirect&& 
                         this.props.data.map((data)=>
                             <Marker
                                 identifier={data.id}
@@ -120,7 +123,8 @@ export default class ServiceSearchBranchScreen extends Component{
                                 image={require('../source/icons/iconMapMarker.png')}
                                 onPress={()=>this.onMarkerPress(data)}
                             />
-                    )}
+                        )
+                    }
                 </MapView>
             )
         }else{
@@ -183,9 +187,10 @@ export default class ServiceSearchBranchScreen extends Component{
 
     async onNearByPress(){
         this.setState({isLoading:true});
-        let nearBy = await getBasic(`services?nearby=y&lat=${this.state.userLatitude}&lng=${this.state.userLongitude}&filter_type_id=5&page=1&pagesize=400`,{});
+        console.log(this.state.userLatitude,this.state.userLongitude)
+        let nearBy = await getBasic(`services?nearby=y&lat=${this.state.userLatitude}&lng=${this.state.userLongitude}&filter_type_id=5&page=1&pagesize=20`,{});
+        //console.log(nearBy.data.length)
         if(!this.props.isMap){
-            this.setState({isLoading:false});
             setTimeout(()=>{
                     this.props.navigator.showModal({
                         screen: 'mti.ServiceSearchBranchScreen', // unique ID registered with Navigation.registerScreen
@@ -204,7 +209,7 @@ export default class ServiceSearchBranchScreen extends Component{
                         backButtonHidden: false, // hide the back button altogether (optional)
                     })
             },100)
-            
+            this.setState({isLoading:false});
         }else{
             this.setState({
                 serviceList: nearBy.data,

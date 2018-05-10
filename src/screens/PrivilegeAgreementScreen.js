@@ -1,7 +1,8 @@
 import React,{Component} from 'react';
-import {Text,View,TouchableOpacity,ScrollView} from 'react-native';
+import {Text,View,TouchableOpacity,ScrollView,Alert} from 'react-native';
 import PropTypes from "prop-types";
 import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 import {Headers} from './../components/Headers';
 import {MainSubmitButton} from './../components/MainSubmitButton';
@@ -11,6 +12,9 @@ export default class PrivilegeAgreementScreen extends Component{
 
     constructor(props){
         super(props)
+        this.state={
+            isLoading: false,
+        }
         this.redeem = this.redeem.bind(this);
     }
 
@@ -24,23 +28,31 @@ export default class PrivilegeAgreementScreen extends Component{
         //return <Text style={styles.agreementTitleTextStyle}>{this.props.data.content2}</Text>
     }
     async redeem(){
-        if(this.props.data.type=='BARTER'){
-           
-            setTimeout(()=>{
-                this.props.navigator.dismissModal({
-                    animationType: 'none' // 'none' / 'slide-down' , dismiss animation for the modal (optional, default 'slide-down')
-                });
-            },500)
-
-            this.props.navigator.push({
-                screen: "mti.MyCardScreen", // unique ID registered with Navigation.registerScreen
-                passProps:{navigator:this.props.navigator},
-                title: undefined, // navigation bar title of the pushed screen (optional)
-                titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
-                animated: false, // does the push have transition animation or does it happen immediately (optional)
-                backButtonTitle: undefined, // override the back button title (optional)
-                backButtonHidden: false, // hide the back button altogether (optional)
-            })
+        this.setState({isLoading: true})
+        if(this.props.data.type.toLowerCase()=='barter'){
+            let checkBarter = await post('redeem/check/barter',{})
+            if(checkBarter&&checkBarter.status=='ok'){
+                setTimeout(()=>{
+                    this.props.navigator.dismissModal({
+                        animationType: 'none' // 'none' / 'slide-down' , dismiss animation for the modal (optional, default 'slide-down')
+                    });
+                },500)
+    
+                this.props.navigator.push({
+                    screen: "mti.MyCardScreen", // unique ID registered with Navigation.registerScreen
+                    passProps:{navigator:this.props.navigator},
+                    title: undefined, // navigation bar title of the pushed screen (optional)
+                    titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
+                    animated: false, // does the push have transition animation or does it happen immediately (optional)
+                    backButtonTitle: undefined, // override the back button title (optional)
+                    backButtonHidden: false, // hide the back button altogether (optional)
+                })
+                //this.setState({isLoading: false})
+            }else{
+                console.log('redeem error')
+                this.setState({isLoading: false})
+            }
+         
         }else{
             let response2 = await post(`redeem`,{"privilege_id":this.props.data.id});
             console.log(JSON.stringify(response2));
@@ -56,6 +68,7 @@ export default class PrivilegeAgreementScreen extends Component{
                     backButtonHidden: false, // hide the back button altogether (optional)
                     
                 })
+                this.setState({isLoading: false})
             }
         }
    
@@ -86,6 +99,7 @@ export default class PrivilegeAgreementScreen extends Component{
                         </TouchableOpacity> */}
                     </View>
                 </ScrollView>
+                {this.state.isLoading && <Spinner visible={this.state.isLoading}  textStyle={{color: '#FFF'}} />}
             </View>
         )
     }
