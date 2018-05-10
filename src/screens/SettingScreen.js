@@ -179,6 +179,7 @@ export default class SettingScreen extends Component{
 const styles={
     settingScreenContainerStyle:{
         flex: 1,
+        backgroundColor:"#fff"
     },
     settingContainerStyle:{
         flex: 1,
