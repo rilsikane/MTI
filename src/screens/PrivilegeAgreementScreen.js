@@ -37,7 +37,7 @@ export default class PrivilegeAgreementScreen extends Component{
                         animationType: 'none' // 'none' / 'slide-down' , dismiss animation for the modal (optional, default 'slide-down')
                     });
                 },500)
-    
+                setTimeout(()=>{
                 this.props.navigator.push({
                     screen: "mti.MyCardScreen", // unique ID registered with Navigation.registerScreen
                     passProps:{navigator:this.props.navigator},
@@ -47,6 +47,7 @@ export default class PrivilegeAgreementScreen extends Component{
                     backButtonTitle: undefined, // override the back button title (optional)
                     backButtonHidden: false, // hide the back button altogether (optional)
                 })
+                },500);
                 //this.setState({isLoading: false})
             }else{
                 console.log('redeem error')
@@ -56,7 +57,7 @@ export default class PrivilegeAgreementScreen extends Component{
         }else{
             let response2 = await post(`redeem`,{"privilege_id":this.props.data.id});
             console.log(JSON.stringify(response2));
-    
+             this.setState({isLoading: false});
             if(response2){
                 this.props.navigator.showModal({
                     screen: 'mti.PrivilegeQrCodeScreen', // unique ID registered with Navigation.registerScreen
@@ -68,7 +69,7 @@ export default class PrivilegeAgreementScreen extends Component{
                     backButtonHidden: false, // hide the back button altogether (optional)
                     
                 })
-                this.setState({isLoading: false})
+               
             }
         }
    

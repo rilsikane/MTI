@@ -38,14 +38,14 @@ class Headers extends Component{
                 <TouchableOpacity style={{backgroundColor:"transparent",flexDirection:"column",justifyContent:"flex-start",paddingRight:5}} 
                   onPress={(e)=> this.props.cancel()}>
                       {!this.props.cancelTxt ? <Text style={{fontSize: responsiveFontSize(3),color: '#FFF'}}>ยกเลิก</Text>: 
-                      <Icon name="chevron-left" style={{fontSize: responsiveFontSize(3),color: '#FFF'}}></Icon>}
+                      <Icon name="chevron-left" style={{fontSize: responsiveFontSize(2.5),color: '#FFF'}}></Icon>}
                   </TouchableOpacity>
             )
         }else if(this.props.leftIconName=='back'){
             return(
                 <TouchableOpacity style={{backgroundColor:"transparent",flexDirection:"column",justifyContent:"flex-start",paddingRight:5}} 
                 onPress={this.props.back ? (e)=> this.props.back():(e)=> this.props.naviStore.navigation.pop()}>
-                   <Icon name="chevron-left" style={{fontSize: responsiveFontSize(3),color: '#FFF'}}></Icon>
+                   <Icon name="chevron-left" style={{fontSize: responsiveFontSize(2.5),color: '#FFF'}}></Icon>
                 </TouchableOpacity>
             )
         }
@@ -55,7 +55,7 @@ class Headers extends Component{
                 onPress={(e)=> this.props.naviStore.navigation.dismissModal({
                     animationType: 'slide-down' // 'none' / 'slide-down' , dismiss animation for the modal (optional, default 'slide-down')
                   })}>
-                    <Icon name="chevron-left" style={{fontSize: responsiveFontSize(3),color: '#FFF'}}></Icon>
+                    <Icon name="chevron-left" style={{fontSize: responsiveFontSize(2.5),color: '#FFF'}}></Icon>
                     
                 </TouchableOpacity>
             )
