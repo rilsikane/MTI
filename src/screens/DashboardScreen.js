@@ -202,7 +202,7 @@ export default class DashboardScreen extends Component{
     renderNewEventCard(){
         return(
             <DashboardActivityCard 
-                bannerUri={require('./../source/images/newEventImg.png')}
+                bannerUri={require('../source/images/activityImg05.png')}
                 iconText={'15'}
                 iconTitleText={'มกราคม'}
                 activityTitleText='Chef for a Day'
@@ -271,14 +271,14 @@ export default class DashboardScreen extends Component{
                         style={styles.promotionImageStyle}
                         resizeMode='stretch'
                     /> */}
-                    <View style={styles.dashboardDetailTopContainerStyle}>
+                    {/* <View style={styles.dashboardDetailTopContainerStyle}>
                         <View style={styles.hotDealTitleTextContainerStyle}>
                             <Text style={styles.dashboardSectionTitleTextStyle}>กิจกรรมที่มาใหม่</Text>
                         </View>
                         <View style={{alignItems: 'center'}}>
                             {this.renderNewEventCard()}
                         </View>
-                        {/* <View style={styles.hotDealTitleTextContainerStyle}>
+                        <View style={styles.hotDealTitleTextContainerStyle}>
                             <Text style={styles.dashboardSectionTitleTextStyle}>กิจกรรมที่ผ่านมา</Text>
                             <TouchableOpacity style={styles.showAllContainerStyle}>
                                 <Text style={styles.showAllTextStyle}>ดูทั้งหมด</Text>
@@ -286,8 +286,13 @@ export default class DashboardScreen extends Component{
                         </View>
                         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.scrollViewActivityCardContainerStyle}>
                             {this.renderPastEventCard()}
-                        </ScrollView> */}
-                    </View>
+                        </ScrollView>
+                    </View> */}
+                    <Image
+                        source={require('../source/images/activityImg05.png')}
+                        style={styles.promotionImageStyle}
+                        resizeMode='stretch'
+                    />
                 </ScrollView>
                 {this.state.isLoading && <Spinner visible={this.state.isLoading}  textStyle={{color: '#FFF'}} />}
             </View>
@@ -353,7 +358,7 @@ const styles={
         flex:1
     },
     promotionImageStyle:{
-        height: responsiveHeight(18.30),
+        height: responsiveHeight(20),
         width: responsiveWidth(100),
         marginTop: responsiveHeight(2),
     }
