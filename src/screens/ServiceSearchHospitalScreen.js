@@ -174,6 +174,7 @@ export default class ServiceSearchHospitalScreen extends Component{
 
     async onNearByPress(){
         this.setState({isLoading:true});
+        //console.log(this.state.userLatitude,this.state.userLongitude)
         let nearBy = await getBasic(`services?nearby=y&lat=${this.state.userLatitude}&lng=${this.state.userLongitude}&filter_type_id=1&page=1&pagesize=20`,{});
         if(!this.props.isMap){
             this.setState({isLoading:false});

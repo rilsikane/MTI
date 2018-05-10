@@ -17,56 +17,10 @@ export default class ContactUsScreen extends Component{
             userLatitude: '',
             userLongitude: '',
         }
-        this.getUserLocation = this.getUserLocation.bind(this);
     }
 
-    async gotoBranchSearch(isMap,title){
-        if(isMap){
-            this.setState({isLoading: true})
-            this.getUserLocation()
-            if(this.state.userLatitude!=''&&this.state.userLongitude!=''){
-                this.props.navigator.showModal({
-                    screen: 'mti.ServiceSearchBranchScreen', // unique ID registered with Navigation.registerScreen
-                    title: undefined, // navigation bar title of the pushed screen (optional)
-                    titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
-                    passProps: {
-                        isMap: isMap,
-                        isDirect: true,
-                        data:{
-                            id: '1234',
-                            //13.7858124 100.5745153
-                            coordinate:{latitude: 13.7863725,longitude: 100.5745153},
-                            title: title,
-                            address: '252 ถ.รัชดาภิเษก แขวงห้วยขวาง เขตห้วยขวาง กรุงเทพฯ  10310',
-                            tel: '1484',
-                        },
-                        userLocation:{
-                            lat: this.state.userLatitude,
-                            long: this.state.userLongitude,
-                        },
-                        headerTitleText: title,
-                        navigator:this.props.navigator,
-                    }, // Object that will be passed as props to the pushed screen (optional)
-                    animated: true, // does the push have transition animation or does it happen immediately (optional)
-                    backButtonTitle: undefined, // override the back button title (optional)
-                    backButtonHidden: false, // hide the back button altogether (optional)
-                    
-                })
-            }
-        }else{
-            this.props.navigator.push({
-                screen: 'mti.ServiceSearchBranchScreen', // unique ID registered with Navigation.registerScreen
-                passProps:{},
-                title: undefined, // navigation bar title of the pushed screen (optional)
-                titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
-                animated: false, // does the push have transition animation or does it happen immediately (optional)
-                backButtonTitle: undefined, // override the back button title (optional)
-                backButtonHidden: false, // hide the back button altogether (optional)
-            })
-        }   
-    }
-
-    getUserLocation(){
+    componentDidMount(){
+        this.setState({isLoading: true})
         navigator.geolocation.getCurrentPosition(
             (position) => {
               this.setState({
@@ -86,8 +40,54 @@ export default class ContactUsScreen extends Component{
                     ]
                 )
             },
-            {maximumAge:60000, timeout:20000, enableHighAccuracy:false },
+            {enableHighAccuracy: true,timeout: 20000,maxAge: 0,istanceFilter: 1 },
         )
+    }
+
+    gotoBranchSearch(isMap,title){
+        if(isMap){
+            if(this.state.userLatitude!=''&&this.state.userLongitude!=''){
+                setTimeout(()=>{
+                    this.props.navigator.showModal({
+                        screen: 'mti.ServiceSearchBranchScreen', // unique ID registered with Navigation.registerScreen
+                        title: undefined, // navigation bar title of the pushed screen (optional)
+                        titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
+                        passProps: {
+                            isMap: isMap,
+                            isDirect: true,
+                            data:{
+                                id: '1234',
+                                //13.7858124 100.5745153
+                                coordinate:{latitude: 13.7863725,longitude: 100.5745153},
+                                title: title,
+                                address: '252 ถ.รัชดาภิเษก แขวงห้วยขวาง เขตห้วยขวาง กรุงเทพฯ  10310',
+                                tel: '1484',
+                            },
+                            userLocation:{
+                                lat: this.state.userLatitude,
+                                long: this.state.userLongitude,
+                            },
+                            headerTitleText: title,
+                            navigator:this.props.navigator,
+                        }, // Object that will be passed as props to the pushed screen (optional)
+                        animated: true, // does the push have transition animation or does it happen immediately (optional)
+                        backButtonTitle: undefined, // override the back button title (optional)
+                        backButtonHidden: false, // hide the back button altogether (optional)
+                        
+                    })
+                },100)
+            }
+        }else{
+            this.props.navigator.push({
+                screen: 'mti.ServiceSearchBranchScreen', // unique ID registered with Navigation.registerScreen
+                passProps:{},
+                title: undefined, // navigation bar title of the pushed screen (optional)
+                titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
+                animated: false, // does the push have transition animation or does it happen immediately (optional)
+                backButtonTitle: undefined, // override the back button title (optional)
+                backButtonHidden: false, // hide the back button altogether (optional)
+            })
+        }   
     }
 
     render(){
@@ -156,7 +156,7 @@ export default class ContactUsScreen extends Component{
                                         style={styles.iconImageStyle}
                                     />
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={()=>this.gotoBranchSearch(true,'ติดต่อแผนกลูกค้าสัมพันธ์')}>
+                                <TouchableOpacity onPress={()=>this.gotoBranchSearch(true,'Muang Thai Friends Club')}>
                                     <Image
                                         source={require('../source/icons/iconMapMarker01.png')}
                                         resizeMode='contain'
