@@ -98,7 +98,7 @@ export default class ServiceSearchHospitalScreen extends Component{
                                 longitude: parseFloat(this.props.userLongitude),
                             }}
                             image={require('../source/icons/current.png')}
-                            onPress={()=>this.onMarkerPress(this.props.data)}
+                            //onPress={()=>this.onMarkerPress(this.props.data)}
                     />}
                     {this.props.data.map((data)=>
                         <Marker
