@@ -167,7 +167,7 @@ export default class MenuScreen extends Component{
                                 <Text style={styles.menuTitleTextStyle}>ติดต่อเรา</Text> 
                             </TouchableOpacity>
                         </View>
-                        {this.state.user.name != "GUEST"&&<View style={styles.subBorderStyle}/>}
+                        {/* {this.state.user.name != "GUEST"&&<View style={styles.subBorderStyle}/>}
                         {this.state.user.name != "GUEST" && 
                         <View style={styles.menuSectionStyle}>        
                             <TouchableOpacity onPress={()=>this.gotoMenu("mti.SettingScreen")} style={styles.menuSubSectionStyle}>
@@ -178,7 +178,7 @@ export default class MenuScreen extends Component{
                                 />
                                 <Text style={styles.menuTitleTextStyle}>การตั้งค่า</Text> 
                             </TouchableOpacity>
-                        </View>}
+                        </View>} */}
                         <View style={styles.subBorderStyle}/>
                         <View style={{flex: 1}}/>
                         <View style={styles.subBorderStyle}/>
