@@ -180,6 +180,7 @@ export default class SettingAppLockingScreen extends Component{
 const styles={
     settingAppLockingScreenContainerStyle:{
         flex: 1,
+        backgroundColor:"#fff"
     },
     settingAppLockingContainerStyle:{
         flex: 1,

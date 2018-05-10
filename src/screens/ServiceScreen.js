@@ -32,9 +32,10 @@ export default class ServiceScreen extends Component{
         this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
     }
     init(){
-        this.props.naviStore.navigation = this.props.navigator;
+        
         this.setState({isLoading:true});
         setTimeout(()=>{
+            this.props.naviStore.navigation = this.props.navigator;
             this.setState({isLoading:false});
         },1000)
        
@@ -291,6 +292,7 @@ export default class ServiceScreen extends Component{
     onNavigatorEvent(event) {
     
         if (event.id === 'bottomTabSelected') {
+            
             this.props.naviStore.navigation.popToRoot({
                 animated: false, // does the popToRoot have transition animation or does it happen immediately (optional)
                 animationType: 'fade', // 'fade' (for both) / 'slide-horizontal' (for android) does the popToRoot have different transition animation (optional)
@@ -301,7 +303,7 @@ export default class ServiceScreen extends Component{
          
         }
         if (event.id === 'didAppear') {
-          this.init();
+          //this.init();
         }
     }
 }

@@ -237,6 +237,7 @@ export default class ServiceSearchCorpCenterScreen extends Component{
 const styles={
     serviceSearchCorpCenterScreenContainerStyle:{
         flex: 1,
+        backgroundColor:"#fff"
     },
     serviceSearchCorpCenterContainerStyle:{
         flex: 1,

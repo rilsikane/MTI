@@ -236,6 +236,7 @@ export default class ActivityDetailScreen extends Component{
 const styles={
     ActivityDetailScreenContainerStyle:{
         flex: 1,
+        backgroundColor:"#fff"
     },
     activityDetailContainerStyle:{
         flex: 1,

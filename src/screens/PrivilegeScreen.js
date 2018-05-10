@@ -297,6 +297,7 @@ export default class PrivilegeScreen extends Component{
 const styles={
     privilegeScreenContainerStyle:{
         flex: 1,
+        backgroundColor:"#fff"
     },
     privilegeListContainerStyle:{
         backgroundColor: '#FFF'

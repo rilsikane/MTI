@@ -241,6 +241,7 @@ export default class ServiceSearchHospitalScreen extends Component{
 const styles={
     serviceSearchHospitalScreenContainerStyle:{
         flex: 1,
+        backgroundColor:"#fff"
     },
     serviceSearchHospitalContainerStyle:{
         flex: 1,

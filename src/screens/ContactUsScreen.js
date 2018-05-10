@@ -199,6 +199,7 @@ export default class ContactUsScreen extends Component{
 const styles={
     contactUsScreenContainerStyle:{
         flex: 1,
+        backgroundColor:"#fff"
     },
     contactUsContainerStyle:{
         flex: 1,

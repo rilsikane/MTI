@@ -144,6 +144,7 @@ export default class UserInsuranceListScreen extends Component{
 const styles={
     userInsuranceListScreenContainerStyle:{
         flex: 1,
+        backgroundColor:"#fff"
     },
     userInsuranceListContainerStyle:{
         flex: 1,
