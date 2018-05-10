@@ -17,9 +17,8 @@ class CheckBoxes extends Component{
         if(textUnderLine){
             return(
                 <TouchableOpacity onPress={this.props.onHyperLinkPress} style={styles.textUnderLineContainerStyle}>
-                    <Text style={this.props.checkBoxTextStyle}>{checkBoxTitleText.split(' ')[0]} </Text>
-                   
-                        <Text style={[this.props.checkBoxTextStyle,styles.textUnderLineStyle]}>{checkBoxTitleText.split(' ')[1]}</Text>
+                    <Text style={this.props.checkBoxTextStyle}>{checkBoxTitleText.split(' ')[0]} </Text>              
+                    <Text style={[this.props.checkBoxTextStyle,styles.textUnderLineStyle]}>{checkBoxTitleText.split(' ')[1]}</Text>
                 </TouchableOpacity>
             )
         }else{
@@ -68,7 +67,6 @@ const styles={
     },
     textUnderLineContainerStyle:{
         flexDirection: 'row',
-        flex:1
     },
     textUnderLineStyle:{
         textDecorationLine: 'underline',
