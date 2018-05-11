@@ -176,7 +176,7 @@ class RegisterStep3 extends Component{
                             maxLength={16}
                         />
                         <Text style={styles.errorTextStyle}>{this.state.errorText}</Text>
-                        <Text style={styles.directionTextStyle}>กำหนดรหัสผ่านต้องมีอักขระอย่างน้อย 8 ตัว และประกอบไปด้วย{'\n'}ตัวอักษร ภาษาอังกฤษ พิมพ์เล็ก พิมพ์ใหญ่ และตัวอักษร</Text>
+                        <Text style={styles.directionTextStyle}>กำหนดรหัสผ่านต้องมีอักขระอย่างน้อย 8 ตัว และประกอบไปด้วย{'\n'}ตัวอักษรภาษาอังกฤษ พิมพ์เล็ก พิมพ์ใหญ่ และเลข</Text>
                         {this.isShowSubmit() && <View style={styles.submitButtonContainerStyle}>
                             <MainSubmitButton
                                 buttonTitleText='ยืนยันข้อมูล'
