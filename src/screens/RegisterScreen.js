@@ -89,10 +89,15 @@ export default class RegisterScreen extends Component{
                 [
                 {text: 'ตกลง', onPress: () =>{
                     this.leavingDialog.dismiss();
-                    this.props.navigator.dismissModal({
-                        animationType: 'slide-down' // 'none' / 'slide-down' , dismiss animation for the modal (optional, default 'slide-down')
-                    });
-                    this.app.first();
+                    setTimeout(()=>{
+                        this.props.navigator.dismissModal({
+                            animationType: 'slide-down' // 'none' / 'slide-down' , dismiss animation for the modal (optional, default 'slide-down')
+                        });
+                    },50)
+                    setTimeout(()=>{
+                        this.app.first();
+                    },120)
+                    
                   }
                 }
                 ]
@@ -194,7 +199,7 @@ export default class RegisterScreen extends Component{
                         <TextInputIcon
                             value={this.state.tel}
                             onChangeText={(userPhone)=>{
-                                if(userPhone.length<9){
+                                if(userPhone.length<10){
                                     this.setState({telErr:true,tel:userPhone})
                                 }else{
                                     this.setState({telErr:false,tel:userPhone})

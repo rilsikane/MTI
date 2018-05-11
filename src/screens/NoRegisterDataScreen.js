@@ -162,18 +162,17 @@ export default class NoRegisterDataScreen extends Component{
                                 this.inputs['phone'] = input;
                             }}
                             value={this.state.tel}
-                            onChangeText={(userPhone)=>this.setState({tel:userPhone})}
                             leftLabelText='เบอร์โทรศัพท์'
                             iconUri={require('./../source/icons/iconPhone.png')}
                             containerStyle={styles.inputContainerStyle}
                             secondFlex={secondFlex}
                             thirdFlex={thirdFlex}
                             keyboardType='phone-pad'
-                            onBlur={()=>{
-                                if(this.state.tel.length<9){
-                                    this.setState({telErr:true})
+                            onChangeText={(userPhone)=>{
+                                if(this.state.tel.length<10){
+                                    this.setState({telErr:true,tel:userPhone})
                                 }else{
-                                    this.setState({telErr:false})
+                                    this.setState({telErr:false,tel:userPhone})
                                 }
                             }}
                             //blurOnSubmit={true}

@@ -148,10 +148,10 @@ class ReqOtpScreen extends Component{
                             thirdFlex={thirdFlex}
                             keyboardType='phone-pad'
                             onChangeText={(userPhone)=>{
-                                if(userPhone.length<9){
-                                    this.setState({telErr:true,telModal:userPhone})
+                                if(userPhone.length<10){
+                                    this.setState({telModalErr:true,telModal:userPhone})
                                 }else{
-                                    this.setState({telErr:false,telModal:userPhone})
+                                    this.setState({telModalErr:false,telModal:userPhone})
                                 }
                             }}
                             //blurOnSubmit={true}

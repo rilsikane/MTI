@@ -45,7 +45,7 @@ class RegisterStep2 extends Component{
         if(''!=this.props.registerStore.register.name && ''!=this.props.registerStore.register.surname
             && ''!=this.state.userGender && ''!=this.state.userEmail
             && ''!=this.state.userPhone && this.state.checkBoxIsSelected
-            && !this.state.emailErr && !this.state.telErr&&!this.state.genderErr){
+            && !this.state.email2Err && !this.state.phoneErr&&!this.state.genderErr){
                 return true;
         }else{
             return false;
@@ -56,7 +56,7 @@ class RegisterStep2 extends Component{
         this.props.registerStore.register.gender = this.state.userGender;
         this.props.registerStore.register.tel = this.state.userPhone;
         if(this.state.userPhone.length<10){
-            this.setState({telErr:true})
+            this.setState({phoneErr:true})
         }else{
             this.props.onSubmitRegister2Press();
         }
@@ -150,7 +150,7 @@ class RegisterStep2 extends Component{
                         }}
                         returnKeyType='next'
                     />
-                     {this.state.emailErr && <Text style={styles.errorMsg}>Email ไม่ถูกต้อง</Text>}
+                     {this.state.email2Err && <Text style={styles.errorMsg}>Email ไม่ถูกต้อง</Text>}
                     <TextInputIcon
                         refs={ input => {
                             this.inputs['phone'] = input;
@@ -165,16 +165,16 @@ class RegisterStep2 extends Component{
                         returnKeyType='done'
                         onChangeText={(userPhone)=>{
                             if(userPhone.length<10){
-                                this.setState({telErr:true,userPhone:userPhone})
+                                this.setState({phoneErr:true,userPhone:userPhone})
                             }else{
-                                this.setState({telErr:false,userPhone:userPhone})
+                                this.setState({phoneErr:false,userPhone:userPhone})
                             }
                         }}
                         blurOnSubmit={true}
                         editable={!this.props.firstLogon}
                         maxLength={10}
                     />
-                    {this.state.telErr && <Text style={styles.errorMsg}>เบอร์โทรศัพท์ ไม่ถูกต้อง</Text>}
+                    {this.state.phoneErr && <Text style={styles.errorMsg}>เบอร์โทรศัพท์ ไม่ถูกต้อง</Text>}
                     <View style={{flexDirection: 'row',paddingTop:10}}>
                     <CheckBoxes
                         checkBoxTitleText='ยอบรับ เงื่อนไขการให้บริการ'
