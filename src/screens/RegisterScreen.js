@@ -152,6 +152,7 @@ export default class RegisterScreen extends Component{
         )
     }
     openLeavingContactPopup(){
+        this.setState({name:this.props.registerStore.register.name,surname:this.props.registerStore.register.surname})
         this.leavingDialog.show();
     }
     renderLeavingContactPopup(){

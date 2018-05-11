@@ -222,7 +222,7 @@ const styles={
     registerTitleTextStyle:{
         textAlign: 'center',
         color: '#1595d3',
-        fontSize: responsiveFontSize(3.5),
+        fontSize: responsiveFontSize(3.3),
 
     },
     directionTextStyle:{
