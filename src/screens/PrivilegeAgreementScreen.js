@@ -45,11 +45,11 @@ export default class PrivilegeAgreementScreen extends Component{
                         passProps:{navigator:this.props.navigator},
                         title: undefined, // navigation bar title of the pushed screen (optional)
                         titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
-                        animated: false, // does the push have transition animation or does it happen immediately (optional)
+                        animated: true, // does the push have transition animation or does it happen immediately (optional)
                         backButtonTitle: undefined, // override the back button title (optional)
                         backButtonHidden: false, // hide the back button altogether (optional)
                     })
-                },200);
+                },1000);
                 //this.setState({isLoading: false})
             }else{
                 console.log('redeem error')

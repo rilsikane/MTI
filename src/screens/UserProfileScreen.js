@@ -299,7 +299,7 @@ export default class UserProfileScreen extends Component{
                             resizeMode='contain'
                         />
                     </TouchableOpacity>
-                    <Text style={styles.lifestylePopupTitleTextStyle}>กรุณาเลือกไลฟ์ไตล์ที่ตรงกับคุณ{'\n'}(เลือกได้มากกว่า1 ข้อ)</Text>
+                    <Text style={styles.lifestylePopupTitleTextStyle}>กรุณาเลือกไลฟ์สไตล์ที่ตรงกับคุณ{'\n'}(เลือกได้มากกว่า 1 ข้อ)</Text>
                     <View style={styles.lifestyleBoxList1ContainerStyle}>
                         {this.renderLifeStyleBoxList1()}
                     </View>

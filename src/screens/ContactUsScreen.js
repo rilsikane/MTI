@@ -107,7 +107,7 @@ export default class ContactUsScreen extends Component{
                         />
                     </View>
                     <View style={styles.contactListContainerStyle}>
-                        <Text style={styles.contactTitleTextStyle}>เมืองไทยประกันภัย โทร. 1484</Text>
+                        <Text style={styles.contactTitleTextStyle}>บมจ. เมืองไทยประกันภัย โทร. 1484</Text>
                         <Text style={styles.contactDesciptionTextStyle}>252 ถ.รัชดาภิเษก แขวงห้วยขวาง เขตห้วยขวาง กรุงเทพฯ  10310 แฟกซ์ : 0-2665-4166, 0-2274-9511, 0-2276-2033</Text>
                         <View style={styles.contactListSectionStyle}>
                             <View style={styles.iconGroupContainerStyle}>
@@ -125,7 +125,7 @@ export default class ContactUsScreen extends Component{
                                         style={styles.iconImageStyle}
                                     />
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={()=>this.gotoBranchSearch(true,'ติดต่อเมืองไทยประกันภัย')}>
+                                <TouchableOpacity onPress={()=>this.gotoBranchSearch(true,'บมจ. เมืองไทยประกันภัย')}>
                                     <Image
                                         source={require('../source/icons/iconMapMarker01.png')}
                                         resizeMode='contain'

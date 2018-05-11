@@ -123,7 +123,18 @@ export default async function startApplication(root) {
               }
           });
         return;
-       
+        case 'register':
+        Navigation.startSingleScreenApp({
+              screen: { screen: 'mti.RegisterScreen' },
+              appStyle: {
+              orientation: 'portrait',
+              navBarBlur: false,
+              drawUnderNavBar: true,
+              navBarTransparent: true,
+              navBarHidden: true , 
+              }
+          });
+        return;
       default:
         console.error('Unknown app root');
     }  

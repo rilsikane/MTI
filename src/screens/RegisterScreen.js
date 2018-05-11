@@ -587,7 +587,7 @@ export default class RegisterScreen extends Component{
                     backButtonHidden: false, // hide the back button altogether (optional)
                 })
             }else{
-                this.props.navigator.pop()
+               this.app.first();
             }
         }else{
             if(this.state.pageNumber==2 && this.props.user){

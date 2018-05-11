@@ -21,9 +21,11 @@ class ReqOtpScreen extends Component{
         this.state={
             tel:'',
             telErr:false,
+            telModalErr:false,
             isLoading:false,
             emailErr:false,telErr:false,
-            name:'',surname:'',email:'',tel:''
+            name:'',surname:'',email:'',tel:'',
+            telModal:''
         }
         this.reqOtp = this.reqOtp.bind(this);
         this.requestContact = this.requestContact.bind(this);
@@ -66,6 +68,7 @@ class ReqOtpScreen extends Component{
             }
     }
     openLeavingContactPopup(){
+        this.setState({telModal:this.state.tel});
         this.leavingDialog.show();
     }
     renderLeavingContactPopup(){
@@ -87,7 +90,10 @@ class ReqOtpScreen extends Component{
                 scrollEnabled={true}
                 showsVerticalScrollIndicator={false}
                 >
-                    <TouchableOpacity onPress={()=> this.leavingDialog.dismiss()}>
+                    <TouchableOpacity onPress={()=> {
+                        this.setState({telModalErr:false});
+                        this.leavingDialog.dismiss()
+                        }}>
                         <Image
                             source={require('./../source/icons/btnClose.png')}
                             style={styles.btnCloseImageStyle}
@@ -134,8 +140,8 @@ class ReqOtpScreen extends Component{
                             refs={ input => {
                                 this.inputs['phone'] = input;
                             }}
-                            value={this.state.tel}
-                            onChangeText={(userPhone)=>this.setState({tel:userPhone})}
+                            value={this.state.telModal}
+                            onChangeText={(userPhone)=>this.setState({telModal:userPhone})}
                             leftLabelText='เบอร์โทรศัพท์'
                             iconUri={require('./../source/icons/iconPhone.png')}
                             containerStyle={styles.inputContainerStyle}
@@ -143,10 +149,10 @@ class ReqOtpScreen extends Component{
                             thirdFlex={thirdFlex}
                             keyboardType='phone-pad'
                             onBlur={()=>{
-                                if(this.state.tel.length<9){
-                                    this.setState({telErr:true})
+                                if(this.state.telModal.length<9){
+                                    this.setState({telModalErr:true})
                                 }else{
-                                    this.setState({telErr:false})
+                                    this.setState({telModalErr:false})
                                 }
                             }}
                             //blurOnSubmit={true}
@@ -158,27 +164,26 @@ class ReqOtpScreen extends Component{
                                 },200);
                             }}
                         />
-                        {this.state.telErr && <Text style={styles.errorMsg}>เบอร์โทรศัพท์ ไม่ถูกต้อง</Text>}
+                        {this.state.telModalErr && <Text style={styles.errorMsg}>เบอร์โทรศัพท์ ไม่ถูกต้อง</Text>}
                         <TextInputIcon
                             refs={ input => {
                                 this.inputs['email'] = input;
                             }}
                             value={this.state.email}
-                            onChangeText={(email)=>this.setState({email:email})}
+                            onChangeText={(email)=>{
+                                var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                                if(re.test(email)){
+                                    this.setState({emailErr:false,email:email})
+                                }else{
+                                    this.setState({emailErr:true,email:email})
+                                }
+                            }}
                             leftLabelText='อีเมล'
                             iconUri={require('../source/icons/iconMail.png')}
                             containerStyle={styles.inputContainerStyle}
                             secondFlex={secondFlex}
                             thirdFlex={thirdFlex}
                             keyboardType='email-address'
-                            onBlur={()=>{
-                                var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-                                if(re.test(this.state.email)){
-                                    this.setState({emailErr:false})
-                                }else{
-                                    this.setState({emailErr:true})
-                                }
-                            }}
                             blurOnSubmit={true}
                             returnKeyType = {"done"}
                             
@@ -200,7 +205,7 @@ class ReqOtpScreen extends Component{
         param.name = this.state.name;
         param.surname = this.state.surname;
         param.email = this.state.email;
-        param.tel = this.state.tel;
+        param.tel = this.state.telModal;
 
         let response = await postBasic("member/request",param);
         if(response){

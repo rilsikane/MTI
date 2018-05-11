@@ -103,7 +103,7 @@ class RegisterStep1 extends Component{
                     />
                     {!this.state.keyboardShow &&<View style={styles.registerDirectionContainerStyle}>
                         <Text style={styles.registerTitleTextStyle}>ยินดีต้อนรับเข้าสู่ เมืองไทย เฟรนด์ส คลับ</Text>
-                        <Text style={styles.directionTextStyle}>กรุณากรอกข้อมูลของท่านเพี่อทำการลงทะเบียนสมาชิก</Text>
+                        <Text style={styles.directionTextStyle}>กรุณากรอกข้อมูลของท่านเพื่อทำการลงทะเบียนสมาชิก</Text>
                     </View>}
                     <View style={styles.userDetailContainerStyle}>
                         <TextInputIcon

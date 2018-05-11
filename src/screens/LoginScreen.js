@@ -112,36 +112,40 @@ export default class LoginScreen extends Component{
       
     }
     gotoRegister(user){
-        this.props.navigator.push({
-			screen: 'mti.RegisterScreen', // unique ID registered with Navigation.registerScreen
-			title: undefined, // navigation bar title of the pushed screen (optional)
-			titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
-			animated: true, // does the push have transition animation or does it happen immediately (optional)
-			backButtonTitle: undefined, // override the back button title (optional)
-            backButtonHidden: false, // hide the back button altogether (optional)
-            passProps:{navigator:this.props.navigator},
-            navigatorStyle: {
-                drawUnderStatusBar: true,
-                statusBarColor: 'transparent',
-                tabBarHidden: true,
-            },
-		});
+        // this.props.navigator.push({
+		// 	screen: 'mti.RegisterScreen', // unique ID registered with Navigation.registerScreen
+		// 	title: undefined, // navigation bar title of the pushed screen (optional)
+		// 	titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
+		// 	animated: true, // does the push have transition animation or does it happen immediately (optional)
+		// 	backButtonTitle: undefined, // override the back button title (optional)
+        //     backButtonHidden: false, // hide the back button altogether (optional)
+        //     passProps:{navigator:this.props.navigator},
+        //     navigatorStyle: {
+        //         drawUnderStatusBar: true,
+        //         statusBarColor: 'transparent',
+        //         tabBarHidden: true,
+        //     },
+        // });
+        this.app.register();
     }
     async gotoWelcome(){
         if(this.props.fromGuest){
-            this.props.navigator.resetTo({
-                screen: 'mti.DashboardScreen', // unique ID registered with Navigation.registerScreen
-                title: undefined, // navigation bar title of the pushed screen (optional)
-                titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
-                passProps: {}, // Object that will be passed as props to the pushed screen (optional)
-                animated: true, // does the push have transition animation or does it happen immediately (optional)
-                backButtonTitle: undefined, // override the back button title (optional)
-                backButtonHidden: false, // hide the back button altogether (optional)
-            });
+            // this.props.navigator.resetTo({
+            //     screen: 'mti.DashboardScreen', // unique ID registered with Navigation.registerScreen
+            //     title: undefined, // navigation bar title of the pushed screen (optional)
+            //     titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
+            //     passProps: {}, // Object that will be passed as props to the pushed screen (optional)
+            //     animated: true, // does the push have transition animation or does it happen immediately (optional)
+            //     backButtonTitle: undefined, // override the back button title (optional)
+            //     backButtonHidden: false, // hide the back button altogether (optional)
+            // });
+            setTimeout(()=>{
+                this.app.login();
+            },1300)
         }else{
             setTimeout(()=>{
                 this.app.login();
-            },300)
+            },1300)
         }
     }
     keyboardWillShow = async (event) => {

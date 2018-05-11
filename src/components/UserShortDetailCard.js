@@ -23,25 +23,27 @@ class UserShortDetailCard extends Component{
             user.surname = "";
         }
         this.setState({user:user});
+        this.app = app;
     }
 
     gotoRegister(user){
-        this.props.navigator.resetTo({
-			screen: 'mti.RegisterScreen', // unique ID registered with Navigation.registerScreen
-			title: undefined, // navigation bar title of the pushed screen (optional)
-			titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
-            passProps: {
-                fromGuest: true
-            }, 
-            animated: true, // does the push have transition animation or does it happen immediately (optional)
-			backButtonTitle: undefined, // override the back button title (optional)
-            backButtonHidden: false, // hide the back button altogether (optional)
-            navigatorStyle: {
-                drawUnderStatusBar: true,
-                statusBarColor: 'transparent',
-                tabBarHidden: true,
-            },
-		});
+        // this.props.navigator.resetTo({
+		// 	screen: 'mti.RegisterScreen', // unique ID registered with Navigation.registerScreen
+		// 	title: undefined, // navigation bar title of the pushed screen (optional)
+		// 	titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
+        //     passProps: {
+        //         fromGuest: true
+        //     }, 
+        //     animated: true, // does the push have transition animation or does it happen immediately (optional)
+		// 	backButtonTitle: undefined, // override the back button title (optional)
+        //     backButtonHidden: false, // hide the back button altogether (optional)
+        //     navigatorStyle: {
+        //         drawUnderStatusBar: true,
+        //         statusBarColor: 'transparent',
+        //         tabBarHidden: true,
+        //     },
+        // });
+        this.app.register();
     }
 
     render(){
@@ -61,7 +63,7 @@ class UserShortDetailCard extends Component{
                     {/* s<Text style={styles.userLevelTextStyle}>สมาชิกระดับ {this.state.user.member_type||' - '}</Text> */}
                     {this.state.user.name==="GUEST"&&
                         <View style={{flexDirection: 'row',right: responsiveWidth(5),top: responsiveHeight(2),left:responsiveWidth(1)}}>
-                             <Text style={styles.registerLinkTitleStyle}>กรุณาลง</Text>
+                             <Text style={styles.registerLinkTitleStyle}>กรุณา</Text>
                             <TouchableOpacity onPress={this.gotoRegister}>
                                 <Text style={styles.userGuestRecommendTextStyle}>ลงทะเบียน</Text>
                             </TouchableOpacity>
