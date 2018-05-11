@@ -21,7 +21,7 @@ export default class PrivilegeQrCodeScreen extends Component{
         let endtime = new Date();
         endtime.setTime(endtime.getTime() + (15 * 60 * 1000));
         this.timer = TimerMixin.setInterval( async () => {
-            await this.getTimeRemaining(endtime);
+            this.getTimeRemaining(endtime);
           }, 10);
     }
     getIcon(){

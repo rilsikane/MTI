@@ -254,7 +254,7 @@ export default class PrivilegeDetailScreen extends Component{
                                 <Text style={styles.privilegeDetailTextStyle}>รายละเอียดสิทธิพิเศษ</Text>
                                 {this.renderPrivilegeDetailList()}
                                 {this.state.user && this.state.user.name!="GUEST" && <MainSubmitButton
-                                    buttonTitleText='ขอรับสิทธิ'
+                                    buttonTitleText='ขอรับสิทธิ์'
                                     onPress={this.retrivePrivillege}
                                     style={styles.submitButtonStyle}
                                 />}

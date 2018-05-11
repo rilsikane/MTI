@@ -45,7 +45,7 @@ class SelectInput extends AbstractSelectInput {
       <TouchableWithoutFeedback onPress={this.props.enabled && this.focus.bind(this)}>
         <View style={props.style}>
           <Text
-            style={((props.value!==undefined && props.value != '')? props.labelStyle:{color:'#e2e2e2',fontSize:20})}
+            style={((props.value!==undefined && props.value!= null && props.value != '')? props.labelStyle:{color:'#e2e2e2',fontSize:20})}
             adjustFontSizeToFit={true}
             allowFontScaling={false}
             numberOfLines={1}
@@ -56,7 +56,7 @@ class SelectInput extends AbstractSelectInput {
           <PickerKeyboard
             ref={(c) => { this.pickerKeyboard = c; }}
             options={props.options}
-            value={props.value}
+            value={props.value}  
             onCancel={this.onCancel.bind(this)}
             onSubmit={this.onSubmit.bind(this)}
             buttonsBackgroundColor={props.buttonsBackgroundColor}
