@@ -6,23 +6,63 @@ import MapView,{Marker} from 'react-native-maps';
 
 import {Headers} from './../components/Headers';
 import {MainSearchBox} from '../components/MainSearchBox';
+import {MapCalloutPopup} from '../components/MapCalloutPopup';
 
 export default class PrivilegeSearchScreen extends Component{
 
     constructor(props){
         super(props)
+        this.state={
+            showCallout: false,
+            calloutData:{},
+        }
+      
+    }
 
+    componentDidMount(){
+        console.log(this.props.data[0])
+        animationTimeout = setTimeout(() => {
+            this.focus();
+        },1500);
+    }
+
+    focus=()=> {    
+        let privilegeId = this.props.data.map(data=>data.id);
+        this.mapRef.fitToSuppliedMarkers(privilegeId,true);
+    }
+
+    
+    onMarkerPress(data){
+        this.setState({
+            calloutData: {
+                title: data.name,
+                address: data.branch_name,
+                tel: data.branch_tel,
+            },
+            showCallout: true,
+        })
+    }
+
+    renderMapCallout(){
+        return(
+            <View style={styles.calloutContainerStyle}>
+                <MapCalloutPopup
+                    data={this.state.calloutData}
+                    userLocation={{lat:this.props.userLatitude,long:this.props.userLongitude}}
+                    show={this.state.showCallout}
+                    onClose={()=>this.setState({showCallout: false})}
+                />
+            </View>
+        )
     }
 
     render(){
         return(
             <View style={styles.privilegeSearchScreenContainerStyle}>
                 <Headers
-                    leftIconName='back'
+                    leftIconName='close'
                     headerTitleText='ค้นหาสิทธิพิเศษ'
                     rightIconName='iconBell'
-                    withSearch
-                    back={()=>this.props.navigator.pop()}
                 />
                 {/* <MainSearchBox
                     //value={}
@@ -32,23 +72,41 @@ export default class PrivilegeSearchScreen extends Component{
                 /> */}
                 <View style={styles.privilegeSearchContainerStyle}>
                     <MapView
+                        ref={(ref) => { this.mapRef = ref; }}
+                        minZoomLevel={this.props.nearBy ? 5:5}
+                        maxZoomLevel={18}
                         initialRegion={{
-                            latitude: 13.697567,
-                            longitude: 100.53758300000004,
-                            latitudeDelta: 15.870032,
-                            longitudeDelta: 100.99254100000007,
+                            latitude: this.props.nearBy && (this.props.data && this.props.data.length>0)  ?parseFloat(this.props.data[0].branch_lat):15.870032,
+                            longitude:  this.props.nearBy && (this.props.data && this.props.data.length>0)  ?parseFloat(this.props.data[0].branch_lng):100.99254100000007,
+                            latitudeDelta: this.props.nearBy && (this.props.data && this.props.data.length>0)  ?parseFloat(this.props.data[0].branch_lat):15.870032,
+                            longitudeDelta: this.props.nearBy && (this.props.data && this.props.data.length>0)  ?parseFloat(this.props.data[0].branch_lng):100.99254100000007,
                         }}
                         style={{flex: 1,}}
                     >
-                        <Marker
+                        {this.props.nearBy && <Marker
+                            identifier={'current'}
                             coordinate={{
-                                latitude: 13.697567,
-                                longitude: 100.53758300000004
+                                latitude: parseFloat(this.props.userLatitude),
+                                longitude: parseFloat(this.props.userLongitude),
                             }}
-                            image={require('../source/icons/iconMapMarker.png')}
-                        />
+                            image={require('../source/icons/current.png')}
+                            //onPress={()=>this.onMarkerPress(this.props.data)}
+                        />}
+                        {this.props.data.map((data)=>
+                            <Marker
+                                identifier={data.id}
+                                key={data.id}
+                                coordinate={{
+                                    latitude: data.branch_lat?parseFloat(data.branch_lat):13.7863725,
+                                    longitude: data.branch_lng?parseFloat(data.branch_lng):100.5745153
+                                }}
+                                image={require('../source/icons/iconMapMarker.png')}
+                                onPress={()=>this.onMarkerPress(data)}
+                            />
+                        )}
                     </MapView>
                 </View>
+                {this.renderMapCallout()}
             </View>
         )
     }
@@ -60,5 +118,11 @@ const styles={
     },
     privilegeSearchContainerStyle:{
         flex: 1,
+    },
+    calloutContainerStyle:{
+        height: responsiveHeight(30),
+        width: responsiveWidth(90),
+        position: 'absolute',
+        bottom: 10,
     }
 }

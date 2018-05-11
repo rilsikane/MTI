@@ -35,6 +35,8 @@ export default class PrivilegeScreen extends Component{
             previousTabIndex: 0,
             isLoading: false,
             searchValue: '',
+            userLatitude: '',
+            userLongitude: '',
         }
         this.openDetail = this.openDetail.bind(this);
         this.getPrivilegeForEachTabs = this.getPrivilegeForEachTabs.bind(this);
@@ -43,7 +45,27 @@ export default class PrivilegeScreen extends Component{
         this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
     }
     async componentDidMount(){
-          
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+              this.setState({
+                userLatitude: position.coords.latitude,
+                userLongitude: position.coords.longitude,
+                isLoading: false,
+              })
+            },
+            (error) => {
+                Alert.alert(
+                    'แจ้งเตือน',
+                    error.message,
+                    [
+                    {text: 'OK', onPress: () => {this.setState({
+                        isLoading: false,
+                    })}},
+                    ]
+                )
+            },
+            {enableHighAccuracy: true,timeout: 20000,maxAge: 0,istanceFilter: 1 },
+        )
     }
     async init(){
         this.props.naviStore.navigation = this.props.navigator;
@@ -191,16 +213,48 @@ export default class PrivilegeScreen extends Component{
         }
     }
 
-    openPrivilegeSearch(){
-        this.props.navigator.push({
-            screen: "mti.PrivilegeSearchScreen", // unique ID registered with Navigation.registerScreen
-            passProps:{},
-            title: undefined, // navigation bar title of the pushed screen (optional)
-            titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
-            animated: false, // does the push have transition animation or does it happen immediately (optional)
-            backButtonTitle: undefined, // override the back button title (optional)
-            backButtonHidden: false, // hide the back button altogether (optional)
-        })
+    async openPrivilegeSearch(){
+        this.setState({isLoading: true})
+        if(this.state.userLatitude!=''&&this.state.userLongitude!=''){
+            let nearBy = {}
+            if(this.state.tabIndex==0){
+                nearBy = await getBasic(`privileges?nearby=y&lat=${this.state.userLatitude}&lng=${this.state.userLongitude}&page=1&pagesize=20`,{});
+            }else{
+                let index = this.state.tabIndex
+                if(index==7){
+                    index = 9
+                }
+                nearBy = await getBasic(`privileges?nearby=y&lat=${this.state.userLatitude}&lng=${this.state.userLongitude}&filter_group_id=${index}&page=1&pagesize=20`,{});
+            }
+            console.log(nearBy.data[0])
+            if(nearBy&&nearBy.data.length>0){
+                this.props.navigator.showModal({
+                    screen: 'mti.PrivilegeSearchScreen', // unique ID registered with Navigation.registerScreen
+                    passProps:{
+                        // navigator:this.props.navigator,
+                        data: nearBy.data,
+                        // isMap: true,
+                        nearBy: true,
+                        userLatitude: this.state.userLatitude,
+                        userLongitude: this.state.userLongitude,
+                    },
+                    animated: true, 
+                })
+                this.setState({isLoading: false})
+            }else{
+                Alert.alert(
+                    'แจ้งเตือน',
+                    'ไม่พบข้อมูลที่ค้นหา',
+                    [
+                    {text: 'OK', onPress: () => {this.setState({
+                        isLoading: false,
+                    })}},
+                    ]
+                )
+            }
+    
+        }
+    
     }
 
     async _onSearchIconPress(){
