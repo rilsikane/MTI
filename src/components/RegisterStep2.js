@@ -86,7 +86,7 @@ class RegisterStep2 extends Component{
             <View style={styles.registerStep1ContainerStyle}>
                 <View style={styles.registerDirectionContainerStyle}>
                     <Text style={styles.registerTitleTextStyle}>ข้อมูลส่วนตัว</Text>
-                    <Text style={styles.directionTextStyle}>กรุณากรอกข้อมูลส่วนตัวให้ครบถ้วน เพื่อสิทธิประโยชน์ของสมาชิก</Text>
+                    <Text style={styles.directionTextStyle}>กรุณากรอกข้อมูลส่วนตัวให้ครบถ้วน{'\n'}เพื่อสิทธิประโยชน์ของสมาชิก</Text>
                 </View>
                 <View style={styles.userDetailContainerStyle}>
                     <TextInputIcon

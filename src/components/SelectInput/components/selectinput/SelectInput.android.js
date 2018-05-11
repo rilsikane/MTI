@@ -42,6 +42,8 @@ class SelectInput extends AbstractSelectInput {
                   key={""}
                   value={undefined}
                   label={props.placeholder}
+                  disabled={true}
+                  enabled={false}
             />
             {props.options.map((option, index) => {
               return (
