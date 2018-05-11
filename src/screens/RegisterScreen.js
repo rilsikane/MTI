@@ -48,10 +48,10 @@ export default class RegisterScreen extends Component{
         this.openLeavingContactPopup = this.openLeavingContactPopup.bind(this);
         this.onCancel = this.onCancel.bind(this);
     }
-    async componentDidMount(){
-        if(this.props.user){
+    componentDidMount(){
+        if(this.props.registerStore.user){
             this.setState({isLoading:true})
-            this.props.registerStore.register = {...this.props.user};
+            this.props.registerStore.register = {...this.props.registerStore.user};
             setTimeout(()=>{
                 this.setState({pageNumber:2,firstLogon:true});
                 this._pages.scrollToPage(1);
@@ -390,6 +390,7 @@ export default class RegisterScreen extends Component{
                     if(response2){
                         this.setState({isLoading:false});
                         this.props.registerStore.register.username = this.props.registerStore.register.tel;
+                        
                         this.setState({enable:true});
                         setTimeout(()=>{
                             this.setState({enable:true,pageNumber:2});
@@ -561,8 +562,9 @@ export default class RegisterScreen extends Component{
                this.app.first();
             }
         }else{
-            if(this.state.pageNumber==2 && this.props.user){
+            if(this.state.pageNumber==2 && this.props.registerStore.user){
                 this.props.registerStore.register = {};
+                this.props.registerStore.user = undefined;
                 this.app.first();
             }else{
                 this.setState({enable:true});
@@ -605,7 +607,7 @@ export default class RegisterScreen extends Component{
                     <RegisterStep3
                         onSubmitRegister3Press={this._onSubmitRegister3Press.bind(this)}
                     />
-                    <RegisterStep4_1 firstLogon={this.state.firstLogon}
+                    <RegisterStep4_1 firstLogon={this.state.firstLogon} pageNumber={this.state.pageNumber}
                         onSubmitRegister4_1Press={this._onSubmitRegister4_1Press.bind(this)}
                     />
                     <RegisterStep4_2

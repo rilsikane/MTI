@@ -55,6 +55,7 @@ class RegisterStep2 extends Component{
         this.props.registerStore.register.email = this.state.userEmail;
         this.props.registerStore.register.gender = this.state.userGender;
         this.props.registerStore.register.tel = this.state.userPhone;
+        this.props.registerStore.register.tel2 = this.state.userPhone;
         if(this.state.userPhone.length<10){
             this.setState({phoneErr:true})
         }else{

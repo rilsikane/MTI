@@ -15,10 +15,23 @@ class RegisterStep4_1 extends Component{
     constructor(props){
         super(props)
         this.state={
-            telErr:false
+            telErr:false,
+            tel:""
+        }
+        this.onSubmitRegister4_1Press = this.onSubmitRegister4_1Press.bind(this);
+    }
+    onSubmitRegister4_1Press(){
+        this.props.registerStore.register.tel = this.state.tel;
+        this.props.onSubmitRegister4_1Press();
+    }
+    componentWillReceiveProps(nextProps){
+        if(nextProps.pageNumber==4){
+            this.setState({tel:this.props.registerStore.register.tel})
         }
     }
-
+    componentDidMount(){
+        this.setState({tel: this.props.registerStore.register.tel})
+      };
     render(){
         return(
             <View style={styles.registerStep1ContainerStyle}>
@@ -30,8 +43,8 @@ class RegisterStep4_1 extends Component{
                 {this.props.firstLogon &&
                     <View>
                         <TextInputIcon
-                                value={this.props.registerStore.register.tel}
-                                onChangeText={(userPhone)=>this.props.registerStore.register.tel=userPhone}
+                                value={this.state.tel}
+                                onChangeText={(userPhone)=>this.setState({tel:userPhone})}
                                 leftLabelText='โทรศัพท์'
                                 iconUri={require('./../source/icons/iconPhone.png')}
                                 containerStyle={!this.state.telErr ?styles.inputContainerStyle:styles.inputContainerErrStyle}
@@ -39,14 +52,15 @@ class RegisterStep4_1 extends Component{
                                 thirdFlex={thirdFlex}
                                 keyboardType='phone-pad'
                                 returnKeyType='done'
-                                onBlur={()=>{
-                                    if(this.props.registerStore.register.tel.length!=10 && this.props.registerStore.register.tel.length!=12){
-                                        this.setState({telErr:true})
+                                onChangeText={(userPhone)=>{
+                                    if(userPhone.length<10){
+                                        this.setState({telErr:true,tel:userPhone})
                                     }else{
-                                        this.setState({telErr:false})
+                                        this.setState({telErr:false,tel:userPhone})
                                     }
                                 }}
                                 blurOnSubmit={true}
+                                maxLength={10}
                             />
                         {this.state.telErr && <Text style={styles.errorMsg}>เบอร์โทรศัพท์ ไม่ถูกต้อง</Text>}
                         </View>
@@ -54,7 +68,7 @@ class RegisterStep4_1 extends Component{
                     <View style={styles.submitButtonContainerStyle}>
                         <MainSubmitButton
                             buttonTitleText='รับรหัส OTP'
-                            onPress={this.props.onSubmitRegister4_1Press}
+                            onPress={this.onSubmitRegister4_1Press}
                         />
                     </View>
                 </View>
