@@ -92,17 +92,7 @@ export default class RegisterScreen extends Component{
                     this.props.navigator.dismissModal({
                         animationType: 'slide-down' // 'none' / 'slide-down' , dismiss animation for the modal (optional, default 'slide-down')
                     });
-                    setTimeout(()=>{
-                        this.props.navigator.resetTo({
-                            screen: 'mti.LoginScreen', // unique ID registered with Navigation.registerScreen
-                            title: undefined, // navigation bar title of the pushed screen (optional)
-                            titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
-                            animated: true, // does the push have transition animation or does it happen immediately (optional)
-                            animationType: 'slide-down',
-                            backButtonTitle: undefined, // override the back button title (optional)
-                            backButtonHidden: false, // hide the back button altogether (optional)
-                            })
-                    },500)
+                    this.app.first();
                   }
                 }
                 ]
@@ -204,7 +194,7 @@ export default class RegisterScreen extends Component{
                         <TextInputIcon
                             value={this.state.tel}
                             onChangeText={(userPhone)=>{
-                                if(this.state.tel.length<9){
+                                if(userPhone.length<9){
                                     this.setState({telErr:true,tel:userPhone})
                                 }else{
                                     this.setState({telErr:false,tel:userPhone})
@@ -352,15 +342,7 @@ export default class RegisterScreen extends Component{
                             [
                             {text: 'ตกลง', onPress: () =>{
                                
-                                    this.props.navigator.resetTo({
-                                        screen: 'mti.LoginScreen', // unique ID registered with Navigation.registerScreen
-                                        title: undefined, // navigation bar title of the pushed screen (optional)
-                                        titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
-                                        animated: true, // does the push have transition animation or does it happen immediately (optional)
-                                        animationType: 'slide-down',
-                                        backButtonTitle: undefined, // override the back button title (optional)
-                                        backButtonHidden: false, // hide the back button altogether (optional)
-                                        })
+                                this.app.first();
                                
                             }
                             }
@@ -569,37 +551,14 @@ export default class RegisterScreen extends Component{
         console.log(this.state.pageNumber);
         if(this.state.pageNumber==1){
             if(this.props.fromGuest){
-                this.props.navigator.resetTo({
-                    screen: 'mti.LoginScreen', // unique ID registered with Navigation.registerScreen
-                    title: undefined, // navigation bar title of the pushed screen (optional)
-                    titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
-                    passProps: {
-                        fromGuest: true,
-                    }, // Object that will be passed as props to the pushed screen (optional)
-                    navigatorStyle: {
-                        drawUnderStatusBar: true,
-                        statusBarColor: 'transparent',
-                        tabBarHidden: true,
-                    },
-                    animated: true, // does the push have transition animation or does it happen immediately (optional)
-                    backButtonTitle: undefined, // override the back button title (optional)
-                    backButtonHidden: false, // hide the back button altogether (optional)
-                })
+                this.app.first();
             }else{
                this.app.first();
             }
         }else{
             if(this.state.pageNumber==2 && this.props.user){
                 this.props.registerStore.register = {};
-                this.props.navigator.resetTo({
-                    screen: 'mti.LoginScreen', // unique ID registered with Navigation.registerScreen
-                    title: undefined, // navigation bar title of the pushed screen (optional)
-                    titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
-                    passProps: {}, // Object that will be passed as props to the pushed screen (optional)
-                    animated: true, // does the push have transition animation or does it happen immediately (optional)
-                    backButtonTitle: undefined, // override the back button title (optional)
-                    backButtonHidden: false, // hide the back button altogether (optional)
-                })
+                this.app.first();
             }else{
                 this.setState({enable:true});
                 this._pages.scrollToPage(this.state.pageNumber-2);

@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Text,View,Image,ScrollView,TouchableOpacity,FlatList,Alert} from 'react-native';
+import {Text,View,Image,ScrollView,TouchableOpacity,FlatList,Alert,Platform} from 'react-native';
 import PropTypes from "prop-types";
 import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
 import Spinner from 'react-native-loading-spinner-overlay';
@@ -244,7 +244,7 @@ export default class PrivilegeScreen extends Component{
                         },
                         animated: true, 
                     })
-                },50)
+                },Platform.OS === 'ios' ? 500:50)
                 this.setState({tabIndex: 0})
                
             }else{
@@ -359,7 +359,7 @@ export default class PrivilegeScreen extends Component{
                             </View> */}
                     </View>
                 </View>
-                {this.state.isLoading && <Spinner visible={this.state.isLoading}  textStyle={{color: '#FFF'}} />}
+                {this.state.isLoading && <Spinner visible={this.state.isLoading} textStyle={{color: '#FFF'}} />}
             </View>
         )
     }

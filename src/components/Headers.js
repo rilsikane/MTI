@@ -93,7 +93,7 @@ class Headers extends Component{
             return(
                 <TouchableOpacity style={{backgroundColor:"transparent",flexDirection:"column"}} 
                   onPress={(e)=> this.props.cancel()}>
-                      <Icon name="times" style={{fontSize: responsiveFontSize(3),paddingRight:10,color: '#FFF'}}></Icon>
+                      <Icon name="times" style={{fontSize: responsiveFontSize(2.5),paddingRight:10,color: '#FFF'}}></Icon>
                   </TouchableOpacity>
             )
         }

@@ -15,7 +15,7 @@ const timeout = 20000;
 import store from 'react-native-simple-store';
 import app from '../stores/app';
 import {
-    Alert,Linking,AlertIOS
+    Alert,Linking
 } from 'react-native';
 
 
@@ -35,7 +35,7 @@ export async function authen(param){
                 return response.data;
             }else{
                     app.isLoading = false;
-                    AlertIOS.alert(
+                    Alert.alert(
                         ' ',
                         response.data ? response.data.message:response.message,
                         [
@@ -47,7 +47,7 @@ export async function authen(param){
             }
         }else{
             app.isLoading = false;
-            setTimeout(()=>{AlertIOS.alert(
+            setTimeout(()=>{Alert.alert(
                 ' ',
                 `${path}:ไม่สามารถเชื่อมต่อกับระบบได้`,
                 [
@@ -59,7 +59,7 @@ export async function authen(param){
 
       }catch(e){
         if(e && "ECONNABORTED"!=e.code){
-            setTimeout(()=>{AlertIOS.alert(
+            setTimeout(()=>{Alert.alert(
             ' ',
             (e.response && e.response.data) ? e.response.data.message:'ไม่สามารถเชื่อมต่อกับ Server ได้',
             [
@@ -68,7 +68,7 @@ export async function authen(param){
             ),500});
             return false;
         }else{
-            setTimeout(()=>{AlertIOS.alert(
+            setTimeout(()=>{Alert.alert(
                 ' ',
                    'เกินกำหนดระยะเวลาเชื่อมต่อกับ Server',
                 [
@@ -99,7 +99,7 @@ export async function post(path,param){
                   
                     
                     if("002"==response.data.error_code ||"001"==response.data.error_code){
-                        AlertIOS.alert(
+                        Alert.alert(
                             ' ',
                             response.data ?  response.data.message :response.message,
                             [
@@ -108,7 +108,7 @@ export async function post(path,param){
                         )
                     }else{
                         //setTimeout(()=>{,200});
-                        AlertIOS.alert(
+                        Alert.alert(
                             ' ',
                             response.data ?  response.data.message :response.message,
                             [
@@ -121,7 +121,7 @@ export async function post(path,param){
                     }
                 }
             }else{
-                setTimeout(()=>{AlertIOS.alert(
+                setTimeout(()=>{Alert.alert(
                     ' ',
                     `${path}:ไม่สามารถเชื่อมต่อกับระบบได้`,
                     [
@@ -133,7 +133,7 @@ export async function post(path,param){
         }catch(e){
             app.isLoading = false;
             if(e && "ECONNABORTED"!=e.code){
-                setTimeout(()=>{AlertIOS.alert(
+                setTimeout(()=>{Alert.alert(
                 ' ',
                 (e.response && e.response.data) ? e.response.data.message:'ไม่สามารถเชื่อมต่อกับ Server ได้',
                 [
@@ -141,7 +141,7 @@ export async function post(path,param){
                 ]
                 ),200});
             }else{
-                setTimeout(()=>{AlertIOS.alert(
+                setTimeout(()=>{Alert.alert(
                     ' ',
                        'เกินกำหนดระยะเวลาเชื่อมต่อกับ Server',
                     [
@@ -171,7 +171,7 @@ export async function postBasic(path,param,customError){
                 app.isLoading = false;
                 
                 if(!customError){
-                    setTimeout(()=>{AlertIOS.alert(
+                    setTimeout(()=>{Alert.alert(
                         ' ',
                         response.data.message,
                         [
@@ -183,7 +183,7 @@ export async function postBasic(path,param,customError){
                 
             }
         }else{
-            setTimeout(()=>{AlertIOS.alert(
+            setTimeout(()=>{Alert.alert(
                 ' ',
                 `${path}:ไม่สามารถเชื่อมต่อกับระบบได้`,
                 [
@@ -196,7 +196,7 @@ export async function postBasic(path,param,customError){
 
         app.isLoading = false;
         if(e && "ECONNABORTED"!=e.code){
-            setTimeout(()=>{AlertIOS.alert(
+            setTimeout(()=>{Alert.alert(
             ' ',
             (e.response && e.response.data) ? e.response.data.message:'ไม่สามารถเชื่อมต่อกับ Server ได้',
             [
@@ -204,7 +204,7 @@ export async function postBasic(path,param,customError){
             ]
             ),200});
         }else{
-            setTimeout(()=>{AlertIOS.alert(
+            setTimeout(()=>{Alert.alert(
                 ' ',
                    'เกินกำหนดระยะเวลาเชื่อมต่อกับ Server',
                 [
@@ -232,7 +232,7 @@ export async function put(path,param){
                 }else{
                     app.isLoading = false;
                     console.log(response.data.message);
-                    setTimeout(()=>{AlertIOS.alert(
+                    setTimeout(()=>{Alert.alert(
                         ' ',
                         response.data.message,
                         [
@@ -242,7 +242,7 @@ export async function put(path,param){
                     return false;
                 }
             }else{
-                setTimeout(()=>{AlertIOS.alert(
+                setTimeout(()=>{Alert.alert(
                     ' ',
                     `${path}:ไม่สามารถเชื่อมต่อกับระบบได้`,
                     [
@@ -254,7 +254,7 @@ export async function put(path,param){
         }catch(e){
             app.isLoading = false;
             if(e && "ECONNABORTED"!=e.code){
-                setTimeout(()=>{AlertIOS.alert(
+                setTimeout(()=>{Alert.alert(
                 ' ',
                 (e.response && e.response.data) ? e.response.data.message:'ไม่สามารถเชื่อมต่อกับ Server ได้',
                 [
@@ -262,7 +262,7 @@ export async function put(path,param){
                 ]
                 ),200});
             }else{
-                setTimeout(()=>{AlertIOS.alert(
+                setTimeout(()=>{Alert.alert(
                     ' ',
                        'เกินกำหนดระยะเวลาเชื่อมต่อกับ Server',
                     [
@@ -293,7 +293,7 @@ export async function get(path,param){
             }else{
                 app.isLoading = false;
                 if("002"==response.data.error_code ||"001"==response.data.error_code){
-                    AlertIOS.alert(
+                    Alert.alert(
                         ' ',
                         response.data ?  response.data.message :response.message,
                         [
@@ -301,7 +301,7 @@ export async function get(path,param){
                         ]
                     )
                 }else{
-                setTimeout(()=>{AlertIOS.alert(
+                setTimeout(()=>{Alert.alert(
                     ' ',
                     response.data ?  response.data.message :response.message,
                     [
@@ -312,7 +312,7 @@ export async function get(path,param){
                 }
             }
             }else{
-                setTimeout(()=>{AlertIOS.alert(
+                setTimeout(()=>{Alert.alert(
                     ' ',
                     `${path}:ไม่สามารถเชื่อมต่อกับระบบได้`,
                     [
@@ -325,7 +325,7 @@ export async function get(path,param){
         app.isLoading = false;
         if(e && "ECONNABORTED"!=e.code){
             if(e.response && e.response.data && "001"==e.response.data.error_code){
-                AlertIOS.alert(
+                Alert.alert(
                     ' ',
                     e.response.data ?  e.response.data.message :e.response.message,
                     [
@@ -333,7 +333,7 @@ export async function get(path,param){
                     ]
                 )
             }else{
-                setTimeout(()=>{AlertIOS.alert(
+                setTimeout(()=>{Alert.alert(
                 ' ',
                 (e.response && e.response.data) ? e.response.data.message:'ไม่สามารถเชื่อมต่อกับ Server ได้',
                 [
@@ -342,7 +342,7 @@ export async function get(path,param){
                 ),200});
             }
         }else{
-            setTimeout(()=>{AlertIOS.alert(
+            setTimeout(()=>{Alert.alert(
                 ' ',
                    'เกินกำหนดระยะเวลาเชื่อมต่อกับ Server',
                 [
@@ -370,7 +370,7 @@ export async function getBasic(path,param){
               }else{
                   app.isLoading = false;
                   console.log(response.data.message);
-                  setTimeout(()=>{AlertIOS.alert(
+                  setTimeout(()=>{Alert.alert(
                       ' ',
                       response.message,
                       [
@@ -380,7 +380,7 @@ export async function getBasic(path,param){
                   return false;
               }
               }else{
-                  setTimeout(()=>{AlertIOS.alert(
+                  setTimeout(()=>{Alert.alert(
                       ' ',
                       `${path}:ไม่สามารถเชื่อมต่อกับระบบได้`,
                       [
@@ -392,7 +392,7 @@ export async function getBasic(path,param){
         }catch(e){
           app.isLoading = false;
           if(e && "ECONNABORTED"!=e.code){
-              setTimeout(()=>{AlertIOS.alert(
+              setTimeout(()=>{Alert.alert(
               ' ',
               (e.response && e.response.data) ? e.response.data.message:'ไม่สามารถเชื่อมต่อกับ Server ได้',
               [
@@ -400,7 +400,7 @@ export async function getBasic(path,param){
               ]
               ),200});
           }else{
-              setTimeout(()=>{AlertIOS.alert(
+              setTimeout(()=>{Alert.alert(
                   ' ',
                      'เกินกำหนดระยะเวลาเชื่อมต่อกับ Server',
                   [

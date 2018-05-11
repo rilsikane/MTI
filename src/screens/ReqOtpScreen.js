@@ -141,18 +141,17 @@ class ReqOtpScreen extends Component{
                                 this.inputs['phone'] = input;
                             }}
                             value={this.state.telModal}
-                            onChangeText={(userPhone)=>this.setState({telModal:userPhone})}
                             leftLabelText='เบอร์โทรศัพท์'
                             iconUri={require('./../source/icons/iconPhone.png')}
                             containerStyle={styles.inputContainerStyle}
                             secondFlex={secondFlex}
                             thirdFlex={thirdFlex}
                             keyboardType='phone-pad'
-                            onBlur={()=>{
-                                if(this.state.telModal.length<9){
-                                    this.setState({telModalErr:true})
+                            onChangeText={(userPhone)=>{
+                                if(userPhone.length<9){
+                                    this.setState({telErr:true,telModal:userPhone})
                                 }else{
-                                    this.setState({telModalErr:false})
+                                    this.setState({telErr:false,telModal:userPhone})
                                 }
                             }}
                             //blurOnSubmit={true}
