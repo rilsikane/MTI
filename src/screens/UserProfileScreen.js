@@ -121,7 +121,7 @@ export default class UserProfileScreen extends Component{
         if(!user){
             user = {};
             user.name = "GUEST";
-            user.surname = "GUEST";
+            user.surname = "";
         }
         let response = await getBasic("privilege/groups",{});
         let list = response.data;

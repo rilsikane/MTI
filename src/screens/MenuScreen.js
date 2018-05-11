@@ -27,7 +27,7 @@ export default class MenuScreen extends Component{
         if(!user){
             user = {};
             user.name = "GUEST";
-            user.surname = "GUEST";
+            user.surname = "";
         }
         this.setState({user:user});
     }
