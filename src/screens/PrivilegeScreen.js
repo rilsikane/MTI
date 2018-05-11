@@ -227,10 +227,9 @@ export default class PrivilegeScreen extends Component{
                 if(index==7){
                     index = 9
                 }
-                nearBy = await getBasic(`privileges?nearby=y&lat=${this.state.userLatitude}&lng=${this.state.userLongitude}&filter_group_id=${index}&page=1&pagesize=20`,{});
+                nearBy = await getBasic(`privileges?nearby=y&lat=${this.state.userLatitude}&lng=${this.state.userLongitude}&page=1&pagesize=20`,{});
             }
             this.setState({isLoading: false})
-            console.log(nearBy.data[0])
             if(nearBy&&nearBy.data.length>0){
                 setTimeout(()=>{
                     this.props.navigator.showModal({
@@ -246,7 +245,7 @@ export default class PrivilegeScreen extends Component{
                         animated: true, 
                     })
                 },50)
-               
+                this.setState({tabIndex: 0})
                
             }else{
                 this.setState({
@@ -271,7 +270,7 @@ export default class PrivilegeScreen extends Component{
     }
 
     async _onSearchIconPress(){
-        this.setState({isLoading: true,privilege:[]});
+        this.setState({isLoading: true,privilege:[],tabIndex:0});
         let response = {};
         if(this.state.tabIndex==0){
             response = await getBasic(`privileges?search=${this.state.searchValue}&page=1&pagesize=20`,{});
@@ -280,7 +279,7 @@ export default class PrivilegeScreen extends Component{
             if(index==7){
                 index = 9
             }
-            response = await getBasic(`privileges?filter_group_id=${index}&search=${this.state.searchValue}&page=1&pagesize=20`,{});
+            response = await getBasic(`privileges?search=${this.state.searchValue}&page=1&pagesize=20`,{});
             console.log(response)
         }
        
@@ -299,7 +298,10 @@ export default class PrivilegeScreen extends Component{
                 ]
             )
         }else{
-            this.setState({privilege: response.data,isLoading: false,searchValue: ''});
+            setTimeout(()=>{
+                this.setState({privilege: response.data,isLoading: false,searchValue: ''});
+            },200)
+           
         }
       
     }

@@ -322,9 +322,10 @@ const styles={
 
     },
     registerDirectionContainerStyle:{
-        paddingTop: 5,
+        marginTop:responsiveHeight(5),
         marginLeft: responsiveWidth(6),
         marginRight: responsiveWidth(6),
+        
     },
     registerTitleTextStyle:{
         textAlign: 'center',

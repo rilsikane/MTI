@@ -67,7 +67,8 @@ class ConfirmOtpScreen extends Component{
         return(
             <View style={styles.registerStep1ContainerStyle}>
                  <Headers
-                    leftIconName='cancel'
+                    leftIconName=''
+                    rightIconName='cancel'
                     headerTitleText='ลืมรหัสผ่าน'
                     cancel={()=> this.props.navigator.resetTo({
                         screen: 'mti.LoginScreen', // unique ID registered with Navigation.registerScreen

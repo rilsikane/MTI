@@ -77,17 +77,27 @@ class Headers extends Component{
 
     renderRightButton(){
         if(this.props.rightIconName=='iconBell'){
+            return
+            // (
+                // <TouchableOpacity style={styles.rightIconContainerStyle}>
+                //     {this.renderBadge()}
+                //     <Image
+                //         source={require('./../source/icons/iconBell.png')}
+                //         style={styles.rightIconImageStyle}
+                //         resizeMode='contain'
+                //     />
+                // </TouchableOpacity>
+            // )
+            null;
+        }else if(this.props.rightIconName=='cancel'){
             return(
-                <TouchableOpacity style={styles.rightIconContainerStyle}>
-                    {this.renderBadge()}
-                    <Image
-                        source={require('./../source/icons/iconBell.png')}
-                        style={styles.rightIconImageStyle}
-                        resizeMode='contain'
-                    />
-                </TouchableOpacity>
+                <TouchableOpacity style={{backgroundColor:"transparent",flexDirection:"column"}} 
+                  onPress={(e)=> this.props.cancel()}>
+                      <Icon name="times" style={{fontSize: responsiveFontSize(3),paddingRight:10,color: '#FFF'}}></Icon>
+                  </TouchableOpacity>
             )
-        }else{
+        }
+        else{
             return(
                 <View style={styles.headersBlankItemStyle}/>
             )
@@ -127,7 +137,7 @@ class Headers extends Component{
                             {this.renderCenterItems()}
                         </View>
                         <View style={[styles.headerRightItemContainerStyle,this.props.longTitle&&styles.sideItemWithLongTitleStyle,this.props.withSearch&&styles.rightItemWithSearchStyle]}>
-                            {/* {this.renderRightButton()} */}
+                            {this.renderRightButton()}
                         </View>
                     </View>
                     <View style={styles.bannerBottomLineStyle}/>

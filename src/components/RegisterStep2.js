@@ -22,7 +22,7 @@ class RegisterStep2 extends Component{
             userEmail: '',
             userPhone: '',
             checkBoxIsSelected: false,
-            emailErr:false,
+            email2Err:false,
             phoneErr:false,
             genderErr: false,
         }
@@ -125,16 +125,16 @@ class RegisterStep2 extends Component{
                         onChangeText={(userEmail)=>this.setState({userEmail:userEmail})}
                         leftLabelText='อีเมล'
                         iconUri={require('./../source/icons/iconMail.png')}
-                        containerStyle={!this.state.emailErr ?styles.inputContainerStyle:styles.inputContainerErrStyle}
+                        containerStyle={!this.state.email2Err ?styles.inputContainerStyle:styles.inputContainerErrStyle}
                         secondFlex={secondFlex}
                         thirdFlex={thirdFlex}
                         keyboardType='email-address'
                         onBlur={()=>{
                             var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
                             if(re.test(this.state.userEmail)){
-                                this.setState({emailErr:false})
+                                this.setState({email2Err:false})
                             }else{
-                                this.setState({emailErr:true})
+                                this.setState({email2Err:true})
                             }
                         }}
                         editable={!this.props.firstLogon}

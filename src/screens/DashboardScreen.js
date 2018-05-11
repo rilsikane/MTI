@@ -243,8 +243,8 @@ export default class DashboardScreen extends Component{
                 <Headers
                     leftIconName='menu'
                     headerTitleText='หน้าหลัก'
-                    rightIconName='iconBell'
-                    notify='2'
+                    // rightIconName='iconBell'
+                    // notify='2'
                 />
                 {!this.state.isLoading && <UserShortDetailCard showQr navigator={this.props.navigator}/>}
                 <ScrollView style={{flex: 1}}>
