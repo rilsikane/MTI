@@ -209,7 +209,7 @@ class ReqOtpScreen extends Component{
         let response = await postBasic("member/request",param);
         if(response){
             Alert.alert(
-                'สำเร็จ',
+                '',
                 'ฝากข้อมูลติดต่อกลับเรียบร้อย',
                 [
                 {text: 'ตกลง', onPress: () =>{

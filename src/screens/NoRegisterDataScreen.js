@@ -43,25 +43,19 @@ export default class NoRegisterDataScreen extends Component{
         let response = await postBasic("member/request",param);
         if(response){
             Alert.alert(
-                'สำเร็จ',
+                '',
                 'ฝากข้อมูลติดต่อกลับเรียบร้อย',
                 [
                 {text: 'ตกลง', onPress: () =>{
-                    this.leavingDialog.dismiss();
-                    this.props.navigator.dismissModal({
-                        animationType: 'slide-down' // 'none' / 'slide-down' , dismiss animation for the modal (optional, default 'slide-down')
-                    });
                     setTimeout(()=>{
-                        this.props.navigator.resetTo({
-                            screen: 'mti.LoginScreen', // unique ID registered with Navigation.registerScreen
-                            title: undefined, // navigation bar title of the pushed screen (optional)
-                            titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
-                            animated: true, // does the push have transition animation or does it happen immediately (optional)
-                            animationType: 'slide-down',
-                            backButtonTitle: undefined, // override the back button title (optional)
-                            backButtonHidden: false, // hide the back button altogether (optional)
-                            })
-                    },500)
+                        this.leavingDialog.dismiss();
+                        this.props.navigator.dismissAllModals({
+                            animationType: 'slide-down' // 'none' / 'slide-down' , dismiss animation for the modal (optional, default 'slide-down')
+                        });
+                    },50)
+                    setTimeout(()=>{
+                        this.app.first();
+                    },120)
                   }
                 }
                 ]
@@ -169,7 +163,7 @@ export default class NoRegisterDataScreen extends Component{
                             thirdFlex={thirdFlex}
                             keyboardType='phone-pad'
                             onChangeText={(userPhone)=>{
-                                if(this.state.tel.length<10){
+                                if(userPhone.length<10){
                                     this.setState({telErr:true,tel:userPhone})
                                 }else{
                                     this.setState({telErr:false,tel:userPhone})
@@ -190,19 +184,18 @@ export default class NoRegisterDataScreen extends Component{
                                 this.inputs['email'] = input;
                             }}
                             value={this.state.email}
-                            onChangeText={(email)=>this.setState({email:email})}
                             leftLabelText='อีเมล'
                             iconUri={require('../source/icons/iconMail.png')}
                             containerStyle={styles.inputContainerStyle}
                             secondFlex={secondFlex}
                             thirdFlex={thirdFlex}
                             keyboardType='email-address'
-                            onBlur={()=>{
+                            onChangeText={(email)=>{
                                 var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-                                if(re.test(this.state.email)){
-                                    this.setState({emailErr:false})
+                                if(re.test(email)){
+                                    this.setState({emailErr:false,email:email})
                                 }else{
-                                    this.setState({emailErr:true})
+                                    this.setState({emailErr:true,email:email})
                                 }
                             }}
                             blurOnSubmit={true}

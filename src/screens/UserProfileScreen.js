@@ -233,7 +233,7 @@ export default class UserProfileScreen extends Component{
             );
             if(response){
                 Alert.alert(
-                    'สำเร็จ',
+                    '',
                     'บันทึกข้อมูลเรียบร้อยแล้ว',
                     [
                     {text: 'OK', onPress: () => {this.setState({
