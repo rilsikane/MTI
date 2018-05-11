@@ -62,6 +62,7 @@ export default class ContactUsScreen extends Component{
                                 title: title,
                                 address: '252 ถ.รัชดาภิเษก แขวงห้วยขวาง เขตห้วยขวาง กรุงเทพฯ  10310',
                                 tel: '1484',
+                                latitude: 13.7863725,longtitude: 100.5745153
                             },
                             userLocation:{
                                 lat: this.state.userLatitude,

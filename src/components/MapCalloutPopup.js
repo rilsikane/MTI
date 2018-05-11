@@ -19,10 +19,9 @@ class MapCalloutPopup extends Component{
     }
     _callShowDirections = (data) => {
         let mapData = {
-            source: {
-             latitude: this.props.userLocation.lat,
-             longitude: this.props.userLocation.long
-           },
+            source: 
+            "Your location"
+           ,
            destination: {
              latitude: parseFloat(data.latitude),
              longitude:  parseFloat(data.longtitude)

@@ -22,7 +22,7 @@ export default class PrivilegeQrCodeScreen extends Component{
         endtime.setTime(endtime.getTime() + (15 * 60 * 1000));
         this.timer = TimerMixin.setInterval( async () => {
             this.getTimeRemaining(endtime);
-          }, 10);
+          }, 1000);
     }
     getIcon(){
         if(this.state.groups.length >0 && this.props.data.group_id){

@@ -23,21 +23,24 @@ export default class PrivilegeSearchScreen extends Component{
         console.log(this.props.data[0])
         animationTimeout = setTimeout(() => {
             this.focus();
-        },1500);
+        },1000);
     }
 
     focus=()=> {    
-        let privilegeId = this.props.data.map(data=>data.id);
+        let privilegeId = this.props.data.map(data=>data.branch_id);
         this.mapRef.fitToSuppliedMarkers(privilegeId,true);
     }
 
     
     onMarkerPress(data){
+        
         this.setState({
             calloutData: {
                 title: data.name,
                 address: data.branch_name,
                 tel: data.branch_tel,
+                latitude:parseFloat(data.branch_lat),
+                longtitude:parseFloat(data.branch_lng),
             },
             showCallout: true,
         })
@@ -106,7 +109,7 @@ export default class PrivilegeSearchScreen extends Component{
                         )}
                     </MapView>
                 </View>
-                {this.renderMapCallout()}
+                {this.state.showCallout && this.renderMapCallout()}
             </View>
         )
     }

@@ -65,7 +65,7 @@ export default class ServiceSearchBranchScreen extends Component{
             //console.log(this.props.data)
             animationTimeout = setTimeout(() => {
                 this.focus();
-            },3000);
+            },1200);
         }
     }
 
@@ -241,7 +241,7 @@ export default class ServiceSearchBranchScreen extends Component{
                     {this.renderContent()}
                 </View>
                 {this.state.isLoading && <Spinner visible={this.state.isLoading}  textStyle={{color: '#FFF'}} />}
-                {this.props.isMap&&this.renderMapCallout()}
+                {this.props.isMap && (this.state.showCallout && this.renderMapCallout())}
             </View>
         )
     }

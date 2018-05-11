@@ -3,7 +3,7 @@ var base64 = require('base-64');
 
 //dev
 //const endpoint = "http://103.208.27.13/eRegister/API/";
-const endpoint = "http://202.183.216.37/mti/api/";
+const endpoint = "https://mtifriends.muangthaiinsurance.com/mti/api/";
 //const endpoint = "https://mtimobile.campaignserv.com/api/";
 
 //const endpoint = "http://apiilease.ddns.net/eRegister/API/"
@@ -15,7 +15,7 @@ const timeout = 20000;
 import store from 'react-native-simple-store';
 import app from '../stores/app';
 import {
-    Alert,Linking
+    Alert,Linking,AlertIOS
 } from 'react-native';
 
 
@@ -34,13 +34,13 @@ export async function authen(param){
                 return response.data;
             }else{
                     app.isLoading = false;
-                    setTimeout(()=>{Alert.alert(
-                    'แจ้งเตือน',
-                    response.data ? response.data.message:response.message,
-                    [
-                    {text: 'OK', onPress: () => app.isLoading = false},
-                    ]
-                    ),500});
+                    AlertIOS.alert(
+                        'แจ้งเตือน',
+                        response.data ? response.data.message:response.message,
+                        [
+                        {text: 'OK', onPress: () => app.isLoading = false},
+                        ]
+                    );
                 
                 
             }

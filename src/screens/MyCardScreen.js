@@ -59,10 +59,10 @@ export default class MyCardScreen extends Component{
             <ScrollView style={styles.myCardScreenContainerStyle}>
                
                 {!this.state.isLoading  && <View style={styles.myCardContainerStyle}>
-                    <UserShortDetailCard
+                    {/* <UserShortDetailCard
                         showQr={false}
                         navigator={this.props.navigator}
-                    />
+                    /> */}
                     <View style={styles.myCardSectionStyle}>
                             <ImageBackground style={styles.cardImgStyle} imageStyle={styles.frontCardContainerStyle}  source={{uri:this.state.userDetail.card.design.front}} >
                                 <Text style={styles.myCardTitleTextStyle}>MTI MY CARD</Text>

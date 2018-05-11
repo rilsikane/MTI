@@ -30,7 +30,7 @@ class AbstractSelectInput extends Component {
   onSubmit(value) {
     let onSubmitEditing = this.props.onSubmitEditing;
     if(value=="" || value==null){
-      value =  this.props.options[0].label;
+      value =  this.props.options[0].value;
     }
     this.setState({selectedValue: value}, function() {
       onSubmitEditing && onSubmitEditing(value);

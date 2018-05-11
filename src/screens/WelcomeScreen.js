@@ -101,9 +101,9 @@ const styles={
     },
     bannerImageStyle:{
         ...ifIphoneX({
-            height: responsiveHeight(45)
+            height: responsiveHeight(47)
         }, {
-            height: responsiveHeight(53.52)
+            height: responsiveHeight(55.52)
         })
 
     },

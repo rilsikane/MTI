@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Text,View,Image,ScrollView,TouchableOpacity} from 'react-native';
+import {Text,View,Image,ScrollView,TouchableOpacity,ImageBackground} from 'react-native';
 import PropTypes from "prop-types";
 import {Item,Input} from 'native-base';
 import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
@@ -205,7 +205,7 @@ export default class PrivilegeDetailScreen extends Component{
         }
     }
     getexpireDate(){
-        return `${moment(this.state.detail.start_date).locale('th').format("DD MMM")} - ${moment(this.state.detail.end_date).locale('th').format("DD MMM YYYY")}`
+        return `${moment(this.state.detail.start_date).locale('th').format("DD MMM YYYY")} - ${moment(this.state.detail.end_date).locale('th').format("DD MMM YYYY")}`
     }
 
     render(){
@@ -219,14 +219,21 @@ export default class PrivilegeDetailScreen extends Component{
                 />
                 <ScrollView style={{flex: 1,}}>
                     <View style={styles.privilegeDetailContainerStyle}>
-                        <View style={styles.bannerImageContainerStyle}>
-                            <View style={styles.bannerImageSectionStyle}>
+                         <View style={styles.bannerImageContainerStyle}>
+                            {/* <View style={styles.bannerImageSectionStyle}>
                                 <Image
                                     source={this.state.detail && this.state.detail.picture_url ? {uri:this.state.detail.picture_url}:null}
                                     style={styles.bannerImageStyle}
                                     borderRadius={3}
                                 />
-                            </View>
+                            </View>  */}
+                            <ImageBackground
+                                source={this.state.detail && this.state.detail.picture_url ? {uri:this.state.detail.picture_url}:null}
+                                resizeMode='stretch'
+                                style={styles.bannerImageSectionStyle}
+                                borderRadius={3}
+                            />
+                            
                             <View style={styles.iconEventContainerStyle}>
                                 <View style={styles.privilegeTitleContainerStyle}>
                                     <Image
@@ -290,7 +297,7 @@ const styles={
     },
     bannerImageContainerStyle:{
         flex: 1,
-        paddingTop: responsiveHeight(4),
+        paddingTop: responsiveHeight(2),
         backgroundColor: '#f6f6f6',
         borderBottomWidth: responsiveHeight(0.17),
         borderColor: '#dddddd',
@@ -298,15 +305,17 @@ const styles={
     bannerImageSectionStyle:{
         height: responsiveHeight(23.23),
         alignItems: 'center',
+        marginLeft: responsiveWidth(3.5),
+        marginRight: responsiveWidth(3.5),
     },
     bannerImageStyle:{
-        height: responsiveHeight(23.23),
+        height: "100%",
         width: responsiveWidth(90),
     },
     iconEventContainerStyle:{
         flexDirection: 'row',
-        marginLeft: responsiveWidth(5),
-        marginRight: responsiveWidth(5),
+        marginLeft: responsiveWidth(3.5),
+        marginRight: responsiveWidth(3.5),
         marginTop: responsiveHeight(1.5),
     },
     privilegeTitleContainerStyle:{
