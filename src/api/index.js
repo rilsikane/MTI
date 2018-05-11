@@ -19,6 +19,7 @@ import {
 } from 'react-native';
 
 
+
 export async function authen(param){
   
   let requestURL = `${endpoint}token`;
@@ -79,6 +80,7 @@ export async function authen(param){
           
       }
 }
+
 export async function post(path,param){
     const token = await store.get("token");
     let requestURL = `${endpoint}${path}`;
@@ -94,7 +96,7 @@ export async function post(path,param){
                 console.log("postService"+JSON.stringify(response.data));
                 return response.data;
                 }else{
-                    app.isLoading = false;
+                  
                     
                     if("002"==response.data.error_code ||"001"==response.data.error_code){
                         AlertIOS.alert(
@@ -105,14 +107,17 @@ export async function post(path,param){
                             ]
                         )
                     }else{
-                        setTimeout(()=>{AlertIOS.alert(
+                        //setTimeout(()=>{,200});
+                        AlertIOS.alert(
                             'แจ้งเตือน',
                             response.data ?  response.data.message :response.message,
                             [
-                            {text: 'OK', onPress: () => console.log('OK Pressed!')},
+                            {text: 'OK', onPress: () => {
+                                app.isLoading = false;
+                                return false;
+                            }},
                             ]
-                        ),200});
-                        return false;
+                        )
                     }
                 }
             }else{
@@ -122,7 +127,7 @@ export async function post(path,param){
                     [
                     {text: 'OK', onPress: () => console.log('OK Pressed!')},
                     ]
-                    ),200});
+                    ),100});
                 return false;
             }
         }catch(e){

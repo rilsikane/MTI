@@ -23,7 +23,7 @@ export default class PrivilegeSearchScreen extends Component{
         console.log(this.props.data[0])
         animationTimeout = setTimeout(() => {
             this.focus();
-        },1000);
+        },1500);
     }
 
     focus=()=> {    

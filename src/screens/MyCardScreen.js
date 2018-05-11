@@ -122,7 +122,7 @@ const styles={
     myCardSectionStyle:{
         flex: 1,
         alignItems: 'center',
-        paddingTop: responsiveHeight(1),
+        paddingTop: responsiveHeight(5),
     },
     frontCardContainerStyle:{
         borderRadius: 15,

@@ -226,21 +226,25 @@ export default class PrivilegeScreen extends Component{
                 }
                 nearBy = await getBasic(`privileges?nearby=y&lat=${this.state.userLatitude}&lng=${this.state.userLongitude}&filter_group_id=${index}&page=1&pagesize=20`,{});
             }
+            this.setState({isLoading: false})
             console.log(nearBy.data[0])
             if(nearBy&&nearBy.data.length>0){
-                this.props.navigator.showModal({
-                    screen: 'mti.PrivilegeSearchScreen', // unique ID registered with Navigation.registerScreen
-                    passProps:{
-                        // navigator:this.props.navigator,
-                        data: nearBy.data,
-                        // isMap: true,
-                        nearBy: true,
-                        userLatitude: this.state.userLatitude,
-                        userLongitude: this.state.userLongitude,
-                    },
-                    animated: true, 
-                })
-                this.setState({isLoading: false})
+                setTimeout(()=>{
+                    this.props.navigator.showModal({
+                        screen: 'mti.PrivilegeSearchScreen', // unique ID registered with Navigation.registerScreen
+                        passProps:{
+                            // navigator:this.props.navigator,
+                            data: nearBy.data,
+                            // isMap: true,
+                            nearBy: true,
+                            userLatitude: this.state.userLatitude,
+                            userLongitude: this.state.userLongitude,
+                        },
+                        animated: true, 
+                    })
+                },50)
+               
+               
             }else{
                 Alert.alert(
                     'แจ้งเตือน',

@@ -7,6 +7,7 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import {Headers} from './../components/Headers';
 import {MainSubmitButton} from './../components/MainSubmitButton';
 import {post,authen,get} from '../api';
+import app from '../stores/app';
 
 export default class PrivilegeAgreementScreen extends Component{
 
@@ -28,7 +29,7 @@ export default class PrivilegeAgreementScreen extends Component{
         //return <Text style={styles.agreementTitleTextStyle}>{this.props.data.content2}</Text>
     }
     async redeem(){
-        this.setState({isLoading: true})
+        app.isLoading = true;
         if(this.props.data.type.toLowerCase()=='barter'){
             let checkBarter = await post('redeem/check/barter',{})
             this.setState({isLoading: false})
@@ -52,13 +53,12 @@ export default class PrivilegeAgreementScreen extends Component{
                 //this.setState({isLoading: false})
             }else{
                 console.log('redeem error')
-                this.setState({isLoading: false})
+                app.isLoading = false;
             }
          
         }else{
             let response2 = await post(`redeem`,{"privilege_id":this.props.data.id});
-            console.log(JSON.stringify(response2));
-             this.setState({isLoading: false});
+            app.isLoading = false;
             if(response2){
                 setTimeout(()=>{
                     this.props.navigator.showModal({
@@ -73,6 +73,8 @@ export default class PrivilegeAgreementScreen extends Component{
                     })
                 },500);
                
+            }else{
+                app.isLoading = false;
             }
         }
    
@@ -103,7 +105,7 @@ export default class PrivilegeAgreementScreen extends Component{
                         </TouchableOpacity> */}
                     </View>
                 </ScrollView>
-                {this.state.isLoading && <Spinner visible={this.state.isLoading}  textStyle={{color: '#FFF'}} />}
+                {app.isLoading && <Spinner visible={app.isLoading}  textStyle={{color: '#FFF'}} />}
             </View>
         )
     }
