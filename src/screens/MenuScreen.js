@@ -90,7 +90,7 @@ export default class MenuScreen extends Component{
                         <View style={styles.menuSectionStyle}>        
                             <TouchableOpacity disabled={true} style={styles.menuSubSectionStyle} >
                                 <Image
-                                    source={require('./../source/icons/iconHistoryWhite.png')}
+                                    source={require('./../source/icons/iconHistoryGray.png')}
                                     resizeMode='contain'
                                     style={styles.menuIconStyle}
                                 />
@@ -103,7 +103,7 @@ export default class MenuScreen extends Component{
                         <View style={styles.menuSectionStyle}>        
                             <TouchableOpacity  disabled={true}  style={styles.menuSubSectionStyle}>
                                 <Image
-                                    source={require('./../source/icons/iconFavoriteWhite.png')}
+                                    source={require('./../source/icons/iconFavoriteGray.png')}
                                     resizeMode='contain'
                                     style={styles.menuIconStyle}
                                 />
@@ -115,7 +115,7 @@ export default class MenuScreen extends Component{
                         <View style={styles.menuSectionStyle}>        
                             <TouchableOpacity  disabled={true} style={styles.menuSubSectionStyle}>
                                 <Image
-                                    source={require('./../source/icons/iconNotificationWhite.png')}
+                                    source={require('./../source/icons/iconNotificationGray.png')}
                                     resizeMode='contain'
                                     style={styles.menuIconStyle}
                                 />
@@ -140,7 +140,7 @@ export default class MenuScreen extends Component{
                         <View style={styles.menuSectionStyle}>        
                             <TouchableOpacity disabled={true} style={styles.menuSubSectionStyle}>
                                 <Image
-                                    source={require('./../source/icons/iconActivityWhite.png')}
+                                    source={require('./../source/icons/iconActivityGray.png')}
                                     resizeMode='contain'
                                     style={styles.menuIconStyle}
                                 />
@@ -318,7 +318,7 @@ const styles={
         opacity: 0.9,
         fontSize: responsiveFontSize(1.4),
         flex: 0.8,
-        paddingLeft: responsiveWidth(12),
+        paddingLeft: responsiveHeight(8),
     },
     subBorderStyle:{
         borderTopWidth: responsiveHeight(0.17),

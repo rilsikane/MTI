@@ -40,12 +40,6 @@ export default async function startApplication(root) {
               //screen: 'staffio.Overview',
               screen: 'mti.DashboardScreen',
               icon: require('../src/source/images/default_11.png'),
-              iconInsets: { // add this to change icon position (optional, iOS only).
-                top: 0, // optional, default is 0.
-                left: 0, // optional, default is 0.
-                bottom: 6, // optional, default is 0.
-                right: 0 // optional, default is 0.
-              },
               title: undefined,
               tabBarText:'Workpool',
               navigatorStyle: {},
@@ -54,12 +48,6 @@ export default async function startApplication(root) {
               label: 'สิทธิพิเศษ',
               screen: 'mti.PrivilegeScreen',
               icon: require('../src/source/images/default_13.png'),
-              iconInsets: { // add this to change icon position (optional, iOS only).
-                top: 0, // optional, default is 0.
-                left: 0, // optional, default is 0.
-                bottom: 6, // optional, default is 0.
-                right: 0 // optional, default is 0.
-              },
               title: undefined,
               navigatorStyle: {},
             },
@@ -67,12 +55,6 @@ export default async function startApplication(root) {
               label: 'บริการ',
               screen: 'mti.ServiceScreen',
               icon: require('../src/source/images/default_17.png'),
-              iconInsets: { // add this to change icon position (optional, iOS only).
-                top: 0, // optional, default is 0.
-                left: 0, // optional, default is 0.
-                bottom: 6, // optional, default is 0.
-                right: 0 // optional, default is 0.
-              },
               title: undefined,
               navigatorStyle: {},
             },
@@ -84,7 +66,7 @@ export default async function startApplication(root) {
                 screen: 'mti.MenuScreen', // unique ID registered with Navigation.registerScreen
                 passProps: {}, // simple serializable object that will pass as props to all top screens (optional)
                 disableOpenGesture: false, // can the drawer be opened with a swipe instead of button (optional, Android only)
-                fixedWidth: 700 // a fixed width you want your left drawer to have (optional)
+                fixedWidth: "60%" // a fixed width you want your left drawer to have (optional)
               },
               style: {
                 // ( iOS only )

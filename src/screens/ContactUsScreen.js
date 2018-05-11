@@ -147,7 +147,7 @@ export default class ContactUsScreen extends Component{
                             resizeMode='contain'
                             style={styles.dotSectionImageStyle}
                         />
-                        <Text style={styles.contactTitleTextStyle}>ติดต่อ Muang Thai Friends โทร. 1484 กด 3</Text>
+                        <Text style={styles.contactTitleTextStyle}>ติดต่อ Muang Thai Friends Club โทร. 1484 กด 3</Text>
                         <View style={styles.contactListSectionStyle}>
                             <View style={styles.iconGroupContainerStyle}>
                                 <TouchableOpacity onPress={()=>Linking.openURL('mailto:crm@muangthaiinsurance.com?subject=ติดต่อเรา&body=ติดต่อเรา')}>

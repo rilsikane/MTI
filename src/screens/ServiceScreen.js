@@ -48,7 +48,7 @@ export default class ServiceScreen extends Component{
             },
             {
                 iconUri: require('../source/icons/iconSearchHospital01.png'),
-                title: 'ค้นหาโรงพยาบาลเครือข่าย MTI'
+                title: 'ค้นหาโรงพยาบาล'
             },
             {
                 iconUri: require('../source/icons/iconWork01.png'),

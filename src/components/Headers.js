@@ -37,7 +37,6 @@ class Headers extends Component{
             return(
                 <TouchableOpacity style={{backgroundColor:"transparent",flexDirection:"column",justifyContent:"flex-start",paddingRight:5}} 
                   onPress={(e)=> this.props.cancel()}>
-                      {!this.props.cancelTxt ? <Text style={{fontSize: responsiveFontSize(3),color: '#FFF'}}>ยกเลิก</Text>: 
                       <Icon name="chevron-left" style={{fontSize: responsiveFontSize(2.5),paddingLeft:5,color: '#FFF'}}></Icon>}
                   </TouchableOpacity>
             )

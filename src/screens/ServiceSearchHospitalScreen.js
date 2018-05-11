@@ -81,7 +81,7 @@ export default class ServiceSearchHospitalScreen extends Component{
             return(
                 <MapView
                     ref={(ref) => { this.mapRef = ref; }}
-                    minZoomLevel={this.props.nearBy ? 13:5}
+                    minZoomLevel={this.props.nearBy ? 5:5}
                     maxZoomLevel={18}
                     initialRegion={{
                         latitude: this.props.nearBy && (this.props.data && this.props.data.length>0)  ?parseFloat(this.props.data[0].latitude):15.870032,
@@ -214,7 +214,7 @@ export default class ServiceSearchHospitalScreen extends Component{
                     leftIconName={this.props.isMap?'close':'cancel'}
                     cancelTxt={'กลับ'}
                     cancel={()=>this.props.navigator.pop()}
-                    headerTitleText='ค้นหาโรงพยาบาลเครือข่าย MTI'
+                    headerTitleText='ค้นหาโรงพยาบาล'
                     rightIconName='iconBell'
                     withSearch={this.props.isMap?false:true}
                     longTitle

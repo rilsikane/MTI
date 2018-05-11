@@ -288,11 +288,11 @@ export default class DashboardScreen extends Component{
                             {this.renderPastEventCard()}
                         </ScrollView>
                     </View> */}
-                    <Image
+                    {/* <Image
                         source={require('../source/images/activityImg05.png')}
                         style={styles.promotionImageStyle}
                         resizeMode='stretch'
-                    />
+                    /> */}
                 </ScrollView>
                 {this.state.isLoading && <Spinner visible={this.state.isLoading}  textStyle={{color: '#FFF'}} />}
             </View>

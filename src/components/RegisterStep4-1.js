@@ -91,7 +91,7 @@ const styles={
         textAlign: 'center',
         color: "#919195",
         letterSpacing: 0,
-        fontSize: responsiveFontSize(2.4),
+        fontSize: responsiveFontSize(2.2),
 
     },
     userDetailContainerStyle:{

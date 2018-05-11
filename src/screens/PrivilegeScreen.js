@@ -45,6 +45,13 @@ export default class PrivilegeScreen extends Component{
         this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
     }
     async componentDidMount(){
+        
+    }
+    async init(){
+
+        this.props.naviStore.navigation = this.props.navigator;
+
+        this.setState({isLoading: true})
         navigator.geolocation.getCurrentPosition(
             (position) => {
               this.setState({
@@ -66,10 +73,6 @@ export default class PrivilegeScreen extends Component{
             },
             {enableHighAccuracy: true,timeout: 20000,maxAge: 0,istanceFilter: 1 },
         )
-    }
-    async init(){
-        this.props.naviStore.navigation = this.props.navigator;
-        this.setState({isLoading: true})
         if(this.state.tabIndex==0){
             let privilege = await getBasic("privileges?page=1&pagesize=20",{});
             let tabsList = await getBasic('privilege/groups',{});

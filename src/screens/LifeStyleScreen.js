@@ -270,7 +270,7 @@ export default class LifeStyleScreen extends Component{
         return(
             <View style={styles.lifestyleContainerStyle}>
                 <View style={styles.lifestyleDirectionContainerStyle}>
-                    <Text  style={styles.lifestyleTitleTextStyle}>{`กรุณาเลือกไลฟ์ไตล์ที่ตรงกับคุณ${'\n'}(เลือกได้มากกว่า1 ข้อ)`}</Text>
+                    <Text  style={styles.lifestyleTitleTextStyle}>{`กรุณาเลือกไลฟ์สไตล์ที่ตรงกับคุณ${'\n'}(เลือกได้มากกว่า1 ข้อ)`}</Text>
                 </View>
                 <View style={styles.lifestyleBoxContainerStyle}>
                     <View style={styles.lifestyleBoxList1ContainerStyle}>
