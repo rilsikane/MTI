@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.airbnb.android.react.maps.MapsPackage;
 import com.facebook.react.ReactApplication;
+import com.dylanvann.fastimage.FastImageViewPackage;
 import com.rnfingerprint.FingerprintAuthPackage;
 import com.rnfs.RNFSPackage;
 import fr.bamlab.rnimageresizer.ImageResizerPackage;
@@ -37,6 +38,7 @@ public class MainApplication extends NavigationApplication {
 
     return Arrays.<ReactPackage>asList(
             new MainReactPackage(),
+            new FastImageViewPackage(),
             new FingerprintAuthPackage(),
             new RNFSPackage(),
             new ImageResizerPackage(),

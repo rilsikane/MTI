@@ -100,10 +100,10 @@ android {
 
     defaultConfig {
         applicationId "com.mti"
-        minSdkVersion 16
+        minSdkVersion 23
         targetSdkVersion 27
         versionCode 1
-        versionName "1.5"
+        versionName "1.49"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
@@ -141,6 +141,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-fast-image')
     compile project(':react-native-touch-id')
     compile project(':react-native-fs')
     compile project(':react-native-image-resizer')

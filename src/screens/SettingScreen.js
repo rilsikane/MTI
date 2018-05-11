@@ -124,18 +124,18 @@ export default class SettingScreen extends Component{
                         <Text style={styles.settingTitleTextStyle}>ขนาดตัวหนังสือ</Text>
                         {this.renderFontSizeRadio()}
                     </View> */}
-                    <TouchableOpacity style={styles.switchSectionStyle}  onPress={()=>this.gotoScreen('mti.SettingAppLockingScreen')}>
-                        <Text style={styles.settingTitleTextStyle}>การล็อกรหัสและ Touch ID</Text>
+                    {/* <TouchableOpacity style={styles.switchSectionStyle}  onPress={()=>this.gotoScreen('mti.SettingAppLockingScreen')}>
+                        <Text style={styles.settingTitleTextStyle}>การล็อกรหัสและ Touch ID</Text> */}
                         {/* <TouchableOpacity */}
                            
                         {/* > */}
-                            <Image
+                            {/* <Image
                                 source={require('../source/icons/iconRightArrow01.png')}
                                 resizeMode='contain'
                                 style={styles.rightArrowIconStyle}
-                            />
+                            /> */}
                         {/* </TouchableOpacity> */}
-                    </TouchableOpacity>
+                    {/* </TouchableOpacity> */}
                     <View style={styles.servicePolicyButtonContainerStyle}>
                         <Image
                             source={require('../source/icons/iconContact01.png')}

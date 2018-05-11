@@ -359,8 +359,10 @@ const styles={
     },
     promotionImageStyle:{
         height: responsiveHeight(20),
-        width: responsiveWidth(100),
+        width: responsiveWidth(95),
         marginTop: responsiveHeight(2),
+        marginLeft: responsiveWidth(3),
+        marginRight: responsiveWidth(2),
     }
 }
 

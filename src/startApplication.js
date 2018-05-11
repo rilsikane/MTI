@@ -40,7 +40,12 @@ export default async function startApplication(root) {
               //screen: 'staffio.Overview',
               screen: 'mti.DashboardScreen',
               icon: require('../src/source/images/default_11.png'),
-              selectedIcon: require('../src/source/images/over_11.png'),
+              iconInsets: { // add this to change icon position (optional, iOS only).
+                top: 0, // optional, default is 0.
+                left: 0, // optional, default is 0.
+                bottom: 6, // optional, default is 0.
+                right: 0 // optional, default is 0.
+              },
               title: undefined,
               tabBarText:'Workpool',
               navigatorStyle: {},
@@ -49,7 +54,12 @@ export default async function startApplication(root) {
               label: 'สิทธิพิเศษ',
               screen: 'mti.PrivilegeScreen',
               icon: require('../src/source/images/default_13.png'),
-              selectedIcon: require('../src/source/images/over_13.png'),
+              iconInsets: { // add this to change icon position (optional, iOS only).
+                top: 0, // optional, default is 0.
+                left: 0, // optional, default is 0.
+                bottom: 6, // optional, default is 0.
+                right: 0 // optional, default is 0.
+              },
               title: undefined,
               navigatorStyle: {},
             },
@@ -57,7 +67,12 @@ export default async function startApplication(root) {
               label: 'บริการ',
               screen: 'mti.ServiceScreen',
               icon: require('../src/source/images/default_17.png'),
-              selectedIcon: require('../src/source/images/over_17.png'),
+              iconInsets: { // add this to change icon position (optional, iOS only).
+                top: 0, // optional, default is 0.
+                left: 0, // optional, default is 0.
+                bottom: 6, // optional, default is 0.
+                right: 0 // optional, default is 0.
+              },
               title: undefined,
               navigatorStyle: {},
             },
