@@ -575,7 +575,7 @@ export default class UserProfileScreen extends Component{
                                 </ImageBackground>
                             </TouchableOpacity>
                             <Text style={styles.userNameTextStyle}>{`${this.state.userFirstName} ${this.state.userLastName}`}</Text>
-                            <Text style={styles.userLevelTextStyle}>สมาชิกระดับ {this.state.member_type}</Text>
+                            {/* <Text style={styles.userLevelTextStyle}>สมาชิกระดับ {this.state.member_type}</Text> */}
                         </View>
                     </View>
                     <View style={styles.userDetailContainerStyle}>

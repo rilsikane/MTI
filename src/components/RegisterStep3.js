@@ -96,7 +96,7 @@ class RegisterStep3 extends Component{
             <View style={styles.registerStep1ContainerStyle}>
                 <View style={styles.registerDirectionContainerStyle}>
                     <Text style={styles.registerTitleTextStyle}>ข้อมูลบัญชีของคุณ</Text>
-                    <Text style={styles.directionTextStyle}>กรุณากอรกข้อมูลบัญชีส่วนตัว เพื่อใช้ในการเข้าใช้งานแอพพลิเคชั่น</Text>
+                    <Text style={styles.directionTextStyle}>กรุณากรอกข้อมูลบัญชีส่วนตัว เพื่อใช้ในการเข้าใช้งานแอพพลิเคชั่น</Text>
                 </View>
                 <KeyboardAwareScrollView
                     resetScrollToCoords={{ x: 0, y: 0 }}
@@ -218,7 +218,7 @@ const styles={
         textAlign: 'center',
         color: "#919195",
         letterSpacing: 0,
-        fontSize: responsiveFontSize(2.2),
+        fontSize: responsiveFontSize(2),
     },
     userDetailContainerStyle:{
         flex: 1,
