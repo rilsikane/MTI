@@ -242,7 +242,7 @@ export default class NoRegisterDataScreen extends Component{
                         />
                     </TouchableOpacity>
                     <View>
-                        <Text style={styles.popupTitleTextStyle}>แจ้งเตือน</Text>
+                        <Text style={styles.popupTitleTextStyle}> </Text>
                         <Text style={styles.popupDetailTextStyle}>ท่านเป็นสมาชิกของเราอยู่แล้ว รบกวน Login เพื่อเข้าสู่ระบบ สามารถสอบถามเพิ่มเติม ติดต่อ 1484</Text>
                     </View>
                 </View>

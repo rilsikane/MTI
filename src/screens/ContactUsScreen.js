@@ -31,7 +31,7 @@ export default class ContactUsScreen extends Component{
             },
             (error) => {
                 Alert.alert(
-                    'แจ้งเตือน',
+                    ' ',
                     error.message,
                     [
                     {text: 'OK', onPress: () => {this.setState({

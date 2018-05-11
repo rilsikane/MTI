@@ -62,7 +62,7 @@ export default class PrivilegeScreen extends Component{
             },
             (error) => {
                 Alert.alert(
-                    'แจ้งเตือน',
+                    ' ',
                     error.message,
                     [
                     {text: 'OK', onPress: () => {this.setState({
@@ -250,7 +250,7 @@ export default class PrivilegeScreen extends Component{
                
             }else{
                 Alert.alert(
-                    'แจ้งเตือน',
+                    ' ',
                     'ไม่พบข้อมูลที่ค้นหา',
                     [
                     {text: 'OK', onPress: () => {this.setState({
@@ -280,7 +280,7 @@ export default class PrivilegeScreen extends Component{
        
         if(response.data.length==0){
             Alert.alert(
-                'แจ้งเตือน',
+                ' ',
                 'ไม่พบข้อมูลที่ค้นหา',
                 [
                 {text: 'OK', onPress: () => {this.setState({

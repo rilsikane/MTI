@@ -49,7 +49,7 @@ export default class ServiceSearchBranchScreen extends Component{
                 },
                 (error) => {
                     Alert.alert(
-                        'แจ้งเตือน',
+                        ' ',
                         error.message,
                         [
                         {text: 'OK', onPress: () => {this.setState({
@@ -168,7 +168,7 @@ export default class ServiceSearchBranchScreen extends Component{
                 })
             }else{
                 Alert.alert(
-                    'แจ้งเตือน',
+                    ' ',
                     'ไม่พบข้อมูลที่ค้นหา',
                     [
                     {text: 'OK', onPress: () => {this.setState({

@@ -348,7 +348,7 @@ export default class RegisterScreen extends Component{
                     if("checkMember"==response.data_source){
                         setTimeout(()=>{
                         Alert.alert(
-                            'แจ้งเตือน',
+                            ' ',
                             'ท่านเป็นสมาชิกของเราอยู่แล้วรบกวนlog in เพื่อเข้าระบบ สอบถามเพิ่มเติมติดต่อ 1484',
                             [
                             {text: 'ตกลง', onPress: () =>{
@@ -450,7 +450,7 @@ export default class RegisterScreen extends Component{
                     this.setState({enable:false});
                 }else{
                     Alert.alert(
-                        'แจ้งเตือน',
+                        ' ',
                         response.message,
                         [
                         {text: 'OK', onPress: () => console.log('OK Pressed!')},
@@ -502,7 +502,7 @@ export default class RegisterScreen extends Component{
                         }else{
                             this.setState({isLoading:false});
                             Alert.alert(
-                                'แจ้งเตือน',
+                                ' ',
                                 response.message,
                                 [
                                 {text: 'OK', onPress: () => console.log('OK Pressed!')},
@@ -515,7 +515,7 @@ export default class RegisterScreen extends Component{
             }else{
                 this.setState({isLoading:false});
                 Alert.alert(
-                    'แจ้งเตือน',
+                    ' ',
                     response.message,
                     [
                     {text: 'OK', onPress: () => console.log('OK Pressed!')},
@@ -630,9 +630,9 @@ export default class RegisterScreen extends Component{
                     isDragging={false} 
                     scrollEnabled={this.state.enable}
                 >
-                    {/* <RegisterStep1
+                    <RegisterStep1
                         onSubmitRegister1Press={this._onSubmitRegister1Press.bind(this)}
-                    /> */}
+                    />
                     <RegisterStep2 firstLogon={this.state.firstLogon} pageNumber={this.state.pageNumber}
                         onSubmitRegister2Press={this._onSubmitRegister2Press.bind(this)} 
                         openLeavingDialog={this.openLeavingContactPopup} 

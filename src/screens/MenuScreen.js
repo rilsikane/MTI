@@ -119,7 +119,7 @@ export default class MenuScreen extends Component{
                                     resizeMode='contain'
                                     style={styles.menuIconStyle}
                                 />
-                                <Text style={styles.menuTitleTextCommingStyle}>การแจ้งเตือน</Text> 
+                                <Text style={styles.menuTitleTextCommingStyle}>การ </Text> 
                             </TouchableOpacity>
                             <Text style={styles.commingSoonStyle}>ใช้งานได้เร็วๆ นี้</Text>
                         </View>

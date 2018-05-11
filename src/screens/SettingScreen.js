@@ -117,7 +117,7 @@ export default class SettingScreen extends Component{
                         {this.renderLanguageSwitch()}
                     </View>
                     <View style={styles.switchSectionStyle}>
-                        <Text style={styles.settingTitleTextStyle}>การแจ้งเตือน</Text>
+                        <Text style={styles.settingTitleTextStyle}>การ </Text>
                         {this.renderNotifySwitch()}
                     </View>
                     <View style={styles.switchSectionStyle}>

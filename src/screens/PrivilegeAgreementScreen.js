@@ -32,13 +32,13 @@ export default class PrivilegeAgreementScreen extends Component{
         app.isLoading = true;
         if(this.props.data.type.toLowerCase()=='barter'){
             let checkBarter = await post('redeem/check/barter',{})
-            this.setState({isLoading: false})
             if(checkBarter&&checkBarter.status=='ok'){
+                app.isLoading = false;
                 setTimeout(()=>{
                     this.props.navigator.dismissModal({
                         animationType: 'none' // 'none' / 'slide-down' , dismiss animation for the modal (optional, default 'slide-down')
                     });
-                },50)
+                },150)
                 setTimeout(()=>{
                     this.props.navigator.push({
                         screen: "mti.MyCardScreen", // unique ID registered with Navigation.registerScreen
