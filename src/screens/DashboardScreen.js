@@ -76,7 +76,7 @@ export default class DashboardScreen extends Component{
             if(response){
                 await store.update("user",response);
                 this.props.userStore.user = response; 
-                this.setState({isLoading:false});
+                
                 let privilegeGroup = await getBasic("privilege/groups",{});
                 if(privilegeGroup){
                     await store.save("privilegeGroup",privilegeGroup.data);
@@ -95,6 +95,7 @@ export default class DashboardScreen extends Component{
                     //console.log(activityList.data)
                     this.setState({pastEvent:activityList.data})
                 }
+                this.setState({isLoading:false});
             }else{
                 // this.setState({isLoading:false});
                 // setTimeout(()=>{
@@ -104,7 +105,7 @@ export default class DashboardScreen extends Component{
             }
            
         }else{
-            this.setState({isLoading:false});
+           
             let privilegeGroup = await getBasic("privilege/groups",{});
             if(privilegeGroup){
                 await store.save("privilegeGroup",privilegeGroup.data);
@@ -122,6 +123,7 @@ export default class DashboardScreen extends Component{
                 //console.log(activityList.data)
                 this.setState({pastEvent:activityList.data})
             }
+            this.setState({isLoading:false});
         }
           // await store.save("policy",response2);
                         // get("me/policy",{})
