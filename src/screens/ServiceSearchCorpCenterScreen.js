@@ -113,7 +113,7 @@ export default class ServiceSearchCorpCenterScreen extends Component{
                 </MapView>
             )
         }else{
-            return!this.state.isLoading ?(
+            return !this.state.isLoading ?(
                 <ServiceListCard
                     data={this.state.serviceList}
                     navigator={this.props.navigator}
@@ -216,20 +216,20 @@ export default class ServiceSearchCorpCenterScreen extends Component{
                     withSearch={this.props.isMap?false:true}
                     longTitle
                 />
-                {!this.props.isMap&&
+                {!this.props.isMap?
                     <MainSearchBox
                         value={this.state.searchValue}
                         onChangeText={(searchValue)=>this.setState({searchValue})}
                         onSearchIconPress={this._onSearchIconPress}
                         onPress={this.onNearByPress}
                         placeholder='ค้นหาอู่และศูนย์ในพื้นที่ที่คุณต้องการ'
-                    />
+                    />:null
                 }
                 <View style={styles.serviceSearchCorpCenterContainerStyle}>
                     {this.renderContent()}
                 </View>
-                {this.state.isLoading && <Spinner visible={this.state.isLoading}  textStyle={{color: '#FFF'}} />}
-                {this.props.isMap&&this.renderMapCallout()}
+                {<Spinner visible={this.state.isLoading}  textStyle={{color: '#FFF'}} />}
+                {this.props.isMap && (this.renderMapCallout())}
             </View>
         )
     }

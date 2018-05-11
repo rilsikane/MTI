@@ -168,7 +168,7 @@ export default class SettingScreen extends Component{
                         />
                     </View>
                     <View style={styles.appTextContainerStyle}>
-                        <Text style={styles.appTitleTextStyle}>Muang Thai Friends Club Version 1.0{'\n'}เพื่อนสนิทที่สร้างแรงบันดาลใจและเติมเต็มทุกความสุขของคุณ</Text>
+                        <Text style={styles.appTitleTextStyle}>Muang Thai Friends Version 1.0{'\n'}เพื่อนสนิทที่สร้างแรงบันดาลใจและเติมเต็มทุกความสุขของคุณ</Text>
                     </View>
                 </View>
             </View>

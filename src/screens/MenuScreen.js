@@ -97,7 +97,10 @@ export default class MenuScreen extends Component{
                                 <Text style={styles.menuTitleTextCommingStyle}>ประวัติการใช้งาน</Text>
                                  
                             </TouchableOpacity>
-                            <Text style={styles.commingSoonStyle}>ใช้งานได้เร็วๆ นี้</Text>
+                            <View style={{flex:1,flexDirection: 'row'}}>
+                                <View style={{flex:0.2}}></View>
+                                <Text style={styles.commingSoonStyle}>ใช้งานได้เร็วๆ นี้</Text>
+                            </View>
                         </View>
                         <View style={styles.subBorderStyle}/>
                         <View style={styles.menuSectionStyle}>        
@@ -109,7 +112,10 @@ export default class MenuScreen extends Component{
                                 />
                                 <Text style={styles.menuTitleTextCommingStyle}>รายการโปรด</Text> 
                             </TouchableOpacity>
-                            <Text style={styles.commingSoonStyle}>ใช้งานได้เร็วๆ นี้</Text>
+                            <View style={{flex:1,flexDirection: 'row'}}>
+                                <View style={{flex:0.2}}></View>
+                                <Text style={styles.commingSoonStyle}>ใช้งานได้เร็วๆ นี้</Text>
+                            </View>
                         </View>
                         <View style={styles.subBorderStyle}/>
                         <View style={styles.menuSectionStyle}>        
@@ -119,9 +125,12 @@ export default class MenuScreen extends Component{
                                     resizeMode='contain'
                                     style={styles.menuIconStyle}
                                 />
-                                <Text style={styles.menuTitleTextCommingStyle}>การ </Text> 
+                                <Text style={styles.menuTitleTextCommingStyle}>การแจ้งเตือน</Text> 
                             </TouchableOpacity>
-                            <Text style={styles.commingSoonStyle}>ใช้งานได้เร็วๆ นี้</Text>
+                            <View style={{flex:1,flexDirection: 'row'}}>
+                                <View style={{flex:0.2}}></View>
+                                <Text style={styles.commingSoonStyle}>ใช้งานได้เร็วๆ นี้</Text>
+                            </View>
                         </View>
                         {/* <View style={styles.mainBorderStyle}/> */}
                         {/* <View style={styles.menuSectionStyle}>        
@@ -146,7 +155,10 @@ export default class MenuScreen extends Component{
                                 />
                                 <Text style={styles.menuTitleTextCommingStyle}>กิจกรรม</Text> 
                             </TouchableOpacity>
-                            <Text style={styles.commingSoonStyle}>ใช้งานได้เร็วๆ นี้</Text>
+                            <View style={{flex:1,flexDirection: 'row'}}>
+                                <View style={{flex:0.2}}></View>
+                                <Text style={styles.commingSoonStyle}>ใช้งานได้เร็วๆ นี้</Text>
+                            </View>
                         </View>
                         <View style={styles.subBorderStyle}/>
                         {/* <View style={styles.menuSectionStyle}>        
@@ -188,7 +200,7 @@ export default class MenuScreen extends Component{
                         <View style={styles.menuSectionStyle}>        
                             <TouchableOpacity onPress={()=>{
                                  Alert.alert(
-                                    "คำเตือน",
+                                    " ",
                                     "ยืนยันการออกจากระบบใช่หรือไหม่",
                                     [
                                     {text: "ยกเลิก"},
@@ -318,7 +330,6 @@ const styles={
         opacity: 0.9,
         fontSize: responsiveFontSize(1.4),
         flex: 0.8,
-        paddingLeft: responsiveHeight(8),
     },
     subBorderStyle:{
         borderTopWidth: responsiveHeight(0.17),

@@ -37,7 +37,7 @@ class Headers extends Component{
             return(
                 <TouchableOpacity style={{backgroundColor:"transparent",flexDirection:"column",justifyContent:"flex-start",paddingRight:5}} 
                   onPress={(e)=> this.props.cancel()}>
-                      <Icon name="chevron-left" style={{fontSize: responsiveFontSize(2.5),paddingLeft:5,color: '#FFF'}}></Icon>}
+                      <Icon name="chevron-left" style={{fontSize: responsiveFontSize(2.5),paddingLeft:5,color: '#FFF'}}></Icon>
                   </TouchableOpacity>
             )
         }else if(this.props.leftIconName=='back'){
@@ -178,7 +178,7 @@ const styles={
         flex: 0.1,
     },
     leftItemWithSearchStyle:{
-        marginTop: responsiveHeight(0.5),
+        marginTop: responsiveHeight(1),
     },
     rightItemWithSearchStyle:{
         marginTop: responsiveHeight(1),

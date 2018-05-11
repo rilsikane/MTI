@@ -127,7 +127,7 @@ export default class NewPasswordScreen extends Component{
                         blurOnSubmit={true}
                     />
                      <Text style={styles.errorTextStyle}>{this.state.errorText}</Text>
-                     <Text style={styles.directionTextStyle}>กำหนดรหัสผ่านต้องมีอักขระอย่างน้อย 8 ตัวและประกอบไปด้วย ตัวอักษร{'\n'}ภาษาอังกฤษ พิมพ์เล็ก พิมพ์ใหญ่ และตัวเลข</Text>
+                     <Text style={styles.directionTextStyle}>กำหนดรหัสผ่านต้องมีอักขระอย่างน้อย 8 ตัวและประกอบไปด้วย ตัวอักษรภาษาอังกฤษ พิมพ์เล็ก พิมพ์ใหญ่ และตัวเลข</Text>
                      {!this.state.errorPassowrd && this.state.newPassword!=''&& this.state.confirmNewPassword!='' 
                      &&<MainSubmitButton
                         buttonTitleText='ตกลง'

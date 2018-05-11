@@ -60,11 +60,12 @@ class UserShortDetailCard extends Component{
                     <Text ellipsizeMode='tail' numberOfLines={1} style={styles.userNameTextStyle}>{`${this.state.user.name} ${this.state.user.surname}`}</Text>
                     {/* s<Text style={styles.userLevelTextStyle}>สมาชิกระดับ {this.state.user.member_type||' - '}</Text> */}
                     {this.state.user.name==="GUEST"&&
-                        <View style={{flexDirection: 'column',right: responsiveWidth(5),top: responsiveHeight(2),left:responsiveWidth(1)}}>
-                            <Text style={styles.registerLinkTitleStyle}>เพื่อใช้งานแอพพลิเคชั่นแบบเต็มรูปแบบ  </Text>
+                        <View style={{flexDirection: 'row',right: responsiveWidth(5),top: responsiveHeight(2),left:responsiveWidth(1)}}>
+                             <Text style={styles.registerLinkTitleStyle}>กรุณาลง</Text>
                             <TouchableOpacity onPress={this.gotoRegister}>
-                                <Text style={styles.userGuestRecommendTextStyle}>กรุณาลงทะเบียนสมัครสมาชิก</Text>
+                                <Text style={styles.userGuestRecommendTextStyle}>ลงทะเบียน</Text>
                             </TouchableOpacity>
+                            <Text style={styles.registerLinkTitleStyle}>เพื่อใช้งานแบบเต็มรูปแบบ  </Text>
                         </View>
                     }
               

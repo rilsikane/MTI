@@ -249,15 +249,21 @@ export default class PrivilegeScreen extends Component{
                
                
             }else{
-                Alert.alert(
-                    ' ',
-                    'ไม่พบข้อมูลที่ค้นหา',
-                    [
-                    {text: 'OK', onPress: () => {this.setState({
-                        isLoading: false,
-                    })}},
-                    ]
-                )
+                this.setState({
+                    isLoading: false,
+                })
+                setTimeout(()=>{
+                    Alert.alert(
+                        ' ',
+                        'ไม่พบข้อมูลที่ค้นหา',
+                        [
+                        {text: 'OK', onPress: () => {this.setState({
+                            isLoading: false,
+                        })}},
+                        ]
+                    )
+                },200)
+                
             }
     
         }
@@ -283,7 +289,9 @@ export default class PrivilegeScreen extends Component{
                 ' ',
                 'ไม่พบข้อมูลที่ค้นหา',
                 [
-                {text: 'OK', onPress: () => {this.setState({
+                {text: 'OK', onPress: () => {
+                    this.init();
+                    this.setState({
                     isLoading: false,
                     searchValue: '',
                     //privilege: this.state.privilegeOrg,

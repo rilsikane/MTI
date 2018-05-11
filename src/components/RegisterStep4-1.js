@@ -24,7 +24,7 @@ class RegisterStep4_1 extends Component{
             <View style={styles.registerStep1ContainerStyle}>
                 <View style={styles.registerDirectionContainerStyle}>
                     <Text style={styles.registerTitleTextStyle}>ยืนยันตัวตนด้วยรหัส OTP</Text>
-                    <Text style={styles.directionTextStyle}>กดรับรหัส OTP เพื่อรับรหัสยืนยันตัวตนจากเบอร์โทรศัพท์ของคุณ</Text>
+                    <Text style={styles.directionTextStyle}>กดรับรหัส OTP จากเบอร์โทรศัพท์ของคุณ</Text>
                 </View>
                 <View style={styles.userDetailContainerStyle}>
                 {this.props.firstLogon &&

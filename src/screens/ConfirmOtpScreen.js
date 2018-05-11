@@ -33,7 +33,7 @@ class ConfirmOtpScreen extends Component{
             this.setState({isLoading:false});
             if(!response.message){
                 setTimeout(()=>{Alert.alert(
-                    'แจ้ง OTP',
+                    ' ',
                     `ส่ง OTP ไปยังหมายเลข ${ this.props.registerStore.otp.tel} เรียบร้อยแล้ว`,
                     [
                     {text: 'OK', onPress: () => console.log('OK Pressed!')},
@@ -81,7 +81,7 @@ class ConfirmOtpScreen extends Component{
                 />
                 <View style={styles.registerDirectionContainerStyle}>
                     <Text style={styles.registerTitleTextStyle}>ยืนยันตัวตนด้วยรหัส OTP</Text>
-                    <Text style={styles.directionTextStyle}>ระบุรหัส OTP ที่ได้รับทาง SMS เพื่อยืนยันตัวตนรหัสมีอายุการใช้งาน 5 นาที</Text>
+                    <Text style={styles.directionTextStyle}>ระบุรหัส OTP ที่ได้รับทาง SMS{`\n`}รหัสมีอายุการใช้งาน 5 นาที</Text>
                 </View>
                 <View style={styles.userDetailContainerStyle}>
                     <TextInputIcon
