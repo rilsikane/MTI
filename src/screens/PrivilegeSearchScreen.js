@@ -94,8 +94,8 @@ export default class PrivilegeSearchScreen extends Component{
                         />}
                         {this.props.data.map((data)=>
                             <Marker
-                                identifier={data.id}
-                                key={data.id}
+                                identifier={data.branch_id}
+                                key={data.branch_id}
                                 coordinate={{
                                     latitude: data.branch_lat?parseFloat(data.branch_lat):13.7863725,
                                     longitude: data.branch_lng?parseFloat(data.branch_lng):100.5745153
