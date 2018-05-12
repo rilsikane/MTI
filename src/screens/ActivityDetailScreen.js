@@ -25,6 +25,8 @@ export default class ActivityDetailScreen extends Component{
             user: {},
             detail: {},
             otherActivity: [],
+            commentList:[],
+
         }   
         this.onMorePicturePress = this.onMorePicturePress.bind(this);
         this.goToQuestionnaire = this.goToQuestionnaire.bind(this);
@@ -34,10 +36,15 @@ export default class ActivityDetailScreen extends Component{
         //const user = await store.get("user");
         let response = await getBasic(`activity/${this.props.data.activity_id}`,{})
         let response2 = await getBasic(`activity?filter_type_id=${this.props.data.group_id}&page=1&pagesize=3`,{});
-
+        let comments = await getBasic(`activity/${this.props.data.activity_id}/comments?page=1&pagesize=5`,{})
         //let response2 = await post(`privilege/redeem`,{"privilege_id":this.props.id});
-        this.setState({detail:response,isLoading:false,otherActivity:response2.data.filter((data)=>data.activity_id!=response.activity_id)})
-        console.log(this.state.otherActivity);
+        this.setState({
+            detail:response,
+            isLoading:false,
+            otherActivity:response2.data.filter((data)=>data.activity_id!=response.activity_id),
+            commentList: comments.data
+        })
+        console.log(comments)
     }
 
     renderOtherActivityList(){
@@ -143,15 +150,17 @@ export default class ActivityDetailScreen extends Component{
         })
     }
 
+    renderCommentCard(){
+        return this.state.showComment?(
+            <CommentCard
+                commentList={this.state.commentList}
+                onSendMessagePress={()=>alert('send')}
+            />
+        ):null
+    }
+
     render(){
-        let comment = [
-            {
-                userThumbUri: require('../source/images/userCommentThumb01.png'),
-                userName: 'ภิรยา',
-                createDate: '5 มีนาคม 2061',
-                commentDetail: 'กิจกรรมนี้สนุกมากเลยค่ะ เป็นกันเองสุดๆเลย อยากให้จัดแบบนี้บ่อยๆ จังเลยค่ะ'
-            },
-        ]
+  
 
         return !this.state.isLoading ? (
             <View style={styles.ActivityDetailScreenContainerStyle}>
@@ -203,11 +212,7 @@ export default class ActivityDetailScreen extends Component{
                                 onPress={this.goToQuestionnaire}
                                 style={styles.submitButtonStyle}
                             />
-                            {this.state.showComment&&
-                            <CommentCard
-                                commentList={comment}
-                                onSendMessagePress={()=>alert('send')}
-                            />}
+                            {this.renderCommentCard()}
                         </View>
                     </View>
                     {this.state.otherActivity.length==0?<View/>:

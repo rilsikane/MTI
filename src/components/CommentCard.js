@@ -25,16 +25,16 @@ class CommentCard extends Component{
             <View style={styles.commentListSectionStyle}>
                 <View style={styles.userThumbnailContainerStyle}>
                     <Image
-                        source={item.userThumbUri}
+                        source={{uri: item.member_profile_img}}
                         style={styles.userThumbnailStyle}
                     />
                 </View>
                 <View style={styles.commentDetailContainerStyle}>
                     <View style={styles.commentTitleContainerStyle}>
-                        <Text style={styles.userNameTextStyle}>{item.userName}</Text>
-                        <Text style={styles.commentDateTextStyle}>{item.createDate}</Text>
+                        <Text style={styles.userNameTextStyle}>{item.member_name}</Text>
+                        <Text style={styles.commentDateTextStyle}>{item.date}</Text>
                     </View>
-                    <Text style={styles.commentDetailTextStyle}>{item.commentDetail}</Text>
+                    <Text style={styles.commentDetailTextStyle}>{item.msg}</Text>
                     <Image
                         source={require('../source/images/dotSectionHorizontal.png')}
                         resizeMode='contain'
