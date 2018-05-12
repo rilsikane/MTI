@@ -2,13 +2,12 @@ package com.mti;
 
 import android.app.Application;
 
-import com.airbnb.android.react.maps.MapsPackage;
 import com.facebook.react.ReactApplication;
+import com.airbnb.android.react.maps.MapsPackage;
 import com.rnfingerprint.FingerprintAuthPackage;
 import com.rnfs.RNFSPackage;
 import fr.bamlab.rnimageresizer.ImageResizerPackage;
 import com.imagepicker.ImagePickerPackage;
-import io.invertase.firebase.RNFirebasePackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.RNTextInputMask.RNTextInputMaskPackage;
 import com.reactnativenavigation.NavigationApplication;
@@ -37,6 +36,7 @@ public class MainApplication extends NavigationApplication {
 
     return Arrays.<ReactPackage>asList(
             new MainReactPackage(),
+            new MapsPackage(),
             new FingerprintAuthPackage(),
             new RNFSPackage(),
             new ImageResizerPackage(),
@@ -46,8 +46,7 @@ public class MainApplication extends NavigationApplication {
             //new BlurViewPackage(),
             new VectorIconsPackage(),
             new RNTextInputMaskPackage(),
-            new RNFirebaseCrashlyticsPackage(),
-            new MapsPackage()
+            new RNFirebaseCrashlyticsPackage()
     );
   }
 
@@ -62,4 +61,5 @@ public class MainApplication extends NavigationApplication {
   public List<ReactPackage> createAdditionalReactPackages() {
     return getPackages();
   }
+
 }
