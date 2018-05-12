@@ -29,7 +29,7 @@ class InsuranceShortDetailCard extends Component{
                 <Text style={styles.insuranceTitleTextStyle}>{this.props.index}. {this.props.insuranceTitleText}</Text>
                 <Text style={styles.insuranceIdTextStyle}>เลขที่กรมธรรม์ : {this.props.Policy_NO}</Text>
                 <View style={{flexDirection: 'row'}}>
-                    <Text style={styles.insuranceIdTextStyle}>สถานะกรมธรรม์ :</Text>
+                    <Text style={styles.insuranceIdTextStyle}>สถานะกรมธรรม์ประกันภัย :</Text>
                     {!this.props.expire && <Text style={styles.insuranceIdTextStyle}>Active</Text>}
                     {this.props.expire && <Text style={[styles.insuranceIdTextStyle,{color:"red"}]}>Expired</Text>}
                 </View>
@@ -56,7 +56,7 @@ class InsuranceShortDetailCard extends Component{
                 </View>}
                 <View style={styles.seeInsuranceDetailButtonContainerStyle}>
                     <MainSubmitButton
-                        buttonTitleText='ดูรายละเอียดกรรมธรรม์'
+                        buttonTitleText='รายละเอียดกรมธรรม์'
                         onPress={this.props.onSeeInsuranceDetailButtonPress}
                     />
                 </View>

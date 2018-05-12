@@ -121,7 +121,7 @@ export default class UserProfileScreen extends Component{
         if(!user){
             user = {};
             user.name = "GUEST";
-            user.surname = "GUEST";
+            user.surname = "";
         }
         let response = await getBasic("privilege/groups",{});
         let list = response.data;
@@ -233,7 +233,7 @@ export default class UserProfileScreen extends Component{
             );
             if(response){
                 Alert.alert(
-                    'สำเร็จ',
+                    '',
                     'บันทึกข้อมูลเรียบร้อยแล้ว',
                     [
                     {text: 'OK', onPress: () => {this.setState({
@@ -299,7 +299,7 @@ export default class UserProfileScreen extends Component{
                             resizeMode='contain'
                         />
                     </TouchableOpacity>
-                    <Text style={styles.lifestylePopupTitleTextStyle}>กรุณาเลือกไลฟ์ไตล์ที่ตรงกับคุณ{'\n'}(เลือกได้มากกว่า1 ข้อ)</Text>
+                    <Text style={styles.lifestylePopupTitleTextStyle}>กรุณาเลือกไลฟ์สไตล์ที่ตรงกับคุณ{'\n'}(เลือกได้มากกว่า 1 ข้อ)</Text>
                     <View style={styles.lifestyleBoxList1ContainerStyle}>
                         {this.renderLifeStyleBoxList1()}
                     </View>
@@ -361,7 +361,7 @@ export default class UserProfileScreen extends Component{
             console.log(this.state.userLifeStyle)
         }else{
             Alert.alert(
-                'แจ้งเตือน',
+                ' ',
                 'กรุณาเลือกอย่างน้อย 1 รายการ',
                 [
                 {text: 'OK', onPress: () => console.log('OK Pressed!')},
@@ -532,8 +532,8 @@ export default class UserProfileScreen extends Component{
             //   } else if ( originalRotation === 270 ) {
             //     rotation = -90
             //   }
-      
-              const fileResize = await ImageResizer.createResizedImage(response.uri, 720, 960, "JPEG",60,originalRotation);
+              console.log(response)
+              const fileResize = await ImageResizer.createResizedImage(response.uri, (response.width*0.6), (response.height*0.6), "JPEG",60,originalRotation);
               if(fileResize){
                 let base64Img = await RNFS.readFile(fileResize.uri, "base64")  
                 let success = await RNFS.unlink(fileResize.uri)

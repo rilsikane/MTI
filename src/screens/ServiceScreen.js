@@ -48,7 +48,7 @@ export default class ServiceScreen extends Component{
             },
             {
                 iconUri: require('../source/icons/iconSearchHospital01.png'),
-                title: 'ค้นหาโรงพยาบาลเครือข่าย MTI'
+                title: 'ค้นหาโรงพยาบาล'
             },
             {
                 iconUri: require('../source/icons/iconWork01.png'),
@@ -121,7 +121,7 @@ export default class ServiceScreen extends Component{
         let response = await postBasic("member/request",param);
         if(response){
             Alert.alert(
-                'สำเร็จ',
+                '',
                 'ฝากข้อมูลติดต่อกลับเรียบร้อย',
                 [
                 {text: 'ตกลง', onPress: () =>{

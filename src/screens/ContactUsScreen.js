@@ -31,7 +31,7 @@ export default class ContactUsScreen extends Component{
             },
             (error) => {
                 Alert.alert(
-                    'แจ้งเตือน',
+                    ' ',
                     error.message,
                     [
                     {text: 'OK', onPress: () => {this.setState({
@@ -107,8 +107,8 @@ export default class ContactUsScreen extends Component{
                         />
                     </View>
                     <View style={styles.contactListContainerStyle}>
-                        <Text style={styles.contactTitleTextStyle}>ติดต่อเมืองไทยประกันภัย โทร. 1484</Text>
-                        <Text style={styles.contactDesciptionTextStyle}>252 ถ.รัชดาภิเษก แขวงห้วยขวาง เขตห้วยขวาง กรุงเทพฯ  10310 โทร. 1484   แฟกซ์ : 0-2665-4166, 0-2274-9511, 0-2276-2033</Text>
+                        <Text style={styles.contactTitleTextStyle}>บมจ. เมืองไทยประกันภัย โทร. 1484</Text>
+                        <Text style={styles.contactDesciptionTextStyle}>252 ถ.รัชดาภิเษก แขวงห้วยขวาง เขตห้วยขวาง กรุงเทพฯ  10310 แฟกซ์ : 0-2665-4166, 0-2274-9511, 0-2276-2033</Text>
                         <View style={styles.contactListSectionStyle}>
                             <View style={styles.iconGroupContainerStyle}>
                                 <TouchableOpacity onPress={()=>Linking.openURL('mailto:info@muangthaiinsurance.com?subject=ติดต่อเรา&body=ติดต่อเรา')}>
@@ -125,7 +125,7 @@ export default class ContactUsScreen extends Component{
                                         style={styles.iconImageStyle}
                                     />
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={()=>this.gotoBranchSearch(true,'ติดต่อเมืองไทยประกันภัย')}>
+                                <TouchableOpacity onPress={()=>this.gotoBranchSearch(true,'บมจ. เมืองไทยประกันภัย')}>
                                     <Image
                                         source={require('../source/icons/iconMapMarker01.png')}
                                         resizeMode='contain'
@@ -147,7 +147,7 @@ export default class ContactUsScreen extends Component{
                             resizeMode='contain'
                             style={styles.dotSectionImageStyle}
                         />
-                        <Text style={styles.contactTitleTextStyle}>ติดต่อ Muang Thai Friends โทร. 1484 กด 3</Text>
+                        <Text style={styles.contactTitleTextStyle}>Muang Thai Friends Club โทร. 1484 กด 3</Text>
                         <View style={styles.contactListSectionStyle}>
                             <View style={styles.iconGroupContainerStyle}>
                                 <TouchableOpacity onPress={()=>Linking.openURL('mailto:crm@muangthaiinsurance.com?subject=ติดต่อเรา&body=ติดต่อเรา')}>

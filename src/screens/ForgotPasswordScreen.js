@@ -61,7 +61,7 @@ export default class ForgotPasswordScreen extends Component{
                       })}
                 />
                 <View style={styles.forgotPasswordDetailContainerStyle}>
-                    <Text style={styles.titleTextStyle}>กรุณากรอกอีเมล หรือ เบอร์โทรศัพท์ของคุณ{'\n'}เพื่อขอรับรหัสผ่านใหม่</Text>
+                    <Text style={styles.titleTextStyle}>กรุณากรอกอีเมล หรือ เบอร์โทรศัพท์ของคุณ{'\n'}เพื่อกำหนดรหัสผ่านใหม่</Text>
                     <TextInputIcon
                         value={this.state.forgotPasswordEmail}
                         onChangeText={(forgotPasswordEmail)=>this.setState({forgotPasswordEmail})}

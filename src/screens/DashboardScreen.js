@@ -76,7 +76,7 @@ export default class DashboardScreen extends Component{
             if(response){
                 await store.update("user",response);
                 this.props.userStore.user = response; 
-                this.setState({isLoading:false});
+                
                 let privilegeGroup = await getBasic("privilege/groups",{});
                 if(privilegeGroup){
                     await store.save("privilegeGroup",privilegeGroup.data);
@@ -95,6 +95,7 @@ export default class DashboardScreen extends Component{
                     //console.log(activityList.data)
                     this.setState({pastEvent:activityList.data})
                 }
+                this.setState({isLoading:false});
             }else{
                 // this.setState({isLoading:false});
                 // setTimeout(()=>{
@@ -104,7 +105,7 @@ export default class DashboardScreen extends Component{
             }
            
         }else{
-            this.setState({isLoading:false});
+           
             let privilegeGroup = await getBasic("privilege/groups",{});
             if(privilegeGroup){
                 await store.save("privilegeGroup",privilegeGroup.data);
@@ -122,6 +123,7 @@ export default class DashboardScreen extends Component{
                 //console.log(activityList.data)
                 this.setState({pastEvent:activityList.data})
             }
+            this.setState({isLoading:false});
         }
           // await store.save("policy",response2);
                         // get("me/policy",{})
@@ -241,8 +243,8 @@ export default class DashboardScreen extends Component{
                 <Headers
                     leftIconName='menu'
                     headerTitleText='หน้าหลัก'
-                    rightIconName='iconBell'
-                    notify='2'
+                    // rightIconName='iconBell'
+                    // notify='2'
                 />
                 {!this.state.isLoading && <UserShortDetailCard showQr navigator={this.props.navigator}/>}
                 <ScrollView style={{flex: 1}}>
@@ -288,11 +290,11 @@ export default class DashboardScreen extends Component{
                             {this.renderPastEventCard()}
                         </ScrollView>
                     </View> */}
-                    <Image
+                    {/* <Image
                         source={require('../source/images/activityImg05.png')}
                         style={styles.promotionImageStyle}
                         resizeMode='stretch'
-                    />
+                    /> */}
                 </ScrollView>
                 {this.state.isLoading && <Spinner visible={this.state.isLoading}  textStyle={{color: '#FFF'}} />}
             </View>
@@ -359,8 +361,10 @@ const styles={
     },
     promotionImageStyle:{
         height: responsiveHeight(20),
-        width: responsiveWidth(100),
+        width: responsiveWidth(95),
         marginTop: responsiveHeight(2),
+        marginLeft: responsiveWidth(3),
+        marginRight: responsiveWidth(2),
     }
 }
 

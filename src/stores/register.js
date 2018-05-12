@@ -7,4 +7,5 @@ export default class RegisterStore {
   @observable register={};
   @observable contact;
   @observable otp = {};
+  @observable user={};
 }

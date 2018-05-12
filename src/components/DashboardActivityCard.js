@@ -1,8 +1,10 @@
 import React,{Component} from 'react';
-import {Text,View,ImageBackground,Image,TouchableOpacity} from 'react-native';
+import {Text,View,Image,TouchableOpacity} from 'react-native';
 import PropTypes from "prop-types";
 import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
 import store from 'react-native-simple-store';
+import FastImage from 'react-native-fast-image'
+import ImageBackground from '../components/ImageBackground'
 
 
 class DashboardActivityCard extends Component{
@@ -21,6 +23,8 @@ class DashboardActivityCard extends Component{
 
     renderCardIcon(groupId){
         const iconUri = this.props.iconUri
+
+        
         const iconText = this.props.iconText
         
         if(iconText){
@@ -31,7 +35,7 @@ class DashboardActivityCard extends Component{
             
             return(
                 <View>
-                    <Image
+                    <FastImage
                         source={this.getIcon()}
                         resizeMode='contain'
                         style={styles.iconImageStyle}
@@ -53,7 +57,7 @@ class DashboardActivityCard extends Component{
     getIcon(){
         if(this.state.groups.length >0 && this.props.groupId){
             let group =  this.state.groups.filter(gp=>gp.id==this.props.groupId)
-            return group && group.length>0 ? {uri:group[0].icon2_url}:null;
+            return group && group.length>0 ? {uri:group[0].icon2_url,priority: FastImage.priority.high}:null;
         }else{
             return null;
         }
@@ -70,7 +74,7 @@ class DashboardActivityCard extends Component{
                         <Text numberOfLines={1} style={styles.activityTitleTextStyle}>{activityDetailText}</Text>
                     </View>
                     <View style={styles.addEventIconContainerStyleStyle}>
-                        <Image
+                        <FastImage
                             source={this.getIcon()}
                             resizeMode='contain'
                             style={styles.addEventIconImageStyle}

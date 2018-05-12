@@ -7,6 +7,7 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import {Headers} from './../components/Headers';
 import {MainSubmitButton} from './../components/MainSubmitButton';
 import {post,authen,get} from '../api';
+import app from '../stores/app';
 
 export default class PrivilegeAgreementScreen extends Component{
 
@@ -28,11 +29,11 @@ export default class PrivilegeAgreementScreen extends Component{
         //return <Text style={styles.agreementTitleTextStyle}>{this.props.data.content2}</Text>
     }
     async redeem(){
-        this.setState({isLoading: true})
+        app.isLoading = true;
         if(this.props.data.type.toLowerCase()=='barter'){
             let checkBarter = await post('redeem/check/barter',{})
-            this.setState({isLoading: false})
             if(checkBarter&&checkBarter.status=='ok'){
+                app.isLoading = false;
                 setTimeout(()=>{
                     this.props.navigator.dismissModal({
                         animationType: 'none' // 'none' / 'slide-down' , dismiss animation for the modal (optional, default 'slide-down')
@@ -44,21 +45,20 @@ export default class PrivilegeAgreementScreen extends Component{
                         passProps:{navigator:this.props.navigator},
                         title: undefined, // navigation bar title of the pushed screen (optional)
                         titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
-                        animated: false, // does the push have transition animation or does it happen immediately (optional)
+                        animated: true, // does the push have transition animation or does it happen immediately (optional)
                         backButtonTitle: undefined, // override the back button title (optional)
                         backButtonHidden: false, // hide the back button altogether (optional)
                     })
-                },200);
+                },160);
                 //this.setState({isLoading: false})
             }else{
                 console.log('redeem error')
-                this.setState({isLoading: false})
+                app.isLoading = false;
             }
          
         }else{
             let response2 = await post(`redeem`,{"privilege_id":this.props.data.id});
-            console.log(JSON.stringify(response2));
-             this.setState({isLoading: false});
+            app.isLoading = false;
             if(response2){
                 setTimeout(()=>{
                     this.props.navigator.showModal({
@@ -73,6 +73,8 @@ export default class PrivilegeAgreementScreen extends Component{
                     })
                 },500);
                
+            }else{
+                app.isLoading = false;
             }
         }
    
@@ -103,7 +105,7 @@ export default class PrivilegeAgreementScreen extends Component{
                         </TouchableOpacity> */}
                     </View>
                 </ScrollView>
-                {this.state.isLoading && <Spinner visible={this.state.isLoading}  textStyle={{color: '#FFF'}} />}
+                {app.isLoading && <Spinner visible={app.isLoading}  textStyle={{color: '#FFF'}} />}
             </View>
         )
     }

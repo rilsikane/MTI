@@ -23,7 +23,7 @@ export default class PrivilegeSearchScreen extends Component{
         console.log(this.props.data[0])
         animationTimeout = setTimeout(() => {
             this.focus();
-        },1000);
+        },1500);
     }
 
     focus=()=> {    
@@ -63,9 +63,12 @@ export default class PrivilegeSearchScreen extends Component{
         return(
             <View style={styles.privilegeSearchScreenContainerStyle}>
                 <Headers
-                    leftIconName='close'
+                    leftIconName='cancel'
                     headerTitleText='ค้นหาสิทธิพิเศษ'
                     rightIconName='iconBell'
+                    cancel={()=> this.props.navigator.dismissModal({
+                        animationType: 'slide-down' // 'none' / 'slide-down' , dismiss animation for the modal (optional, default 'slide-down')
+                      })}
                 />
                 {/* <MainSearchBox
                     //value={}

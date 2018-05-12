@@ -50,7 +50,7 @@ export default class ServiceSearchCorpCenterScreen extends Component{
                 },
                 (error) => {
                     Alert.alert(
-                        'แจ้งเตือน',
+                        ' ',
                         error.message,
                         [
                         {text: 'OK', onPress: () => {this.setState({
@@ -79,7 +79,7 @@ export default class ServiceSearchCorpCenterScreen extends Component{
             return(
                 <MapView
                     ref={(ref) => { this.mapRef = ref; }}
-                    minZoomLevel={this.props.nearBy ? 14:5}
+                    minZoomLevel={this.props.nearBy ? 5:5}
                     maxZoomLevel={18}
                     initialRegion={{
                         latitude: this.props.nearBy && this.props.data ?parseFloat(this.props.data[0].latitude):15.870032,
@@ -113,7 +113,7 @@ export default class ServiceSearchCorpCenterScreen extends Component{
                 </MapView>
             )
         }else{
-            return!this.state.isLoading ?(
+            return !this.state.isLoading ?(
                 <ServiceListCard
                     data={this.state.serviceList}
                     navigator={this.props.navigator}
@@ -140,7 +140,7 @@ export default class ServiceSearchCorpCenterScreen extends Component{
                 })
             }else{
                 Alert.alert(
-                    'แจ้งเตือน',
+                    ' ',
                     'ไม่พบข้อมูลที่ค้นหา',
                     [
                     {text: 'OK', onPress: () => {this.setState({
@@ -163,6 +163,7 @@ export default class ServiceSearchCorpCenterScreen extends Component{
         let nearBy = await getBasic(`services?nearby=y&lat=${this.state.userLatitude}&lng=${this.state.userLongitude}&filter_type_id=2&page=1&pagesize=10`,{});
         //let nearBy = await getBasic(`services?nearby=y&lat=13.7863725&lng=100.5745153&filter_type_id=2&page=1&pagesize=10`,{});
         if(!this.props.isMap){     
+            this.setState({isLoading:false});
             setTimeout(()=>{
                 this.props.navigator.showModal({
                     screen: 'mti.ServiceSearchCorpCenterScreen', // unique ID registered with Navigation.registerScreen
@@ -181,7 +182,7 @@ export default class ServiceSearchCorpCenterScreen extends Component{
                     backButtonHidden: false, // hide the back button altogether (optional)
                 })
             },100) 
-            this.setState({isLoading:false});
+            
         }else{
             this.setState({
                 serviceList: nearBy.data,
@@ -210,25 +211,25 @@ export default class ServiceSearchCorpCenterScreen extends Component{
                     leftIconName={this.props.isMap?'close':'cancel'}
                     cancelTxt={'กลับ'}
                     cancel={()=>this.props.navigator.pop()}
-                    headerTitleText='ค้นหาศูนย์และอู่รับงานบริษัท'
+                    headerTitleText='ค้นหาอู่และศูนย์'
                     rightIconName='iconBell'
                     withSearch={this.props.isMap?false:true}
                     longTitle
                 />
-                {!this.props.isMap&&
+                {!this.props.isMap?
                     <MainSearchBox
                         value={this.state.searchValue}
                         onChangeText={(searchValue)=>this.setState({searchValue})}
                         onSearchIconPress={this._onSearchIconPress}
                         onPress={this.onNearByPress}
-                        placeholder='ค้นหาศูนย์และอู่ในพื้นที่ที่คุณต้องการ'
-                    />
+                        placeholder='ค้นหาอู่และศูนย์ในพื้นที่ที่คุณต้องการ'
+                    />:null
                 }
                 <View style={styles.serviceSearchCorpCenterContainerStyle}>
                     {this.renderContent()}
                 </View>
-                {this.state.isLoading && <Spinner visible={this.state.isLoading}  textStyle={{color: '#FFF'}} />}
-                {this.props.isMap&&this.renderMapCallout()}
+                {<Spinner visible={this.state.isLoading}  textStyle={{color: '#FFF'}} />}
+                {this.props.isMap && (this.renderMapCallout())}
             </View>
         )
     }

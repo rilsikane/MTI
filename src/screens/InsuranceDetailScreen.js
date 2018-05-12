@@ -72,7 +72,7 @@ export default class InsuranceDetailScreen extends Component{
         }else{
             setTimeout(()=>{
                 Alert.alert(
-                    'แจ้งเตือน',
+                    ' ',
                     'ไม่พบเอกสาร',
                     [
                     {text: 'OK', onPress: () => console.log('OK Pressed!')},
@@ -98,7 +98,7 @@ export default class InsuranceDetailScreen extends Component{
                     <View style={styles.insuranceShortDetailContainerStyle}>
                         <Text style={styles.insuranceIdTextStyle}>เลขที่กรมธรรม์ : {header.Policy_NO}</Text>
                         <Text style={styles.insuranceIdTextStyle}>ชื่อกรมธรรม์ :{header.Product_Name}</Text>
-                        <Text style={styles.insuranceRemarkTextStyle}>*หมายเหตุ: ข้อมูลในนี้เป็นเพียงข้อมูลสรุปเบื้องต้น กรุณาอ่านเงื่อนไข{'\n'}ในกรมธรรม์</Text>
+                        <Text style={styles.insuranceRemarkTextStyle}>* ข้อมูลนี้เป็นเพียงข้อมูลเบื้องต้น {'\n'}โปรดศึกษาเงื่อนไขในกรมธรรม์ประกันภัย</Text>
                     </View>
                     <View style={styles.insuranceDetailContainerStyle}>
                         {header.FLAG == 'Y' && <View style={styles.insuranceDetailStyle}>

@@ -48,10 +48,10 @@ export default class RegisterScreen extends Component{
         this.openLeavingContactPopup = this.openLeavingContactPopup.bind(this);
         this.onCancel = this.onCancel.bind(this);
     }
-    async componentDidMount(){
-        if(this.props.user){
+    componentDidMount(){
+        if(this.props.registerStore.user){
             this.setState({isLoading:true})
-            this.props.registerStore.register = {...this.props.user};
+            this.props.registerStore.register = {...this.props.registerStore.user};
             setTimeout(()=>{
                 this.setState({pageNumber:2,firstLogon:true});
                 this._pages.scrollToPage(1);
@@ -84,25 +84,20 @@ export default class RegisterScreen extends Component{
         let response = await postBasic("member/request",param);
         if(response){
             Alert.alert(
-                'สำเร็จ',
+                '',
                 'ฝากข้อมูลติดต่อกลับเรียบร้อย',
                 [
                 {text: 'ตกลง', onPress: () =>{
                     this.leavingDialog.dismiss();
-                    this.props.navigator.dismissModal({
-                        animationType: 'slide-down' // 'none' / 'slide-down' , dismiss animation for the modal (optional, default 'slide-down')
-                    });
                     setTimeout(()=>{
-                        this.props.navigator.resetTo({
-                            screen: 'mti.LoginScreen', // unique ID registered with Navigation.registerScreen
-                            title: undefined, // navigation bar title of the pushed screen (optional)
-                            titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
-                            animated: true, // does the push have transition animation or does it happen immediately (optional)
-                            animationType: 'slide-down',
-                            backButtonTitle: undefined, // override the back button title (optional)
-                            backButtonHidden: false, // hide the back button altogether (optional)
-                            })
-                    },500)
+                        this.props.navigator.dismissModal({
+                            animationType: 'slide-down' // 'none' / 'slide-down' , dismiss animation for the modal (optional, default 'slide-down')
+                        });
+                    },50)
+                    setTimeout(()=>{
+                        this.app.first();
+                    },120)
+                    
                   }
                 }
                 ]
@@ -203,20 +198,19 @@ export default class RegisterScreen extends Component{
                         />
                         <TextInputIcon
                             value={this.state.tel}
-                            onChangeText={(userPhone)=>this.setState({tel:userPhone})}
+                            onChangeText={(userPhone)=>{
+                                if(userPhone.length<10){
+                                    this.setState({telErr:true,tel:userPhone})
+                                }else{
+                                    this.setState({telErr:false,tel:userPhone})
+                                }
+                            }}
                             leftLabelText='เบอร์โทรศัพท์'
                             iconUri={require('./../source/icons/iconPhone.png')}
                             containerStyle={styles.inputContainerStyle}
                             secondFlex={secondFlex}
                             thirdFlex={thirdFlex}
                             keyboardType='phone-pad'
-                            onBlur={()=>{
-                                if(this.state.tel.length<9){
-                                    this.setState({telErr:true})
-                                }else{
-                                    this.setState({telErr:false})
-                                }
-                            }}
                             blurOnSubmit={true}
                             maxLength={10}
                         />
@@ -230,12 +224,12 @@ export default class RegisterScreen extends Component{
                             secondFlex={secondFlex}
                             thirdFlex={thirdFlex}
                             keyboardType='email-address'
-                            onBlur={()=>{
+                            onChangeText={(email)=>{
                                 var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-                                if(re.test(this.state.email)){
-                                    this.setState({emailErr:false})
+                                if(re.test(email)){
+                                    this.setState({emailErr:false,email:email})
                                 }else{
-                                    this.setState({emailErr:true})
+                                    this.setState({emailErr:true,email:email})
                                 }
                             }}
                             blurOnSubmit={true}
@@ -348,20 +342,12 @@ export default class RegisterScreen extends Component{
                     if("checkMember"==response.data_source){
                         setTimeout(()=>{
                         Alert.alert(
-                            'แจ้งเตือน',
+                            ' ',
                             'ท่านเป็นสมาชิกของเราอยู่แล้วรบกวนlog in เพื่อเข้าระบบ สอบถามเพิ่มเติมติดต่อ 1484',
                             [
                             {text: 'ตกลง', onPress: () =>{
                                
-                                    this.props.navigator.resetTo({
-                                        screen: 'mti.LoginScreen', // unique ID registered with Navigation.registerScreen
-                                        title: undefined, // navigation bar title of the pushed screen (optional)
-                                        titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
-                                        animated: true, // does the push have transition animation or does it happen immediately (optional)
-                                        animationType: 'slide-down',
-                                        backButtonTitle: undefined, // override the back button title (optional)
-                                        backButtonHidden: false, // hide the back button altogether (optional)
-                                        })
+                                this.app.first();
                                
                             }
                             }
@@ -404,6 +390,7 @@ export default class RegisterScreen extends Component{
                     if(response2){
                         this.setState({isLoading:false});
                         this.props.registerStore.register.username = this.props.registerStore.register.tel;
+                        
                         this.setState({enable:true});
                         setTimeout(()=>{
                             this.setState({enable:true,pageNumber:2});
@@ -450,7 +437,7 @@ export default class RegisterScreen extends Component{
                     this.setState({enable:false});
                 }else{
                     Alert.alert(
-                        'แจ้งเตือน',
+                        ' ',
                         response.message,
                         [
                         {text: 'OK', onPress: () => console.log('OK Pressed!')},
@@ -502,7 +489,7 @@ export default class RegisterScreen extends Component{
                         }else{
                             this.setState({isLoading:false});
                             Alert.alert(
-                                'แจ้งเตือน',
+                                ' ',
                                 response.message,
                                 [
                                 {text: 'OK', onPress: () => console.log('OK Pressed!')},
@@ -515,7 +502,7 @@ export default class RegisterScreen extends Component{
             }else{
                 this.setState({isLoading:false});
                 Alert.alert(
-                    'แจ้งเตือน',
+                    ' ',
                     response.message,
                     [
                     {text: 'OK', onPress: () => console.log('OK Pressed!')},
@@ -536,7 +523,7 @@ export default class RegisterScreen extends Component{
                 this.setState({isLoading:false});
                 if(!response.message){
                     setTimeout(()=>{Alert.alert(
-                        'แจ้ง OTP',
+                        ' ',
                         `ส่ง OTP ไปยังหมายเลข ${ this.props.registerStore.register.tel} เรียบร้อยแล้ว`,
                         [
                         {text: 'OK', onPress: () => console.log('OK Pressed!')},
@@ -570,37 +557,15 @@ export default class RegisterScreen extends Component{
         console.log(this.state.pageNumber);
         if(this.state.pageNumber==1){
             if(this.props.fromGuest){
-                this.props.navigator.resetTo({
-                    screen: 'mti.LoginScreen', // unique ID registered with Navigation.registerScreen
-                    title: undefined, // navigation bar title of the pushed screen (optional)
-                    titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
-                    passProps: {
-                        fromGuest: true,
-                    }, // Object that will be passed as props to the pushed screen (optional)
-                    navigatorStyle: {
-                        drawUnderStatusBar: true,
-                        statusBarColor: 'transparent',
-                        tabBarHidden: true,
-                    },
-                    animated: true, // does the push have transition animation or does it happen immediately (optional)
-                    backButtonTitle: undefined, // override the back button title (optional)
-                    backButtonHidden: false, // hide the back button altogether (optional)
-                })
+                this.app.first();
             }else{
-                this.props.navigator.pop()
+               this.app.first();
             }
         }else{
-            if(this.state.pageNumber==2 && this.props.user){
+            if(this.state.pageNumber==2 && this.props.registerStore.user){
                 this.props.registerStore.register = {};
-                this.props.navigator.resetTo({
-                    screen: 'mti.LoginScreen', // unique ID registered with Navigation.registerScreen
-                    title: undefined, // navigation bar title of the pushed screen (optional)
-                    titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
-                    passProps: {}, // Object that will be passed as props to the pushed screen (optional)
-                    animated: true, // does the push have transition animation or does it happen immediately (optional)
-                    backButtonTitle: undefined, // override the back button title (optional)
-                    backButtonHidden: false, // hide the back button altogether (optional)
-                })
+                this.props.registerStore.user = undefined;
+                this.app.first();
             }else{
                 this.setState({enable:true});
                 this._pages.scrollToPage(this.state.pageNumber-2);
@@ -642,7 +607,7 @@ export default class RegisterScreen extends Component{
                     <RegisterStep3
                         onSubmitRegister3Press={this._onSubmitRegister3Press.bind(this)}
                     />
-                    <RegisterStep4_1 firstLogon={this.state.firstLogon}
+                    <RegisterStep4_1 firstLogon={this.state.firstLogon} pageNumber={this.state.pageNumber}
                         onSubmitRegister4_1Press={this._onSubmitRegister4_1Press.bind(this)}
                     />
                     <RegisterStep4_2
@@ -817,7 +782,7 @@ export const agreements=[
             (3)	  ข้อมูลตำแหน่ง
                 \tMuang Thai Friends Club อาจรวบรวมและประมวลผลข้อมูลเกี่ยวกับตำแหน่งที่อยู่ของท่าน  โดยใช้เทคโนโลยีระบุตำแหน่ง เช่น ที่อยู่ IP, GPS
             (4)	  พื้นที่เก็บข้อมูลในตัวเครื่อง
-                \tMuang Thai Friends Club อาจรวบรวมและจัดเก็บข้อมูล  รวมถึงข้อมูลส่วนบุคคลของท่าน  ที่อยู่ในอุปกรณ์ของท่านโดยใช้พื้นที่จัดเก็บข้อมูลเว็บเบราว์เซอร์ (รวมถึง HTML5) และแคชของข้อมูลแอพพลิเคชัน
+                \tMuang Thai Friends Club อาจรวบรวมและจัดเก็บข้อมูล  รวมถึงข้อมูลส่วนบุคคลของท่าน  ที่อยู่ในอุปกรณ์ของท่านโดยใช้พื้นที่จัดเก็บข้อมูลเว็บเบราว์เซอร์ (รวมถึง HTML5) และแคชของข้อมูลแอปพลิเคชัน
             (5)	  คุ้กกี้(Cookies) และแคชไฟล์ (Cache File)
                 \t“คุ้กกี้” คือไฟล์ข้อมูลเล็กๆ ที่ถูกส่งยังเครื่องคอมพิวเตอร์ของท่าน  เพื่อเป็นการอนุญาตให้ Muang Thai Friends Clubบันทึกข้อมูลเกี่ยวกับท่านในฐานะผู้ใช้บริการของ Muang Thai Friends Club เมื่อท่านได้กลับเข้ามายังหน้าเว็บไซต์หรือโปรแกรมของ Muang Thai Friends Club อีกครั้งโดยใช้โปรแกรมท่องอินเตอร์เน็ท (Web browser) และเครื่องคอมพิวเตอร์เครื่องเดิม  ระบบจะส่ง “คุ้กกี้” ไปยังเครื่องคอมพิวเตอร์ของท่านก็ต่อเมื่อท่านลงชื่อเข้าระบบเพื่อใช้งานบัญชีของท่านที่ได้สมัครไว้กับ Muang Thai Friends Club “คุ้กกี้” เหล่านี้สามารถทำให้ Muang Thai Friends Club จดจำท่านในขณะที่ท่านเข้าใช้บริการในหน้าต่างๆ ภายในเว็บไซต์หรือโปรแกรมของ Muang Thai Friends Club โดยท่านไม่จำเป็นต้องระบุชื่อออกจากระบบหรือปิดหน้า Web browser “คุ้กกี้” เหล่านี้จะสิ้นผลลง
                 เว็บบราวเซอร์ (Web browser) หรือโปรแกรมอุปกรณ์พกพาที่ท่านใช้เชื่อมต่อกับเว็บไซต์หรือโปรแกรม  ระบบอาจเก็บและบันทึก “Cache File” รวมถึงข้อมูลส่วนบุคคลของท่านไว้  ซึ่ง Muang Thai Friends Club ไม่มีส่วนในการควบคุมหรือเข้าถึง “Cache File” ดังกล่าวแต่อย่างใด`,

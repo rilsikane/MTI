@@ -15,8 +15,9 @@ const timeout = 20000;
 import store from 'react-native-simple-store';
 import app from '../stores/app';
 import {
-    Alert,Linking,AlertIOS
+    Alert,Linking
 } from 'react-native';
+
 
 
 export async function authen(param){
@@ -34,8 +35,8 @@ export async function authen(param){
                 return response.data;
             }else{
                     app.isLoading = false;
-                    AlertIOS.alert(
-                        'แจ้งเตือน',
+                    Alert.alert(
+                        ' ',
                         response.data ? response.data.message:response.message,
                         [
                         {text: 'OK', onPress: () => app.isLoading = false},
@@ -46,8 +47,8 @@ export async function authen(param){
             }
         }else{
             app.isLoading = false;
-            setTimeout(()=>{AlertIOS.alert(
-                'แจ้งเตือน',
+            setTimeout(()=>{Alert.alert(
+                ' ',
                 `${path}:ไม่สามารถเชื่อมต่อกับระบบได้`,
                 [
                 {text: 'OK', onPress: () => console.log('OK Pressed!')},
@@ -58,8 +59,8 @@ export async function authen(param){
 
       }catch(e){
         if(e && "ECONNABORTED"!=e.code){
-            setTimeout(()=>{AlertIOS.alert(
-            'แจ้งเตือน',
+            setTimeout(()=>{Alert.alert(
+            ' ',
             (e.response && e.response.data) ? e.response.data.message:'ไม่สามารถเชื่อมต่อกับ Server ได้',
             [
             {text: 'OK', onPress: () => console.log('OK Pressed!')},
@@ -67,8 +68,8 @@ export async function authen(param){
             ),500});
             return false;
         }else{
-            setTimeout(()=>{AlertIOS.alert(
-                'แจ้งเตือน',
+            setTimeout(()=>{Alert.alert(
+                ' ',
                    'เกินกำหนดระยะเวลาเชื่อมต่อกับ Server',
                 [
                 {text: 'OK', onPress: () => console.log('OK Pressed!')},
@@ -79,6 +80,7 @@ export async function authen(param){
           
       }
 }
+
 export async function post(path,param){
     const token = await store.get("token");
     let requestURL = `${endpoint}${path}`;
@@ -94,50 +96,53 @@ export async function post(path,param){
                 console.log("postService"+JSON.stringify(response.data));
                 return response.data;
                 }else{
-                    app.isLoading = false;
+                  
                     
                     if("002"==response.data.error_code ||"001"==response.data.error_code){
-                        AlertIOS.alert(
-                            'แจ้งเตือน',
+                        Alert.alert(
+                            ' ',
                             response.data ?  response.data.message :response.message,
                             [
                             {text: 'OK', onPress: () => app.logout()},
                             ]
                         )
                     }else{
-                        setTimeout(()=>{AlertIOS.alert(
-                            'แจ้งเตือน',
+                        //setTimeout(()=>{,200});
+                        Alert.alert(
+                            ' ',
                             response.data ?  response.data.message :response.message,
                             [
-                            {text: 'OK', onPress: () => console.log('OK Pressed!')},
+                            {text: 'OK', onPress: () => {
+                                app.isLoading = false;
+                                return false;
+                            }},
                             ]
-                        ),200});
-                        return false;
+                        )
                     }
                 }
             }else{
-                setTimeout(()=>{AlertIOS.alert(
-                    'แจ้งเตือน',
+                setTimeout(()=>{Alert.alert(
+                    ' ',
                     `${path}:ไม่สามารถเชื่อมต่อกับระบบได้`,
                     [
                     {text: 'OK', onPress: () => console.log('OK Pressed!')},
                     ]
-                    ),200});
+                    ),100});
                 return false;
             }
         }catch(e){
             app.isLoading = false;
             if(e && "ECONNABORTED"!=e.code){
-                setTimeout(()=>{AlertIOS.alert(
-                'แจ้งเตือน',
+                setTimeout(()=>{Alert.alert(
+                ' ',
                 (e.response && e.response.data) ? e.response.data.message:'ไม่สามารถเชื่อมต่อกับ Server ได้',
                 [
                 {text: 'OK', onPress: () => console.log('OK Pressed!')},
                 ]
                 ),200});
             }else{
-                setTimeout(()=>{AlertIOS.alert(
-                    'แจ้งเตือน',
+                setTimeout(()=>{Alert.alert(
+                    ' ',
                        'เกินกำหนดระยะเวลาเชื่อมต่อกับ Server',
                     [
                     {text: 'OK', onPress: () => console.log('OK Pressed!')},
@@ -166,8 +171,8 @@ export async function postBasic(path,param,customError){
                 app.isLoading = false;
                 
                 if(!customError){
-                    setTimeout(()=>{AlertIOS.alert(
-                        'แจ้งเตือน',
+                    setTimeout(()=>{Alert.alert(
+                        ' ',
                         response.data.message,
                         [
                         {text: 'OK', onPress: () => console.log('OK Pressed!')},
@@ -178,8 +183,8 @@ export async function postBasic(path,param,customError){
                 
             }
         }else{
-            setTimeout(()=>{AlertIOS.alert(
-                'แจ้งเตือน',
+            setTimeout(()=>{Alert.alert(
+                ' ',
                 `${path}:ไม่สามารถเชื่อมต่อกับระบบได้`,
                 [
                 {text: 'OK', onPress: () => console.log('OK Pressed!')},
@@ -191,16 +196,16 @@ export async function postBasic(path,param,customError){
 
         app.isLoading = false;
         if(e && "ECONNABORTED"!=e.code){
-            setTimeout(()=>{AlertIOS.alert(
-            'แจ้งเตือน',
+            setTimeout(()=>{Alert.alert(
+            ' ',
             (e.response && e.response.data) ? e.response.data.message:'ไม่สามารถเชื่อมต่อกับ Server ได้',
             [
             {text: 'OK', onPress: () => console.log('OK Pressed!')},
             ]
             ),200});
         }else{
-            setTimeout(()=>{AlertIOS.alert(
-                'แจ้งเตือน',
+            setTimeout(()=>{Alert.alert(
+                ' ',
                    'เกินกำหนดระยะเวลาเชื่อมต่อกับ Server',
                 [
                 {text: 'OK', onPress: () => console.log('OK Pressed!')},
@@ -227,8 +232,8 @@ export async function put(path,param){
                 }else{
                     app.isLoading = false;
                     console.log(response.data.message);
-                    setTimeout(()=>{AlertIOS.alert(
-                        'แจ้งเตือน',
+                    setTimeout(()=>{Alert.alert(
+                        ' ',
                         response.data.message,
                         [
                         {text: 'OK', onPress: () => console.log('OK Pressed!')},
@@ -237,8 +242,8 @@ export async function put(path,param){
                     return false;
                 }
             }else{
-                setTimeout(()=>{AlertIOS.alert(
-                    'แจ้งเตือน',
+                setTimeout(()=>{Alert.alert(
+                    ' ',
                     `${path}:ไม่สามารถเชื่อมต่อกับระบบได้`,
                     [
                     {text: 'OK', onPress: () => console.log('OK Pressed!')},
@@ -249,16 +254,16 @@ export async function put(path,param){
         }catch(e){
             app.isLoading = false;
             if(e && "ECONNABORTED"!=e.code){
-                setTimeout(()=>{AlertIOS.alert(
-                'แจ้งเตือน',
+                setTimeout(()=>{Alert.alert(
+                ' ',
                 (e.response && e.response.data) ? e.response.data.message:'ไม่สามารถเชื่อมต่อกับ Server ได้',
                 [
                 {text: 'OK', onPress: () => console.log('OK Pressed!')},
                 ]
                 ),200});
             }else{
-                setTimeout(()=>{AlertIOS.alert(
-                    'แจ้งเตือน',
+                setTimeout(()=>{Alert.alert(
+                    ' ',
                        'เกินกำหนดระยะเวลาเชื่อมต่อกับ Server',
                     [
                     {text: 'OK', onPress: () => console.log('OK Pressed!')},
@@ -288,16 +293,16 @@ export async function get(path,param){
             }else{
                 app.isLoading = false;
                 if("002"==response.data.error_code ||"001"==response.data.error_code){
-                    AlertIOS.alert(
-                        'แจ้งเตือน',
+                    Alert.alert(
+                        ' ',
                         response.data ?  response.data.message :response.message,
                         [
                         {text: 'OK', onPress: () => app.logout()},
                         ]
                     )
                 }else{
-                setTimeout(()=>{AlertIOS.alert(
-                    'แจ้งเตือน',
+                setTimeout(()=>{Alert.alert(
+                    ' ',
                     response.data ?  response.data.message :response.message,
                     [
                     {text: 'OK', onPress: () => console.log('OK Pressed!')},
@@ -307,8 +312,8 @@ export async function get(path,param){
                 }
             }
             }else{
-                setTimeout(()=>{AlertIOS.alert(
-                    'แจ้งเตือน',
+                setTimeout(()=>{Alert.alert(
+                    ' ',
                     `${path}:ไม่สามารถเชื่อมต่อกับระบบได้`,
                     [
                     {text: 'OK', onPress: () => console.log('OK Pressed!')},
@@ -320,16 +325,16 @@ export async function get(path,param){
         app.isLoading = false;
         if(e && "ECONNABORTED"!=e.code){
             if(e.response && e.response.data && "001"==e.response.data.error_code){
-                AlertIOS.alert(
-                    'แจ้งเตือน',
+                Alert.alert(
+                    ' ',
                     e.response.data ?  e.response.data.message :e.response.message,
                     [
                     {text: 'OK', onPress: () => app.logout()},
                     ]
                 )
             }else{
-                setTimeout(()=>{AlertIOS.alert(
-                'แจ้งเตือน',
+                setTimeout(()=>{Alert.alert(
+                ' ',
                 (e.response && e.response.data) ? e.response.data.message:'ไม่สามารถเชื่อมต่อกับ Server ได้',
                 [
                 {text: 'OK', onPress: () => console.log('OK Pressed!')},
@@ -337,8 +342,8 @@ export async function get(path,param){
                 ),200});
             }
         }else{
-            setTimeout(()=>{AlertIOS.alert(
-                'แจ้งเตือน',
+            setTimeout(()=>{Alert.alert(
+                ' ',
                    'เกินกำหนดระยะเวลาเชื่อมต่อกับ Server',
                 [
                 {text: 'OK', onPress: () => console.log('OK Pressed!')},
@@ -365,8 +370,8 @@ export async function getBasic(path,param){
               }else{
                   app.isLoading = false;
                   console.log(response.data.message);
-                  setTimeout(()=>{AlertIOS.alert(
-                      'แจ้งเตือน',
+                  setTimeout(()=>{Alert.alert(
+                      ' ',
                       response.message,
                       [
                       {text: 'OK', onPress: () => console.log('OK Pressed!')},
@@ -375,8 +380,8 @@ export async function getBasic(path,param){
                   return false;
               }
               }else{
-                  setTimeout(()=>{AlertIOS.alert(
-                      'แจ้งเตือน',
+                  setTimeout(()=>{Alert.alert(
+                      ' ',
                       `${path}:ไม่สามารถเชื่อมต่อกับระบบได้`,
                       [
                       {text: 'OK', onPress: () => console.log('OK Pressed!')},
@@ -387,16 +392,16 @@ export async function getBasic(path,param){
         }catch(e){
           app.isLoading = false;
           if(e && "ECONNABORTED"!=e.code){
-              setTimeout(()=>{AlertIOS.alert(
-              'แจ้งเตือน',
+              setTimeout(()=>{Alert.alert(
+              ' ',
               (e.response && e.response.data) ? e.response.data.message:'ไม่สามารถเชื่อมต่อกับ Server ได้',
               [
               {text: 'OK', onPress: () => console.log('OK Pressed!')},
               ]
               ),200});
           }else{
-              setTimeout(()=>{AlertIOS.alert(
-                  'แจ้งเตือน',
+              setTimeout(()=>{Alert.alert(
+                  ' ',
                      'เกินกำหนดระยะเวลาเชื่อมต่อกับ Server',
                   [
                   {text: 'OK', onPress: () => console.log('OK Pressed!')},

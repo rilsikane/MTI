@@ -472,6 +472,7 @@ const styles={
     },
     recommendPrivilegeContainerStyle:{
         flex: 1,
+        backgroundColor:"#fff"
     },
     recommendTitleContainerStyle:{
         flexDirection: 'row',

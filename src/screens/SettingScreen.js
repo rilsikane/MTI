@@ -117,25 +117,25 @@ export default class SettingScreen extends Component{
                         {this.renderLanguageSwitch()}
                     </View>
                     <View style={styles.switchSectionStyle}>
-                        <Text style={styles.settingTitleTextStyle}>การแจ้งเตือน</Text>
+                        <Text style={styles.settingTitleTextStyle}>การ </Text>
                         {this.renderNotifySwitch()}
                     </View>
                     <View style={styles.switchSectionStyle}>
                         <Text style={styles.settingTitleTextStyle}>ขนาดตัวหนังสือ</Text>
                         {this.renderFontSizeRadio()}
                     </View> */}
-                    <TouchableOpacity style={styles.switchSectionStyle}  onPress={()=>this.gotoScreen('mti.SettingAppLockingScreen')}>
-                        <Text style={styles.settingTitleTextStyle}>การล็อกรหัสและ Touch ID</Text>
+                    {/* <TouchableOpacity style={styles.switchSectionStyle}  onPress={()=>this.gotoScreen('mti.SettingAppLockingScreen')}>
+                        <Text style={styles.settingTitleTextStyle}>การล็อกรหัสและ Touch ID</Text> */}
                         {/* <TouchableOpacity */}
                            
                         {/* > */}
-                            <Image
+                            {/* <Image
                                 source={require('../source/icons/iconRightArrow01.png')}
                                 resizeMode='contain'
                                 style={styles.rightArrowIconStyle}
-                            />
+                            /> */}
                         {/* </TouchableOpacity> */}
-                    </TouchableOpacity>
+                    {/* </TouchableOpacity> */}
                     <View style={styles.servicePolicyButtonContainerStyle}>
                         <Image
                             source={require('../source/icons/iconContact01.png')}
@@ -168,7 +168,7 @@ export default class SettingScreen extends Component{
                         />
                     </View>
                     <View style={styles.appTextContainerStyle}>
-                        <Text style={styles.appTitleTextStyle}>Muang Thai Friends Club Version 1.0{'\n'}เพื่อนสนิทที่สร้างแรงบันดาลใจและเติมเต็มทุกความสุขของคุณ</Text>
+                        <Text style={styles.appTitleTextStyle}>Muang Thai Friends Version 1.0{'\n'}เพื่อนสนิทที่สร้างแรงบันดาลใจและเติมเต็มทุกความสุขของคุณ</Text>
                     </View>
                 </View>
             </View>

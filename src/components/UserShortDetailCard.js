@@ -20,28 +20,30 @@ class UserShortDetailCard extends Component{
         if(!user){
             user = {};
             user.name = "GUEST";
-            user.surname = "GUEST";
+            user.surname = "";
         }
         this.setState({user:user});
+        this.app = app;
     }
 
     gotoRegister(user){
-        this.props.navigator.resetTo({
-			screen: 'mti.RegisterScreen', // unique ID registered with Navigation.registerScreen
-			title: undefined, // navigation bar title of the pushed screen (optional)
-			titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
-            passProps: {
-                fromGuest: true
-            }, 
-            animated: true, // does the push have transition animation or does it happen immediately (optional)
-			backButtonTitle: undefined, // override the back button title (optional)
-            backButtonHidden: false, // hide the back button altogether (optional)
-            navigatorStyle: {
-                drawUnderStatusBar: true,
-                statusBarColor: 'transparent',
-                tabBarHidden: true,
-            },
-		});
+        // this.props.navigator.resetTo({
+		// 	screen: 'mti.RegisterScreen', // unique ID registered with Navigation.registerScreen
+		// 	title: undefined, // navigation bar title of the pushed screen (optional)
+		// 	titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
+        //     passProps: {
+        //         fromGuest: true
+        //     }, 
+        //     animated: true, // does the push have transition animation or does it happen immediately (optional)
+		// 	backButtonTitle: undefined, // override the back button title (optional)
+        //     backButtonHidden: false, // hide the back button altogether (optional)
+        //     navigatorStyle: {
+        //         drawUnderStatusBar: true,
+        //         statusBarColor: 'transparent',
+        //         tabBarHidden: true,
+        //     },
+        // });
+        this.app.register();
     }
 
     render(){
@@ -60,11 +62,12 @@ class UserShortDetailCard extends Component{
                     <Text ellipsizeMode='tail' numberOfLines={1} style={styles.userNameTextStyle}>{`${this.state.user.name} ${this.state.user.surname}`}</Text>
                     {/* s<Text style={styles.userLevelTextStyle}>สมาชิกระดับ {this.state.user.member_type||' - '}</Text> */}
                     {this.state.user.name==="GUEST"&&
-                        <View style={{flexDirection: 'row',right: responsiveWidth(5),top: responsiveHeight(2)}}>
-                            <Text style={styles.registerLinkTitleStyle}>เพื่อใช้งานแอพพลิเคชั่นแบบเต็มรูปแบบ  </Text>
+                        <View style={{flexDirection: 'row',right: responsiveWidth(5),top: responsiveHeight(2),left:responsiveWidth(1)}}>
+                             <Text style={styles.registerLinkTitleStyle}>กรุณา</Text>
                             <TouchableOpacity onPress={this.gotoRegister}>
-                                <Text style={styles.userGuestRecommendTextStyle}>กรุณาลงทะเบียนสมัครสมาชิก</Text>
+                                <Text style={styles.userGuestRecommendTextStyle}>ลงทะเบียน</Text>
                             </TouchableOpacity>
+                            <Text style={styles.registerLinkTitleStyle}>เพื่อใช้งานแบบเต็มรูปแบบ  </Text>
                         </View>
                     }
               

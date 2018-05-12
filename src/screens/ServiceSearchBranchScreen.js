@@ -49,7 +49,7 @@ export default class ServiceSearchBranchScreen extends Component{
                 },
                 (error) => {
                     Alert.alert(
-                        'แจ้งเตือน',
+                        ' ',
                         error.message,
                         [
                         {text: 'OK', onPress: () => {this.setState({
@@ -65,7 +65,7 @@ export default class ServiceSearchBranchScreen extends Component{
             //console.log(this.props.data)
             animationTimeout = setTimeout(() => {
                 this.focus();
-            },1200);
+            },1500);
         }
     }
 
@@ -168,7 +168,7 @@ export default class ServiceSearchBranchScreen extends Component{
                 })
             }else{
                 Alert.alert(
-                    'แจ้งเตือน',
+                    ' ',
                     'ไม่พบข้อมูลที่ค้นหา',
                     [
                     {text: 'OK', onPress: () => {this.setState({
@@ -191,6 +191,7 @@ export default class ServiceSearchBranchScreen extends Component{
         let nearBy = await getBasic(`services?nearby=y&lat=${this.state.userLatitude}&lng=${this.state.userLongitude}&filter_type_id=5&page=1&pagesize=20`,{});
         //console.log(nearBy.data.length)
         if(!this.props.isMap){
+            this.setState({isLoading:false});
             setTimeout(()=>{
                     this.props.navigator.showModal({
                         screen: 'mti.ServiceSearchBranchScreen', // unique ID registered with Navigation.registerScreen
@@ -209,7 +210,7 @@ export default class ServiceSearchBranchScreen extends Component{
                         backButtonHidden: false, // hide the back button altogether (optional)
                     })
             },100)
-            this.setState({isLoading:false});
+            
         }else{
             this.setState({
                 serviceList: nearBy.data,

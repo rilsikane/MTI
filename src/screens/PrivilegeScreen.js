@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Text,View,Image,ScrollView,TouchableOpacity,FlatList,Alert} from 'react-native';
+import {Text,View,Image,ScrollView,TouchableOpacity,FlatList,Alert,Platform} from 'react-native';
 import PropTypes from "prop-types";
 import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
 import Spinner from 'react-native-loading-spinner-overlay';
@@ -45,6 +45,13 @@ export default class PrivilegeScreen extends Component{
         this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
     }
     async componentDidMount(){
+        
+    }
+    async init(){
+
+        this.props.naviStore.navigation = this.props.navigator;
+
+        this.setState({isLoading: true})
         navigator.geolocation.getCurrentPosition(
             (position) => {
               this.setState({
@@ -55,7 +62,7 @@ export default class PrivilegeScreen extends Component{
             },
             (error) => {
                 Alert.alert(
-                    'แจ้งเตือน',
+                    ' ',
                     error.message,
                     [
                     {text: 'OK', onPress: () => {this.setState({
@@ -66,10 +73,6 @@ export default class PrivilegeScreen extends Component{
             },
             {enableHighAccuracy: true,timeout: 20000,maxAge: 0,istanceFilter: 1 },
         )
-    }
-    async init(){
-        this.props.naviStore.navigation = this.props.navigator;
-        this.setState({isLoading: true})
         if(this.state.tabIndex==0){
             let privilege = await getBasic("privileges?page=1&pagesize=20",{});
             let tabsList = await getBasic('privilege/groups',{});
@@ -224,33 +227,42 @@ export default class PrivilegeScreen extends Component{
                 if(index==7){
                     index = 9
                 }
-                nearBy = await getBasic(`privileges?nearby=y&lat=${this.state.userLatitude}&lng=${this.state.userLongitude}&filter_group_id=${index}&page=1&pagesize=20`,{});
+                nearBy = await getBasic(`privileges?nearby=y&lat=${this.state.userLatitude}&lng=${this.state.userLongitude}&page=1&pagesize=20`,{});
             }
-            console.log(nearBy.data[0])
+            this.setState({isLoading: false})
             if(nearBy&&nearBy.data.length>0){
-                this.props.navigator.showModal({
-                    screen: 'mti.PrivilegeSearchScreen', // unique ID registered with Navigation.registerScreen
-                    passProps:{
-                        // navigator:this.props.navigator,
-                        data: nearBy.data,
-                        // isMap: true,
-                        nearBy: true,
-                        userLatitude: this.state.userLatitude,
-                        userLongitude: this.state.userLongitude,
-                    },
-                    animated: true, 
-                })
-                this.setState({isLoading: false})
+                setTimeout(()=>{
+                    this.props.navigator.showModal({
+                        screen: 'mti.PrivilegeSearchScreen', // unique ID registered with Navigation.registerScreen
+                        passProps:{
+                            // navigator:this.props.navigator,
+                            data: nearBy.data,
+                            // isMap: true,
+                            nearBy: true,
+                            userLatitude: this.state.userLatitude,
+                            userLongitude: this.state.userLongitude,
+                        },
+                        animated: true, 
+                    })
+                },Platform.OS === 'ios' ? 500:50)
+                this.setState({tabIndex: 0})
+               
             }else{
-                Alert.alert(
-                    'แจ้งเตือน',
-                    'ไม่พบข้อมูลที่ค้นหา',
-                    [
-                    {text: 'OK', onPress: () => {this.setState({
-                        isLoading: false,
-                    })}},
-                    ]
-                )
+                this.setState({
+                    isLoading: false,
+                })
+                setTimeout(()=>{
+                    Alert.alert(
+                        ' ',
+                        'ไม่พบข้อมูลที่ค้นหา',
+                        [
+                        {text: 'OK', onPress: () => {this.setState({
+                            isLoading: false,
+                        })}},
+                        ]
+                    )
+                },200)
+                
             }
     
         }
@@ -258,7 +270,7 @@ export default class PrivilegeScreen extends Component{
     }
 
     async _onSearchIconPress(){
-        this.setState({isLoading: true,privilege:[]});
+        this.setState({isLoading: true,privilege:[],tabIndex:0});
         let response = {};
         if(this.state.tabIndex==0){
             response = await getBasic(`privileges?search=${this.state.searchValue}&page=1&pagesize=20`,{});
@@ -267,16 +279,18 @@ export default class PrivilegeScreen extends Component{
             if(index==7){
                 index = 9
             }
-            response = await getBasic(`privileges?filter_group_id=${index}&search=${this.state.searchValue}&page=1&pagesize=20`,{});
+            response = await getBasic(`privileges?search=${this.state.searchValue}&page=1&pagesize=20`,{});
             console.log(response)
         }
        
         if(response.data.length==0){
             Alert.alert(
-                'แจ้งเตือน',
+                ' ',
                 'ไม่พบข้อมูลที่ค้นหา',
                 [
-                {text: 'OK', onPress: () => {this.setState({
+                {text: 'OK', onPress: () => {
+                    this.init();
+                    this.setState({
                     isLoading: false,
                     searchValue: '',
                     //privilege: this.state.privilegeOrg,
@@ -284,7 +298,10 @@ export default class PrivilegeScreen extends Component{
                 ]
             )
         }else{
-            this.setState({privilege: response.data,isLoading: false,searchValue: ''});
+            setTimeout(()=>{
+                this.setState({privilege: response.data,isLoading: false,searchValue: ''});
+            },200)
+           
         }
       
     }
@@ -342,7 +359,7 @@ export default class PrivilegeScreen extends Component{
                             </View> */}
                     </View>
                 </View>
-                {this.state.isLoading && <Spinner visible={this.state.isLoading}  textStyle={{color: '#FFF'}} />}
+                {this.state.isLoading && <Spinner visible={this.state.isLoading} textStyle={{color: '#FFF'}} />}
             </View>
         )
     }

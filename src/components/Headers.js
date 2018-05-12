@@ -37,8 +37,7 @@ class Headers extends Component{
             return(
                 <TouchableOpacity style={{backgroundColor:"transparent",flexDirection:"column",justifyContent:"flex-start",paddingRight:5}} 
                   onPress={(e)=> this.props.cancel()}>
-                      {!this.props.cancelTxt ? <Text style={{fontSize: responsiveFontSize(3),color: '#FFF'}}>ยกเลิก</Text>: 
-                      <Icon name="chevron-left" style={{fontSize: responsiveFontSize(2.5),paddingLeft:5,color: '#FFF'}}></Icon>}
+                      <Icon name="chevron-left" style={{fontSize: responsiveFontSize(2.5),paddingLeft:5,color: '#FFF'}}></Icon>
                   </TouchableOpacity>
             )
         }else if(this.props.leftIconName=='back'){
@@ -78,17 +77,27 @@ class Headers extends Component{
 
     renderRightButton(){
         if(this.props.rightIconName=='iconBell'){
+            return
+            // (
+                // <TouchableOpacity style={styles.rightIconContainerStyle}>
+                //     {this.renderBadge()}
+                //     <Image
+                //         source={require('./../source/icons/iconBell.png')}
+                //         style={styles.rightIconImageStyle}
+                //         resizeMode='contain'
+                //     />
+                // </TouchableOpacity>
+            // )
+            null;
+        }else if(this.props.rightIconName=='cancel'){
             return(
-                <TouchableOpacity style={styles.rightIconContainerStyle}>
-                    {this.renderBadge()}
-                    <Image
-                        source={require('./../source/icons/iconBell.png')}
-                        style={styles.rightIconImageStyle}
-                        resizeMode='contain'
-                    />
-                </TouchableOpacity>
+                <TouchableOpacity style={{backgroundColor:"transparent",flexDirection:"column"}} 
+                  onPress={(e)=> this.props.cancel()}>
+                      <Icon name="times" style={{fontSize: responsiveFontSize(2.5),paddingRight:10,color: '#FFF'}}></Icon>
+                  </TouchableOpacity>
             )
-        }else{
+        }
+        else{
             return(
                 <View style={styles.headersBlankItemStyle}/>
             )
@@ -128,7 +137,7 @@ class Headers extends Component{
                             {this.renderCenterItems()}
                         </View>
                         <View style={[styles.headerRightItemContainerStyle,this.props.longTitle&&styles.sideItemWithLongTitleStyle,this.props.withSearch&&styles.rightItemWithSearchStyle]}>
-                            {/* {this.renderRightButton()} */}
+                            {this.renderRightButton()}
                         </View>
                     </View>
                     <View style={styles.bannerBottomLineStyle}/>
@@ -179,7 +188,7 @@ const styles={
         flex: 0.1,
     },
     leftItemWithSearchStyle:{
-        marginTop: responsiveHeight(0.5),
+        marginTop: responsiveHeight(1),
     },
     rightItemWithSearchStyle:{
         marginTop: responsiveHeight(1),

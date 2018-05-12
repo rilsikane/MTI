@@ -27,6 +27,12 @@ class AppStore {
   login() {
     this.root = 'after-login';
   }
+  register() {
+    this.root = 'register';
+  }
+  first() {
+    this.root = 'login';
+  }
 
   async logout() {
     let userData = await store.get("user");

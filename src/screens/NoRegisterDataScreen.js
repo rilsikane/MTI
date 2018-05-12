@@ -43,25 +43,19 @@ export default class NoRegisterDataScreen extends Component{
         let response = await postBasic("member/request",param);
         if(response){
             Alert.alert(
-                'สำเร็จ',
+                '',
                 'ฝากข้อมูลติดต่อกลับเรียบร้อย',
                 [
                 {text: 'ตกลง', onPress: () =>{
-                    this.leavingDialog.dismiss();
-                    this.props.navigator.dismissModal({
-                        animationType: 'slide-down' // 'none' / 'slide-down' , dismiss animation for the modal (optional, default 'slide-down')
-                    });
                     setTimeout(()=>{
-                        this.props.navigator.resetTo({
-                            screen: 'mti.LoginScreen', // unique ID registered with Navigation.registerScreen
-                            title: undefined, // navigation bar title of the pushed screen (optional)
-                            titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
-                            animated: true, // does the push have transition animation or does it happen immediately (optional)
-                            animationType: 'slide-down',
-                            backButtonTitle: undefined, // override the back button title (optional)
-                            backButtonHidden: false, // hide the back button altogether (optional)
-                            })
-                    },500)
+                        this.leavingDialog.dismiss();
+                        this.props.navigator.dismissAllModals({
+                            animationType: 'slide-down' // 'none' / 'slide-down' , dismiss animation for the modal (optional, default 'slide-down')
+                        });
+                    },50)
+                    setTimeout(()=>{
+                        this.app.first();
+                    },120)
                   }
                 }
                 ]
@@ -162,18 +156,17 @@ export default class NoRegisterDataScreen extends Component{
                                 this.inputs['phone'] = input;
                             }}
                             value={this.state.tel}
-                            onChangeText={(userPhone)=>this.setState({tel:userPhone})}
                             leftLabelText='เบอร์โทรศัพท์'
                             iconUri={require('./../source/icons/iconPhone.png')}
                             containerStyle={styles.inputContainerStyle}
                             secondFlex={secondFlex}
                             thirdFlex={thirdFlex}
                             keyboardType='phone-pad'
-                            onBlur={()=>{
-                                if(this.state.tel.length<9){
-                                    this.setState({telErr:true})
+                            onChangeText={(userPhone)=>{
+                                if(userPhone.length<10){
+                                    this.setState({telErr:true,tel:userPhone})
                                 }else{
-                                    this.setState({telErr:false})
+                                    this.setState({telErr:false,tel:userPhone})
                                 }
                             }}
                             //blurOnSubmit={true}
@@ -191,19 +184,18 @@ export default class NoRegisterDataScreen extends Component{
                                 this.inputs['email'] = input;
                             }}
                             value={this.state.email}
-                            onChangeText={(email)=>this.setState({email:email})}
                             leftLabelText='อีเมล'
                             iconUri={require('../source/icons/iconMail.png')}
                             containerStyle={styles.inputContainerStyle}
                             secondFlex={secondFlex}
                             thirdFlex={thirdFlex}
                             keyboardType='email-address'
-                            onBlur={()=>{
+                            onChangeText={(email)=>{
                                 var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-                                if(re.test(this.state.email)){
-                                    this.setState({emailErr:false})
+                                if(re.test(email)){
+                                    this.setState({emailErr:false,email:email})
                                 }else{
-                                    this.setState({emailErr:true})
+                                    this.setState({emailErr:true,email:email})
                                 }
                             }}
                             blurOnSubmit={true}
@@ -242,7 +234,7 @@ export default class NoRegisterDataScreen extends Component{
                         />
                     </TouchableOpacity>
                     <View>
-                        <Text style={styles.popupTitleTextStyle}>แจ้งเตือน</Text>
+                        <Text style={styles.popupTitleTextStyle}> </Text>
                         <Text style={styles.popupDetailTextStyle}>ท่านเป็นสมาชิกของเราอยู่แล้ว รบกวน Login เพื่อเข้าสู่ระบบ สามารถสอบถามเพิ่มเติม ติดต่อ 1484</Text>
                     </View>
                 </View>

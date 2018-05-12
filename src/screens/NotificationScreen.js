@@ -91,7 +91,7 @@ export default class NotificationScreen extends Component{
             <View style={styles.notificationScreenContainerStyle}>
                 <Headers
                     leftIconName='back'
-                    headerTitleText='การแจ้งเตือน'
+                    headerTitleText='การ '
                     cancel={()=>this.props.navigator.pop()}
                 />
                 <ScrollView style={{flex: 1,}}>

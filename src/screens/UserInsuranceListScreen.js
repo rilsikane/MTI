@@ -114,7 +114,7 @@ export default class UserInsuranceListScreen extends Component{
                                 resizeMode='contain'
                                 style={styles.insuranceTitleIconStyle}
                             />
-                            <Text style={styles.insuranceTitleTextStyle}>กรมธรรม์ของคุณ</Text>
+                            <Text style={styles.insuranceTitleTextStyle}>กรมธรรม์</Text>
                         </View>
                         {this.state.policys && this.state.policys.length >0  && this.renderInsuranceShortDetailCard()}
                     </View>

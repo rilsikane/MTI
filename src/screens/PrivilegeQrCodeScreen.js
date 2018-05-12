@@ -63,7 +63,7 @@ export default class PrivilegeQrCodeScreen extends Component{
             <View style={styles.privilegeQrCodeSreenContainerStyle}>
                 <Headers
                     leftIconName='cancel'
-                    headerTitleText='QR Code สำหรับใช้สิทธิ์'
+                    headerTitleText='QR Code'
                     cancel={()=>
                         this.props.navigator.dismissAllModals({
                             animationType: 'slide-down' // 'none' / 'slide-down' , dismiss animation for the modal (optional, default 'slide-down')

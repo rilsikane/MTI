@@ -40,7 +40,6 @@ export default async function startApplication(root) {
               //screen: 'staffio.Overview',
               screen: 'mti.DashboardScreen',
               icon: require('../src/source/images/default_11.png'),
-              selectedIcon: require('../src/source/images/over_11.png'),
               title: undefined,
               tabBarText:'Workpool',
               navigatorStyle: {},
@@ -49,7 +48,6 @@ export default async function startApplication(root) {
               label: 'สิทธิพิเศษ',
               screen: 'mti.PrivilegeScreen',
               icon: require('../src/source/images/default_13.png'),
-              selectedIcon: require('../src/source/images/over_13.png'),
               title: undefined,
               navigatorStyle: {},
             },
@@ -57,7 +55,6 @@ export default async function startApplication(root) {
               label: 'บริการ',
               screen: 'mti.ServiceScreen',
               icon: require('../src/source/images/default_17.png'),
-              selectedIcon: require('../src/source/images/over_17.png'),
               title: undefined,
               navigatorStyle: {},
             },
@@ -69,7 +66,7 @@ export default async function startApplication(root) {
                 screen: 'mti.MenuScreen', // unique ID registered with Navigation.registerScreen
                 passProps: {}, // simple serializable object that will pass as props to all top screens (optional)
                 disableOpenGesture: false, // can the drawer be opened with a swipe instead of button (optional, Android only)
-                fixedWidth: 700 // a fixed width you want your left drawer to have (optional)
+                fixedWidth: "60%" // a fixed width you want your left drawer to have (optional)
               },
               style: {
                 // ( iOS only )
@@ -126,7 +123,18 @@ export default async function startApplication(root) {
               }
           });
         return;
-       
+        case 'register':
+        Navigation.startSingleScreenApp({
+              screen: { screen: 'mti.RegisterScreen' },
+              appStyle: {
+              orientation: 'portrait',
+              navBarBlur: false,
+              drawUnderNavBar: true,
+              navBarTransparent: true,
+              navBarHidden: true , 
+              }
+          });
+        return;
       default:
         console.error('Unknown app root');
     }  

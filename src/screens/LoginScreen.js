@@ -14,7 +14,10 @@ import {post,authen,get} from '../api'
 import { ifIphoneX,isIphoneX } from 'react-native-iphone-x-helper'
 import Spinner from 'react-native-loading-spinner-overlay';
 import app from '../stores/app';
+import { observer, inject } from 'mobx-react';
 
+@inject('registerStore')
+@observer
 export default class LoginScreen extends Component{
 
     constructor(props){
@@ -44,7 +47,7 @@ export default class LoginScreen extends Component{
     async login(){
         if(this.state.userEmail=='' || this.state.userPassword==''){
             Alert.alert(
-            'แจ้งเตือน',
+            ' ',
             `Invalid Username and Passowrd`,
             [
             {text: 'OK', onPress: () => console.log('OK Pressed!')},
@@ -86,19 +89,21 @@ export default class LoginScreen extends Component{
                 user.username = this.state.userEmail;
                 user.password = this.state.userPassword;
                 this.setState({isLoading:false});
-                this.props.navigator.push({
-                    screen: 'mti.RegisterScreen', // unique ID registered with Navigation.registerScreen
-                    title: undefined, // navigation bar title of the pushed screen (optional)
-                    titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
-                    passProps: {user:user}, // Object that will be passed as props to the pushed screen (optional)
-                    animated: true, // does the push have transition animation or does it happen immediately (optional)
-                    backButtonTitle: undefined, // override the back button title (optional)
-                    backButtonHidden: false, // hide the back button altogether (optional)
-                    navigatorStyle: {
-                        drawUnderStatusBar: true,
-                        statusBarColor: 'transparent',
-                    },
-                });
+                // this.props.navigator.push({
+                //     screen: 'mti.RegisterScreen', // unique ID registered with Navigation.registerScreen
+                //     title: undefined, // navigation bar title of the pushed screen (optional)
+                //     titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
+                //     passProps: {user:user}, // Object that will be passed as props to the pushed screen (optional)
+                //     animated: true, // does the push have transition animation or does it happen immediately (optional)
+                //     backButtonTitle: undefined, // override the back button title (optional)
+                //     backButtonHidden: false, // hide the back button altogether (optional)
+                //     navigatorStyle: {
+                //         drawUnderStatusBar: true,
+                //         statusBarColor: 'transparent',
+                //     },
+                // });
+                this.props.registerStore.user = user;
+                this.app.register();
                 
                 
             }
@@ -112,36 +117,41 @@ export default class LoginScreen extends Component{
       
     }
     gotoRegister(user){
-        this.props.navigator.push({
-			screen: 'mti.RegisterScreen', // unique ID registered with Navigation.registerScreen
-			title: undefined, // navigation bar title of the pushed screen (optional)
-			titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
-			animated: true, // does the push have transition animation or does it happen immediately (optional)
-			backButtonTitle: undefined, // override the back button title (optional)
-            backButtonHidden: false, // hide the back button altogether (optional)
-            passProps:{navigator:this.props.navigator},
-            navigatorStyle: {
-                drawUnderStatusBar: true,
-                statusBarColor: 'transparent',
-                tabBarHidden: true,
-            },
-		});
+        // this.props.navigator.push({
+		// 	screen: 'mti.RegisterScreen', // unique ID registered with Navigation.registerScreen
+		// 	title: undefined, // navigation bar title of the pushed screen (optional)
+		// 	titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
+		// 	animated: true, // does the push have transition animation or does it happen immediately (optional)
+		// 	backButtonTitle: undefined, // override the back button title (optional)
+        //     backButtonHidden: false, // hide the back button altogether (optional)
+        //     passProps:{navigator:this.props.navigator},
+        //     navigatorStyle: {
+        //         drawUnderStatusBar: true,
+        //         statusBarColor: 'transparent',
+        //         tabBarHidden: true,
+        //     },
+        // });
+        this.props.registerStore.user = undefined;
+        this.app.register();
     }
     async gotoWelcome(){
         if(this.props.fromGuest){
-            this.props.navigator.resetTo({
-                screen: 'mti.DashboardScreen', // unique ID registered with Navigation.registerScreen
-                title: undefined, // navigation bar title of the pushed screen (optional)
-                titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
-                passProps: {}, // Object that will be passed as props to the pushed screen (optional)
-                animated: true, // does the push have transition animation or does it happen immediately (optional)
-                backButtonTitle: undefined, // override the back button title (optional)
-                backButtonHidden: false, // hide the back button altogether (optional)
-            });
+            // this.props.navigator.resetTo({
+            //     screen: 'mti.DashboardScreen', // unique ID registered with Navigation.registerScreen
+            //     title: undefined, // navigation bar title of the pushed screen (optional)
+            //     titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
+            //     passProps: {}, // Object that will be passed as props to the pushed screen (optional)
+            //     animated: true, // does the push have transition animation or does it happen immediately (optional)
+            //     backButtonTitle: undefined, // override the back button title (optional)
+            //     backButtonHidden: false, // hide the back button altogether (optional)
+            // });
+            setTimeout(()=>{
+                this.app.login();
+            },1300)
         }else{
             setTimeout(()=>{
                 this.app.login();
-            },300)
+            },1300)
         }
     }
     keyboardWillShow = async (event) => {
@@ -320,7 +330,7 @@ export default class LoginScreen extends Component{
                                     </TouchableOpacity>
                                     
                                 </View> */}
-                                <Text style={{color:"#fff"}}>Version : 1.50</Text>
+                                {/* <Text style={{color:"#fff"}}>Version : 1.51</Text> */}
                                 <View style={styles.registerBottomContainerStyle}>
                                     <TouchableOpacity onPress={this.gotoRegister}>
                                         <Text style={styles.registerBottomTextStyle}>ลงทะเบียนสมาชิก</Text>

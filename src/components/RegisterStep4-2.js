@@ -26,7 +26,7 @@ class RegisterStep4_2 extends Component{
             <View style={styles.registerStep1ContainerStyle}>
                 <View style={styles.registerDirectionContainerStyle}>
                     <Text style={styles.registerTitleTextStyle}>ยืนยันตัวตนด้วยรหัส OTP</Text>
-                    <Text style={styles.directionTextStyle}>ระบุรหัส OTP ที่ได้รับทาง SMS เพื่อยืนยันตัวตนรหัสมีอายุการใช้งาน 5 นาที</Text>
+                    <Text style={styles.directionTextStyle}>ระบุรหัส OTP ที่ได้รับทาง SMS{`\n`}รหัสมีอายุการใช้งาน 5 นาที</Text>
                 </View>
                 <View style={styles.userDetailContainerStyle}>
                     <TextInputIcon

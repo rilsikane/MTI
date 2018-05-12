@@ -27,7 +27,7 @@ export default class MenuScreen extends Component{
         if(!user){
             user = {};
             user.name = "GUEST";
-            user.surname = "GUEST";
+            user.surname = "";
         }
         this.setState({user:user});
     }
@@ -86,39 +86,52 @@ export default class MenuScreen extends Component{
                                 <Text style={styles.menuTitleTextStyle}>ข้อมูลกรมธรรม์</Text> 
                             </TouchableOpacity>
                         </View>
-                        {/* <View style={styles.subBorderStyle}/>
+                        <View style={styles.subBorderStyle}/>
                         <View style={styles.menuSectionStyle}>        
-                            <TouchableOpacity style={styles.menuSubSectionStyle}>
+                            <TouchableOpacity disabled={true} style={styles.menuSubSectionStyle} >
                                 <Image
-                                    source={require('./../source/icons/iconHistoryWhite.png')}
+                                    source={require('./../source/icons/iconHistoryGray.png')}
                                     resizeMode='contain'
                                     style={styles.menuIconStyle}
                                 />
-                                <Text style={styles.menuTitleTextStyle}>ประวัติการใช้งาน</Text> 
+                                <Text style={styles.menuTitleTextCommingStyle}>ประวัติการใช้งาน</Text>
+                                 
                             </TouchableOpacity>
-                        </View> */}
-                        {/* <View style={styles.subBorderStyle}/>
+                            <View style={{flex:1,flexDirection: 'row'}}>
+                                <View style={{flex:0.2}}></View>
+                                <Text style={styles.commingSoonStyle}>ใช้งานได้เร็วๆ นี้</Text>
+                            </View>
+                        </View>
+                        <View style={styles.subBorderStyle}/>
                         <View style={styles.menuSectionStyle}>        
-                            <TouchableOpacity style={styles.menuSubSectionStyle}>
+                            <TouchableOpacity  disabled={true}  style={styles.menuSubSectionStyle}>
                                 <Image
-                                    source={require('./../source/icons/iconFavoriteWhite.png')}
+                                    source={require('./../source/icons/iconFavoriteGray.png')}
                                     resizeMode='contain'
                                     style={styles.menuIconStyle}
                                 />
-                                <Text style={styles.menuTitleTextStyle}>รายการโปรด</Text> 
+                                <Text style={styles.menuTitleTextCommingStyle}>รายการโปรด</Text> 
                             </TouchableOpacity>
-                        </View> */}
-                        {/* <View style={styles.subBorderStyle}/>
+                            <View style={{flex:1,flexDirection: 'row'}}>
+                                <View style={{flex:0.2}}></View>
+                                <Text style={styles.commingSoonStyle}>ใช้งานได้เร็วๆ นี้</Text>
+                            </View>
+                        </View>
+                        <View style={styles.subBorderStyle}/>
                         <View style={styles.menuSectionStyle}>        
-                            <TouchableOpacity style={styles.menuSubSectionStyle}>
+                            <TouchableOpacity  disabled={true} style={styles.menuSubSectionStyle}>
                                 <Image
-                                    source={require('./../source/icons/iconNotificationWhite.png')}
+                                    source={require('./../source/icons/iconNotificationGray.png')}
                                     resizeMode='contain'
                                     style={styles.menuIconStyle}
                                 />
-                                <Text style={styles.menuTitleTextStyle}>การแจ้งเตือน</Text> 
+                                <Text style={styles.menuTitleTextCommingStyle}>การแจ้งเตือน</Text> 
                             </TouchableOpacity>
-                        </View> */}
+                            <View style={{flex:1,flexDirection: 'row'}}>
+                                <View style={{flex:0.2}}></View>
+                                <Text style={styles.commingSoonStyle}>ใช้งานได้เร็วๆ นี้</Text>
+                            </View>
+                        </View>
                         {/* <View style={styles.mainBorderStyle}/> */}
                         {/* <View style={styles.menuSectionStyle}>        
                             <TouchableOpacity style={styles.menuSubSectionStyle} 
@@ -133,17 +146,21 @@ export default class MenuScreen extends Component{
                         </View>
                         <View style={styles.subBorderStyle}/> */}
                         <View style={styles.subBorderStyle}/>
-                        {/* <View style={styles.menuSectionStyle}>        
-                            <TouchableOpacity style={styles.menuSubSectionStyle}>
+                        <View style={styles.menuSectionStyle}>        
+                            <TouchableOpacity disabled={true} style={styles.menuSubSectionStyle}>
                                 <Image
-                                    source={require('./../source/icons/iconActivityWhite.png')}
+                                    source={require('./../source/icons/iconActivityGray.png')}
                                     resizeMode='contain'
                                     style={styles.menuIconStyle}
                                 />
-                                <Text style={styles.menuTitleTextStyle}>กิจกรรม</Text> 
+                                <Text style={styles.menuTitleTextCommingStyle}>กิจกรรม</Text> 
                             </TouchableOpacity>
+                            <View style={{flex:1,flexDirection: 'row'}}>
+                                <View style={{flex:0.2}}></View>
+                                <Text style={styles.commingSoonStyle}>ใช้งานได้เร็วๆ นี้</Text>
+                            </View>
                         </View>
-                        <View style={styles.subBorderStyle}/> */}
+                        <View style={styles.subBorderStyle}/>
                         {/* <View style={styles.menuSectionStyle}>        
                             <TouchableOpacity onPress={()=>this.gotoMenu("mti.ServiceScreen")} style={styles.menuSubSectionStyle}>
                                 <Image
@@ -167,7 +184,7 @@ export default class MenuScreen extends Component{
                                 <Text style={styles.menuTitleTextStyle}>ติดต่อเรา</Text> 
                             </TouchableOpacity>
                         </View>
-                        {/* {this.state.user.name != "GUEST"&&<View style={styles.subBorderStyle}/>}
+                        {this.state.user.name != "GUEST"&&<View style={styles.subBorderStyle}/>}
                         {this.state.user.name != "GUEST" && 
                         <View style={styles.menuSectionStyle}>        
                             <TouchableOpacity onPress={()=>this.gotoMenu("mti.SettingScreen")} style={styles.menuSubSectionStyle}>
@@ -178,14 +195,12 @@ export default class MenuScreen extends Component{
                                 />
                                 <Text style={styles.menuTitleTextStyle}>การตั้งค่า</Text> 
                             </TouchableOpacity>
-                        </View>} */}
-                        <View style={styles.subBorderStyle}/>
-                        <View style={{flex: 1}}/>
+                        </View>}
                         <View style={styles.subBorderStyle}/>
                         <View style={styles.menuSectionStyle}>        
                             <TouchableOpacity onPress={()=>{
                                  Alert.alert(
-                                    "คำเตือน",
+                                    " ",
                                     "ยืนยันการออกจากระบบใช่หรือไหม่",
                                     [
                                     {text: "ยกเลิก"},
@@ -286,7 +301,7 @@ const styles={
         paddingRight: responsiveWidth(5)
     },
     menuSectionStyle:{
-        //flex: 1,
+        flex: 1,
         justifyContent: 'center',
     },
     menuSubSectionStyle:{
@@ -302,6 +317,18 @@ const styles={
         color: 'rgba(255, 255, 255, 0.9)',
         opacity: 0.9,
         fontSize: responsiveFontSize(2),
+        flex: 0.8,
+    },
+    menuTitleTextCommingStyle:{
+        color: '#B9C4CE',
+        opacity: 0.9,
+        fontSize: responsiveFontSize(2),
+        flex: 0.8,
+    },
+    commingSoonStyle:{
+        color: '#B9C4CE',
+        opacity: 0.9,
+        fontSize: responsiveFontSize(1.4),
         flex: 0.8,
     },
     subBorderStyle:{
