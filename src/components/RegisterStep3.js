@@ -145,7 +145,16 @@ class RegisterStep3 extends Component{
                             secondFlex={secondFlex}
                             thirdFlex={thirdFlex}
                             secureTextEntry={true}
-                            onChangeText={(userPassword)=> this.setState({userPassword})}
+                            onChangeText={
+                                (userPassword)=> {
+                                    var regex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$/
+                                    if(userPassword.length >=8 && regex.test(userPassword)){
+                                        this.setState({errorPassowrd:false,userPassword:userPassword,userConfirmPassword:""})
+                                    }else{
+                                        this.setState({errorPassowrd:true,userPassword:userPassword,userConfirmPassword:""})
+                                    }
+                                }
+                            }
                             onEndEditing={this.onPasswordChange.bind(this)}
                             returnKeyType='next'
                             blurOnSubmit={false}

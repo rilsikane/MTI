@@ -253,6 +253,7 @@ const styles={
     submitButtonContainerStyle:{
         flex: 1,
         justifyContent: 'center',
+        paddingBottom: 20,
     },
     inputContainerErrStyle:{
         borderBottomColor: 'red',

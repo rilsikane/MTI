@@ -63,7 +63,8 @@ export default class UserProfileScreen extends Component{
             isLoading: true,
             userImageBase64:"",
             user:{},
-            profileImage:""
+            profileImage:"",
+            lifeStyleMaster:[]
         }
         this.onUpdatePictureProfilePress = this.onUpdatePictureProfilePress.bind(this);
         this.onCloseModalPress = this.onCloseModalPress.bind(this);
@@ -163,7 +164,8 @@ export default class UserProfileScreen extends Component{
             isLoading: false,
             user:user,
             profileImage:user.profile_img,
-            lifestyle:user.lifestyle.map(data=>data.id)
+            lifestyle:user.lifestyle.map(data=>data.id),
+            lifeStyleMaster:list
         })
     }
 
@@ -322,9 +324,9 @@ export default class UserProfileScreen extends Component{
 
     onCloseModalPress(){
         this.popupDialog.dismiss();
-        this.setState({
-            lifestyle: this.state.orgUserLifeStyleId,
-        })
+        // this.setState({
+        //     lifestyle: this.state.orgUserLifeStyleId,
+        // })
     }
 
     onLifestyleModalSubmitButtonPress(){
@@ -351,12 +353,17 @@ export default class UserProfileScreen extends Component{
             })
             console.log("filterLifeStyleImage2 "+this.state.filterLifeStyleImage2)
             console.log("filterLifeStyle" +filterLifeStyle)
+            let lifeStyleFilter = [];
+            lifeStyleFilter = [...this.state.lifeStyleImage1.filter(lm=>lm.isSelected==true)
+                ,...this.state.lifeStyleImage2.filter(lm=>lm.isSelected==true)
+                ,...this.state.lifeStyleImage3.filter(lm=>lm.isSelected==true)];
             this.setState({
                 userLifeStyle: filterLifeStyle,
                 filterLifeStyleImage1: this.state.lifeStyleImage1,
                 filterLifeStyleImage2: this.state.lifeStyleImage2,
                 filterLifeStyleImage3: this.state.lifeStyleImage3,
                 isLoading: false,
+                user:{...this.state.user,lifestyle:lifeStyleFilter}
             })
             console.log(this.state.userLifeStyle)
         }else{
@@ -525,15 +532,13 @@ export default class UserProfileScreen extends Component{
               //console.log('ImagePicker Error: ', response.error);
             }
             else {
-              const {originalRotation } = response;
-            //   let rotation = 0
-            //   if ( originalRotation === 90 ) {
-            //     rotation = 90
-            //   } else if ( originalRotation === 270 ) {
-            //     rotation = -90
-            //   }
+              const {originalRotation,isVertical,uri} = response;
+              let rotation = 0
+              if ( originalRotation === 90 && uri.indexOf("mti") > 0) {
+                rotation = 90
+              } 
               console.log(response)
-              const fileResize = await ImageResizer.createResizedImage(response.uri, (response.width*0.6), (response.height*0.6), "JPEG",60,originalRotation);
+              const fileResize = await ImageResizer.createResizedImage(response.uri, (response.width*0.6), (response.height*0.6), "JPEG",60,rotation);
               if(fileResize){
                 let base64Img = await RNFS.readFile(fileResize.uri, "base64")  
                 let success = await RNFS.unlink(fileResize.uri)
@@ -541,6 +546,32 @@ export default class UserProfileScreen extends Component{
               }
             }
           });
+    }
+    openLifeStyle(){
+        let user = this.state.user;
+        let list = [...this.state.lifeStyleMaster];
+        let list1=[],list2=[],list3=[];
+        for(let i=0;i<list.length;i++){
+            let filter = user.lifestyle.filter(item=>item.id==list[i].id);
+            list[i].isSelected = filter && filter.length>0;    
+            if(i<3){
+                list1.push(list[i]);
+            }else if(i<6){
+                list2.push(list[i]);
+            }else if(i<9){
+                list3.push(list[i]);
+            }
+        }
+
+        this.setState({lifeStyleImage1:list1,lifeStyleImage1Selected:list1});
+        this.setState({lifeStyleImage2:list2,lifeStyleImage2Selected:list2});
+        this.setState({lifeStyleImage3:list3,lifeStyleImage3Selected:list3,isLoading:false});
+        this.setState({
+            filterLifeStyleImage1: this.state.lifeStyleImage1,
+            filterLifeStyleImage2: this.state.lifeStyleImage2,
+            filterLifeStyleImage3: this.state.lifeStyleImage3
+        })
+        this.popupDialog.show();
     }
 
     render(){
@@ -687,7 +718,7 @@ export default class UserProfileScreen extends Component{
                             inputType='selector'
                             options={this.getPickerOptions('income')}
                         />
-                        <TouchableOpacity disabled={!this.state.canEditProfile} onPress={()=>this.popupDialog.show()}>
+                        <TouchableOpacity disabled={!this.state.canEditProfile} onPress={()=>this.openLifeStyle()}>
                             <View pointerEvents={this.state.isLifestyleModalVisible ? 'auto' : 'none'}>
                                 <TextInputIcon
                                     value={this.state.userLifeStyle.sort().toString()}

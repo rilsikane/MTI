@@ -12,7 +12,9 @@ import { observer, inject } from 'mobx-react';
 @inject('registerStore')
 @observer
 export default class NewPasswordScreen extends Component{
-
+    static navigatorStyle = {
+        tabBarHidden: true
+    };
     constructor(props){
         super(props)
         this.state={
@@ -93,7 +95,16 @@ export default class NewPasswordScreen extends Component{
                 <View style={styles.newPasswordDetailContainerStyle}>
                     <TextInputIcon
                         value={this.state.newPassword}
-                        onChangeText={(newPassword)=>this.setState({newPassword})}
+                        onChangeText={
+                            (newPassword)=> {
+                                var regex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$/
+                                if(newPassword.length >=8 && regex.test(newPassword)){
+                                    this.setState({errorPassowrd:false,newPassword:newPassword,confirmNewPassword:""})
+                                }else{
+                                    this.setState({errorPassowrd:true,newPassword:newPassword,confirmNewPassword:""})
+                                }
+                            }
+                        }
                         leftLabelText='รหัสผ่านใหม่'
                         iconUri={require('../source/icons/iconPass.png')}
                         containerStyle={styles.inputContainerStyle}
@@ -125,6 +136,7 @@ export default class NewPasswordScreen extends Component{
                         secureTextEntry
                         maxLength={16}
                         blurOnSubmit={true}
+                        onSubmitEditing={()=>this.onSubmitButtonPress.bind(this)}
                     />
                      <Text style={styles.errorTextStyle}>{this.state.errorText}</Text>
                      <Text style={styles.directionTextStyle}>กำหนดรหัสผ่านต้องมีอักขระอย่างน้อย 8 ตัวและประกอบไปด้วย {'\n'}ตัวอักษรภาษาอังกฤษ พิมพ์เล็ก พิมพ์ใหญ่ และตัวเลข</Text>
@@ -145,6 +157,7 @@ const secondFlex = 0.3,thirdFlex = 0.9
 const styles={
     newPasswordScreenContainerStyle:{
         flex: 1,
+        backgroundColor:"#fff"
     },
     newPasswordDetailContainerStyle:{
         flex: 1,

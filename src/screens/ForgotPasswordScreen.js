@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Text,View} from 'react-native';
+import {Text,View,Keyboard} from 'react-native';
 import PropTypes from "prop-types";
 import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
 
@@ -7,18 +7,24 @@ import {Headers} from './../components/Headers';
 import {TextInputIcon} from './../components/TextInputIcon';
 import {MainSubmitButton} from './../components/MainSubmitButton';
 import {postBasic} from '../api'
-
+import Spinner from 'react-native-loading-spinner-overlay';
 export default class ForgotPasswordScreen extends Component{
+    static navigatorStyle = {
+        tabBarHidden: true
+    };
 
     constructor(props){
         super(props)
         this.state={
             forgotPasswordEmail: '',
-
+            isLoading:false
         }
     }
     async submit(){
+        Keyboard.dismiss();
+        this.setState({isLoading:true});
         let response = await postBasic("forgot/check",{tel_or_email:this.state.forgotPasswordEmail},true);
+        this.setState({isLoading:false});
         if(response){
             this.props.navigator.push({
                 screen: 'mti.ReqOtpScreen', // unique ID registered with Navigation.registerScreen
@@ -71,12 +77,14 @@ export default class ForgotPasswordScreen extends Component{
                         secondFlex={secondFlex}
                         thirdFlex={thirdFlex}
                         keyboardType='email-address'
+                        onSubmitEditing={() => this.submit()}
                     />
                     <MainSubmitButton
                         buttonTitleText='ตกลง'
                         onPress={()=>this.submit()}
                         style={styles.submitButtonContainerStyle}
                     />
+                     {this.state.isLoading && <Spinner visible={this.state.isLoading}  textStyle={{color: '#FFF'}} />}
                 </View>
             </View>
         )
@@ -88,6 +96,7 @@ const secondFlex = 0.3,thirdFlex = 0.9
 const styles={
     forgotPasswordScreenContainerStyle:{
         flex: 1,
+        backgroundColor:"#fff"
     },
     forgotPasswordDetailContainerStyle:{
         flex: 1,

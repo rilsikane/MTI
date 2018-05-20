@@ -26,7 +26,9 @@ import {CheckBoxes} from './../components/CheckBoxes';
 @inject('registerStore')
 @observer
 export default class RegisterScreen extends Component{
-
+    static navigatorStyle = {
+        tabBarHidden: true
+    };
     constructor(props){
         super(props)
         this.state={
@@ -557,15 +559,21 @@ export default class RegisterScreen extends Component{
         console.log(this.state.pageNumber);
         if(this.state.pageNumber==1){
             if(this.props.fromGuest){
-                this.app.first();
+                setTimeout(()=>{
+                    this.app.first();
+                },100)   
             }else{
-               this.app.first();
+                setTimeout(()=>{
+                    this.app.first();
+                },100)  
             }
         }else{
             if(this.state.pageNumber==2 && this.props.registerStore.user){
                 this.props.registerStore.register = {};
                 this.props.registerStore.user = undefined;
-                this.app.first();
+                setTimeout(()=>{
+                    this.app.first();
+                },100)  
             }else{
                 this.setState({enable:true});
                 this._pages.scrollToPage(this.state.pageNumber-2);

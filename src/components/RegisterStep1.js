@@ -91,7 +91,7 @@ class RegisterStep1 extends Component{
     render(){
         return(
             <KeyboardAvoidingView behavior="padding"
-                style={{flex:1,}}
+                style={{flex:1,backgroundColor:"#fff"}}
                 //contentContainerStyle={{flex: 1}}
             >
                 <View style={styles.registerStep1ContainerStyle}>
@@ -208,7 +208,7 @@ const secondFlex = 0.4,thirdFlex = 0.9
 const styles={
     registerStep1ContainerStyle:{
         flex: 1,
-
+        backgroundColor:"#fff"
     },
     mascotImageStyle:{
         alignSelf: 'center',

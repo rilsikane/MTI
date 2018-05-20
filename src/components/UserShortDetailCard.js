@@ -6,7 +6,7 @@ import store from 'react-native-simple-store';
 
 import { observer, inject } from 'mobx-react';
 import app from '../stores/app';
-@inject('userStore')
+@inject('userStore','registerStore')
 @observer
 class UserShortDetailCard extends Component{
 
@@ -43,6 +43,7 @@ class UserShortDetailCard extends Component{
         //         tabBarHidden: true,
         //     },
         // });
+        this.props.registerStore.user = undefined;
         this.app.register();
     }
 

@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Text,View,Image,ScrollView,TouchableOpacity,Alert} from 'react-native';
+import {Text,View,Image,ScrollView,TouchableOpacity,Alert,Keyboard} from 'react-native';
 import PropTypes from "prop-types";
 import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
 
@@ -9,16 +9,19 @@ import {MainSubmitButton} from '../components/MainSubmitButton';
 import {CheckBoxes} from '../components/CheckBoxes';
 import { observer, inject } from 'mobx-react';
 import {postBasic} from '../api/';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 @inject('registerStore')
 @observer
 class ConfirmOtpScreen extends Component{
-
+    static navigatorStyle = {
+        tabBarHidden: true
+    };
     constructor(props){
         super(props)
         this.state={
             otp: '',
-
+            isLoading:false
         }
         this.onSubmit = this.onSubmit.bind(this);
         this.onRequestNewOtpButtonPress = this.onRequestNewOtpButtonPress.bind(this);
@@ -44,6 +47,7 @@ class ConfirmOtpScreen extends Component{
         }
     }
     async onSubmit(){
+        Keyboard.dismiss();
         this.setState({isLoading:false});
         let param = {};
         param.refcode = this.props.registerStore.otp.refcode;
@@ -70,7 +74,9 @@ class ConfirmOtpScreen extends Component{
                     leftIconName=''
                     rightIconName='cancel'
                     headerTitleText='ลืมรหัสผ่าน'
-                    cancel={()=> this.props.navigator.resetTo({
+                    cancel={()=> {
+                        Keyboard.dismiss();
+                        this.props.navigator.resetTo({
                         screen: 'mti.LoginScreen', // unique ID registered with Navigation.registerScreen
                         title: undefined, // navigation bar title of the pushed screen (optional)
                         passProps: {}, // simple serializable object that will pass as props to the pushed screen (optional)
@@ -78,7 +84,9 @@ class ConfirmOtpScreen extends Component{
                         animationType: 'fade', // 'fade' (for both) / 'slide-horizontal' (for android) does the resetTo have different transition animation (optional)
                         navigatorStyle: {}, // override the navigator style for the pushed screen (optional)
                         navigatorButtons: {} // override the nav buttons for the pushed screen (optional)
-                      })}
+                      })
+                    }
+                    }
                 />
                 <View style={styles.registerDirectionContainerStyle}>
                     <Text style={styles.registerTitleTextStyle}>ยืนยันตัวตนด้วยรหัส OTP</Text>
@@ -95,6 +103,7 @@ class ConfirmOtpScreen extends Component{
                         thirdFlex={thirdFlex}
                         onChangeText={(otp)=> this.setState({otp})}
                         keyboardType='numeric'
+                        onSubmitEditing={() => this.onSubmit()}
                     />
                     <View style={styles.submitButtonContainerStyle}>
                         <MainSubmitButton
@@ -106,6 +115,7 @@ class ConfirmOtpScreen extends Component{
                         </TouchableOpacity>
                     </View>
                 </View>
+                {this.state.isLoading && <Spinner visible={this.state.isLoading}  textStyle={{color: '#FFF'}} />}
             </View>
         )
     }
@@ -115,7 +125,8 @@ const secondFlex = 0.3,thirdFlex = 0.6
 
 const styles={
     registerStep1ContainerStyle:{
-        flex: 1
+        flex: 1,
+        backgroundColor:"#fff"
     },
     mascotImageStyle:{
         height: responsiveHeight(20.51),

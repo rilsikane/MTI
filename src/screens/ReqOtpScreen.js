@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Text,View,Image,ScrollView,TouchableOpacity,Alert} from 'react-native';
+import {Text,View,Image,ScrollView,TouchableOpacity,Alert,Keyboard} from 'react-native';
 import PropTypes from "prop-types";
 import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
 
@@ -11,10 +11,13 @@ import { observer, inject } from 'mobx-react';
 import {postBasic} from '../api/';
 import PopupDialog,{ SlideAnimation }  from 'react-native-popup-dialog';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-
+import Spinner from 'react-native-loading-spinner-overlay';
 @inject('registerStore')
 @observer
 class ReqOtpScreen extends Component{
+    static navigatorStyle = {
+        tabBarHidden: true
+    };
 
     constructor(props){
         super(props)
@@ -25,7 +28,7 @@ class ReqOtpScreen extends Component{
             isLoading:false,
             emailErr:false,telErr:false,
             name:'',surname:'',email:'',tel:'',
-            telModal:''
+            telModal:'',
         }
         this.reqOtp = this.reqOtp.bind(this);
         this.requestContact = this.requestContact.bind(this);
@@ -257,15 +260,19 @@ class ReqOtpScreen extends Component{
                  <Headers
                     leftIconName='cancel'
                     headerTitleText='ลืมรหัสผ่าน'
-                    cancel={()=> this.props.navigator.resetTo({
-                        screen: 'mti.LoginScreen', // unique ID registered with Navigation.registerScreen
-                        title: undefined, // navigation bar title of the pushed screen (optional)
-                        passProps: {}, // simple serializable object that will pass as props to the pushed screen (optional)
-                        animated: true, // does the resetTo have transition animation or does it happen immediately (optional)
-                        animationType: 'fade', // 'fade' (for both) / 'slide-horizontal' (for android) does the resetTo have different transition animation (optional)
-                        navigatorStyle: {}, // override the navigator style for the pushed screen (optional)
-                        navigatorButtons: {} // override the nav buttons for the pushed screen (optional)
-                      })}
+                    cancel={()=> 
+                        {
+                            this.props.navigator.resetTo({
+                            screen: 'mti.LoginScreen', // unique ID registered with Navigation.registerScreen
+                            title: undefined, // navigation bar title of the pushed screen (optional)
+                            passProps: {}, // simple serializable object that will pass as props to the pushed screen (optional)
+                            animated: true, // does the resetTo have transition animation or does it happen immediately (optional)
+                            animationType: 'fade', // 'fade' (for both) / 'slide-horizontal' (for android) does the resetTo have different transition animation (optional)
+                            navigatorStyle: {}, // override the navigator style for the pushed screen (optional)
+                            navigatorButtons: {} // override the nav buttons for the pushed screen (optional)
+                        })
+                      }
+                    }
                 />
                 <View style={styles.registerDirectionContainerStyle}>
                     <Text style={styles.registerTitleTextStyle}>ยืนยันตัวตนด้วยรหัส OTP</Text>
@@ -302,6 +309,7 @@ class ReqOtpScreen extends Component{
                     </View>
                 </View>
                 {this.renderLeavingContactPopup()}
+                {this.state.isLoading && <Spinner visible={this.state.isLoading}  textStyle={{color: '#FFF'}} />}
             </View>
         )
     }

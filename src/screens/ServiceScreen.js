@@ -61,7 +61,7 @@ export default class ServiceScreen extends Component{
         ]
 
         return serviceList.map((data,i)=>
-            <View key={i}>
+            <View style={{width:responsiveWidth(90)}} key={i}>
                 <TouchableOpacity onPress={()=>this.onServicePress(i)} style={styles.serviceSectionStyle}>
                     <Image
                         source={data.iconUri}

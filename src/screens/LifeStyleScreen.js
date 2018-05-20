@@ -301,6 +301,7 @@ const styles={
     lifestyleContainerStyle:{
         flex: 1,
         paddingTop:20,
+        backgroundColor:"#fff"
     },
     lifestyleDirectionContainerStyle:{
         marginLeft: responsiveWidth(6),
