@@ -2,15 +2,28 @@ import React,{Component} from 'react';
 import {Text,View,Modal,Image,TouchableOpacity,Dimensions} from 'react-native';
 import PropTypes from "prop-types";
 import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
-import Gallery from 'react-native-image-gallery';
+import ImageViewer from 'react-native-image-zoom-viewer';
+import Carousel from 'react-native-looped-carousel';
 
 class ImageGalleryPage extends Component{
 
     constructor(props){
         super(props)
-        this.state={
-            pageIndex: 1,
-        }
+    }
+
+    renderImageList(){
+        return(
+            <ImageViewer 
+                imageUrls={this.props.data}        
+                style={{flex:1}}
+                //show={true}
+                backgroundColor='#000'
+                index={this.props.index}
+                onSwipeDown={this.props.onClose}
+                renderIndicator={()=>null}
+                onChange={this.props.onChange}
+            />
+        )
     }
 
     render(){
@@ -29,17 +42,11 @@ class ImageGalleryPage extends Component{
                             style={styles.closeIconImageStyle}
                         />
                     </TouchableOpacity>
-                    <Text style={styles.imageNumberTextStyle}>{this.props.initialPage+1}/{this.props.images.length}</Text>
+                    <Text style={styles.imageNumberTextStyle}>{this.props.index+1}/{this.props.data.length}</Text>
                 </View>
-                <Gallery
-                    style={styles.galleryContainerStyle}
-                    images={this.props.images}
-                    pageMargin={responsiveWidth(5)}
-                    scrollViewStyle={styles.scrollViewStyle}
-                    initialPage={this.props.initialPage}
-                    onPageSelected={this.props.onPageSelected}
-                    flatListProps={{initialNumToRender: this.props.initialPage}}
-                />
+                <View style={styles.imageLsitContainerStyle}>
+                    {this.renderImageList()}
+                </View>
                 <View style={styles.imageDescContainerStyle}>
                     <Text style={styles.imageDescTextStyle}>ภาพจากกิจกรรม : เนรมิตลุคสวยกับเมืองไทยประกันภัย Beauty Workshop by Shiseido</Text>
                 </View>
@@ -69,13 +76,9 @@ const styles={
         height: responsiveHeight(2.46),
         opacity: 0.7,
     },
-    galleryContainerStyle:{
+    imageLsitContainerStyle:{
         flex: 0.8, 
-        backgroundColor: 'black',
-    },
-    scrollViewStyle:{
-        marginLeft: responsiveWidth(5),
-        marginRight: responsiveWidth(5),
+        backgroundColor: '#000',
     },
     imageDescContainerStyle:{
         flex: 0.1,

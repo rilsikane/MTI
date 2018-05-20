@@ -32,7 +32,7 @@ export default class ActivityImageListScreen extends Component{
     _renderItem=({item,index})=>(
         <TouchableOpacity style={styles.imageContainerStyle} onPress={()=>this.onImagePress(index)}>
             <Image
-                source={item.source}
+                source={{uri: item.url}}
                 resizeMode='cover'
                 style={styles.imageListStyle}
             />
@@ -43,9 +43,13 @@ export default class ActivityImageListScreen extends Component{
         this.setState({imageIndex: index})
         setTimeout(()=>{
             this.setState({imageListModalVisibled: true})
-        },100)
+        },50)
     }
 
+    onImageChange(index){
+        this.setState({imageIndex: index})
+    }
+    
     render(){
         return(
             <View style={styles.activityImageListScreenContainerStyle}>
@@ -74,11 +78,12 @@ export default class ActivityImageListScreen extends Component{
                     {this.renderImageList()}
                 </View>
                 <ImageGalleryPage
-                    initialPage={this.state.imageIndex}
-                    images={imageList}
+                    index={this.state.imageIndex}
+                    onChange={(index)=>this.onImageChange(index)}
+                    data={imageList}
                     visible={this.state.imageListModalVisibled}
-                    onPageSelected={(index)=>this.setState({imageIndex: index})}
                     onClose={()=>this.setState({imageListModalVisibled: false})}
+                   
                 />
             </View>
         )
@@ -86,93 +91,35 @@ export default class ActivityImageListScreen extends Component{
 }
 
 let imageList=[
-    {
-        source: {uri: 'http://woaiyn.com/wp-content/uploads/2017/10/news_2769.jpg'}
-    },
-    {
-        source: {uri: 'http://woaiyn.com/wp-content/uploads/2017/10/news_2769.jpg'}
-    },
-    {
-        source: {uri: 'http://woaiyn.com/wp-content/uploads/2017/10/news_2769.jpg'}
-    },
-    {
-        source: {uri: 'http://woaiyn.com/wp-content/uploads/2017/10/news_2769.jpg'}
-    },
-    {
-        source: {uri: 'http://woaiyn.com/wp-content/uploads/2017/10/news_2769.jpg'}
-    },
-    {
-        source: {uri: 'http://woaiyn.com/wp-content/uploads/2017/10/news_2769.jpg'}
-    },
-    {
-        source: {uri: 'http://woaiyn.com/wp-content/uploads/2017/10/news_2769.jpg'}
-    },
-    {
-        source: {uri: 'http://woaiyn.com/wp-content/uploads/2017/10/news_2769.jpg'}
-    },
-    {
-        source: {uri: 'http://woaiyn.com/wp-content/uploads/2017/10/news_2769.jpg'}
-    },
-    {
-        source: {uri: 'http://woaiyn.com/wp-content/uploads/2017/10/news_2769.jpg'}
-    },
-    {
-        source: {uri: 'http://woaiyn.com/wp-content/uploads/2017/10/news_2769.jpg'}
-    },
-    {
-        source: {uri: 'http://woaiyn.com/wp-content/uploads/2017/10/news_2769.jpg'}
-    },
-    {
-        source: {uri: 'http://woaiyn.com/wp-content/uploads/2017/10/news_2769.jpg'}
-    },
-    {
-        source: {uri: 'http://woaiyn.com/wp-content/uploads/2017/10/news_2769.jpg'}
-    },
-    {
-        source: {uri: 'http://woaiyn.com/wp-content/uploads/2017/10/news_2769.jpg'}
-    },
-    {
-        source: {uri: 'http://woaiyn.com/wp-content/uploads/2017/10/news_2769.jpg'}
-    },
-    {
-        source: {uri: 'http://woaiyn.com/wp-content/uploads/2017/10/news_2769.jpg'}
-    },
-    {
-        source: {uri: 'http://woaiyn.com/wp-content/uploads/2017/10/news_2769.jpg'}
-    },
-    {
-        source: {uri: 'http://woaiyn.com/wp-content/uploads/2017/10/news_2769.jpg'}
-    },
-    {
-        source: {uri: 'http://woaiyn.com/wp-content/uploads/2017/10/news_2769.jpg'}
-    },
-    {
-        source: {uri: 'http://woaiyn.com/wp-content/uploads/2017/10/news_2769.jpg'}
-    },
-    {
-        source: {uri: 'http://woaiyn.com/wp-content/uploads/2017/10/news_2769.jpg'}
-    },
-    {
-        source: {uri: 'http://woaiyn.com/wp-content/uploads/2017/10/news_2769.jpg'}
-    },
-    {
-        source: {uri: 'http://woaiyn.com/wp-content/uploads/2017/10/news_2769.jpg'}
-    },
-    {
-        source: {uri: 'http://woaiyn.com/wp-content/uploads/2017/10/news_2769.jpg'}
-    },
-    {
-        source: {uri: 'http://woaiyn.com/wp-content/uploads/2017/10/news_2769.jpg'}
-    },
-    {
-        source: {uri: 'http://woaiyn.com/wp-content/uploads/2017/10/news_2769.jpg'}
-    },
-    {
-        source: {uri: 'http://woaiyn.com/wp-content/uploads/2017/10/news_2769.jpg'}
-    },
-    {
-        source: {uri: 'http://woaiyn.com/wp-content/uploads/2017/10/news_2769.jpg'}
-    },
+    {url: 'http://woaiyn.com/wp-content/uploads/2017/10/news_2769.jpg'},
+    {url: 'http://www.acnews.net/admin/img_large/1249024.jpg'},
+    {url: 'http://www.insure3plus.com/Img/ProductImg/11032015_135536_Muangthaiinsurance-2Plus-X8.png'},
+    {url: 'http://woaiyn.com/wp-content/uploads/2017/10/news_2769.jpg'},
+    {url: 'http://www.insure3plus.com/Img/ProductImg/11032015_135536_Muangthaiinsurance-2Plus-X8.png'},
+    {url: 'http://woaiyn.com/wp-content/uploads/2017/10/news_2769.jpg'},
+    {url: 'http://woaiyn.com/wp-content/uploads/2017/10/news_2769.jpg'},
+    {url: 'http://woaiyn.com/wp-content/uploads/2017/10/news_2769.jpg'},
+    {url: 'http://www.acnews.net/admin/img_large/1249024.jpg'},
+    {url: 'http://woaiyn.com/wp-content/uploads/2017/10/news_2769.jpg'},
+    {url: 'http://www.insure3plus.com/Img/ProductImg/11032015_135536_Muangthaiinsurance-2Plus-X8.png'},
+    {url: 'http://woaiyn.com/wp-content/uploads/2017/10/news_2769.jpg'},
+    {url: 'http://woaiyn.com/wp-content/uploads/2017/10/news_2769.jpg'},
+    {url: 'http://www.acnews.net/admin/img_large/1249024.jpg'},
+    {url: 'http://woaiyn.com/wp-content/uploads/2017/10/news_2769.jpg'},
+    {url: 'http://woaiyn.com/wp-content/uploads/2017/10/news_2769.jpg'},
+    {url: 'http://www.acnews.net/admin/img_large/1249024.jpg'},
+    {url: 'http://woaiyn.com/wp-content/uploads/2017/10/news_2769.jpg'},
+    {url: 'http://www.insure3plus.com/Img/ProductImg/11032015_135536_Muangthaiinsurance-2Plus-X8.png'},
+    {url: 'http://woaiyn.com/wp-content/uploads/2017/10/news_2769.jpg'},
+    {url: 'http://www.acnews.net/admin/img_large/1249024.jpg'},
+    {url: 'http://woaiyn.com/wp-content/uploads/2017/10/news_2769.jpg'},
+    {url: 'http://woaiyn.com/wp-content/uploads/2017/10/news_2769.jpg'},
+    {url: 'http://woaiyn.com/wp-content/uploads/2017/10/news_2769.jpg'},
+    {url: 'http://www.acnews.net/admin/img_large/1249024.jpg'},
+    {url: 'http://woaiyn.com/wp-content/uploads/2017/10/news_2769.jpg'},
+    {url: 'http://woaiyn.com/wp-content/uploads/2017/10/news_2769.jpg'},
+    {url: 'http://woaiyn.com/wp-content/uploads/2017/10/news_2769.jpg'},
+    {url: 'http://www.insure3plus.com/Img/ProductImg/11032015_135536_Muangthaiinsurance-2Plus-X8.png'},
 ]
 
 const styles={
