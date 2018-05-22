@@ -37,6 +37,6 @@ import {
   };
   
   export const responsiveFontSize = (f) => {
-    return Math.sqrt((height*height)+(width*width))*(f/100);
+    return (Math.sqrt((height*height)+(width*width))*(f/100))*(1.08);
   };
   

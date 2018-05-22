@@ -45,6 +45,7 @@
 		CD8D014020942721005786C4 /* libRNFS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CD8D013A20942714005786C4 /* libRNFS.a */; };
 		CDBD007A209350D100BF7E1D /* libRNImagePicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CDBD0077209350AB00BF7E1D /* libRNImagePicker.a */; };
 		CDBD00F9209425AA00BF7E1D /* libRCTImageResizer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CDBD00D62094259C00BF7E1D /* libRCTImageResizer.a */; };
+		CDC5350920A5AECA004530F9 /* libFastImage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CDC5350820A5AEBF004530F9 /* libFastImage.a */; };
 		D7625F3EC9FE4CF0864ACA40 /* rubicon-icon-font.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5BC08560B21D4253B2A9CC23 /* rubicon-icon-font.ttf */; };
 		D843430993A885E0C571ABB8 /* libPods-MTI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6195F816DFE55919A6E654F1 /* libPods-MTI.a */; };
 		D99EE1166E924E56A3ADA0D9 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E0EDDE29AE9D4F308C7E0DD3 /* MaterialIcons.ttf */; };
@@ -298,6 +299,13 @@
 			remoteGlobalIDString = 5D72D2E81C16249000E22EC1;
 			remoteInfo = RCTImageResizer;
 		};
+		CDC5350720A5AEBF004530F9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CDC5350220A5AEBF004530F9 /* FastImage.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A287971D1DE0C0A60081BDFA;
+			remoteInfo = FastImage;
+		};
 		CDF3DBDF20610AA80045D7C7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 146833FF1AC3E56700842450 /* React.xcodeproj */;
@@ -433,6 +441,7 @@
 		CD8D010C20942714005786C4 /* RNFS.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNFS.xcodeproj; path = "../node_modules/react-native-fs/RNFS.xcodeproj"; sourceTree = "<group>"; };
 		CDBD004B209350AA00BF7E1D /* RNImagePicker.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNImagePicker.xcodeproj; path = "../node_modules/react-native-image-picker/ios/RNImagePicker.xcodeproj"; sourceTree = "<group>"; };
 		CDBD00C92094259C00BF7E1D /* RCTImageResizer.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTImageResizer.xcodeproj; path = "../node_modules/react-native-image-resizer/ios/RCTImageResizer.xcodeproj"; sourceTree = "<group>"; };
+		CDC5350220A5AEBF004530F9 /* FastImage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FastImage.xcodeproj; path = "../node_modules/react-native-fast-image/ios/FastImage.xcodeproj"; sourceTree = "<group>"; };
 		D1ED1B996D3F4883BF601733 /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/native-base/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		E0C608F25E0A4F00A9AF4F3D /* Roboto_medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Roboto_medium.ttf; path = "../node_modules/native-base/Fonts/Roboto_medium.ttf"; sourceTree = "<group>"; };
 		E0EDDE29AE9D4F308C7E0DD3 /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/native-base/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
@@ -448,6 +457,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CDC5350920A5AECA004530F9 /* libFastImage.a in Frameworks */,
 				CD8D014020942721005786C4 /* libRNFS.a in Frameworks */,
 				CDBD00F9209425AA00BF7E1D /* libRCTImageResizer.a in Frameworks */,
 				CDBD007A209350D100BF7E1D /* libRNImagePicker.a in Frameworks */,
@@ -631,6 +641,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				CDC5350220A5AEBF004530F9 /* FastImage.xcodeproj */,
 				CD8D010C20942714005786C4 /* RNFS.xcodeproj */,
 				CDBD00C92094259C00BF7E1D /* RCTImageResizer.xcodeproj */,
 				CDBD004B209350AA00BF7E1D /* RNImagePicker.xcodeproj */,
@@ -763,6 +774,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		CDC5350320A5AEBF004530F9 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CDC5350820A5AEBF004530F9 /* libFastImage.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		CDF3DBAD20610AA70045D7C7 /* Recovered References */ = {
 			isa = PBXGroup;
 			children = (
@@ -842,6 +861,10 @@
 			productRefGroup = 83CBBA001A601CBA00E9B192 /* Products */;
 			projectDirPath = "";
 			projectReferences = (
+				{
+					ProductGroup = CDC5350320A5AEBF004530F9 /* Products */;
+					ProjectRef = CDC5350220A5AEBF004530F9 /* FastImage.xcodeproj */;
+				},
 				{
 					ProductGroup = 00C302A81ABCB8CE00DB3ED1 /* Products */;
 					ProjectRef = 00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */;
@@ -1170,6 +1193,13 @@
 			fileType = archive.ar;
 			path = libRCTImageResizer.a;
 			remoteRef = CDBD00D52094259C00BF7E1D /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		CDC5350820A5AEBF004530F9 /* libFastImage.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libFastImage.a;
+			remoteRef = CDC5350720A5AEBF004530F9 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		CDF3DBE020610AA80045D7C7 /* libjsinspector.a */ = {

@@ -16,9 +16,12 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import app from '../stores/app';
 import { observer, inject } from 'mobx-react';
 
-@inject('registerStore')
+@inject('registerStore','naviStore')
 @observer
 export default class LoginScreen extends Component{
+    static navigatorStyle = {
+        tabBarHidden: true
+    };
 
     constructor(props){
         super(props)
@@ -43,6 +46,7 @@ export default class LoginScreen extends Component{
         }else{
             this.imageHeight = new Animated.Value(responsiveHeight(35),);
         }
+        this.props.naviStore.navigation = this.props.navigator;
     }
     async login(){
         if(this.state.userEmail=='' || this.state.userPassword==''){
@@ -147,11 +151,11 @@ export default class LoginScreen extends Component{
             // });
             setTimeout(()=>{
                 this.app.login();
-            },1300)
+            },500)
         }else{
             setTimeout(()=>{
                 this.app.login();
-            },1300)
+            },500)
         }
     }
     keyboardWillShow = async (event) => {

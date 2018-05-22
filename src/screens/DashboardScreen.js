@@ -248,7 +248,7 @@ export default class DashboardScreen extends Component{
                 />
                 {!this.state.isLoading && <UserShortDetailCard showQr navigator={this.props.navigator}/>}
                 <ScrollView style={{flex: 1}}>
-                    <View style={styles.dashboardDetailTopContainerStyle}>
+                {!this.state.isLoading &&<View style={styles.dashboardDetailTopContainerStyle}>
                         <View style={styles.hotDealTitleTextContainerStyle}>
                             <Text style={styles.dashboardSectionTitleTextStyle}>HOT DEAL</Text>
                             {/* <TouchableOpacity style={styles.showAllContainerStyle} onPress={this.goToPrivilleges}>
@@ -267,7 +267,7 @@ export default class DashboardScreen extends Component{
                         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.scrollViewActivityCardContainerStyle}>
                             {this.renderMyLifeStyleList()}
                         </ScrollView>
-                    </View>
+                    </View>}
                     {/* <Image
                         source={require('./../source/images/promotionImg.png')}
                         style={styles.promotionImageStyle}

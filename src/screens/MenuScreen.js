@@ -206,7 +206,6 @@ export default class MenuScreen extends Component{
                                     {text: "ยกเลิก"},
                                     {text: "ออกจากระบบ", onPress: ()=> {
                                         // store.delete("user");
-                                        store.delete("token");
                                         this.props.userStore.user = {};
                                         // this.props.naviStore.navigation.resetTo({
                                         //     screen: "mti.LoginScreen", // unique ID registered with Navigation.registerScreen
@@ -246,6 +245,7 @@ const paddingTop = Platform.OS==='ios'?25:35
 const styles={
     menuScreenContainerStyle:{
         flex: 1,
+        width:responsiveWidth(75)
     },
     menuBackgroundImageStyle:{
         flex: 1,

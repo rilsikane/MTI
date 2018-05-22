@@ -4,6 +4,7 @@ import Store from './stores/store';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
 import store from 'react-native-simple-store';
+import {Platform} from 'react-native';
 
 async function prepareIcons() {
   const icons = await Promise.all([
@@ -18,20 +19,20 @@ export default async function startApplication(root) {
       const icons = await prepareIcons();
       switch (root) {
       case 'login':
-        Navigation.startSingleScreenApp({
-              screen: { screen: 'mti.LoginScreen' },       
-              appStyle: {
-              orientation: 'portrait',
-              navBarBlur: false,
-              drawUnderNavBar: true,
-              navBarTransparent: true,
-              navBarHidden: true , 
-              }
-          });
-        return;
-       
+          Navigation.startSingleScreenApp({
+            screen: { screen: 'mti.LoginScreen' },
+            //screen: {screen: 'mti.PassCodeScreen'},        
+            appStyle: {
+            orientation: 'portrait',
+            navBarBlur: false,
+            drawUnderNavBar: true,
+            navBarTransparent: true,
+            navBarHidden: true , 
+            }
+        });
+      return;
         case 'after-login':
-       
+        setTimeout(()=>{
         Navigation.startTabBasedApp({
           tabs: [
             {
@@ -109,20 +110,23 @@ export default async function startApplication(root) {
             animationType: 'fade',
             lazyload:true
         });
-        return;
-        case 'pincode':
-        Navigation.startSingleScreenApp({
-              screen: { screen: 'mti.PassCodeAuthenScreen' },
-              appStyle: {
-              orientation: 'portrait',
-              navBarBlur: false,
-              drawUnderNavBar: true,
-              navBarTransparent: true,
-              navBarHidden: true , 
-              }
-          });
-        return;
+        
+      },100);
+      return;
+        // case 'pincode':
+        // Navigation.startSingleScreenApp({
+        //       screen: { screen: 'mti.PassCodeAuthenScreen' },
+        //       appStyle: {
+        //       orientation: 'portrait',
+        //       navBarBlur: false,
+        //       drawUnderNavBar: true,
+        //       navBarTransparent: true,
+        //       navBarHidden: true , 
+        //       }
+        //   });
+        // return;
         case 'register':
+        setTimeout(()=>{
         Navigation.startSingleScreenApp({
               screen: { screen: 'mti.RegisterScreen' },
               appStyle: {
@@ -133,7 +137,24 @@ export default async function startApplication(root) {
               navBarHidden: true , 
               }
           });
-        return;
+        
+      },100);
+      return;
+      case 'first':
+        if(Platform.OS==='ios'){
+          Navigation.startSingleScreenApp({
+            screen: { screen: 'mti.LoginScreen' },
+            //screen: {screen: 'mti.PassCodeScreen'},        
+            appStyle: {
+            orientation: 'portrait',
+            navBarBlur: false,
+            drawUnderNavBar: true,
+            navBarTransparent: true,
+            navBarHidden: true , 
+            }
+          });
+        }
+      return;
       default:
         console.error('Unknown app root');
     }  
