@@ -19,8 +19,7 @@ export default async function startApplication(root) {
       switch (root) {
       case 'login':
         Navigation.startSingleScreenApp({
-              screen: { screen: 'mti.LoginScreen' },
-              //screen: {screen: 'mti.ActivityScreen'},        
+              screen: { screen: 'mti.LoginScreen' },       
               appStyle: {
               orientation: 'portrait',
               navBarBlur: false,
