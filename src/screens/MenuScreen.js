@@ -201,7 +201,7 @@ export default class MenuScreen extends Component{
                             <TouchableOpacity onPress={()=>{
                                  Alert.alert(
                                     " ",
-                                    "ยืนยันการออกจากระบบใช่หรือไหม่",
+                                    "คุณต้องการออกจากระบบใช่หรือไม่",
                                     [
                                     {text: "ยกเลิก"},
                                     {text: "ออกจากระบบ", onPress: ()=> {

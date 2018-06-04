@@ -3,8 +3,8 @@ var base64 = require('base-64');
 
 //dev
 //const endpoint = "http://103.208.27.13/eRegister/API/";
-//const endpoint = "https://mtifriends.muangthaiinsurance.com/mti/api/";
-const endpoint = "https://mtifriends-uat.muangthaiinsurance.com/mti/api/"
+const endpoint = "https://mtifriends.muangthaiinsurance.com/mti/api/";
+//const endpoint = "https://mtifriends-uat.muangthaiinsurance.com/mti/api/"
 //const endpoint = "https://mtimobile.campaignserv.com/api/";
 
 //const endpoint = "http://apiilease.ddns.net/eRegister/API/"

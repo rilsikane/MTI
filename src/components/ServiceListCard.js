@@ -19,7 +19,7 @@ class ServiceListCard extends Component{
             <Text style={styles.serviceAddressTextStyle}>{item.address}</Text>
             <Text style={styles.serviceAddressTextStyle}>โทร: {item.tel}</Text>
             <View style={styles.mapIconContainerStyle}>
-                <TouchableOpacity onPress={()=>this.callCenter(item.tel)}>
+                <TouchableOpacity onPress={()=>this.callCenter(item.callnow)}>
                     <Image
                         source={require('../source/icons/iconPhone02.png')}
                         resizeMode='contain'

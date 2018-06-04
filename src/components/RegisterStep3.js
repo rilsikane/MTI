@@ -165,7 +165,7 @@ class RegisterStep3 extends Component{
                                 },200);
                             }}
                         />
-                        {this.state.errorPassowrd && <Text style={styles.errorMsg}>รหัสผ่านไม่ถูกรูปแบบ</Text>}
+                        {this.state.errorPassowrd && <Text style={styles.errorMsg}>รหัสผ่านไม่ถูกรูปแบบตามที่กำหนด</Text>}
                         <TextInputIcon
                             refs={ input => {
                                 this.inputs['confirmPass'] = input;

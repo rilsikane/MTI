@@ -73,7 +73,7 @@ export default class InsuranceDetailScreen extends Component{
             setTimeout(()=>{
                 Alert.alert(
                     ' ',
-                    'ไม่พบเอกสาร',
+                    'ไม่พบเอกสารกรุณาติดต่อ 1484',
                     [
                     {text: 'OK', onPress: () => console.log('OK Pressed!')},
                     ]

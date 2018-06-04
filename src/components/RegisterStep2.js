@@ -151,7 +151,7 @@ class RegisterStep2 extends Component{
                         }}
                         returnKeyType='next'
                     />
-                     {this.state.email2Err && <Text style={styles.errorMsg}>Email ไม่ถูกต้อง</Text>}
+                     {this.state.email2Err && <Text style={styles.errorMsg}>รูปแบบ E-mail ของท่านไม่ถูกต้อง</Text>}
                     <TextInputIcon
                         refs={ input => {
                             this.inputs['phone'] = input;
@@ -175,7 +175,7 @@ class RegisterStep2 extends Component{
                         editable={!this.props.firstLogon}
                         maxLength={10}
                     />
-                    {this.state.phoneErr && <Text style={styles.errorMsg}>เบอร์โทรศัพท์ ไม่ถูกต้อง</Text>}
+                    {this.state.phoneErr && <Text style={styles.errorMsg}>เบอร์โทรศัพท์ของท่านไม่ถูกต้อง</Text>}
                     <View style={{flexDirection: 'row',paddingTop:10}}>
                     <CheckBoxes
                         checkBoxTitleText='ยอบรับ เงื่อนไขการให้บริการ'

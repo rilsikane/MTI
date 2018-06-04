@@ -52,7 +52,7 @@ export default class LoginScreen extends Component{
         if(this.state.userEmail=='' || this.state.userPassword==''){
             Alert.alert(
             ' ',
-            `Invalid Username and Passowrd`,
+            `ขออภัยค่ะ Username หรือ Password ไม่ถูกต้อง กรุณาตรวจสอบข้อมูลและลองใหม่อีกครั้ง`,
             [
             {text: 'OK', onPress: () => console.log('OK Pressed!')},
             ]

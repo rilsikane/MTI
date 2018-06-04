@@ -166,7 +166,7 @@ class ReqOtpScreen extends Component{
                                 },200);
                             }}
                         />
-                        {this.state.telModalErr && <Text style={styles.errorMsg}>เบอร์โทรศัพท์ ไม่ถูกต้อง</Text>}
+                        {this.state.telModalErr && <Text style={styles.errorMsg}>เบอร์โทรศัพท์ของท่านไม่ถูกต้อง    </Text>}
                         <TextInputIcon
                             refs={ input => {
                                 this.inputs['email'] = input;
@@ -190,7 +190,7 @@ class ReqOtpScreen extends Component{
                             returnKeyType = {"done"}
                             
                         />
-                        {this.state.emailErr && <Text style={styles.errorMsg}>Email ไม่ถูกต้อง</Text>}
+                        {this.state.emailErr && <Text style={styles.errorMsg}>รูปแบบ E-mail ของท่านไม่ถูกต้อง</Text>}
                     </View>
                     <View style={styles.submitButtonContainerStyle}>
                     {this.isShowSumbit() &&<MainSubmitButton
@@ -213,7 +213,7 @@ class ReqOtpScreen extends Component{
         if(response){
             Alert.alert(
                 '',
-                'ฝากข้อมูลติดต่อกลับเรียบร้อย',
+                'ท่านได้ฝากข้อมูลติดต่อกลับเรียบร้อยแล้ว',
                 [
                 {text: 'ตกลง', onPress: () =>{
                     this.leavingDialog.dismiss();
@@ -293,7 +293,7 @@ class ReqOtpScreen extends Component{
                                 blurOnSubmit={true}
                                 editable={false}
                             />
-                        {this.state.telErr && <Text style={styles.errorMsg}>เบอร์โทรศัพท์ ไม่ถูกต้อง</Text>}
+                        {this.state.telErr && <Text style={styles.errorMsg}>เบอร์โทรศัพท์ของท่านไม่ถูกต้อง    </Text>}
                     </View>
                     <View style={{flexDirection: 'row',padding:5}}>
                         <Text style={styles.directionTextStyle}>กรณีพบข้อมูลไม่ถูกต้อง</Text>

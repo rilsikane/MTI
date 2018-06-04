@@ -72,7 +72,7 @@ class MapCalloutPopup extends Component{
                 <View style={styles.calloutDetailContainerStyle}>
                     <View style={styles.detailTitleContainerStyle}>
                         <Text numberOfLines={2} style={styles.addressTitleTextStyle}>{this.props.data.title}</Text>
-                        <Text numberOfLines={2} style={styles.addressTextStyle}>{this.props.data.address}</Text>
+                        <Text numberOfLines={2} style={styles.addressTextStyle}>{`${this.props.data.address} โทร: ${this.props.data.tel}`}</Text>
                     </View>
                     <Image
                         source={require('../source/images/dotSectionHorizontal.png')}
@@ -91,7 +91,7 @@ class MapCalloutPopup extends Component{
                             </TouchableOpacity>
                         </View>
                         <View style={[styles.calloutButtonSectionStyle,{alignItems: 'flex-end'}]}>
-                            <TouchableOpacity onPress={()=>this.callCenter(this.props.data.tel)} style={[styles.calloutButtonStyle,{marginRight: responsiveWidth(2.5)}]}>
+                            <TouchableOpacity onPress={()=>this.callCenter(this.props.data.callnow)} style={[styles.calloutButtonStyle,{marginRight: responsiveWidth(2.5)}]}>
                                 <Image
                                     source={require('../source/icons/iconPhone02.png')}
                                     resizeMode='contain'

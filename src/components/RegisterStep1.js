@@ -132,7 +132,7 @@ class RegisterStep1 extends Component{
                                 },200);
                             }}
                         />
-                        {this.state.idNumberError && <Text style={styles.errorMsg}>เลขบัตรประชาชนต้องมี 13 ตำแหน่ง</Text>}
+                        {this.state.idNumberError && <Text style={styles.errorMsg}>เลขบัตรประชาชนต้องมี 13 หลัก </Text>}
                         <TextInputIcon
                             refs={ input => {
                                 this.inputs['userName'] = input;

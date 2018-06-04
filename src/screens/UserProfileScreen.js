@@ -369,7 +369,7 @@ export default class UserProfileScreen extends Component{
         }else{
             Alert.alert(
                 ' ',
-                'กรุณาเลือกอย่างน้อย 1 รายการ',
+                'กรุณาเลือก lifestyle อย่างน้อย 1 ประเภท',
                 [
                 {text: 'OK', onPress: () => console.log('OK Pressed!')},
                 ]

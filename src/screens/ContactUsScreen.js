@@ -111,7 +111,8 @@ export default class ContactUsScreen extends Component{
                         <Text style={styles.contactDesciptionTextStyle}>252 ถ.รัชดาภิเษก แขวงห้วยขวาง เขตห้วยขวาง กรุงเทพฯ  10310 แฟกซ์ : 0-2665-4166, 0-2274-9511, 0-2276-2033</Text>
                         <View style={styles.contactListSectionStyle}>
                             <View style={styles.iconGroupContainerStyle}>
-                                <TouchableOpacity onPress={()=>Linking.openURL('mailto:info@muangthaiinsurance.com?subject=ติดต่อเรา&body=ติดต่อเรา')}>
+                                <TouchableOpacity onPress={()=>Linking.openURL(`mailto:info@muangthaiinsurance.com?subject=ติดต่อจากแอพ Muang Thai Friends
+                                &body=ติดต่อเรื่อง : \n ชื่อ-สกุล : \n เบอร์ติดต่อกลับ : \n`)}>
                                     <Image
                                         source={require('../source/icons/iconMessage01.png')}
                                         resizeMode='contain'
@@ -150,7 +151,8 @@ export default class ContactUsScreen extends Component{
                         <Text style={styles.contactTitleTextStyle}>Muang Thai Friends Club โทร. 1484 กด 3</Text>
                         <View style={styles.contactListSectionStyle}>
                             <View style={styles.iconGroupContainerStyle}>
-                                <TouchableOpacity onPress={()=>Linking.openURL('mailto:crm@muangthaiinsurance.com?subject=ติดต่อเรา&body=ติดต่อเรา')}>
+                                <TouchableOpacity onPress={()=>Linking.openURL(`mailto:crm@muangthaiinsurance.com?subject=ติดต่อจากแอพ Muang Thai Friends
+                                &body=ติดต่อเรื่อง : \n ชื่อ-สกุล : \n เบอร์ติดต่อกลับ : \n`)}>
                                     <Image
                                         source={require('../source/icons/iconMessage01.png')}
                                         resizeMode='contain'

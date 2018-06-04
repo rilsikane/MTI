@@ -44,7 +44,7 @@ export default class NoRegisterDataScreen extends Component{
         if(response){
             Alert.alert(
                 '',
-                'ฝากข้อมูลติดต่อกลับเรียบร้อย',
+                'ท่านได้ฝากข้อมูลติดต่อกลับเรียบร้อยแล้ว',
                 [
                 {text: 'ตกลง', onPress: () =>{
                     setTimeout(()=>{
@@ -178,7 +178,7 @@ export default class NoRegisterDataScreen extends Component{
                                 },200);
                             }}
                         />
-                        {this.state.telErr && <Text style={styles.errorMsg}>เบอร์โทรศัพท์ ไม่ถูกต้อง</Text>}
+                        {this.state.telErr && <Text style={styles.errorMsg}>เบอร์โทรศัพท์ของท่านไม่ถูกต้อง    </Text>}
                         <TextInputIcon
                             refs={ input => {
                                 this.inputs['email'] = input;
@@ -202,7 +202,7 @@ export default class NoRegisterDataScreen extends Component{
                             returnKeyType = {"done"}
                             
                         />
-                        {this.state.emailErr && <Text style={styles.errorMsg}>Email ไม่ถูกต้อง</Text>}
+                        {this.state.emailErr && <Text style={styles.errorMsg}>รูปแบบ E-mail ของท่านไม่ถูกต้อง</Text>}
                     </View>
                     {this.isShowSumbit() && <View style={styles.submitButtonContainerStyle}>
                         <MainSubmitButton

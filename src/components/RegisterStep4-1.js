@@ -62,7 +62,7 @@ class RegisterStep4_1 extends Component{
                                 blurOnSubmit={true}
                                 maxLength={10}
                             />
-                        {this.state.telErr && <Text style={styles.errorMsg}>เบอร์โทรศัพท์ ไม่ถูกต้อง</Text>}
+                        {this.state.telErr && <Text style={styles.errorMsg}>เบอร์โทรศัพท์ของท่านไม่ถูกต้อง    </Text>}
                         </View>
                     }
                     <View style={styles.submitButtonContainerStyle}>

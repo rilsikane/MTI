@@ -122,7 +122,7 @@ export default class ServiceScreen extends Component{
         if(response){
             Alert.alert(
                 '',
-                'ฝากข้อมูลติดต่อกลับเรียบร้อย',
+                'ท่านได้ฝากข้อมูลติดต่อกลับเรียบร้อยแล้ว',
                 [
                 {text: 'ตกลง', onPress: () =>{
                     this.leavingDialog.dismiss();
@@ -213,7 +213,7 @@ export default class ServiceScreen extends Component{
                             }}
                             blurOnSubmit={true}
                         />
-                        {this.state.telErr && <Text style={styles.errorMsg}>เบอร์โทรศัพท์ ไม่ถูกต้อง</Text>}
+                        {this.state.telErr && <Text style={styles.errorMsg}>เบอร์โทรศัพท์ของท่านไม่ถูกต้อง    </Text>}
                         <TextInputIcon
                             value={this.state.email}
                             onChangeText={(email)=>this.setState({email:email})}
@@ -235,7 +235,7 @@ export default class ServiceScreen extends Component{
                             returnKeyType = {"done"}
                             
                         />
-                        {this.state.emailErr && <Text style={styles.errorMsg}>Email ไม่ถูกต้อง</Text>}
+                        {this.state.emailErr && <Text style={styles.errorMsg}>รูปแบบ E-mail ของท่านไม่ถูกต้อง</Text>}
                     </View>
                     {this.isShowSumbit() && <View style={styles.submitButtonContainerStyle}>
                         <MainSubmitButton
