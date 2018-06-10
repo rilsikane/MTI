@@ -155,7 +155,7 @@ const styles={
         margin: 0,
         height: responsiveHeight(10),
         justifyContent: 'center',
-
+        
     },
     selectorLabelStyle:{
         color: '#1595d3',
