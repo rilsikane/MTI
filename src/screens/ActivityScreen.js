@@ -15,6 +15,7 @@ export default class ActivityScreen extends Component{
         super(props)
         this.state = {incomingActivityList:[],pastActivityList:[]}
 
+        this.showAllActivity = this.showAllActivity.bind(this);
     }
     componentDidMount(){
         this.init();
@@ -94,6 +95,14 @@ export default class ActivityScreen extends Component{
         />
     )
 
+    showAllActivity(){
+        this.props.navigator.push({
+            screen: "mti.ActivityListScreen", // unique ID registered with Navigation.registerScreen
+            passProps:{},
+            animated: false, // does the push have transition animation or does it happen immediately (optional)
+        })
+    }
+
     render(){
         return(
             <View style={styles.activityScreenContainerStyle}>
@@ -119,7 +128,7 @@ export default class ActivityScreen extends Component{
                         </View>
                         <View style={styles.titleTextContainerStyle}>
                             <Text style={styles.sectionTitleTextStyle}>กิจกรรมที่ผ่านมา</Text>
-                            <TouchableOpacity style={styles.showAllContainerStyle}>
+                            <TouchableOpacity onPress={this.showAllActivity} style={styles.showAllContainerStyle}>
                                 <Text style={styles.showAllTextStyle}>ดูทั้งหมด</Text>
                             </TouchableOpacity>
                         </View>
