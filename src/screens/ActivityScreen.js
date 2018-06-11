@@ -6,31 +6,42 @@ import Carousel from 'react-native-looped-carousel';
 
 import {Headers} from '../components/Headers';
 import {PastEventCard} from '../components/PastEventCard';
+import {post,authen,get,getBasic} from '../api';
+import store from 'react-native-simple-store';
 
 export default class ActivityScreen extends Component{
 
     constructor(props){
         super(props)
+        this.state = {incomingActivityList:[],pastActivityList:[]}
 
+    }
+    componentDidMount(){
+        this.init();
+    }
+    async init(){
+        let user = await store.get("user");
+        let [response1,response2] =  await Promise.all([getBasic("activity?filter_group_id=3",{}),getBasic("activity?filter_group_id=1",{})]);
+        
+        if(response1){
+            this.setState({incomingActivityList:response1.data});
+        }
+        if(response2){
+            this.setState({pastActivityList:response2.data});
+        }
     }
 
     renderBannerImageList(){
-        const bannerUri=[
+        let bannerUri=this.state.incomingActivityList.length>0 ? this.state.incomingActivityList:[
             {
-                uri: require('../source/images/activityImg05.png')
-            },
-            {
-                uri: require('../source/images/activityImg01.png')
-            },
-            {
-                uri: require('../source/images/activityImg02.png')
-            },
+                picture: '../source/images/activityImg05.png'
+            }
         ]
 
         return bannerUri.map((data,i)=>
             <Image
                 key={i}
-                source={data.uri}
+                source={{uri:data.picture}}
                 style={styles.bannerImageStyle}
             />
         )
@@ -52,7 +63,7 @@ export default class ActivityScreen extends Component{
 
         return(
             <FlatList
-                data={pastEvent}
+                data={this.state.pastActivityList}
                 horizontal
                 showsHorizontalScrollIndicator={false}
                 style={styles.activityListContainerStyle}
@@ -61,12 +72,24 @@ export default class ActivityScreen extends Component{
             />
         )
     }
+    openDetail(item){
+        this.props.navigator.push({
+            screen: "mti.ActivityDetailScreen", // unique ID registered with Navigation.registerScreen
+            passProps:{data:item},
+            title: undefined, // navigation bar title of the pushed screen (optional)
+            titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
+            animated: false, // does the push have transition animation or does it happen immediately (optional)
+            backButtonTitle: undefined, // override the back button title (optional)
+            backButtonHidden: false, // hide the back button altogether (optional)
+        })
+    }
 
     _renderItem=({item,index})=>(
         <PastEventCard
-            bannerUri={item.bannerUri}
-            eventTitleText={item.eventTitleText}
-            eventDetailText={item.eventDetailText}
+            onPress={()=>this.openDetail(item)}
+            bannerUri={{uri:item.picture}}
+            eventTitleText={item.title}
+            eventDetailText={item.detail}
             style={[{marginRight: responsiveWidth(5)},index==0&&{marginLeft: responsiveWidth(5)}]}
         />
     )
@@ -100,7 +123,7 @@ export default class ActivityScreen extends Component{
                                 <Text style={styles.showAllTextStyle}>ดูทั้งหมด</Text>
                             </TouchableOpacity>
                         </View>
-                        {this.renderPastEventCard()}
+                        {this.state.pastActivityList.length > 0 && this.renderPastEventCard()}
                         <View style={styles.adContainerStylr}>
                             <Image
                                 source={require('../source/images/promotionImg.png')}

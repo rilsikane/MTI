@@ -147,18 +147,19 @@ export default class MenuScreen extends Component{
                         <View style={styles.subBorderStyle}/> */}
                         <View style={styles.subBorderStyle}/>
                         <View style={styles.menuSectionStyle}>        
-                            <TouchableOpacity disabled={true} style={styles.menuSubSectionStyle}>
+                            <TouchableOpacity onPress={()=>this.gotoMenu("mti.ActivityScreen")}  
+                            style={styles.menuSubSectionStyle}>
                                 <Image
-                                    source={require('./../source/icons/iconActivityGray.png')}
+                                    source={require('./../source/icons/iconActivityWhite.png')}
                                     resizeMode='contain'
                                     style={styles.menuIconStyle}
                                 />
-                                <Text style={styles.menuTitleTextCommingStyle}>กิจกรรม</Text> 
+                                <Text style={styles.menuTitleTextStyle}>กิจกรรม</Text> 
                             </TouchableOpacity>
-                            <View style={{flex:1,flexDirection: 'row'}}>
+                            {/* <View style={{flex:1,flexDirection: 'row'}}>
                                 <View style={{flex:0.2}}></View>
                                 <Text style={styles.commingSoonStyle}>ใช้งานได้เร็วๆ นี้</Text>
-                            </View>
+                            </View> */}
                         </View>
                         <View style={styles.subBorderStyle}/>
                         {/* <View style={styles.menuSectionStyle}>        

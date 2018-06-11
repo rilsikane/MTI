@@ -13,11 +13,14 @@ import {ImageListPopup} from '../components/ImageListPopup';
 
 import store from 'react-native-simple-store';
 import {get,getBasic} from '../api';
+import moment from 'moment';
+import localization from 'moment/locale/th'
 
 export default class ActivityDetailScreen extends Component{
 
     constructor(props){
         super(props)
+        moment.locale("th");
         this.state={
             showComment: true,
             showMoreImage: false,
@@ -158,6 +161,16 @@ export default class ActivityDetailScreen extends Component{
             />
         ):null
     }
+    rederContent(){
+        let content1 = this.state.detail.content;
+        let data = content1.split("|");
+        return data.map((item,i)=>
+            <View key={i} style={styles.privilegeTextContainerStyle}>
+                <Text style={styles.activityDescriptionTextStyle}>{item}</Text>
+            </View>
+        
+        )
+    }
 
     render(){
   
@@ -186,8 +199,8 @@ export default class ActivityDetailScreen extends Component{
                         </View>
                         <View style={styles.activityContentContainerStyle}>
                             <Text style={styles.activityTitleTextStyle}>{this.state.detail.title}</Text>
-                            <Text style={styles.activityDescriptionTextStyle}>{this.state.detail.content}</Text>
-                            <Text style={styles.activityDateTextStyle}>วันที่ 12 กุมภาพันธ์ 2061</Text>
+                            {this.rederContent()}
+                            <Text style={styles.activityDateTextStyle}>{moment(this.state.detail.start_date).locale("th",localization).format("DD MMMM YYYY")}</Text>
                             <Image
                                 source={require('../source/images/dotSectionHorizontal.png')}
                                 resizeMode='contain'
@@ -202,17 +215,17 @@ export default class ActivityDetailScreen extends Component{
                                     />
                                     <Text style={styles.activityDateTextStyle}>ดูรูปกิจกรรมนี้</Text>
                                 </TouchableOpacity>
-                                <EventButtonGroup
+                                {/* <EventButtonGroup
                                     isFavorite
                                     isShareSelected
-                                />
+                                /> */}
                             </View>
-                            <MainSubmitButton
+                            {/* <MainSubmitButton
                                 buttonTitleText='กรอกแบบสอบถามกิจกรรม'
                                 onPress={this.goToQuestionnaire}
-                                style={styles.submitButtonStyle}
+                                style={styles.submitButtonStyle} */}
                             />
-                            {this.renderCommentCard()}
+                            {/* {this.renderCommentCard()} */}
                         </View>
                     </View>
                     {this.state.otherActivity.length==0?<View/>:
