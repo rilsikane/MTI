@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Text,View,Image,ScrollView,TouchableOpacity,ImageBackground} from 'react-native';
+import {Text,View,Image,ScrollView,TouchableOpacity,ImageBackground,Alert} from 'react-native';
 import PropTypes from "prop-types";
 import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
 import Spinner from 'react-native-loading-spinner-overlay';
@@ -12,7 +12,7 @@ import {PastEventCard} from '../components/PastEventCard';
 import {ImageListPopup} from '../components/ImageListPopup';
 
 import store from 'react-native-simple-store';
-import {get,getBasic} from '../api';
+import {get,getBasic, post} from '../api';
 import moment from 'moment';
 import localization from 'moment/locale/th'
 
@@ -22,32 +22,51 @@ export default class ActivityDetailScreen extends Component{
         super(props)
         moment.locale("th");
         this.state={
-            showComment: true,
+            showComment: false,
             showMoreImage: false,
             isLoading: true,
             user: {},
             detail: {},
             otherActivity: [],
             commentList:[],
-
-        }   
+            showFav:false
+        } 
+        this.scrollView = {};  
         this.onMorePicturePress = this.onMorePicturePress.bind(this);
         this.goToQuestionnaire = this.goToQuestionnaire.bind(this);
+        this.addComment = this.addComment.bind(this);
     }
 
     async componentDidMount(){
-        //const user = await store.get("user");
-        let response = await getBasic(`activity/${this.props.data.activity_id}`,{})
-        let response2 = await getBasic(`activity?filter_type_id=${this.props.data.group_id}&page=1&pagesize=3`,{});
-        let comments = await getBasic(`activity/${this.props.data.activity_id}/comments?page=1&pagesize=5`,{})
-        //let response2 = await post(`privilege/redeem`,{"privilege_id":this.props.id});
-        this.setState({
-            detail:response,
-            isLoading:false,
-            otherActivity:response2.data.filter((data)=>data.activity_id!=response.activity_id),
-            commentList: comments.data
-        })
-        console.log(comments)
+        if(this.props.data && this.props.data.activity_id){
+            console.log(this.props.data);
+            const user = await store.get("user");
+            let response = await getBasic(`activity/${this.props.data.activity_id}`,{})
+            let response2 = await getBasic(`activity?filter_type=${this.props.filter_type}&page=1&pagesize=4`,{});
+            let comments = await getBasic(`activity/${this.props.data.activity_id}/comments?page=1&pagesize=5`,{})
+            //let response2 = await post(`privilege/redeem`,{"privilege_id":this.props.id});
+            let favorite = undefined
+            if(user && user.name != "GUEST"){
+                favorite = await get(`favorite/activity/${this.props.data.activity_id}`);
+                this.setState({showFav:true})
+            }
+            if(response && response2){
+                if(favorite){
+                    response.isFavorite = favorite.is_favorite;
+                }
+                this.setState({
+                    detail:response,
+                    isLoading:false,
+                    otherActivity:response2.data.filter((data)=>data.activity_id!=response.activity_id),
+                    commentList: comments.data,
+                    user:user
+                })
+            }else{
+                this.setState({detail:{gallery:[]}});
+            }
+        }
+        
+        this.setState({isLoading:false});
     }
 
     renderOtherActivityList(){
@@ -76,7 +95,6 @@ export default class ActivityDetailScreen extends Component{
                 key={i}
                 bannerUri={data.picture ? {uri:data.picture}:null}
                 eventTitleText={data.title}
-                eventDetailText={data.title}
                 style={[styles.dashboardActivityCardContainerStyle,i==this.state.otherActivity.length-1&&styles.lastItemStyle]}
                 onPress={()=>this.openDetail(data)}
             />
@@ -95,41 +113,42 @@ export default class ActivityDetailScreen extends Component{
         })
     }
 
-    renderMoreImagePopup(){
-        const imageUriList=[
-            {
-                uri: require('../source/images/latestActImg.png')
-            },
-            {
-                uri: require('../source/images/activityImg04.png')
-            },
-            {
-                uri: require('../source/images/activityImg04.png')
-            },
-            {
-                uri: require('../source/images/activityImg04.png')
-            },
-            {
-                uri: require('../source/images/activityImg04.png')
-            }
-        ]
-        return(
-            <ImageListPopup
-                data={imageUriList}
-                show={this.state.showMoreImage}
-                onClose={()=>this.setState({showMoreImage: false})}
-                onDismissed={()=>this.setState({showMoreImage: false})}
-                title={'MTI 8 Anniversary "ยิ้มรับความสำเร็จ..ฉลอง ก้าวแห่งความภาคภูมิใจ"'}
-            />
-        )
+    // renderMoreImagePopup(){
+    //     const imageUriList=[
+    //         {
+    //             uri: require('../source/images/latestActImg.png')
+    //         },
+    //         {
+    //             uri: require('../source/images/activityImg04.png')
+    //         },
+    //         {
+    //             uri: require('../source/images/activityImg04.png')
+    //         },
+    //         {
+    //             uri: require('../source/images/activityImg04.png')
+    //         },
+    //         {
+    //             uri: require('../source/images/activityImg04.png')
+    //         }
+    //     ]
+    //     return(
+    //         <ImageListPopup
+    //             data={imageUriList}
+    //             show={this.state.showMoreImage}
+    //             onClose={()=>this.setState({showMoreImage: false})}
+    //             onDismissed={()=>this.setState({showMoreImage: false})}
+    //             title={'MTI 8 Anniversary "ยิ้มรับความสำเร็จ..ฉลอง ก้าวแห่งความภาคภูมิใจ"'}
+    //         />
+    //     )
 
-    }
+    // }
 
     onMorePicturePress(){
         this.props.navigator.push({
             screen: "mti.ActivityImageListScreen", // unique ID registered with Navigation.registerScreen
             passProps:{
-                navigator: this.props.navigator
+                navigator: this.props.navigator,
+                detail:this.state.detail
             },
             title: undefined, // navigation bar title of the pushed screen (optional)
             titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
@@ -152,24 +171,74 @@ export default class ActivityDetailScreen extends Component{
             animationType: 'slide-up' // 'none' / 'slide-up' , appear animation for the modal (optional, default 'slide-up')
         })
     }
-
+    async favPress() {
+        let param = {};
+        let isFavorite = this.state.detail.isFavorite;
+        if(!isFavorite){
+            param.action = "add";
+        }else{
+            param.action = "delete";
+        }
+        let response = await post("favorite/activity/"+this.state.detail.activity_id,param);
+        let detail = {...this.state.detail};
+        detail.isFavorite = !isFavorite;
+        this.setState({detail:detail});
+    }
+    async addComment(txt){
+        let response =  await post(`comment/activity/${this.props.data.activity_id}`,{"message":txt});
+        if(response){
+            Alert.alert(
+                ' ',
+                   'คุณได้แสดงความคิดเห็นเรียบร้อย',
+                [
+                {text: 'OK', onPress: async () => {
+                    let comments = await getBasic(`activity/${this.props.data.activity_id}/comments?page=1&pagesize=20`);
+                    this.setState({commentList:comments.data});
+                }},
+                ]
+                )
+        }
+    }
     renderCommentCard(){
         return this.state.showComment?(
             <CommentCard
                 commentList={this.state.commentList}
-                onSendMessagePress={()=>alert('send')}
+                onSendMessagePress={this.addComment}
             />
         ):null
     }
     rederContent(){
         let content1 = this.state.detail.content;
-        let data = content1.split("|");
-        return data.map((item,i)=>
-            <View key={i} style={styles.privilegeTextContainerStyle}>
-                <Text style={styles.activityDescriptionTextStyle}>{item}</Text>
-            </View>
-        
-        )
+        if(content1){
+            let data = content1.split("|");
+            return data.map((item,i)=>
+                <View key={i} style={styles.privilegeTextContainerStyle}>
+                    <Text style={styles.activityDescriptionTextStyle}>{item}</Text>
+                </View>
+            
+            )
+        }else{
+            return null;
+        }
+    }
+    async submitActivity(){
+        let param = {};
+        param.action="add"
+        let response = await post(`booking/activity/${this.state.detail.activity_id}`,param);
+        if(response && response.status=="ok"){
+            this.props.navigator.showModal({
+                screen: "mti.ActivitySubmitScreen", // unique ID registered with Navigation.registerScreen
+                passProps:{
+                    navigator: this.props.navigator,
+                    data: this.state.detail
+                },
+                title: undefined, // title of the screen as appears in the nav bar (optional)
+                passProps: {}, // simple serializable object that will pass as props to the modal (optional)
+                navigatorStyle: {}, // override the navigator style for the screen, see "Styling the navigator" below (optional)
+                animationType: 'slide-up' // 'none' / 'slide-up' , appear animation for the modal (optional, default 'slide-up')
+            })
+       }else{
+       }
     }
 
     render(){
@@ -180,6 +249,7 @@ export default class ActivityDetailScreen extends Component{
                 <Headers
                     leftIconName='back'
                     headerTitleText='รายละเอียดกิจกรรม'
+                    
                 />
                 <ScrollView style={{flex: 1,}}>
                     <View style={styles.activityDetailContainerStyle}>
@@ -207,38 +277,47 @@ export default class ActivityDetailScreen extends Component{
                                 style={styles.dotSectionImageStyle}
                             />
                             <View style={styles.eventButtonGroupContainerStyle}>
-                                <TouchableOpacity style={styles.morePictureContainerStyle} onPress={this.onMorePicturePress}>
+                                {this.state.detail.gallery && this.state.detail.gallery.length> 0 ? <TouchableOpacity style={styles.morePictureContainerStyle} onPress={this.onMorePicturePress}>
                                     <Image
                                         source={require('../source/icons/iconAlbum01.png')}
                                         resizeMode='contain'
                                         style={styles.albumIconStyle}
                                     />
                                     <Text style={styles.activityDateTextStyle}>ดูรูปกิจกรรมนี้</Text>
-                                </TouchableOpacity>
-                                {/* <EventButtonGroup
-                                    isFavorite
-                                    isShareSelected
-                                /> */}
+                                </TouchableOpacity>: <Text style={styles.activityDescriptionTextStyle}>ไม่มีรูปในกิจกรรมนี้</Text>}
+                                <EventButtonGroup
+                                        isFavorite={this.state.detail.isFavorite}
+                                        isShareSelected
+                                        onSharePress={()=>this.onOpen()}
+                                        onFavPress={()=>this.favPress()}
+                                        showFav={this.state.showFav}
+                                />
                             </View>
+                            {(this.state.user && this.state.user.name != "GUEST" && this.state.detail.booking_status=='open') ? <MainSubmitButton
+                                buttonTitleText='จองสิทธิ์เข้าร่วมกิจกรรม'
+                                onPress={()=>this.submitActivity()}
+                                iconImageUri={require('../source/icons/iconAvatar01.png')}
+                                style={styles.submitButtonStyle}
+                            />:null}
                             {/* <MainSubmitButton
                                 buttonTitleText='กรอกแบบสอบถามกิจกรรม'
                                 onPress={this.goToQuestionnaire}
                                 style={styles.submitButtonStyle} */}
-                            />
-                            {/* {this.renderCommentCard()} */}
+                            {/* /> */}
+                            {(this.state.user||(!this.state.user && this.state.commentList.length > 0)) && this.renderCommentCard()}
                         </View>
                     </View>
-                    {this.state.otherActivity.length==0?<View/>:
+                    {this.state.otherActivity.length==0?null:
                         <View style={styles.otherActivityContainerStyle}>
                             <View style={styles.otherActivityTitleContainerStyle}>
                                 <Text style={styles.otherActivityTitleTextStyle}>กิจกรรมอื่น</Text>
-                                <TouchableOpacity>
+                                {/* <TouchableOpacity>
                                     <Text style={styles.seeAllTextStyle}>ดูทั้งหมด</Text>
-                                </TouchableOpacity>
+                                </TouchableOpacity> */}
                             </View>
                             <View style={styles.otherActivityListContainerStyle}>
                                 <ScrollView horizontal style={{flex: 1,}} showsHorizontalScrollIndicator={false}>
-                                    {!this.state.isLoading && this.renderOtherActivityList()}
+                                    {!this.state.isLoading ? this.renderOtherActivityList():null}
                                 </ScrollView>
                             </View>
                         </View>

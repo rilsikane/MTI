@@ -55,6 +55,7 @@ export default class MyCardScreen extends Component{
             leftIconName='back'
             headerTitleText='My Card'
             rightIconName='iconBell'
+            hideRightIcon={true}
             />
             <ScrollView style={styles.myCardScreenContainerStyle}>
                
@@ -68,7 +69,7 @@ export default class MyCardScreen extends Component{
                                 <Text style={styles.myCardTitleTextStyle}>MTI MY CARD</Text>
                                 <View style={styles.myCardDetailTextContainerStyle}>
                                     <Text style={styles.userNameTextStyle}>{`${this.state.userDetail.name} ${this.state.userDetail.surname}`}</Text>
-                                    {!this.state.isLoading  && <Text style={styles.cardIdTextStyle}>รหัส {this.state.userDetail.card.code}</Text>}
+                                    {!this.state.isLoading  ? <Text style={styles.cardIdTextStyle}>รหัส {this.state.userDetail.card.code}</Text>:null}
                                 </View>
                             </ImageBackground>
                         <View style={styles.checkBoxContainerStyle}>
@@ -94,7 +95,7 @@ export default class MyCardScreen extends Component{
                                 containerStyle={styles.checkBoxStyle}
                             />
                         </View>
-                        <ImageBackground borderRadius={15} style={{height: responsiveHeight(31),width: responsiveWidth(85),marginBottom: responsiveHeight(1)}} imageStyle={styles.backCardContainerStyle}  source={{uri:this.state.userDetail.card.design.rear}} >
+                        <ImageBackground borderRadius={15} style={{height: responsiveHeight(30),width: responsiveHeight(45),marginBottom: responsiveHeight(1)}} imageStyle={styles.backCardContainerStyle}  source={{uri:this.state.userDetail.card.design.rear}} >
                             {!this.state.isLoading  && <Image
                                 source={{uri:this.state.qrChecked?this.state.userDetail.card.qrcode:this.state.userDetail.card.barcode}}
                                 resizeMode='contain'
@@ -133,7 +134,7 @@ const styles={
     },
     cardImgStyle:{
         height: responsiveHeight(30),
-        width: responsiveWidth(85),
+        width: responsiveHeight(45),
     },
     qrImageStyle:{
         height: responsiveHeight(14.43),

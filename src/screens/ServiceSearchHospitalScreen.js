@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Text,View,ScrollView,FlatList,Image,TouchableOpacity,Alert} from 'react-native';
+import {Text,View,ScrollView,FlatList,Image,TouchableOpacity,Alert,PermissionsAndroid,Platform} from 'react-native';
 import PropTypes from "prop-types";
 import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
 import MapView,{Marker} from 'react-native-maps';
@@ -10,7 +10,7 @@ import {MainSearchBox} from '../components/MainSearchBox';
 import {ServiceListCard} from '../components/ServiceListCard';
 import {MapCalloutPopup} from '../components/MapCalloutPopup';
 import {getBasic} from '../api'
-
+import Geolocation from 'react-native-geolocation-service';
 export default class ServiceSearchHospitalScreen extends Component{
 
     constructor(props){
@@ -24,6 +24,7 @@ export default class ServiceSearchHospitalScreen extends Component{
             searchValue: '',
             calloutData:{},
             showCallout: false,
+            isLocationError:false
         }
         this._onSearchIconPress = this._onSearchIconPress.bind(this);
         this.onNearByPress = this.onNearByPress.bind(this);
@@ -32,37 +33,56 @@ export default class ServiceSearchHospitalScreen extends Component{
 
     async componentDidMount(){
         if(!this.props.isMap){
-            this.setState({isLoading: true});
-            let serviceList = await getBasic('services?filter_type_id=1&page=1&pagesize=400',{});
-            if(serviceList){
-                this.setState({
-                    serviceList:serviceList.data,
-                    orgServiceList:serviceList.data,
-                });
+           
+            if(Platform.OS=="android"){
+                PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION);
+                const result = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION);  
+                this.setState({isLocationError:!result});
             }
-
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-                  this.setState({
-                    userLatitude: position.coords.latitude,
-                    userLongitude: position.coords.longitude,
-                    isLoading: false,
-                  })
-                },
-                (error) => {
+           
+                this.setState({isLoading: true});
+                let serviceList = await getBasic(`services?filter_type_id=${this.props.filter_type_id}&page=1&pagesize=400`,{});
+                if(serviceList){
+                    this.setState({
+                        serviceList:serviceList.data,
+                        orgServiceList:serviceList.data,
+                    });
+                }
+                if(!this.state.isLocationError){
+                    Geolocation.getCurrentPosition(
+                    (position) => {
+                    this.setState({
+                        userLatitude: position.coords.latitude,
+                        userLongitude: position.coords.longitude,
+                        isLoading: false,
+                    })
+                    },
+                    (error) => {
+                        Alert.alert(
+                            ' ',
+                            'คุณไม่ได้ทำการเปิด Location Service',
+                            [
+                            {text: 'OK', onPress: () => {this.setState({
+                                isLoading: false,
+                                serviceList: this.state.orgServiceList,
+                            })}},
+                            ]
+                        )
+                    }
+                );
+            }else{
+                setTimeout(()=>{
                     Alert.alert(
                         ' ',
-                        error.message,
+                        'คุณไม่ได้ทำการเปิด Location Service',
                         [
                         {text: 'OK', onPress: () => {this.setState({
-                            isLoading: false,
-                            serviceList: this.state.orgServiceList,
+                            isLoading: false,locationError:false
                         })}},
                         ]
                     )
-                },
-                {enableHighAccuracy: true,timeout: 20000,maxAge: 0,istanceFilter: 1 },
-              );
+                },200)
+            }
 
         }else{
             animationTimeout = setTimeout(() => {
@@ -147,7 +167,7 @@ export default class ServiceSearchHospitalScreen extends Component{
     async _onSearchIconPress(){
         if(!this.props.isMap){
             this.setState({isLoading:true});
-            let search = await getBasic(`services?filter_type_id=1&search=${this.state.searchValue}&page=1&pagesize=400`,{});
+            let search = await getBasic(`services?filter_type_id=${this.props.filter_type_id}&search=${this.state.searchValue}&page=1&pagesize=400`,{});
             if(search.data.length>0){
                 this.setState({
                     serviceList: search.data,
@@ -173,36 +193,72 @@ export default class ServiceSearchHospitalScreen extends Component{
     }
 
     async onNearByPress(){
-        this.setState({isLoading:true});
-        //console.log(this.state.userLatitude,this.state.userLongitude)
-        let nearBy = await getBasic(`services?nearby=y&lat=${this.state.userLatitude}&lng=${this.state.userLongitude}&filter_type_id=1&page=1&pagesize=20`,{});
-        if(!this.props.isMap){
+        await Geolocation.getCurrentPosition(
+            (position) => {
+            this.setState({
+                userLatitude: position.coords.latitude,
+                userLongitude: position.coords.longitude,
+            })
+            },
+            (error) => {
+                Alert.alert(
+                    ' ',
+                    'คุณไม่ได้ทำการเปิด Location Service',
+                    [
+                    {text: 'OK', onPress: () => {this.setState({
+                        isLoading: false,
+                        serviceList: this.state.orgServiceList,
+                    })}},
+                    ]
+                )
+            },
+            {enableHighAccuracy: true,timeout: 20000,maxAge: 0,istanceFilter: 1 },
+        );
+        if(this.state.userLatitude!=''&&this.state.userLongitude!=''){
+            this.setState({isLoading:true});
+            //console.log(this.state.userLatitude,this.state.userLongitude)
+            let nearBy = await getBasic(`services?nearby=y&lat=${this.state.userLatitude}&lng=${this.state.userLongitude}&filter_type_id=${this.props.filter_type_id}&page=1&pagesize=20`,{});
+            if(!this.props.isMap){
+                this.setState({isLoading:false});
+                setTimeout(()=>{
+                    this.props.navigator.showModal({
+                        screen: 'mti.ServiceSearchHospitalScreen', // unique ID registered with Navigation.registerScreen
+                        title: undefined, // navigation bar title of the pushed screen (optional)
+                        titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
+                        passProps: {
+                            navigator:this.props.navigator,
+                            data: nearBy.data,
+                            isMap: true,
+                            nearBy:true,
+                            userLatitude: this.state.userLatitude,
+                            userLongitude: this.state.userLongitude,
+                        }, // Object that will be passed as props to the pushed screen (optional)
+                        animated: true, // does the push have transition animation or does it happen immediately (optional)
+                        backButtonTitle: undefined, // override the back button title (optional)
+                        backButtonHidden: false, // hide the back button altogether (optional)
+                    })
+                },150)
+                
+            
+            }else{
+                this.setState({
+                    serviceList: nearBy.data,
+                    isLoading:false
+                });
+            }
+        }else{
             this.setState({isLoading:false});
             setTimeout(()=>{
-                this.props.navigator.showModal({
-                    screen: 'mti.ServiceSearchHospitalScreen', // unique ID registered with Navigation.registerScreen
-                    title: undefined, // navigation bar title of the pushed screen (optional)
-                    titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
-                    passProps: {
-                        navigator:this.props.navigator,
-                        data: nearBy.data,
-                        isMap: true,
-                        nearBy:true,
-                        userLatitude: this.state.userLatitude,
-                        userLongitude: this.state.userLongitude,
-                    }, // Object that will be passed as props to the pushed screen (optional)
-                    animated: true, // does the push have transition animation or does it happen immediately (optional)
-                    backButtonTitle: undefined, // override the back button title (optional)
-                    backButtonHidden: false, // hide the back button altogether (optional)
-                })
-            },150)
-            
-           
-        }else{
-            this.setState({
-                serviceList: nearBy.data,
-                isLoading:false
-            });
+                Alert.alert(
+                    ' ',
+                    'คุณไม่ได้ทำการเปิด Location Service',
+                    [
+                    {text: 'OK', onPress: () => {this.setState({
+                        isLoading: false,locationError:false
+                    })}},
+                    ]
+                )
+            },200)
         }
 
     }
@@ -214,10 +270,12 @@ export default class ServiceSearchHospitalScreen extends Component{
                     leftIconName={this.props.isMap?'close':'cancel'}
                     cancelTxt={'กลับ'}
                     cancel={()=>this.props.navigator.pop()}
-                    headerTitleText='ค้นหาโรงพยาบาล'
+                    headerTitleText={`ค้นหา${this.props.title?this.props.title:'โรงพยาบาล'}`}
                     rightIconName='iconBell'
                     withSearch={this.props.isMap?false:true}
-                    longTitle
+                    longTitle={!this.props.isMap}
+                    titleStyle={{fontSize: responsiveFontSize(3)}}
+                    hideRightIcon={this.props.isMap}
                 />
                 {!this.props.isMap&&
                     <MainSearchBox

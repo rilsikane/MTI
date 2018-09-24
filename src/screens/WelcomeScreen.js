@@ -59,7 +59,7 @@ class WelcomeScreen extends Component{
                             <View style={styles.bannerBottomLineStyle}/>
                             <View style={styles.logoContainerStyle}>
                                 <Image
-                                    source={require('./../source/images/welcome_06.jpg')}
+                                    source={require('./../source/images/welcome_06.png')}
                                     style={styles.logoImageStyle}
                                     resizeMode='contain'
                                 />
@@ -74,7 +74,7 @@ class WelcomeScreen extends Component{
                                     /> */}
                                 </View>
                                 <View>
-                                    <Text style={styles.welcomeDetailTextStyle}>“ เพื่อนสนิทที่สร้างแรงบันดาลใจ{'\n'}และเติมเต็มทุกความสุขของคุณ ”</Text>
+                                    <Text style={styles.welcomeDetailTextStyle}>“ Your Friend Forever{'\n'}เพื่อน... ที่พร้อมดูแลกันตลอดไป ”</Text>
                                 </View>
                                 <View>
                                     {/* <Image
@@ -148,7 +148,7 @@ const styles={
     },
     welcomeDetailTextStyle:{
         color: '#0194d2',
-        fontSize: responsiveFontSize(4),
+        fontSize: responsiveFontSize(3.5),
         textAlign: 'center',
         marginLeft: responsiveWidth(5),
         marginRight: responsiveWidth(5),

@@ -1,23 +1,27 @@
 import React,{Component} from 'react';
-import {Text,View,Image,TouchableOpacity} from 'react-native';
+import {Text,View,Image,TouchableOpacity,Alert} from 'react-native';
 import PropTypes from "prop-types";
 import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
 import store from 'react-native-simple-store';
 import FastImage from 'react-native-fast-image'
 import ImageBackground from '../components/ImageBackground'
-
+import {get,getBasic, post} from '../api';
 
 class DashboardActivityCard extends Component{
 
     constructor(props){
         super(props)
-        this.state = {groups:[]}
+        this.state = {groups:[],camGroups:[]}
 
     }
     async componentDidMount(){
         let group = await store.get("privilegeGroup");
+        let campaignsGroup = await store.get("campaignsGroup");
         if(group){
             this.setState({groups:group});
+        }
+        if(campaignsGroup){
+            this.setState({camGroups:campaignsGroup});
         }
     }
 
@@ -29,17 +33,20 @@ class DashboardActivityCard extends Component{
         
         if(iconText){
             return(
+                <View>
                 <Text style={styles.iconTextStyle}>{iconText}</Text>
+                <Text style={styles.iconTitleTextStyle}>{this.props.iconTitleText}</Text>
+                </View>
             )
         }else{
             
             return(
                 <View>
-                    <FastImage
+                    {!this.props.isCampaign ? <FastImage
                         source={this.getIcon()}
                         resizeMode='contain'
                         style={styles.iconImageStyle}
-                    />
+                    />:null}
                     <Text style={styles.iconTitleTextStyle}>{this.getTitleText()}</Text>
                 </View>
             )
@@ -47,19 +54,37 @@ class DashboardActivityCard extends Component{
 
     }
     getTitleText(){
-        if(this.state.groups.length >0 && this.props.groupId){
-            let group =  this.state.groups.filter(gp=>gp.id==this.props.groupId)
-            return group && group.length>0 ? group[0].name:null;
+        if(!this.props.isCampaign){
+            if(this.state.groups.length >0 && this.props.groupId){
+                let group =  this.state.groups.filter(gp=>gp.id==this.props.groupId)
+                return group && group.length>0 ? group[0].name:null;
+            }else{
+                return null;
+            }
         }else{
-            return null;
+            if(this.state.camGroups.length >0 && this.props.groupId){
+                let group =  this.state.camGroups.filter(gp=>gp.id==this.props.groupId)
+                return group && group.length>0 ? group[0].name:null;
+            }else{
+                return null;
+            }
         }
     }
     getIcon(){
-        if(this.state.groups.length >0 && this.props.groupId){
-            let group =  this.state.groups.filter(gp=>gp.id==this.props.groupId)
-            return group && group.length>0 ? {uri:group[0].icon2_url,priority: FastImage.priority.high}:null;
+        if(!this.props.isCampaign){
+            if(this.state.groups.length >0 && this.props.groupId){
+                let group =  this.state.groups.filter(gp=>gp.id==this.props.groupId)
+                return group && group.length>0 ? {uri:group[0].icon2_url,priority: FastImage.priority.high}:null;
+            }else{
+                return null;
+            }
         }else{
-            return null;
+            if(this.state.camGroups.length >0 && this.props.groupId){
+                let group =  this.state.camGroups.filter(gp=>gp.id==this.props.groupId)
+                return  group && group.length>0 ? {uri:group[0].icon2_url,priority: FastImage.priority.high}:null;
+            }else{
+                return null;
+            }
         }
     }
 
@@ -88,6 +113,25 @@ class DashboardActivityCard extends Component{
             )
         }
     }
+    async submitActivity(item){
+        let param = {};
+        param.action="add"
+        let response = await post(`booking/activity/${item.activity_id}`,param);
+        if(response && response.status=="ok"){
+            this.props.navigator.showModal({
+                screen: "mti.ActivitySubmitScreen", // unique ID registered with Navigation.registerScreen
+                passProps:{
+                    navigator: this.props.navigator,
+                    data: item
+                },
+                title: undefined, // title of the screen as appears in the nav bar (optional)
+                passProps: {}, // simple serializable object that will pass as props to the modal (optional)
+                navigatorStyle: {}, // override the navigator style for the screen, see "Styling the navigator" below (optional)
+                animationType: 'slide-up' // 'none' / 'slide-up' , appear animation for the modal (optional, default 'slide-up')
+            })
+       }else{
+       }
+    }
 
     render(){
         return(
@@ -95,17 +139,18 @@ class DashboardActivityCard extends Component{
                 style={[styles.dashboardActivityCardContainerStyle,this.props.style]}
             >
                 <ImageBackground
-                    source={this.props.bannerUri}
+                    source={this.props.bannerUri?this.props.bannerUri:require('../source/images/pic-default.jpg')}
                     resizeMode='stretch'
                     style={styles.bannerImageStyle}
                     borderRadius={3}
                 >
-                    <Image
+                    {this.props.activityTitleText ? <Image
                         source={require('./../source/images/dashboardCardOverlayImg.png')}
                         style={styles.activityCardOverlayImageStyle}
                         resizeMode='stretch'
                         borderRadius={3}
-                    />
+                    />:null}
+                    {this.props.activityTitleText ? 
                     <View style={styles.activityDetailContainerStyle}>
                         <View style={styles.activityDetailSectionStyle}>
                             <View style={[styles.activityIconContainerStyle,this.props.iconContainerStyle]}>
@@ -121,8 +166,15 @@ class DashboardActivityCard extends Component{
                             <View style={[styles.activityTitleContainerStyle,this.props.detailContainerStyle]}>
                                 {this.renderCardDetail()}
                             </View>
+                            {/* {this.props.isJoin ?<TouchableOpacity style={{flex:0.5}} onPress={()=>this.submitActivity(this.props.isJoin)}>
+                                <FastImage
+                                    source={require('./../source/icons/iconEventAdd.png')}
+                                    resizeMode='contain'
+                                    style={styles.iconImageStyle}
+                                />
+                            </TouchableOpacity>:null} */}
                         </View>
-                    </View>
+                    </View>:null}
                 </ImageBackground>
             </TouchableOpacity>
         )
@@ -147,8 +199,8 @@ const styles={
     },
     activityDetailContainerStyle:{
         position: 'absolute',
-        width: responsiveWidth(86.25),
-        height: responsiveHeight(7.74),
+        width: responsiveWidth(98),
+        height: responsiveHeight(8),
     },
     activityDetailSectionStyle:{
         //height: responsiveHeight(7.74),
@@ -179,7 +231,7 @@ const styles={
     iconTitleTextStyle:{
         color: 'rgba(255, 255, 255, 0.6)',
         letterSpacing: 0,
-        fontSize: responsiveFontSize(1.8),
+        fontSize: responsiveFontSize(1.38),
         textAlign: 'center',
 
     },
@@ -188,7 +240,7 @@ const styles={
     
     },
     activityTitleContainerStyle:{
-        flex: 0.8,
+        flex: 1,
         justifyContent: 'center',
     },
     eventDetailContainerStyle:{
@@ -209,6 +261,7 @@ const styles={
         fontSize: responsiveFontSize(2.2),
         marginLeft: responsiveWidth(2),
         marginRight: responsiveWidth(2),
+        width:responsiveWidth(65)
     },
     addEventIconContainerStyleStyle:{
         justifyContent: 'center', 

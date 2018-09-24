@@ -21,7 +21,7 @@ import {
 
 
 
-export async function authen(param){
+export async function authen(param,customError){
   
   let requestURL = `${endpoint}token`;
   console.log("requestURL-----"+requestURL,"param: "+param);
@@ -43,8 +43,6 @@ export async function authen(param){
                         {text: 'OK', onPress: () => app.isLoading = false},
                         ]
                     );
-                
-                
             }
         }else{
             app.isLoading = false;
@@ -60,14 +58,18 @@ export async function authen(param){
 
       }catch(e){
         if(e && "ECONNABORTED"!=e.code){
-            setTimeout(()=>{Alert.alert(
-            ' ',
-            (e.response && e.response.data) ? e.response.data.message:'ไม่สามารถเชื่อมต่อกับ Server ได้',
-            [
-            {text: 'OK', onPress: () => console.log('OK Pressed!')},
-            ]
-            ),500});
-            return false;
+            if(!customError){
+                setTimeout(()=>{Alert.alert(
+                ' ',
+                (e.response && e.response.data) ? e.response.data.message:'ไม่สามารถเชื่อมต่อกับ Server ได้',
+                [
+                {text: 'OK', onPress: () => console.log('OK Pressed!')},
+                ]
+                ),500});
+                return false;
+            }else{
+                return e.response;
+            }
         }else{
             setTimeout(()=>{Alert.alert(
                 ' ',
@@ -179,8 +181,11 @@ export async function postBasic(path,param,customError){
                         {text: 'OK', onPress: () => console.log('OK Pressed!')},
                         ]
                     ),200});
+                    return false;
+                }else{
+                    return false;
                 }
-                return false;
+                
                 
             }
         }else{

@@ -93,6 +93,7 @@ export default class InsuranceDetailScreen extends Component{
                 <Headers
                     leftIconName='close'
                     headerTitleText='รายละเอียดกรมธรรม์'
+                    hideRightIcon={true}
                 />
                 <ScrollView style={{flex: 1,}}>
                     <View style={styles.insuranceShortDetailContainerStyle}>
@@ -131,11 +132,11 @@ export default class InsuranceDetailScreen extends Component{
                             resizeMode='contain'
                             style={styles.dotSectionImageStyle}
                         />
-                         {header.FLAG == 'N' &&<Text style={styles.insuranceShortDetailTextStyle}>ต้องการข้อมูลเพิ่มเติมกรุณาติดต่อเจ้าหน้าที่โทร 1484</Text>}
-                        {header.FLAG == 'Y' &&<View style={styles.protectionRulesContainerstyle}>
+                         {header.FLAG == 'N' ?<Text style={styles.insuranceShortDetailTextStyle}>ต้องการข้อมูลเพิ่มเติมกรุณาติดต่อเจ้าหน้าที่โทร 1484</Text>:null}
+                        {header.FLAG == 'Y' ?<View style={styles.protectionRulesContainerstyle}>
                             <Text style={styles.insuranceProtectRuleTextStyle}>คุ้มครองภัยหลัก</Text>
                             {this.renderProtectRules(detail)}
-                        </View>}
+                        </View>:null}
                         {/* <View style={styles.protectionRulesContainerstyle}>
                             <Text style={styles.insuranceProtectRuleTextStyle}>คุ้มครองภัยธรรมชาติ</Text>
                             {this.renderProtectRules(rules2)}
@@ -150,7 +151,7 @@ export default class InsuranceDetailScreen extends Component{
                             resizeMode='contain'
                             style={styles.dotSectionImageStyle}
                         /> */}
-                        {header.FLAG == 'Y' && <MainSubmitButton
+                        {header.FLAG == '9999' && <MainSubmitButton
                             buttonTitleText='ดาวน์โหลดเอกสาร'
                             iconImageUri={require('../source/icons/iconDownload.png')}
                             onPress={()=>this.openPolicyDocument(header.Policy_NO,header.TranNo)}

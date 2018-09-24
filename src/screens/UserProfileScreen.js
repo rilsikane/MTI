@@ -263,11 +263,11 @@ export default class UserProfileScreen extends Component{
                 <View/>
             )
         }else{
-            return(
-                <TouchableOpacity onPress={this.onCancelButtonPress.bind(this)}>
-                    <Text style={styles.cancelTextStyle}>ยกเลิก</Text>
-                </TouchableOpacity>
-            )
+            // return(
+            //     <TouchableOpacity onPress={this.onCancelButtonPress.bind(this)}>
+            //         <Text style={styles.cancelTextStyle}>ยกเลิก</Text>
+            //     </TouchableOpacity>
+            // )
         } 
     }
 
@@ -493,21 +493,31 @@ export default class UserProfileScreen extends Component{
     }
 
     renderLifeStyleBoxList3(){
-        const lifeStyleImage = [...this.state.filterLifeStyleImage3]
+        let lifeStyleImage = [...this.state.filterLifeStyleImage3]
+        if(lifeStyleImage.length<3){
+            lifeStyleImage.push({})
+        }
 
         return lifeStyleImage.map((lifeStyleImage,i)=>
         {   
-            return( 
-                <LifeStyleBox
-                    key={i}
-                    imageUri={lifeStyleImage.icon_url!="" ? {uri:lifeStyleImage.icon_url}:null}
-                    boxTitle={lifeStyleImage.name}
-                    isSelected={lifeStyleImage.isSelected}
-                    onPress={()=>this.onLifeStylePress(i,'3',lifeStyleImage.id,lifeStyleImage.isSelected)}
-                    onCloseButtonPress={()=>this._onCloseButtonPress(i,'3',lifeStyleImage.id)}
-                    style={styles.boxListStyle}
-                />
-            )
+                if(lifeStyleImage.name){
+                    return( 
+                        <LifeStyleBox
+                            key={i}
+                            imageUri={lifeStyleImage.icon_url!="" ? {uri:lifeStyleImage.icon_url}:null}
+                            boxTitle={lifeStyleImage.name}
+                            isSelected={lifeStyleImage.isSelected}
+                            onPress={()=>this.onLifeStylePress(i,'3',lifeStyleImage.id,lifeStyleImage.isSelected)}
+                            onCloseButtonPress={()=>this._onCloseButtonPress(i,'3',lifeStyleImage.id)}
+                            style={styles.boxListStyle}
+                        />
+                    )
+                }else{
+                    return(
+                        <View style={[styles.boxContainerStyle]}>
+                        </View>
+                    )
+                }
             }
         )
     }
@@ -900,5 +910,9 @@ const styles={
     boxListStyle:{
         width: responsiveHeight(12),
         height: responsiveHeight(12),
-    }
+    },
+    boxContainerStyle:{
+        width: responsiveHeight(12),
+        height: responsiveHeight(12),
+    },
 }

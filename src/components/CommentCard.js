@@ -3,14 +3,19 @@ import {Text,View,Image,TouchableOpacity,FlatList} from 'react-native';
 import {Item,Input} from 'native-base';
 import PropTypes from "prop-types";
 import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
-
+import moment from 'moment';
+import store from 'react-native-simple-store';
 class CommentCard extends Component{
 
     constructor(props){
         super(props)
-
+        this.state={commentTxt:'',user:{}}
+        this.addComment = this.addComment.bind(this);
     }
-
+    async componentDidMount(){
+        const user = await store.get("user");
+        this.setState({user:user});
+    }
     renderCommentList(){
         return(
             <FlatList
@@ -32,7 +37,7 @@ class CommentCard extends Component{
                 <View style={styles.commentDetailContainerStyle}>
                     <View style={styles.commentTitleContainerStyle}>
                         <Text style={styles.userNameTextStyle}>{item.member_name}</Text>
-                        <Text style={styles.commentDateTextStyle}>{item.date}</Text>
+                        <Text style={styles.commentDateTextStyle}>{moment(item.date).locale('th').format("DD MMM YYYY")}</Text>
                     </View>
                     <Text style={styles.commentDetailTextStyle}>{item.msg}</Text>
                     <Image
@@ -45,7 +50,10 @@ class CommentCard extends Component{
     );
 
     _keyExtractor = (item, index) => index.toString();
-
+    async addComment(){
+        this.props.onSendMessagePress(this.state.commentTxt);
+        this.setState({commentTxt:''});
+    }
     render(){
         return(
             <View style={styles.commentContainerStyle}>
@@ -60,14 +68,14 @@ class CommentCard extends Component{
                         resizeMode='contain'
                         style={styles.commentIconStyle}
                     />
-                    <Text style={styles.totalCommentTextStyle}>{`ความคิดเห็น [ ${this.props.commentList.length} ]`}</Text>
+                    <Text style={styles.totalCommentTextStyle}>{`ความคิดเห็น [${this.props.commentList.length}]`}</Text>
                 </View>
                 <View style={styles.commentListContainerStyle}>
                     {this.renderCommentList()}
                     <View style={[styles.commentListSectionStyle,styles.userInputContainerStyle]}>
                         <View style={styles.userThumbnailContainerStyle}>
                             <Image
-                                source={require('../source/images/userAvatarImg.png')}
+                                source={{uri:this.state.user.profile_img}}
                                 style={styles.userThumbnailStyle}
                             />
                         </View>
@@ -75,8 +83,20 @@ class CommentCard extends Component{
                             <Input 
                                 placeholder='ความคิดเห็นของคุณ...'
                                 placeholderTextColor='rgba(145, 145, 149, 0.44)'
+                                value={this.state.commentTxt}
+                                onChangeText={val=>this.setState({commentTxt:val})}
+                                onSubmitEditing={() => {
+                                   this.addComment();
+                                }}
+                                returnKeyType="send"
+                                onSubmitEditing={()=> {
+                                    this.addComment();
+                                 }}
                             />
-                            <TouchableOpacity onPress={this.props.onSendMessagePress}>
+                            <TouchableOpacity onPress={()=>
+                                this.addComment()
+                            }
+                            >
                                 <Image
                                     source={require('../source/icons/iconSendMessage.png')}
                                     resizeMode='contain'

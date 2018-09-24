@@ -243,7 +243,7 @@ class ReqOtpScreen extends Component{
         if(''!=this.state.name && ''!=this.state.surname
             && ''!=this.state.email
             && ''!=this.state.tel
-            && !this.state.emailErr && !this.state.telErr){
+            && !this.state.emailErr && !this.state.telModalErr){
                 return true;
         }else{
             return false;
@@ -273,6 +273,7 @@ class ReqOtpScreen extends Component{
                         })
                       }
                     }
+                    hideRightIcon={true}
                 />
                 <View style={styles.registerDirectionContainerStyle}>
                     <Text style={styles.registerTitleTextStyle}>ยืนยันตัวตนด้วยรหัส OTP</Text>

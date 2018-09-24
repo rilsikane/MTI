@@ -11,6 +11,7 @@ import {DashboardActivityCard} from '../components/DashboardActivityCard';
 import {post,authen,get,getBasic} from '../api';
 import { observer, inject } from 'mobx-react';
 import app from '../stores/app';
+import Geolocation from 'react-native-geolocation-service';
 
 @inject('naviStore','userStore')
 @observer
@@ -30,6 +31,7 @@ export default class PrivilegeScreen extends Component{
             privilegeEntertain: [],
             privilegeSport: [],
             privilegeOther: [],
+            campaigns:[],
             tabsList:[],
             tabIndex: 0,
             previousTabIndex: 0,
@@ -37,6 +39,7 @@ export default class PrivilegeScreen extends Component{
             searchValue: '',
             userLatitude: '',
             userLongitude: '',
+            locationError:false
         }
         this.openDetail = this.openDetail.bind(this);
         this.getPrivilegeForEachTabs = this.getPrivilegeForEachTabs.bind(this);
@@ -45,36 +48,22 @@ export default class PrivilegeScreen extends Component{
         this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
     }
     async componentDidMount(){
-        
+        if(Platform.OS=="android"){
+            //this.init()
+        }
     }
     async init(){
 
-        this.props.naviStore.navigation = this.props.navigator;
+        this.props.naviStore.isPrivillege = true;
+        this.props.naviStore.isActivity = "false";
 
         this.setState({isLoading: true})
-        navigator.geolocation.getCurrentPosition(
-            (position) => {
-              this.setState({
-                userLatitude: position.coords.latitude,
-                userLongitude: position.coords.longitude,
-                isLoading: false,
-              })
-            },
-            (error) => {
-                Alert.alert(
-                    ' ',
-                    error.message,
-                    [
-                    {text: 'OK', onPress: () => {this.setState({
-                        isLoading: false,
-                    })}},
-                    ]
-                )
-            },
-            {enableHighAccuracy: true,timeout: 20000,maxAge: 0,istanceFilter: 1 },
-        )
+        if(!this.props.naviStore.hotdata){
+            this.props.naviStore.navigation = this.props.navigator;
+            this.props.naviStore.isPrivillege = true;
         if(this.state.tabIndex==0){
-            let privilege = await getBasic("privileges?page=1&pagesize=20",{});
+            
+            let privilege = await getBasic("privileges?page=1&pagesize=100",{});
             let tabsList = await getBasic('privilege/groups',{});
             tabsList.data.unshift({id: '99',name: 'All',icon:require("../source/icons/iconTabsInActiveAll.png")});
             this.setState({
@@ -85,16 +74,52 @@ export default class PrivilegeScreen extends Component{
                 this.setState({
                     privilege:privilege.data,
                     privilegeOrg: privilege.data,
-                    isLoading: false,
                 });
             }
         }else{
             await this.getPrivilegeForEachTabs(this.state.tabIndex)    
+        }
+        Geolocation.getCurrentPosition(
+            (position) => {
+              this.setState({
+                userLatitude: position.coords.latitude,
+                userLongitude: position.coords.longitude,
+                isLoading: false,
+              })
+            },
+            (error) => {
+                if(!this.state.locationError){
+                    this.setState({locationError:true,isLoading:false})
+                    setTimeout(()=>{
+                        Alert.alert(
+                            ' ',
+                            'คุณไม่ได้ทำการเปิด Location Service',
+                            [
+                            {text: 'OK', onPress: () => {this.setState({
+                                isLoading: false,locationError:false
+                            })}},
+                            ]
+                        )
+                    },200)
+                }
+            }
+        )
+        }else{
+
+            let hotdata = {...this.props.naviStore.hotdata};
+            this.props.naviStore.navigation = this.props.navigator;
+            setTimeout(()=>{
+                
+                this.openDetail(hotdata);
+                this.props.naviStore.hotdata = undefined;
+            })      
             this.setState({
                 isLoading: false,
             })
         }
-
+        this.setState({
+            isLoading: false,
+        })
     }
     openDetail(item){
         this.props.navigator.push({
@@ -149,16 +174,19 @@ export default class PrivilegeScreen extends Component{
     }
 
     async getPrivilegeForEachTabs(index){
-        if(index==7){
-            index = 9;
-        }
-        let filter_group_id = index;
+        // if(index==7){
+        //     index = 9;
+        // }
+
+        let filter_group_id = this.state.tabsList[index].id;
         let privilege = [];
         // if(index==1){
         //     privilege = await get(`privileges?filter_set=hotdeal&page=1&pagesize=20`,{});
         // }
         // else{
-            privilege = await getBasic(`privileges?filter_group_id=${filter_group_id}&page=1&pagesize=20`,{});
+        if(index!=0){
+            privilege = await getBasic(`privileges?filter_group_id=${filter_group_id}&page=1&pagesize=100`,{});
+        }
         //}
         //console.log(privilege.data)
         if(index==0){
@@ -213,7 +241,25 @@ export default class PrivilegeScreen extends Component{
             }else{
                 this.setState({privilege:this.state.privilegeOther});
             }
+        }else{
+            this.setState({privilege: privilege.data});
+
         }
+    }
+    transformToPrivillege(datas){
+        let privileges = [];
+        if(datas){
+            datas.map(data=>{
+                data.id = data.campaign_id;
+                data.picture_url = data.picture;
+                data.name = data.subject;
+                data.group_id = 11;
+                data.isCampaign = true;
+                privileges.push(data);
+            })
+            
+        }
+        return privileges;
     }
 
     async openPrivilegeSearch(){
@@ -265,6 +311,19 @@ export default class PrivilegeScreen extends Component{
                 
             }
     
+        }else{
+            this.setState({isLoading:false});
+            setTimeout(()=>{
+                Alert.alert(
+                    ' ',
+                    'คุณไม่ได้ทำการเปิด Location Service',
+                    [
+                    {text: 'OK', onPress: () => {this.setState({
+                        isLoading: false,locationError:false
+                    })}},
+                    ]
+                )
+            },200)
         }
     
     }
@@ -273,13 +332,13 @@ export default class PrivilegeScreen extends Component{
         this.setState({isLoading: true,privilege:[],tabIndex:0});
         let response = {};
         if(this.state.tabIndex==0){
-            response = await getBasic(`privileges?search=${this.state.searchValue}&page=1&pagesize=20`,{});
+            response = await getBasic(`privileges?search=${this.state.searchValue}&page=1&pagesize=50`,{});
         }else{
             let index = this.state.tabIndex
             if(index==7){
                 index = 9
             }
-            response = await getBasic(`privileges?search=${this.state.searchValue}&page=1&pagesize=20`,{});
+            response = await getBasic(`privileges?search=${this.state.searchValue}&page=1&pagesize=50`,{});
             console.log(response)
         }
        
@@ -309,17 +368,20 @@ export default class PrivilegeScreen extends Component{
     onNavigatorEvent(event) {
     
         if (event.id === 'bottomTabSelected') {
-            this.props.naviStore.navigation.popToRoot({
-                animated: true, // does the popToRoot have transition animation or does it happen immediately (optional)
+            //if(Platform.OS=="ios"){
+              this.props.naviStore.navigation.popToRoot({
+                animated: false, // does the popToRoot have transition animation or does it happen immediately (optional)
                 animationType: 'fade', // 'fade' (for both) / 'slide-horizontal' (for android) does the popToRoot have different transition animation (optional)
               });
-            this.init();
+            //}
+            //this.init();
         }
         if (event.id === 'willDisappear') {
          
         }
         if (event.id === 'didAppear') {
-          this.init();
+                this.init()
+            
         }
     }
 

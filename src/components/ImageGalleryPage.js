@@ -25,6 +25,7 @@ class ImageGalleryPage extends Component{
             />
         )
     }
+   
 
     render(){
         return(
@@ -48,7 +49,7 @@ class ImageGalleryPage extends Component{
                     {this.renderImageList()}
                 </View>
                 <View style={styles.imageDescContainerStyle}>
-                    <Text style={styles.imageDescTextStyle}>ภาพจากกิจกรรม : เนรมิตลุคสวยกับเมืองไทยประกันภัย Beauty Workshop by Shiseido</Text>
+                    <Text style={styles.imageDescTextStyle}>ภาพจากกิจกรรม : {this.props.title}</Text>
                 </View>
             </Modal>
         )

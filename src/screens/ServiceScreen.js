@@ -25,6 +25,7 @@ export default class ServiceScreen extends Component{
             emailErr:false,telErr:false,
             name:'',surname:'',email:'',tel:'',isLoading:false
         }
+        this.props.naviStore.navigation = this.props.navigator;
         this.gotoService = this.gotoService.bind(this);
         this.onServicePress = this.onServicePress.bind(this);
         this.openLeavingContactPopup = this.openLeavingContactPopup.bind(this);
@@ -32,11 +33,15 @@ export default class ServiceScreen extends Component{
         this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
     }
     init(){
-        
+        this.props.naviStore.navigation = this.props.navigator;
+        this.props.naviStore.isPrivillege = "false";
+        this.props.naviStore.isActivity = "false";
         this.setState({isLoading:true});
+        
         setTimeout(()=>{
-            this.props.naviStore.navigation = this.props.navigator;
+            
             this.setState({isLoading:false});
+           
         },1000)
        
     }
@@ -87,7 +92,7 @@ export default class ServiceScreen extends Component{
         if(index==0){
             this.callCenter();
         }else if(index==1){
-            this.gotoService('mti.ServiceSearchHospitalScreen');
+            this.gotoService('mti.SelectHospitalScreen');
         }else if(index==2){
             this.gotoService('mti.ServiceSearchCorpCenterScreen');
         }else{
@@ -213,7 +218,7 @@ export default class ServiceScreen extends Component{
                             }}
                             blurOnSubmit={true}
                         />
-                        {this.state.telErr && <Text style={styles.errorMsg}>เบอร์โทรศัพท์ของท่านไม่ถูกต้อง    </Text>}
+                        {this.state.telErr ? <Text style={styles.errorMsg}>เบอร์โทรศัพท์ของท่านไม่ถูกต้อง    </Text>:null}
                         <TextInputIcon
                             value={this.state.email}
                             onChangeText={(email)=>this.setState({email:email})}
@@ -235,7 +240,7 @@ export default class ServiceScreen extends Component{
                             returnKeyType = {"done"}
                             
                         />
-                        {this.state.emailErr && <Text style={styles.errorMsg}>รูปแบบ E-mail ของท่านไม่ถูกต้อง</Text>}
+                        {this.state.emailErr ? <Text style={styles.errorMsg}>รูปแบบ E-mail ของท่านไม่ถูกต้อง</Text>:null}
                     </View>
                     {this.isShowSumbit() && <View style={styles.submitButtonContainerStyle}>
                         <MainSubmitButton
@@ -290,20 +295,20 @@ export default class ServiceScreen extends Component{
         )
     }
     onNavigatorEvent(event) {
-    
+        console.log("onNavigatorEvent",event);
         if (event.id === 'bottomTabSelected') {
             
             this.props.naviStore.navigation.popToRoot({
                 animated: false, // does the popToRoot have transition animation or does it happen immediately (optional)
                 animationType: 'fade', // 'fade' (for both) / 'slide-horizontal' (for android) does the popToRoot have different transition animation (optional)
               });
-            this.init();
+            //this.init();
         }
         if (event.id === 'willDisappear') {
          
         }
         if (event.id === 'didAppear') {
-          //this.init();
+          this.init();
         }
     }
 }

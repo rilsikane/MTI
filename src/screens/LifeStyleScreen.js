@@ -34,9 +34,13 @@ export default class LifeStyleScreen extends Component{
         this.onSubmitOtpButtonPress = this.onSubmitOtpButtonPress.bind(this);
         this.app = app;
         this.gotoWelcome = this.gotoWelcome.bind(this);
+        this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
     }
 
     async componentDidMount(){
+    //    this.init();
+    }
+    async init(){
         this.app.isLoading = true;
         let param = {};
         param.username = this.props.registerStore.register.username;
@@ -252,17 +256,28 @@ export default class LifeStyleScreen extends Component{
         )
     }
     renderLifeStyleBoxList3(){
-        const lifeStyleImage = [...this.state.filterLifeStyleImage3]
-
+        let lifeStyleImage = [...this.state.filterLifeStyleImage3]
+        if(lifeStyleImage.length<3){
+            lifeStyleImage.push({})
+        }
         return lifeStyleImage.map((lifeStyleImage,i)=>
-            <LifeStyleBox
-                key={i}
-                imageUri={lifeStyleImage.icon_url!="" ? {uri:lifeStyleImage.icon_url}:null}
-                boxTitle={lifeStyleImage.name}
-                isSelected={lifeStyleImage.isSelected}
-                onPress={()=>this.onLifeStylePress(i,'3',lifeStyleImage.id,lifeStyleImage.isSelected)}
-                onCloseButtonPress={()=>this._onCloseButtonPress(i,'3',lifeStyleImage.id)}
-            />
+            {
+                if(lifeStyleImage.name){
+                    return (<LifeStyleBox
+                        key={i}
+                        imageUri={lifeStyleImage.icon_url!="" ? {uri:lifeStyleImage.icon_url}:null}
+                        boxTitle={lifeStyleImage.name}
+                        isSelected={lifeStyleImage.isSelected}
+                        onPress={()=>this.onLifeStylePress(i,'3',lifeStyleImage.id,lifeStyleImage.isSelected)}
+                        onCloseButtonPress={()=>this._onCloseButtonPress(i,'3',lifeStyleImage.id)}
+                    />)
+                }else{
+                    return(
+                        <View style={[styles.boxContainerStyle]}>
+                        </View>
+                    )
+                }
+            }
         )
     }
 
@@ -272,14 +287,14 @@ export default class LifeStyleScreen extends Component{
                 <View style={styles.lifestyleDirectionContainerStyle}>
                     <Text  style={styles.lifestyleTitleTextStyle}>{`กรุณาเลือกไลฟ์สไตล์ที่ตรงกับคุณ${'\n'}(เลือกได้มากกว่า 1 ข้อ)`}</Text>
                 </View>
-                <View style={styles.lifestyleBoxContainerStyle}>
+                {this.state.filterLifeStyleImage1.length>0 ? <View style={styles.lifestyleBoxContainerStyle}>
                     <View style={styles.lifestyleBoxList1ContainerStyle}>
                         {this.renderLifeStyleBoxList1()}
                     </View>
                     <View style={styles.lifestyleBoxList2ContainerStyle}>
                         {this.renderLifeStyleBoxList2()}
                     </View>
-                    <View style={[styles.lifestyleBoxList2ContainerStyle,{paddingTop:10}]}>
+                    <View style={[styles.lifestyleBoxList3ContainerStyle,{paddingTop:10}]}>
                         {this.renderLifeStyleBoxList3()}
                     </View>
                     <View style={styles.submitButtonContainerStyle}>
@@ -288,10 +303,16 @@ export default class LifeStyleScreen extends Component{
                             onPress={this.onSubmitOtpButtonPress}
                         />
                     </View>
-                </View>
+                </View>:null}
                 {this.app.isLoading && <Spinner visible={this.app.isLoading}  textStyle={{color: '#FFF'}} />}
             </View>
         )
+    }
+    onNavigatorEvent(event) {
+
+        if (event.id === 'willAppear') {
+                this.init();
+        }
     }
 }
 
@@ -332,6 +353,10 @@ const styles={
         flexDirection: 'row',
         justifyContent: 'space-between'
     },
+    lifestyleBoxList3ContainerStyle:{
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+    },
     inputContainerStyle:{
         borderBottomColor: '#C4C4C4',
     },
@@ -339,6 +364,12 @@ const styles={
         flex: 1,
         marginTop: responsiveHeight(3),
         // justifyContent: 'center',
+    },
+    boxContainerStyle:{
+        width: responsiveHeight(13.49),
+        height: responsiveHeight(13.49),
+        paddingTop: responsiveHeight(1),
+
     },
 
 }

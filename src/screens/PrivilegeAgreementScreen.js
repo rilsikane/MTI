@@ -20,7 +20,7 @@ export default class PrivilegeAgreementScreen extends Component{
     }
 
     renderAgreementList(){
-        let content2 = this.props.data.content2.split("|");
+        let content2 = this.props.data.content2 ? this.props.data.content2.split("|"):[];
         return content2.map((data,i)=>
             <View key={i} style={styles.agreementListTextContainerStyle}>
                 <Text style={styles.agreementTitleTextStyle}>{data}</Text>
@@ -30,32 +30,40 @@ export default class PrivilegeAgreementScreen extends Component{
     }
     async redeem(){
         app.isLoading = true;
+        if(!this.props.data.isCampaign){
         if(this.props.data.type.toLowerCase()=='barter'){
-            let checkBarter = await post('redeem/check/barter',{})
-            if(checkBarter&&checkBarter.status=='ok'){
-                app.isLoading = false;
-                setTimeout(()=>{
-                    this.props.navigator.dismissModal({
-                        animationType: 'none' // 'none' / 'slide-down' , dismiss animation for the modal (optional, default 'slide-down')
-                    });
-                },50)
-                setTimeout(()=>{
-                    this.props.navigator.push({
-                        screen: "mti.MyCardScreen", // unique ID registered with Navigation.registerScreen
-                        passProps:{navigator:this.props.navigator},
-                        title: undefined, // navigation bar title of the pushed screen (optional)
-                        titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
-                        animated: true, // does the push have transition animation or does it happen immediately (optional)
-                        backButtonTitle: undefined, // override the back button title (optional)
-                        backButtonHidden: false, // hide the back button altogether (optional)
-                    })
-                },160);
-                //this.setState({isLoading: false})
-            }else{
-                console.log('redeem error')
-                app.isLoading = false;
-            }
          
+                let checkBarter = await post('redeem/check/barter',{})
+                if(checkBarter&&checkBarter.status=='ok'){
+                    let response2 = await post(`redeem`,{"privilege_id":this.props.data.id});
+                    app.isLoading = false;
+                    if(response2){
+                        app.isLoading = false;
+                        setTimeout(()=>{
+                            this.props.navigator.dismissModal({
+                                animationType: 'none' // 'none' / 'slide-down' , dismiss animation for the modal (optional, default 'slide-down')
+                            });
+                        },50)
+                        setTimeout(()=>{
+                            this.props.navigator.push({
+                                screen: "mti.MyCardScreen", // unique ID registered with Navigation.registerScreen
+                                passProps:{navigator:this.props.navigator},
+                                title: undefined, // navigation bar title of the pushed screen (optional)
+                                titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
+                                animated: true, // does the push have transition animation or does it happen immediately (optional)
+                                backButtonTitle: undefined, // override the back button title (optional)
+                                backButtonHidden: false, // hide the back button altogether (optional)
+                            })
+                        },160);
+                    }else{
+                        app.isLoading = false;
+                    }
+                    //this.setState({isLoading: false})
+                }else{
+                    console.log('redeem error')
+                    app.isLoading = false;
+                }
+            
         }else{
             let response2 = await post(`redeem`,{"privilege_id":this.props.data.id});
             app.isLoading = false;
@@ -77,6 +85,27 @@ export default class PrivilegeAgreementScreen extends Component{
                 app.isLoading = false;
             }
         }
+    }else{
+        let response2 = await post(`redeem/campaign`,{"campaign_id":this.props.data.id});
+            app.isLoading = false;
+            if(response2){
+                setTimeout(()=>{
+                    this.props.navigator.showModal({
+                        screen: 'mti.PrivilegeQrCodeScreen', // unique ID registered with Navigation.registerScreen
+                        title: undefined, // navigation bar title of the pushed screen (optional)
+                        titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
+                        passProps: {navigator:this.props.navigator,redeem:response2,data:this.props.data,item:this.props.item,isCampaign:true}, // Object that will be passed as props to the pushed screen (optional)
+                        animated: true, // does the push have transition animation or does it happen immediately (optional)
+                        backButtonTitle: undefined, // override the back button title (optional)
+                        backButtonHidden: false, // hide the back button altogether (optional)
+                        
+                    })
+                },500);
+               
+            }else{
+                app.isLoading = false;
+            }
+    }
    
     }
 
@@ -86,11 +115,12 @@ export default class PrivilegeAgreementScreen extends Component{
                 <Headers
                     headerTitleText='เงื่อนไขสำหรับใช้สิทธิ์'
                     leftIconName='close'
+                     hideRightIcon={true}
                 />
                 <ScrollView style={{flex: 1,}}>
                     <View style={styles.privilegeAgreementContainerStyle}>
                         <Text style={styles.privilegeTitleTextStyle}>{this.props.data.name}</Text>
-                        <Text style={styles.privilegeDurationTextStyle}></Text>
+                        {/* <Text style={styles.privilegeDurationTextStyle}></Text> */}
                         <Text style={styles.agreementTitleTextStyle}>เงื่อนไขสำหรับใช้สิทธิ์</Text>
                         {this.renderAgreementList()}
                         <MainSubmitButton

@@ -38,7 +38,7 @@ class TextInputIcon extends Component{
                     onCancelEditing={() => console.log('onCancel')}
                     onSubmitEditing={this.props.onSubmitEditing}
                     style={[styles.selectorStyle,{flex: this.props.thirdFlex}]}
-                    labelStyle={styles.selectorLabelStyle}
+                    labelStyle={Platform.OS=='android'?styles.selectorAndroidLabelStyle:styles.selectorLabelStyle}
                     itemStyle={styles.itemStyle}
                     buttonsTextSize={responsiveFontSize(3)}
                     placeholder={this.props.leftLabelText}
@@ -160,7 +160,14 @@ const styles={
     selectorLabelStyle:{
         color: '#1595d3',
         fontSize: responsiveFontSize(2.64),
-        textAlignVertical: 'center',
+        textAlignVertical: 'auto',
+        alignItems: 'flex-start',
+        justifyContent:'flex-start'
+    },
+    selectorAndroidLabelStyle:{
+        color: '#1595d3',
+        alignItems: 'flex-start',
+        justifyContent:'flex-start'
     },
     itemStyle:{
 

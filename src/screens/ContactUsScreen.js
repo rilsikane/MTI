@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Text,View,Image,TouchableOpacity,Linking,Alert} from 'react-native';
+import {Text,View,Image,TouchableOpacity,Linking,Alert,PermissionsAndroid,Platform} from 'react-native';
 import PropTypes from "prop-types";
 import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
 import Spinner from 'react-native-loading-spinner-overlay';
@@ -7,7 +7,8 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import {Headers} from '../components/Headers';
 import {MainSubmitButton} from '../components/MainSubmitButton';
 import Communications from 'react-native-communications';
-
+import Geolocation from 'react-native-geolocation-service';
+import { ifIphoneX,isIphoneX } from 'react-native-iphone-x-helper'
 export default class ContactUsScreen extends Component{
 
     constructor(props){
@@ -16,35 +17,57 @@ export default class ContactUsScreen extends Component{
             isLoading: false,
             userLatitude: '',
             userLongitude: '',
+            isLocationError:false
         }
     }
 
-    componentDidMount(){
-        this.setState({isLoading: true})
-        navigator.geolocation.getCurrentPosition(
-            (position) => {
-              this.setState({
-                userLatitude: position.coords.latitude,
-                userLongitude: position.coords.longitude,
-                isLoading: false,
-              })
-            },
-            (error) => {
+    async componentDidMount(){
+        
+        if(Platform.OS=="android"){
+            PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION);
+            const result = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION);  
+            this.setState({isLocationError:!result});
+        }
+        if(!this.state.isLocationError){
+            this.setState({isLoading: true})
+            Geolocation.getCurrentPosition(
+                (position) => {
+                this.setState({
+                    userLatitude: position.coords.latitude,
+                    userLongitude: position.coords.longitude,
+                    isLoading: false,
+                })
+                },
+                (error) => {
+                    this.setState({isLoading:false})
+                    Alert.alert(
+                        ' ',
+                        error.message,
+                        [
+                        {text: 'OK', onPress: () => {this.setState({
+                            isLoading: false,
+                        })}},
+                        ]
+                    )
+                },
+                {enableHighAccuracy: true,timeout: 20000,maxAge: 0,istanceFilter: 1 },
+            )
+        }else{
+            setTimeout(()=>{
                 Alert.alert(
                     ' ',
-                    error.message,
+                    'คุณไม่ได้ทำการเปิด Location Service',
                     [
                     {text: 'OK', onPress: () => {this.setState({
-                        isLoading: false,
+                        isLoading: false,locationError:false
                     })}},
                     ]
                 )
-            },
-            {enableHighAccuracy: true,timeout: 20000,maxAge: 0,istanceFilter: 1 },
-        )
+            },200)
+        }
     }
 
-    gotoBranchSearch(isMap,title){
+    gotoBranchSearch(isMap,title,isFc){
         if(isMap){
             if(this.state.userLatitude!=''&&this.state.userLongitude!=''){
                 setTimeout(()=>{
@@ -58,11 +81,12 @@ export default class ContactUsScreen extends Component{
                             data:{
                                 id: '1234',
                                 //13.7858124 100.5745153
-                                coordinate:{latitude: 13.7863725,longitude: 100.5745153},
+                                coordinate:{latitude: 13.7858604,longitude: 100.5747409},
                                 title: title,
                                 address: '252 ถ.รัชดาภิเษก แขวงห้วยขวาง เขตห้วยขวาง กรุงเทพฯ  10310',
                                 tel: '1484',
-                                latitude: 13.7863725,longtitude: 100.5745153
+                                latitude: 13.7858604,longtitude: 100.5747409,
+                                callnow:isFc?'022903339':'1484'
                             },
                             userLocation:{
                                 lat: this.state.userLatitude,
@@ -148,7 +172,7 @@ export default class ContactUsScreen extends Component{
                             resizeMode='contain'
                             style={styles.dotSectionImageStyle}
                         />
-                        <Text style={styles.contactTitleTextStyle}>Muang Thai Friends Club โทร. 1484 กด 3</Text>
+                        <Text style={styles.contactTitleTextStyle}>Muang Thai Friends Club โทร. 02-290-3339</Text>
                         <View style={styles.contactListSectionStyle}>
                             <View style={styles.iconGroupContainerStyle}>
                                 <TouchableOpacity onPress={()=>Linking.openURL(`mailto:crm@muangthaiinsurance.com?subject=ติดต่อจากแอพ Muang Thai Friends
@@ -159,7 +183,7 @@ export default class ContactUsScreen extends Component{
                                         style={styles.iconImageStyle}
                                     />
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={()=>this.gotoBranchSearch(true,'Muang Thai Friends Club')}>
+                                <TouchableOpacity onPress={()=>this.gotoBranchSearch(true,'Muang Thai Friends Club',true)}>
                                     <Image
                                         source={require('../source/icons/iconMapMarker01.png')}
                                         resizeMode='contain'
@@ -167,7 +191,7 @@ export default class ContactUsScreen extends Component{
                                     />
                                 </TouchableOpacity>
                             </View>
-                            <TouchableOpacity style={styles.iconGroupContainerStyle} onPress={()=>Communications.phonecall("1484", true)}>
+                            <TouchableOpacity style={styles.iconGroupContainerStyle} onPress={()=>Communications.phonecall("02-290-3339", true)}>
                                 <Image
                                     source={require('../source/icons/iconPhone02.png')}
                                     resizeMode='contain'
@@ -188,6 +212,7 @@ export default class ContactUsScreen extends Component{
                     </View>
                     <TouchableOpacity onPress={()=>Linking.openURL('http://www.muangthaiinsurance.com/index_mti.html')} style={styles.topBannerImageContainerStyle} style={styles.topBannerImageContainerStyle}>
                         <Image
+                            resizeMode="contain"
                             source={require('../source/images/serviceBannerImg02.png')}
                             style={styles.topBannerImageContainerStyle}
                         />
@@ -208,7 +233,7 @@ const styles={
         flex: 1,
     },
     topBannerImageContainerStyle:{
-        height: responsiveHeight(18.30),
+        height: responsiveHeight(isIphoneX() ? 16:18.30),
         width: responsiveWidth(100),
     },
     contactListContainerStyle:{

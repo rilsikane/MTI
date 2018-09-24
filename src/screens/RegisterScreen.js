@@ -52,14 +52,11 @@ export default class RegisterScreen extends Component{
     }
     componentDidMount(){
         if(this.props.registerStore.user){
-            this.setState({isLoading:true})
+            this.setState({isLoading:true,firstLogon:true})
             this.props.registerStore.register = {...this.props.registerStore.user};
             setTimeout(()=>{
-                this.setState({pageNumber:2,firstLogon:true});
-                this._pages.scrollToPage(1);
                 this.setState({isLoading:false});
-            },2500)
-         
+            },500)
         }
     }
 
@@ -216,7 +213,7 @@ export default class RegisterScreen extends Component{
                             blurOnSubmit={true}
                             maxLength={10}
                         />
-                        {this.state.telErr && <Text style={styles.errorMsg}>เบอร์โทรศัพท์ของท่านไม่ถูกต้อง    </Text>}
+                        {this.state.telErr ? <Text style={styles.errorMsg}>เบอร์โทรศัพท์ของท่านไม่ถูกต้อง    </Text>:null}
                         <TextInputIcon
                             value={this.state.email}
                             onChangeText={(email)=>this.setState({email:email})}
@@ -238,14 +235,14 @@ export default class RegisterScreen extends Component{
                             returnKeyType = {"done"}
                             
                         />
-                        {this.state.emailErr && <Text style={styles.errorMsg}>รูปแบบ E-mail ของท่านไม่ถูกต้อง</Text>}
+                        {this.state.emailErr ? <Text style={styles.errorMsg}>รูปแบบ E-mail ของท่านไม่ถูกต้อง</Text>:null}
                     </View>
-                    {this.isShowSumbit() && <View style={styles.submitButtonContainerStyle}>
+                    {this.isShowSumbit() ? <View style={styles.submitButtonContainerStyle}>
                         <MainSubmitButton
                             buttonTitleText='ตกลง'
                             onPress={()=>this.requestContact()}
                         />
-                    </View>}
+                    </View>:null}
                 </KeyboardAwareScrollView>
             </PopupDialog>
         )
@@ -307,7 +304,7 @@ export default class RegisterScreen extends Component{
     _renderAgreements = ({item,index}) => (
         <View>
             <Text style={[styles.popupAgreementSubTitleTextStyle,{textAlign: 'left'}]}>{`${++index}.   ${item.title}`}</Text>
-            {item.titleDesc&&<Text style={[styles.popupAgreementDetailTextStyle,{marginLeft: responsiveWidth(3)}]}>{`${item.titleDesc}`}</Text>}      
+            {item.titleDesc?<Text style={[styles.popupAgreementDetailTextStyle,{marginLeft: responsiveWidth(3)}]}>{`${item.titleDesc}`}</Text>:null}      
             <FlatList
                 data={item.subTitle}
                 keyExtractor={this._keyExtractor}
@@ -345,7 +342,7 @@ export default class RegisterScreen extends Component{
                         setTimeout(()=>{
                         Alert.alert(
                             ' ',
-                            'ท่านเป็นสมาชิกของเราอยู่แล้วรบกวนlog in เพื่อเข้าระบบ สอบถามเพิ่มเติมติดต่อ 1484',
+                            `พบข้อมูลของท่านในระบบสมาชิก mticonnect.com\nท่านสามารถใช้ Usernameและ Password เดียวกันเพื่อเข้าระบบได้เลยค่ะ`,
                             [
                             {text: 'ตกลง', onPress: () =>{
                                
@@ -353,6 +350,16 @@ export default class RegisterScreen extends Component{
                                
                             }
                             }
+                            ]
+                        )
+                        },500)
+                    }else{
+                        setTimeout(()=>{
+                            Alert.alert(
+                            ' ',
+                            `${response.message}`,
+                            [
+                            {text: 'OK', onPress: () => console.log('OK Pressed!')},
                             ]
                         )
                         },500)
@@ -406,8 +413,8 @@ export default class RegisterScreen extends Component{
                     this.setState({isLoading:false});
                 }
             }else{
-                this.setState({enable:true,pageNumber:3});
-                this._pages.scrollToPage(3);
+                this.setState({enable:true,pageNumber:2});
+                this._pages.scrollToPage(1);
                 this.setState({enable:false});
             }
            
@@ -432,12 +439,21 @@ export default class RegisterScreen extends Component{
                 this.setState({isLoading:false});
                 if(!response.message){
                     this.props.registerStore.register.refcode = response.refcode;
-                    this.setState({enable:true,pageNumber:4});
-                    setTimeout(()=>{
-                        this._pages.scrollToPage(4);
-                    },100)
-                    this.setState({enable:false});
+                    if(!this.state.firstLogon){
+                        this.setState({enable:true,pageNumber:4});
+                        setTimeout(()=>{
+                            this._pages.scrollToPage(4);
+                        },100)
+                        this.setState({enable:false});
+                    }else{
+                        this.setState({enable:true,pageNumber:2});
+                        setTimeout(()=>{
+                            this._pages.scrollToPage(2);
+                        },100)
+                        this.setState({enable:false});
+                    }
                 }else{
+                    this.setState({isLoading:false})
                     Alert.alert(
                         ' ',
                         response.message,
@@ -568,7 +584,7 @@ export default class RegisterScreen extends Component{
                 },100)  
             }
         }else{
-            if(this.state.pageNumber==2 && this.props.registerStore.user){
+            if(this.state.pageNumber==1 && this.props.registerStore.user){
                 this.props.registerStore.register = {};
                 this.props.registerStore.user = undefined;
                 setTimeout(()=>{
@@ -591,12 +607,15 @@ export default class RegisterScreen extends Component{
                     headerTitleText='ลงทะเบียนสมาชิก'
                     cancel={this.onCancel}
                     cancelTxt={this.state.pageNumber==1?'ยกเลิก':'กลับ'}
+                    hideRightIcon={true}
                     //rightIconName='iconBell'
                 />
                 <PageIndicators
+                    numberOfPage={this.state.firstLogon?3:undefined}
                     pageNumber={this.state.pageNumber}
                 />
-                {this.props.registerStore.register && <Pages
+                {!this.state.firstLogon && this.props.registerStore.register ? 
+                <Pages
                     ref={this.updateRef} 
                     indicatorPosition='none'
                     onScrollEnd={this.onScrollEnd.bind(this)}
@@ -623,12 +642,35 @@ export default class RegisterScreen extends Component{
                         onRequestNewOtpButtonPress={this._onRequestNewOtpButtonPress.bind(this)}
                     />
                         
-                </Pages>}
+                </Pages>:
+                <Pages
+                ref={this.updateRef} 
+                indicatorPosition='none'
+                onScrollEnd={this.onScrollEnd.bind(this)}
+                isDragging={false} 
+                scrollEnabled={this.state.enable}
+                >
+                <RegisterStep2 firstLogon={this.state.firstLogon} pageNumber={this.state.pageNumber}
+                    onSubmitRegister2Press={this._onSubmitRegister2Press.bind(this)} 
+                    openLeavingDialog={this.openLeavingContactPopup} 
+                    closeLeavingDialog={()=>this.leavingDialog.close()}
+                    onHyperLinkPress={()=>this.agreementDialog.show()}
+                />
+                <RegisterStep4_1 firstLogon={this.state.firstLogon} pageNumber={this.state.pageNumber}
+                    onSubmitRegister4_1Press={this._onSubmitRegister4_1Press.bind(this)}
+                />
+                <RegisterStep4_2
+                    onSubmitRegister4_2Press={this._onSubmitRegister4_2Press.bind(this)}
+                    onRequestNewOtpButtonPress={this._onRequestNewOtpButtonPress.bind(this)}
+                />
+                    
+            </Pages>
+                }
                        
                 {this.renderLeavingContactPopup()}
                 {this.renderPopup()}
                 {this.renderAgreementPopup()}
-                {this.state.isLoading && <Spinner visible={this.state.isLoading}  textStyle={{color: '#FFF'}} />}
+                {this.state.isLoading ? <Spinner visible={this.state.isLoading}  textStyle={{color: '#FFF'}} />:null}
             </View>
             
         )

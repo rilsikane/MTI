@@ -47,7 +47,7 @@ class ServiceListCard extends Component{
     }
 
     gotoMap(item){
-        if(item.type_id==='1'){
+        if(item.type_id==='1'||item.type_id==='4'){
             this.props.navigator.showModal({
                 screen: 'mti.ServiceSearchHospitalScreen', // unique ID registered with Navigation.registerScreen
                 title: undefined, // navigation bar title of the pushed screen (optional)

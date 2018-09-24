@@ -22,20 +22,7 @@ export default class ActivityOnNextDetailScreen extends Component{
 
     renderNewEventCard(){
         let activity=[
-            {
-                bannerUri: require('../source/images/activityImg02.png'),
-                iconText: '15',
-                iconTitleText: 'มกราคม',
-                activityTitleText: 'Movie Free Day',
-                activityDetailText: 'Black Panther',
-            },
-            {
-                bannerUri: require('../source/images/activityImg03.png'),
-                iconText: '15',
-                iconTitleText: 'มกราคม',
-                activityTitleText: 'Concert',
-                activityDetailText: 'คอนเสิร์ต Korean Music Wave in Bangkok',
-            },
+            
         ]
 
         return(
@@ -62,35 +49,35 @@ export default class ActivityOnNextDetailScreen extends Component{
     _keyExtractor = (item, index) => index.toString();
 
     
-    renderMoreImagePopup(){
-        const imageUriList=[
-            {
-                uri: require('../source/images/latestActImg.png')
-            },
-            {
-                uri: require('../source/images/activityImg04.png')
-            },
-            {
-                uri: require('../source/images/activityImg04.png')
-            },
-            {
-                uri: require('../source/images/activityImg04.png')
-            },
-            {
-                uri: require('../source/images/activityImg04.png')
-            }
-        ]
-        return(
-            <ImageListPopup
-                data={imageUriList}
-                show={this.state.showMoreImage}
-                onClose={()=>this.setState({showMoreImage: false})}
-                onDismissed={()=>this.setState({showMoreImage: false})}
-                title={'Cupcake Workshops & Master classes'}
-            />
-        )
+    // renderMoreImagePopup(){
+    //     const imageUriList=[
+    //         {
+    //             uri: require('../source/images/latestActImg.png')
+    //         },
+    //         {
+    //             uri: require('../source/images/activityImg04.png')
+    //         },
+    //         {
+    //             uri: require('../source/images/activityImg04.png')
+    //         },
+    //         {
+    //             uri: require('../source/images/activityImg04.png')
+    //         },
+    //         {
+    //             uri: require('../source/images/activityImg04.png')
+    //         }
+    //     ]
+    //     return(
+    //         <ImageListPopup
+    //             data={imageUriList}
+    //             show={this.state.showMoreImage}
+    //             onClose={()=>this.setState({showMoreImage: false})}
+    //             onDismissed={()=>this.setState({showMoreImage: false})}
+    //             title={'Cupcake Workshops & Master classes'}
+    //         />
+    //     )
 
-    }
+    // }
 
     render(){
         let comment = [
@@ -113,7 +100,7 @@ export default class ActivityOnNextDetailScreen extends Component{
                     <View style={styles.activityDetailContainerStyle}>
                         <View style={styles.activityBannerImageContainerStyle}>
                             <ImageBackground
-                                source={require('../source/images/newEventImg.png')}
+                                source={require('../source/images/banner-gift.jpg')}
                                 //resizeMode='stretch'
                                 borderRadius={3}
                                 style={styles.bannerImageStyle}

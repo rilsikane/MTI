@@ -6,23 +6,33 @@ import store from 'react-native-simple-store';
 
 import { observer, inject } from 'mobx-react';
 import app from '../stores/app';
+import {get} from '../api';
 @inject('userStore','registerStore')
 @observer
 class UserShortDetailCard extends Component{
 
     constructor(props){
         super(props)
-        this.state = {user:{}};
+        this.state = {user:{},isLoadig:true};
         this.gotoRegister = this.gotoRegister.bind(this);
     }
     async componentDidMount(){
         let user = await store.get("user");
+        this.setState({isLoadig:true})
         if(!user){
             user = {};
             user.name = "GUEST";
             user.surname = "";
+            user.profile_img = "https://mtifriends.muangthaiinsurance.com/uploads/profile-pic/default.png";
+        }else{
+            let userResponse = await get("me",{})
+            if(userResponse){
+                store.update("user",userResponse)
+                user = userResponse;
+            }
         }
-        this.setState({user:user});
+        this.setState({user:user,isLoadig:false});
+        this.props.userStore.user = user;
         this.app = app;
     }
 
@@ -48,12 +58,12 @@ class UserShortDetailCard extends Component{
     }
 
     render(){
-        return(
+        return !this.state.isLoadig ? (
             <View style={styles.userShortDetailCardContainerStyle}>
                 <View style={styles.userAvatarContainerStyle}>
                     <View style={styles.avatarBorderStyle}>
                         <Image
-                            source={{uri:this.props.userStore.user.profile_img}}
+                            source={{uri:this.state.user.profile_img}}
                             style={styles.userAvatarImageStyle}
                             resizeMode='cover'
                         />
@@ -127,7 +137,7 @@ class UserShortDetailCard extends Component{
                     }
                 </View>}
             </View>
-        )
+        ): <View style={styles.userShortDetailCardContainerStyle}></View>
     }
 }
 
@@ -211,11 +221,13 @@ const styles={
     },
     userQrContainerStyle:{
         flex: 0.2,
-        alignItems: 'center',
-        justifyContent: 'flex-end'
+        alignItems: 'flex-end',
+        justifyContent: 'flex-end',
+        paddingRight: responsiveWidth(1),
     },
     userQrImageStyle:{
         height: responsiveHeight(4.22),
+        width: responsiveHeight(4.22),
         alignSelf: 'center',
 
     },

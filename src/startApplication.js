@@ -1,18 +1,25 @@
 import { Navigation } from 'react-native-navigation';
 import Provider from './lib/MobxRnnProvider';
 import Store from './stores/store';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { responsiveHeight, responsiveWidth, responsiveFontSize} from 'react-native-responsive-dimensions';
 import store from 'react-native-simple-store';
-import {Platform} from 'react-native';
+import {Platform,Dimensions} from 'react-native';
+import { ifIphoneX,isIphoneX } from 'react-native-iphone-x-helper'
+import { createIconSetFromFontello } from 'react-native-vector-icons';
+import fontelloConfig from '../assets/fonts/config.json'
+const IconTello = createIconSetFromFontello(fontelloConfig);
 
 async function prepareIcons() {
   const icons = await Promise.all([
-    Icon.getImageSource('clone', 25),
-    Icon.getImageSource('arrow-to-bottom', 25),
+    IconTello.getImageSource('icontap-01', 35),
+    IconTello.getImageSource('icontap-02', 35),
+    IconTello.getImageSource('icontap-04', 35),
+    IconTello.getImageSource('icontap-05', 35),
+    IconTello.getImageSource('icontap-03', 50),
   ]);
-  const [home, inbox] = icons;
-  return { home, inbox};
+  const [home, gift, news,setting,star] = icons;
+  return { home, gift,news,setting,star};
 }
 prepareIcons();
 export default async function startApplication(root) {
@@ -27,38 +34,65 @@ export default async function startApplication(root) {
             navBarBlur: false,
             drawUnderNavBar: true,
             navBarTransparent: true,
-            navBarHidden: true , 
+            navBarHidden: true ,
+            navBarBackgroundColor: 'transparent', 
             }
         });
       return;
         case 'after-login':
-        setTimeout(()=>{
         Navigation.startTabBasedApp({
           tabs: [
             {
               label: 'หน้าหลัก',
               //screen: 'staffio.Overview',
               screen: 'mti.DashboardScreen',
-              icon: require('../src/source/images/default_11.png'),
+              icon: icons.home,
               title: undefined,
               tabBarText:'Workpool',
+              navigatorStyle: {},
+             
+            },
+            {
+              label: 'ของขวัญ',
+              screen: 'mti.CampaignScreen',
+              icon: icons.gift,
+              title: undefined,
               navigatorStyle: {},
             },
              {
               label: 'สิทธิพิเศษ',
+              icon: Platform.OS ==='ios' ? require('../src/source/images/icon1.png'):icons.star,
               screen: 'mti.PrivilegeScreen',
-              icon: require('../src/source/images/default_13.png'),
               title: undefined,
               navigatorStyle: {},
+              center:true,
+              isIntercept:true,
+              iconInsets: Platform.OS=="ios" ? { // add this to change icon position (optional, iOS only).
+                top:-13, // optional, default is 0.
+                left: 0, // optional, default is 0.
+                bottom: 13, // optional, default is 0.
+                right: 0 // optional, default is 0.
+              }:null,
+            },
+            
+            {
+              label: 'กิจกรรม',
+              screen: 'mti.ActivityScreen',
+              icon: icons.news,
+              title: undefined,
+              navigatorStyle: {},
+              
             },
             {
               label: 'บริการ',
               screen: 'mti.ServiceScreen',
-              icon: require('../src/source/images/default_17.png'),
+              icon: icons.setting,
               title: undefined,
               navigatorStyle: {},
+             
             },
           ],
+          
             drawer: {
               // optional, add this if you want a side menu drawer in your app
               left: {
@@ -80,16 +114,17 @@ export default async function startApplication(root) {
               disableOpenGesture: true // optional, can the drawer, both right and left, be opened with a swipe instead of button
             },
             tabsStyle:{
-              tabBarButtonColor: '#9B9B9B', // change the color of the tab icons and text (also unselected)
-              tabBarSelectedButtonColor: 'rgb(253, 98, 98)', // change the color of the selected tab icon and text (only selected)
+              tabBarSelectedButtonColor: 'rgb(253, 98, 98)',
+              tabBarButtonColor: '#666666',
               tabBarBackgroundColor: '#ffffff', // change the background color of the tab bar
-              tabBarTranslucent: true, // change the translucent of the tab bar to false
-              tabBarLabelColor: '#333333', // iOS only. change the color of tab text
+              tabBarLabelColor: '#666666', // iOS only. change the color of tab text
               tabBarSelectedLabelColor: 'rgb(253, 98, 98)', // iOS only. change the color of the selected tab text
               forceTitlesDisplay: true, // Android only. If true - Show all bottom tab labels. If false - only the selected tab's label is visible.
               tabBarTextFontFamily: 'DBHelvethaicaX-Reg',
-              tabFontSize: responsiveFontSize(5),
-              selectedTabFontSize: responsiveFontSize(5),
+              tabFontSize: responsiveFontSize(2),
+              selectedTabFontSize: responsiveFontSize(2),
+              tabBarTranslucent:true,
+              tabBarHideShadow:false
             },
             appStyle: {
             orientation: 'portrait',
@@ -98,20 +133,30 @@ export default async function startApplication(root) {
             navBarTransparent: true,
             navBarHidden: true  ,
             navBarBackgroundColor: '#f58020',
-            tabBarButtonColor: '#9B9B9B', // change the color of the tab icons and text (also unselected)
+            tabBarButtonColor: '#666666', // change the color of the tab icons and text (also unselected)
             tabBarSelectedButtonColor: 'rgb(253, 98, 98)', // change the color of the selected tab icon and text (only selected)
-            tabBarBackgroundColor: '#ffffff', // change the background color of the tab bar
-            tabBarTranslucent: true, // change the translucent of the tab bar to false
-            tabBarLabelColor: '#333333', // iOS only. change the color of tab text
+            tabBarBackgroundColor: '#f6f6f6', // change the background color of the tab bar
+            tabBarTranslucent: false, // change the translucent of the tab bar to false
+            tabBarLabelColor: '#666666', // iOS only. change the color of tab text
             tabBarSelectedLabelColor: 'rgb(253, 98, 98)', // iOS only. change the color of the selected tab text
             forceTitlesDisplay: true, // Android only. If true - Show all bottom tab labels. If false - only the selected tab's label is visible.
             tabBarTextFontFamily: 'DBHelvethaicaX-Reg',
+            
             },
+            overlay: {
+            screen: 'mti.MiddleButtonScreen',
+            position: {
+              top: Dimensions.get("window").height,
+              left: Dimensions.get("window").width / 2 - 28,
+              height: 56,
+              width: 56
+            }
+          },
             animationType: 'fade',
             lazyload:true
         });
         
-      },100);
+      
       return;
         // case 'pincode':
         // Navigation.startSingleScreenApp({

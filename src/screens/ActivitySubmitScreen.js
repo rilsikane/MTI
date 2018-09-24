@@ -17,8 +17,8 @@ export default class ActivitySubmitScreen extends Component{
         return(
             <View style={styles.activitySubmitScreenContainerStyle}>
                 <Headers
-                    leftIconName='close'
-                    headerTitleText='ขอเข้าร่วมกิจกรรม'
+                    headerTitleText='จองสิทธิ์เข้าร่วมกิจกรรม'
+                    hideRightIcon={true}
                 />
                 <View style={styles.activitySubmitContainerStyle}>
                     <View style={styles.logoContainerStyle}>
@@ -32,16 +32,16 @@ export default class ActivitySubmitScreen extends Component{
                     <Text style={styles.submitDescTextStyle}>คุณจะได้รับสิทธิ์ในการเข้าร่วมกิจกรรมหลังจากเจ้าหน้าที่ติดต่อกลับ{'\n'}ทางโทรศัพท์เท่านั้น</Text>
                     <MainSubmitButton
                         buttonTitleText='ตกลง'
-                        onPress={()=>alert('ตกลง')}
+                        onPress={()=>this.props.navigator.dismissModal()}
                         style={styles.submitButtonStyle}
                     />
-                    <View style={styles.promotionContainerStyle}>
+                    {/* <View style={styles.promotionContainerStyle}>
                         <Image
                             source={require('../source/images/promotionImg.png')}
                             resizeMode='stretch'
                             style={styles.promotionImageStyle}
                         />
-                    </View>
+                    </View> */}
                 </View>
             </View>
         )
@@ -51,6 +51,7 @@ export default class ActivitySubmitScreen extends Component{
 const styles={
     activitySubmitScreenContainerStyle:{
         flex: 1,
+        backgroundColor:"#fff"
     },
     activitySubmitContainerStyle:{
         flex: 1,

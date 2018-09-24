@@ -5,6 +5,7 @@ class AppStore {
   @observable root = undefined; // 'login' / 'after-login'
   @observable isLoading = false; // 'login' / 'after-login'
   @observable fontSize = 1;
+  @observable badge = 0;
 
   constructor() {
     
@@ -13,7 +14,6 @@ class AppStore {
   async appInitialized() {
     
     let userData = await store.get("user");
-    let setting = await store.get("setting");
     if (userData == null) {
       this.root = 'login';
     }else{
@@ -55,6 +55,8 @@ class AppStore {
     store.delete("user");
     store.delete("policy");
     store.delete("token");
+    store.delete("privilegeGroup");
+    store.delete("badge");
     // if(userData && userData.pinCode){
     //   this.root = 'pincode';
     // }else{

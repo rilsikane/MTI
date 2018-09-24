@@ -3,7 +3,7 @@ import {Text,View,Image,ScrollView} from 'react-native';
 import PropTypes from "prop-types";
 import {Tab,Tabs,TabHeading,ScrollableTab} from 'native-base';
 import {responsiveHeight,responsiveWidth,responsiveFontSize} from 'react-native-responsive-dimensions';
-
+import FastImage from 'react-native-fast-image'
 class LifeStyleTabs extends Component{
 
     constructor(props){
@@ -55,7 +55,7 @@ class LifeStyleTabs extends Component{
                     <TabHeading 
                         style={styles.tabHeadingStyle}
                     >
-                        <Image
+                        <FastImage
                             //source={tab.isActive?tab.activeIcon:tab.inActiveIcon}
                             source={tab.icon_url ? {uri:tab.icon_url}:tab.icon}
                             resizeMode='contain'

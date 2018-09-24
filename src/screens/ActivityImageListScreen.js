@@ -13,13 +13,23 @@ export default class ActivityImageListScreen extends Component{
         this.state={
             imageListModalVisibled: false,
             imageIndex: 0,
+            gallery:[]
         }
+    }
+    componentDidMount(){
+        let gallery = this.props.detail.gallery.map(gal => 
+            {
+                return {url:gal}
+            });
+        this.setState({gallery:gallery});
     }
 
     renderImageList(){
+        if(this.state.gallery){
+       
         return(
             <FlatList
-                data={imageList}
+                data={this.state.gallery}
                 renderItem={this._renderItem}
                 style={{marginTop: responsiveHeight(2),alignSelf: 'center',}}            
                 //columnWrapperStyle={{alignItems: 'center'}}
@@ -27,6 +37,9 @@ export default class ActivityImageListScreen extends Component{
                 keyExtractor={(item,index)=>index.toString()}
             />
         )
+        }else{
+            return null;
+        }
     }
 
     _renderItem=({item,index})=>(
@@ -51,6 +64,7 @@ export default class ActivityImageListScreen extends Component{
     }
     
     render(){
+        
         return(
             <View style={styles.activityImageListScreenContainerStyle}>
                 <Headers
@@ -60,7 +74,7 @@ export default class ActivityImageListScreen extends Component{
                 />
                 <View style={styles.activityImageListContainerStyle}>
                     <View style={styles.titleContainerStyle}>
-                        <Text style={styles.activityTitleTextStyle}>เนรมิตลุคสวยกับเมืองไทยประกันภัย Beauty Workshop by Shiseido</Text>            
+                        <Text style={styles.activityTitleTextStyle}>{this.props.detail.title}</Text>            
                         <Image
                             source={require('../source/icons/iconDotSection01.png')}
                             resizeMode='contain'
@@ -72,7 +86,7 @@ export default class ActivityImageListScreen extends Component{
                                 resizeMode='contain'
                                 style={styles.albumIconStyle}
                             />
-                            <Text style={styles.albumTotalTextStyle}>26 รูป</Text>
+                            <Text style={styles.albumTotalTextStyle}>{this.props.detail.gallery.length} รูป</Text>
                         </View>
                     </View>
                     {this.renderImageList()}
@@ -80,7 +94,8 @@ export default class ActivityImageListScreen extends Component{
                 <ImageGalleryPage
                     index={this.state.imageIndex}
                     onChange={(index)=>this.onImageChange(index)}
-                    data={imageList}
+                    data={this.state.gallery}
+                    title={this.props.detail.title}
                     visible={this.state.imageListModalVisibled}
                     onClose={()=>this.setState({imageListModalVisibled: false})}
                    

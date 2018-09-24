@@ -32,18 +32,18 @@ const styles={
         width: responsiveWidth(86.25),
     },
     bannerImageContainerStyle:{
-        height: responsiveHeight(19.01),
+        height: responsiveHeight(22),
         width: responsiveWidth(86.25),
         marginBottom: responsiveHeight(1),
     },
     bannerImageStyle:{
-        height: responsiveHeight(19.01),
+        height: responsiveHeight(22),
         width: responsiveWidth(86.25),
         alignSelf: 'center',
     },
     eventTitleTextStyle:{
         color: '#1595d3',
-        fontSize: responsiveFontSize(3),
+        fontSize: responsiveFontSize(2.3),
 
     },
     eventDetailTextStyle:{

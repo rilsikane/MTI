@@ -1,0 +1,65 @@
+{
+  "project_info": {
+    "project_number": "782571707377",
+    "firebase_url": "https://mtiapplication.firebaseio.com",
+    "project_id": "mtiapplication",
+    "storage_bucket": "mtiapplication.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:782571707377:android:f5f245f2bbee2b1a",
+        "android_client_info": {
+          "package_name": "com.mti"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "782571707377-ji3bc3flmdp6f2e1dcc4a4a5m0m1m2vk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:782571707377:android:c5a073bf06dd5404",
+        "android_client_info": {
+          "package_name": "com.mti.insurance.friends"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "782571707377-ji3bc3flmdp6f2e1dcc4a4a5m0m1m2vk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

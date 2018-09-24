@@ -27,7 +27,7 @@ export default class ServicePolicyScreen extends Component{
     _renderAgreements = ({item,index}) => (
         <View>
             <Text style={[styles.popupAgreementSubTitleTextStyle,{textAlign: 'left'}]}>{`${++index}.   ${item.title}`}</Text>
-            {item.titleDesc&&<Text style={[styles.popupAgreementDetailTextStyle,{marginLeft: responsiveWidth(3)}]}>{`${item.titleDesc}`}</Text>}      
+            {item.titleDesc?<Text style={[styles.popupAgreementDetailTextStyle,{marginLeft: responsiveWidth(3)}]}>{`${item.titleDesc}`}</Text>:null}      
             <FlatList
                 data={item.subTitle}
                 keyExtractor={this._keyExtractor}
@@ -50,6 +50,7 @@ export default class ServicePolicyScreen extends Component{
                     leftIconName='cancel'
                     headerTitleText='เงื่อนไขการให้บริการ'
                     cancel={()=>this.props.navigator.dismissModal()}
+                    hideRightIcon={true}
                 />
                 <ScrollView style={{flex: 1,}}>
                     <View style={styles.policyContentContainerStyle}>

@@ -65,6 +65,7 @@ export default class ForgotPasswordScreen extends Component{
                         navigatorStyle: {}, // override the navigator style for the pushed screen (optional)
                         navigatorButtons: {} // override the nav buttons for the pushed screen (optional)
                       })}
+                     hideRightIcon={true}
                 />
                 <View style={styles.forgotPasswordDetailContainerStyle}>
                     <Text style={styles.titleTextStyle}>กรุณากรอกอีเมล หรือ เบอร์โทรศัพท์ของคุณ{'\n'}เพื่อกำหนดรหัสผ่านใหม่</Text>

@@ -66,10 +66,10 @@ class RegisterStep4_1 extends Component{
                         </View>
                     }
                     <View style={styles.submitButtonContainerStyle}>
-                        <MainSubmitButton
+                        {!this.state.telErr ? <MainSubmitButton
                             buttonTitleText='รับรหัส OTP'
                             onPress={this.onSubmitRegister4_1Press}
-                        />
+                        />:null}
                     </View>
                 </View>
             </View>

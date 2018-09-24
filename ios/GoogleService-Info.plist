@@ -7,9 +7,9 @@
 	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
 	<string>ca-app-pub-3940256099942544/4411468910</string>
 	<key>CLIENT_ID</key>
-	<string>782571707377-jm2dtfta7hm5n47imjc5jj108659ocoh.apps.googleusercontent.com</string>
+	<string>782571707377-majsbbmu4pgg36j0murvm8lvlb3tja2p.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.782571707377-jm2dtfta7hm5n47imjc5jj108659ocoh</string>
+	<string>com.googleusercontent.apps.782571707377-majsbbmu4pgg36j0murvm8lvlb3tja2p</string>
 	<key>API_KEY</key>
 	<string>AIzaSyDUx0H-ij8XyzaHg_4pkEw6kCmQ7JXk-VE</string>
 	<key>GCM_SENDER_ID</key>
@@ -17,7 +17,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.mti.friend</string>
+	<string>com.mti.insurance.friends</string>
 	<key>PROJECT_ID</key>
 	<string>mtiapplication</string>
 	<key>STORAGE_BUCKET</key>
@@ -33,7 +33,7 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:782571707377:ios:f20f2e07762ec321</string>
+	<string>1:782571707377:ios:c5a073bf06dd5404</string>
 	<key>DATABASE_URL</key>
 	<string>https://mtiapplication.firebaseio.com</string>
 </dict>

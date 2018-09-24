@@ -7,14 +7,14 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
 import { ifIphoneX,isIphoneX } from 'react-native-iphone-x-helper'
 import { observer, inject } from 'mobx-react';
-
-@inject('naviStore')
+import app from '../stores/app';
+@inject('naviStore','userStore')
 @observer
 class Headers extends Component{
 
     constructor(props){
         super(props)
-
+        this.app = app;
     }
 
     renderLeftButton(){
@@ -66,7 +66,7 @@ class Headers extends Component{
     renderCenterItems(){
         if(this.props.headerTitleText!=null){
             return(
-                <Text numberOfLines={1} style={styles.textTitleStyle}>{this.props.headerTitleText}</Text>
+                <Text numberOfLines={1} style={[styles.textTitleStyle,this.props.titleStyle]}>{this.props.headerTitleText}</Text>
             )
         }else{
             return(
@@ -76,41 +76,34 @@ class Headers extends Component{
     }
 
     renderRightButton(){
-        if(this.props.rightIconName=='iconBell'){
-            return
-            // (
-                // <TouchableOpacity style={styles.rightIconContainerStyle}>
-                //     {this.renderBadge()}
-                //     <Image
-                //         source={require('./../source/icons/iconBell.png')}
-                //         style={styles.rightIconImageStyle}
-                //         resizeMode='contain'
-                //     />
-                // </TouchableOpacity>
-            // )
-            null;
-        }else if(this.props.rightIconName=='cancel'){
-            return(
-                <TouchableOpacity style={{backgroundColor:"transparent",flexDirection:"column"}} 
-                  onPress={(e)=> this.props.cancel()}>
-                      <Icon name="times" style={{fontSize: responsiveFontSize(2.5),paddingRight:10,color: '#FFF'}}></Icon>
-                  </TouchableOpacity>
-            )
-        }
-        else{
-            return(
-                <View style={styles.headersBlankItemStyle}/>
-            )
-        }
+       
+        return <TouchableOpacity onPress={()=>{
+            this.props.naviStore.navigation.push({
+                screen: "mti.NotificationScreen", // unique ID registered with Navigation.registerScreen
+                title: undefined, // navigation bar title of the pushed screen (optional)
+                titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
+                animated: false, // does the push have transition animation or does it happen immediately (optional)
+                backButtonTitle: undefined, // override the back button title (optional)
+                backButtonHidden: false, // hide the back button altogether (optional)
+            })
+            }} style={styles.rightIconContainerStyle}>
+                {this.renderBadge()}
+                <Image
+                    source={require('./../source/icons/iconBell.png')}
+                    style={styles.rightIconImageStyle}
+                    resizeMode='contain'
+                />
+            </TouchableOpacity>
     }
 
     renderBadge(){
-        let notify = this.props.notify
+        let notify = this.app.badge;
 
-        if(notify!=null){
+        if(notify!=null && notify!=0){
+            
             return(
                 <View style={styles.badgeTextContainerStyle}>
-                    <Text style={styles.badgeTextStyle}>{notify}</Text>
+                    <Text style={styles.badgeTextStyle}>{this.app.badge}</Text>
                 </View>
             )
         }else{
@@ -133,11 +126,11 @@ class Headers extends Component{
                         <View style={[styles.headerLeftItemContainerStyle,this.props.longTitle&&styles.sideItemWithLongTitleStyle,this.props.withSearch&&styles.leftItemWithSearchStyle]}>
                             {this.renderLeftButton()}
                         </View>
-                        <View style={[styles.headerCenterItemContainerStyle,this.props.longTitle&&{flex: 0.8}]}>
+                        <View style={[styles.headerCenterItemContainerStyle,this.props.longTitle&&{flex: 0.6}]}>
                             {this.renderCenterItems()}
                         </View>
                         <View style={[styles.headerRightItemContainerStyle,this.props.longTitle&&styles.sideItemWithLongTitleStyle,this.props.withSearch&&styles.rightItemWithSearchStyle]}>
-                            {this.renderRightButton()}
+                            {!this.props.hideRightIcon && (this.props.userStore.user && this.props.userStore.user.name != "GUEST") && this.renderRightButton()}
                         </View>
                     </View>
                     <View style={styles.bannerBottomLineStyle}/>
@@ -147,11 +140,11 @@ class Headers extends Component{
     }
 }
 
-const padTop = Platform.OS === 'ios' ? isIphoneX() ? 50:20:30
+const padTop = Platform.OS === 'ios' ? isIphoneX() ? 30:20:30
 
 const styles={
     headerImageBackgroundStyle:{
-        height: isIphoneX() ? responsiveHeight(13) : responsiveHeight(9.85),
+        height: isIphoneX() ? responsiveHeight(11) : responsiveHeight(9.85),
         paddingTop: padTop,
         //paddingBottom: responsiveHeight(1),
 
@@ -188,10 +181,12 @@ const styles={
         flex: 0.1,
     },
     leftItemWithSearchStyle:{
-        marginTop: responsiveHeight(1),
+        marginTop: responsiveHeight(2),
+        flex: 0.2,
     },
     rightItemWithSearchStyle:{
-        marginTop: responsiveHeight(1),
+        marginTop: responsiveHeight(2),
+        flex: 0.2,
     },
     leftIconImageStyle:{
         height: responsiveHeight(2.46),
@@ -203,10 +198,11 @@ const styles={
     },
     rightIconContainerStyle:{
         flexDirection: 'row',
-
+        
     },
     rightIconImageStyle:{
         height: responsiveHeight(2.81),
+        width: responsiveHeight(2.81),
         opacity: 0.7,
         zIndex: 1,
     },

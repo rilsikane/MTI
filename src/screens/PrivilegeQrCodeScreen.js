@@ -69,23 +69,24 @@ export default class PrivilegeQrCodeScreen extends Component{
                             animationType: 'slide-down' // 'none' / 'slide-down' , dismiss animation for the modal (optional, default 'slide-down')
                         })
                     }
+                     hideRightIcon={true}
                 />
                 <View style={styles.privilegeQrCodeContainerStyle}>
-                    <View style={styles.privilegeLogoContainerStyle}>
+                    {!this.props.isCampaign ? <View style={styles.privilegeLogoContainerStyle}>
                         <Image
                             source={{uri:this.props.data.partner_picture}}
                             resizeMode='contain'
                             style={styles.privilegeLogoStyle}
                         />
-                    </View>
-                    <View style={styles.lifeStyleContainerStyle}>
+                    </View>:null}
+                    {!this.props.isCampaign ? <View style={styles.lifeStyleContainerStyle}>
                         <Image
                             source={this.getIcon()}
                             style={styles.lifeStyleIconStyle}
                         />
                         <Text style={styles.lifeStyleTextStyle}>{this.getTitleText()}</Text>
-                    </View>
-                    <Text style={styles.privilegeTitleTextStyle}>{this.props.data.name}</Text>
+                    </View>:null}
+                    <Text ellipsizeMode="tail" numberOfLines={3} style={styles.privilegeTitleTextStyle}>{this.props.data.name}</Text>
                     <Text style={styles.privilegeDetailTextStyle}>คุณสามารถรับสิทธิ์โดยการแสดง QR Code ได้ที่จุดชำระเงิน{'\n'}</Text>
                     <Text style={styles.timerTextStyle}>{this.state.timeCount}</Text>
                 </View>
@@ -151,7 +152,7 @@ const styles={
         color: "#1595d3",
         fontSize: responsiveFontSize(2.5),
         marginTop: responsiveHeight(2.4),
-        marginBottom: responsiveHeight(2.4),
+        flex:0.7
     },
     privilegeDetailTextStyle:{
         letterSpacing: 0,
@@ -160,6 +161,7 @@ const styles={
         fontSize: responsiveFontSize(1.9),
         marginLeft: responsiveWidth(11),
         marginRight: responsiveWidth(11),
+        flex:0.5
     },
     timerTextStyle:{
         letterSpacing: 0,
@@ -168,7 +170,9 @@ const styles={
         fontSize: responsiveFontSize(5),
         marginLeft: responsiveWidth(11),
         marginRight: responsiveWidth(11),
-        marginTop: 20,
+        marginTop: 5,
+        zIndex:99999,
+        flex:1
     },
     qrCodeContainerStyle:{
         flex: 1,

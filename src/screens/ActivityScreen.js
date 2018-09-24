@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Text,View,Image,TouchableOpacity,FlatList,ScrollView} from 'react-native';
+import {Text,View,Image,TouchableOpacity,FlatList,ScrollView,Platform} from 'react-native';
 import PropTypes from "prop-types";
 import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
 import Carousel from 'react-native-looped-carousel';
@@ -8,21 +8,37 @@ import {Headers} from '../components/Headers';
 import {PastEventCard} from '../components/PastEventCard';
 import {post,authen,get,getBasic} from '../api';
 import store from 'react-native-simple-store';
+import {DashboardActivityCard} from './../components/DashboardActivityCard';
+import moment from 'moment';
+import localization from 'moment/locale/th'
+import { observer, inject } from 'mobx-react';
+import app from '../stores/app';
+import Spinner from 'react-native-loading-spinner-overlay';
+import {MainSearchBox} from '../components/MainSearchBox';
 
+@inject('naviStore','userStore')
+@observer
 export default class ActivityScreen extends Component{
 
     constructor(props){
         super(props)
-        this.state = {incomingActivityList:[],pastActivityList:[]}
+        this.state = {incomingActivityList:[],pastActivityList:[],isLoading:false}
 
         this.showAllActivity = this.showAllActivity.bind(this);
+        
+        this._onSearchIconPress = this._onSearchIconPress.bind(this);
+        this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
     }
     componentDidMount(){
-        this.init();
+        if(Platform.OS=="android"){
+            //this.init()
+        }
     }
     async init(){
+        this.setState({isLoading:true});
+        if(!this.props.naviStore.hotdata){
         let user = await store.get("user");
-        let [response1,response2] =  await Promise.all([getBasic("activity?filter_group_id=3",{}),getBasic("activity?filter_group_id=1",{})]);
+        let [response1,response2] =  await Promise.all([getBasic("activity?filter_type=next",{}),getBasic("activity?filter_type=prev&page=1&pagesize=5",{})]);
         
         if(response1){
             this.setState({incomingActivityList:response1.data});
@@ -30,38 +46,60 @@ export default class ActivityScreen extends Component{
         if(response2){
             this.setState({pastActivityList:response2.data});
         }
+        this.setState({isLoading:false});
+        this.props.naviStore.navigation = this.props.navigator;
+        this.props.naviStore.isPrivillege = "false";
+        this.props.naviStore.isActivity = true;
+        }else{
+           
+            if(!this.props.naviStore.hotdata.isAll){
+                this.props.naviStore.navigation = this.props.navigator;
+                setTimeout(()=>{
+                    let hotdata = {...this.props.naviStore.hotdata};
+                    this.props.naviStore.hotdata = undefined;
+                    this.openDetail(hotdata,hotdata.filter_type);
+                },500)
+            }else{
+                setTimeout(()=>{
+                    let hotdata = {...this.props.naviStore.hotdata};
+                    this.props.naviStore.hotdata = undefined;
+                    this.showAllActivity(hotdata.filter_type);
+                    
+                },500)
+            }
+            this.setState({isLoading:false});
+        }
     }
 
     renderBannerImageList(){
-        let bannerUri=this.state.incomingActivityList.length>0 ? this.state.incomingActivityList:[
-            {
-                picture: '../source/images/activityImg05.png'
+        if(this.state.incomingActivityList.length>0){
+            let bannerUri=this.state.incomingActivityList;
+            return bannerUri.map((data,i)=>{
+                let startDate = moment(data.start_date).locale("th",localization).format("DD-MMMM-YYYY");
+                return(
+                    <DashboardActivityCard 
+                    key={i}
+                    bannerUri={{uri:data.picture}}
+                    iconText={startDate.split("-")[0]}
+                    iconTitleText={startDate.split("-")[1]}
+                    activityTitleText={data.title}
+                    style={styles.bannerImageStyle}
+                    onPress={()=>this.openDetail(data,'next')}
+                    navigator={this.props.navigator}
+                    />)
             }
-        ]
-
-        return bannerUri.map((data,i)=>
-            <Image
-                key={i}
-                source={{uri:data.picture}}
+            )
+        }else{
+            return (
+                <DashboardActivityCard 
+                bannerUri={require('../source/images/activityImg05.png')}
                 style={styles.bannerImageStyle}
-            />
-        )
+                />)
+        }
     }
 
     renderPastEventCard(){
-        let pastEvent=[
-            {
-                bannerUri: require('./../source/images/latestActImg.png'),
-                eventTitleText: 'MTI 8 Anniversary "ยิ้มรับความสำเร็จ..ฉลอง ก้าวแห่งความภาคภูมิใจ" กับเมืองไทยประกันภัย',
-                eventDetailText: 'นำลูกค้าล่องเรือชมบรรยากาศริมแม่น้ำเจ้าพระยา พร้อมรับประทานอาหารค่ำและชมมินิคอนเสิร์ต จากศิลปินคู่ ดูโอ แอน(ธิติมา) - ปิงปอง(ศิรศักดิ์) พร้อมกันนี้ ยังมีกิจกรรม...'
-            },
-            {
-                bannerUri: require('./../source/images/latestActImg.png'),
-                eventTitleText: 'MTI 8 Anniversary "ยิ้มรับความสำเร็จ..ฉลอง ก้าวแห่งความภาคภูมิใจ" กับเมืองไทยประกันภัย',
-                eventDetailText: 'นำลูกค้าล่องเรือชมบรรยากาศริมแม่น้ำเจ้าพระยา พร้อมรับประทานอาหารค่ำและชมมินิคอนเสิร์ต จากศิลปินคู่ ดูโอ แอน(ธิติมา) - ปิงปอง(ศิรศักดิ์) พร้อมกันนี้ ยังมีกิจกรรม...'
-            }
-        ]
-
+        
         return(
             <FlatList
                 data={this.state.pastActivityList}
@@ -73,10 +111,10 @@ export default class ActivityScreen extends Component{
             />
         )
     }
-    openDetail(item){
+    openDetail(item,filter_type){
         this.props.navigator.push({
             screen: "mti.ActivityDetailScreen", // unique ID registered with Navigation.registerScreen
-            passProps:{data:item},
+            passProps:{data:item,filter_type:filter_type},
             title: undefined, // navigation bar title of the pushed screen (optional)
             titleImage: undefined, // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
             animated: false, // does the push have transition animation or does it happen immediately (optional)
@@ -87,20 +125,72 @@ export default class ActivityScreen extends Component{
 
     _renderItem=({item,index})=>(
         <PastEventCard
-            onPress={()=>this.openDetail(item)}
+            onPress={()=>this.openDetail(item,'prev')}
             bannerUri={{uri:item.picture}}
             eventTitleText={item.title}
-            eventDetailText={item.detail}
-            style={[{marginRight: responsiveWidth(5)},index==0&&{marginLeft: responsiveWidth(5)}]}
+            style={[{marginRight: responsiveWidth(5),height:responsiveHeight(27)},index==0&&{marginLeft: responsiveWidth(5)}]}
         />
     )
 
-    showAllActivity(){
+    showAllActivity(isNext){
         this.props.navigator.push({
             screen: "mti.ActivityListScreen", // unique ID registered with Navigation.registerScreen
-            passProps:{},
+            passProps:{next:isNext},
+            animated: true, // does the push have transition animation or does it happen immediately (optional)
+        })
+    }
+    onNavigatorEvent(event) {
+        console.log("onNavigatorEvent",event);
+        if (event.id === 'bottomTabSelected') {
+            this.props.naviStore.navigation.popToRoot({
+                animated: false, // does the popToRoot have transition animation or does it happen immediately (optional)
+                animationType: 'fade', // 'fade' (for both) / 'slide-horizontal' (for android) does the popToRoot have different transition animation (optional)
+              });
+            this.init();
+        }
+        if (event.id === 'willDisappear') {
+         
+        }
+        if (event.id === 'didAppear') {
+            this.init();
+        }
+    }
+    async _onSearchIconPress(){
+        this.setState({isLoading:true}); 
+        //let response =  await getBasic(`activity?search=${this.state.searchValue}`,{});
+        
+        this.props.navigator.push({
+            screen: "mti.ActivityListScreen", // unique ID registered with Navigation.registerScreen
+            passProps:{searchValue:this.state.searchValue,all:true},
             animated: false, // does the push have transition animation or does it happen immediately (optional)
         })
+        this.setState({isLoading:false,searchValue:''});
+     }
+     renderNewEventCard(){
+        if(this.state.incomingActivityList && this.state.incomingActivityList.length>0){
+            let item = this.state.incomingActivityList[0];
+            let startDate = moment(item.start_date).locale("th",localization).format("DD-MMMM-YYYY");
+                return(
+                    <DashboardActivityCard 
+                    bannerUri={{uri:item.picture}}
+                    iconText={startDate.split("-")[0]}
+                    iconTitleText={startDate.split("-")[1]}
+                    activityTitleText={item.title}
+                    style={styles.newEventImageStyle}
+                    isJoin={item.booking_status=='open' ? item:undefined}
+                    onPress={()=>this.openDetail(item,'next')}
+                    navigator={this.props.navigator}
+                    />
+                )
+        }else{
+            return(
+                <DashboardActivityCard 
+                bannerUri={require('../source/images/activityImg05.png')}
+                style={styles.newEventImageStyle}
+                />
+            )
+        }
+        
     }
 
     render(){
@@ -110,12 +200,20 @@ export default class ActivityScreen extends Component{
                     leftIconName='menu'
                     headerTitleText='กิจกรรม'
                     rightIconName='iconBell'
+                    withSearch
+                />
+                <MainSearchBox
+                    value={this.state.searchValue}
+                    onChangeText={(searchValue)=>this.setState({searchValue})}
+                    onSearchIconPress={this._onSearchIconPress}
+                    placeholder='ค้นหากิจกรรมคุณต้องการ'
+                    noneMap
                 />
                 <ScrollView style={styles.activityContainerStyle}>
                     <View style={styles.activityContainerStyle}>
                         <View style={styles.bannerContainerStyle}>
                             <Carousel
-                                delay={2000}
+                                delay={5000}
                                 style={{flex: 1,}}
                                 autoplay
                                 bullets
@@ -127,20 +225,30 @@ export default class ActivityScreen extends Component{
                             </Carousel>
                         </View>
                         <View style={styles.titleTextContainerStyle}>
+                            <Text style={styles.sectionTitleTextStyle}>กิจกรรมถัดไป</Text>
+                            <TouchableOpacity style={styles.showAllContainerStyle} onPress={()=>this.showAllActivity(true)}>
+                                <Text style={styles.showAllTextStyle}>ดูทั้งหมด</Text>
+                            </TouchableOpacity>
+                        </View>
+                        <View style={{alignItems: 'center',marginBottom:5}}>
+                            {this.renderNewEventCard()}
+                        </View>
+                        <View style={[styles.titleTextContainerStyle,{marginTop:5}]}>
                             <Text style={styles.sectionTitleTextStyle}>กิจกรรมที่ผ่านมา</Text>
-                            <TouchableOpacity onPress={this.showAllActivity} style={styles.showAllContainerStyle}>
+                            <TouchableOpacity onPress={()=>this.showAllActivity()} style={styles.showAllContainerStyle}>
                                 <Text style={styles.showAllTextStyle}>ดูทั้งหมด</Text>
                             </TouchableOpacity>
                         </View>
                         {this.state.pastActivityList.length > 0 && this.renderPastEventCard()}
-                        <View style={styles.adContainerStylr}>
+                        {/* <View style={styles.adContainerStylr}>
                             <Image
                                 source={require('../source/images/promotionImg.png')}
                                 style={styles.adContainerStylr}
                             />
-                        </View>
+                        </View> */}
                     </View>
                 </ScrollView>
+                <Spinner visible={this.state.isLoading}  textStyle={{color: '#FFF'}} />
             </View>
         )
     }
@@ -149,6 +257,7 @@ export default class ActivityScreen extends Component{
 const styles={
     activityScreenContainerStyle:{
         flex: 1,
+        backgroundColor:"#ffffff"
     },
     activityContainerStyle:{
         flex: 1,
@@ -178,6 +287,7 @@ const styles={
         flexDirection: 'row',
         justifyContent: 'space-between',
         marginBottom: responsiveHeight(1),
+        alignItems: 'center',
     },
     sectionTitleTextStyle:{
         fontSize: responsiveFontSize(3),
@@ -196,6 +306,7 @@ const styles={
         width: '100%'
     },
     activityListContainerStyle:{
+        height: responsiveHeight(27),
         marginBottom: responsiveHeight(2),
     }
 }

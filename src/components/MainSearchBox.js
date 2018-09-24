@@ -31,14 +31,14 @@ class MainSearchBox extends Component{
                         />
                     </TouchableOpacity>
                 </View>
-                {!this.props.noneMap&&
+                {!this.props.noneMap?
                     <TouchableOpacity onPress={this.props.onPress} style={styles.searchButtonContainerStyle}>
                         <Image
                             source={require('../source/icons/iconLocation.png')}
                             resizeMode='contain'
                             style={styles.locationIconStyle}
                         />
-                    </TouchableOpacity>
+                    </TouchableOpacity>:null
                 }
             </View>
         )
@@ -72,7 +72,7 @@ const styles={
         borderBottomLeftRadius: 4,
         flex: 0.87,
         paddingLeft: responsiveWidth(3),
-        paddingRight: responsiveWidth(3),
+        paddingRight: responsiveWidth(1),
     },
     textInputNoneMapContainerStyle:{
         flexDirection: 'row',
@@ -104,6 +104,7 @@ const styles={
         borderBottomRightRadius: 4,
         justifyContent: 'center',
         alignItems: 'center',
+        marginLeft: -2,
     },
     locationIconStyle:{
         height: responsiveHeight(3.52),

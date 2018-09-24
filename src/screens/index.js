@@ -1,4 +1,4 @@
-import {Navigation,ScreenVisibilityListener} from 'react-native-navigation';
+import {Navigation} from 'react-native-navigation';
 import Provider from '../lib/MobxRnnProvider';
 import Store from '../stores/store';
 import LoginScreen from './LoginScreen';
@@ -46,6 +46,10 @@ import PassCodeAuthenScreen from './PassCodeAuthenScreen'
 import ActivityImageListScreen from './ActivityImageListScreen';
 import ActivityScreen from './ActivityScreen';
 import ActivityListScreen from './ActivityListScreen';
+import CampaignScreen from './CampaignScreen';
+import MiddleButtonScreen from './MiddleButtonScreen';
+import SelectHospitalScreen from './SelectHospitalScreen';
+import {ScreenVisibilityListener} from './ScreenVisibilityListener';
 
 import app from '../stores/app';
 
@@ -74,6 +78,7 @@ export function registerScreens() {
   Navigation.registerComponent('mti.PrivilegeForMemberScreen', () => PrivilegeForMemberScreen, Store, Provider);
   Navigation.registerComponent('mti.ConfirmOtpScreen', () => ConfirmOtpScreen, Store, Provider);
   Navigation.registerComponent('mti.ReqOtpScreen', () => ReqOtpScreen, Store, Provider);
+  Navigation.registerComponent('mti.CampaignScreen', () => CampaignScreen, Store, Provider);
   
   Navigation.registerComponent('mti.QAndAScreen', () => QAndAScreen, Store, Provider);
   Navigation.registerComponent('mti.UsageHistoryScreen', () => UsageHistoryScreen, Store, Provider);
@@ -97,20 +102,9 @@ export function registerScreens() {
   Navigation.registerComponent('mti.ActivityImageListScreen', () => ActivityImageListScreen, Store, Provider);
   Navigation.registerComponent('mti.ActivityScreen', () => ActivityScreen, Store, Provider);
   Navigation.registerComponent('mti.ActivityListScreen', () => ActivityListScreen, Store, Provider);
+  Navigation.registerComponent('mti.MiddleButtonScreen', () => MiddleButtonScreen, Store, Provider);
+  Navigation.registerComponent('mti.SelectHospitalScreen',() => SelectHospitalScreen, Store, Provider)
 }
 export function registerScreenVisibilityListener() {
-  new ScreenVisibilityListener({
-    willAppear: ({screen}) =>{ 
-      console.log(`Displaying screen ${screen}`)
-    },
-    didAppear: ({screen, startTime, endTime, commandType}) => {
-      console.log('screenVisibility', `Screen ${screen} displayed in ${endTime - startTime} millis [${commandType}]`)
-    },
-    willDisappear: ({screen}) => {
-      console.log(`Screen will disappear ${screen}`)
-    },
-    didDisappear: ({screen}) => {
-      console.log(`Screen disappeared ${screen}`)
-    }
-  }).register();
+  new ScreenVisibilityListener();
 }

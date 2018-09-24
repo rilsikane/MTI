@@ -32,6 +32,7 @@ export default class LoginScreen extends Component{
             remember:false,
             isLoading:false,
             keyboardShow : false,
+            
         }
         this.login = this.login.bind(this);
         this.gotoRegister = this.gotoRegister.bind(this);
@@ -41,13 +42,16 @@ export default class LoginScreen extends Component{
         this.keyboardWillHideSub = Keyboard.addListener('keyboardDidHide', this.keyboardWillHide);
         this.scroll = {};
         this.forgotPassword = this.forgotPassword.bind(this);
+        this.passwordRef = {};
         if(isIphoneX()){
             this.imageHeight = new Animated.Value(responsiveHeight(32),);
         }else{
             this.imageHeight = new Animated.Value(responsiveHeight(35),);
         }
         this.props.naviStore.navigation = this.props.navigator;
+        
     }
+
     async login(){
         if(this.state.userEmail=='' || this.state.userPassword==''){
             Alert.alert(
@@ -59,13 +63,15 @@ export default class LoginScreen extends Component{
             )
             return false
         }
+        let fcmToken = await store.get("device_id");
         let param = {};
         param.username = this.state.userEmail;
         param.password = this.state.userPassword;
+        param.device_id = fcmToken;
         this.setState({isLoading:true});
-        let response = await authen(param);
+        let response = await authen(param,true);
         this.setState({isLoading:false});
-        if(response){
+        if(response && response.data===undefined){
             if(response.first_logon=="N"){
             // if(false){
                 let token = response.token;
@@ -114,9 +120,15 @@ export default class LoginScreen extends Component{
         }else{
             this.setState({isLoading:false});
             setTimeout(()=>{
-                this.setState({isLoading:false});
-            },1500)
-            return false;
+                Alert.alert(
+                    ' ',
+                    response.data ? response.data.message:response.message,
+                    [
+                    {text: 'OK'},
+                    ]
+                );
+            },100)
+            
         }
       
     }
@@ -275,13 +287,16 @@ export default class LoginScreen extends Component{
                                         style={styles.emailIconStyle}
                                         resizeMode='contain'
                                     />
-                                    <Input 
+                                    <TextInput 
                                         value={this.state.userEmail}
                                         onChangeText={(userEmail)=>this.setState({userEmail})}
                                         placeholder='อีเมล/เบอร์โทรศัพท์'
                                         placeholderTextColor={textColor}
                                         style={styles.emailInputStyle}     
-                                        keyboardType='email-address'         
+                                        keyboardType='email-address'
+                                        returnKeyType = {"next"}
+                                        onSubmitEditing={() => {this.passwordRef.focus()}}  
+                                        underlineColorAndroid='transparent'     
                                     />
                                 </Item>
 
@@ -293,7 +308,8 @@ export default class LoginScreen extends Component{
                                         style={styles.passwordIconStyle}
                                         resizeMode='contain'
                                     />
-                                    <Input 
+                                    <TextInput
+                                        ref={ref => this.passwordRef = ref}
                                         value={this.state.userPassword}
                                         onChangeText={(userPassword)=>this.setState({userPassword})}
                                         placeholder='รหัสผ่าน'
@@ -304,6 +320,7 @@ export default class LoginScreen extends Component{
                                         onSubmitEditing={() => {
                                             this.login();
                                         }}
+                                        underlineColorAndroid='transparent'
                                     />
                                     <TouchableOpacity onPress={()=>this.forgotPassword()} style={styles.forgotPasswordContainerStyle}> 
                                         <Text style={styles.forgotPasswordTextStyle}>ลืมรหัสผ่าน ?</Text>
@@ -346,7 +363,7 @@ export default class LoginScreen extends Component{
                             </View>
                         </ImageBackground>
                     </View>
-                    <Spinner visible={this.state.isLoading}  textStyle={{color: '#FFF'}} />
+                    {this.state.isLoading ? <Spinner visible={this.state.isLoading}  textStyle={{color: '#FFF'}} />:null}
                 </ScrollView>
                 {/* {this.renderForgotPasswordPopup()} */}
             </View>
@@ -390,7 +407,7 @@ const styles={
         flex: 1,
     },
     loginFormImageBackgroundStyle:{
-        height:responsiveHeight(65),
+        flex:1
     },
     logoContainerStyle:{
         alignItems: 'center',
@@ -419,8 +436,9 @@ const styles={
         fontSize: responsiveFontSize(2.64),
         color: textColor,
         flex: 0.6,
-
-
+        lineHeight:24,
+        top:1.5,
+        height:50
     },
     forgotPasswordContainerStyle:{
         flex: 0.3,
@@ -439,6 +457,9 @@ const styles={
         fontSize: responsiveFontSize(2.64),
         color: textColor,
         flex: 0.9,
+        lineHeight:24,
+        top:1.5,
+        height:50
     },
     checkBoxTextStyle:{
         color: "rgba(255, 255, 255, 0.9)",

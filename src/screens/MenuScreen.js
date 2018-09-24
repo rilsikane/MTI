@@ -6,6 +6,8 @@ import { ifIphoneX,isIphoneX } from 'react-native-iphone-x-helper'
 import { observer, inject } from 'mobx-react';
 import app from '../stores/app';
 import store from 'react-native-simple-store';
+
+
 @inject('naviStore','userStore')
 @observer
 export default class MenuScreen extends Component{
@@ -72,66 +74,60 @@ export default class MenuScreen extends Component{
                     </View>
                
                     <View style={styles.menuContainerStyle}>
-                        <View style={styles.mainBorderStyle}/>
-                        <View style={styles.menuSectionStyle}>        
-                            <TouchableOpacity style={styles.menuSubSectionStyle}
-                                onPress={()=>this.gotoMenu("mti.UserInsuranceListScreen")
-                                }
-                            >
-                                <Image
-                                    source={require('./../source/icons/iconInsuranceWhite.png')}
-                                    resizeMode='contain'
-                                    style={styles.menuIconStyle}
-                                />
-                                <Text style={styles.menuTitleTextStyle}>ข้อมูลกรมธรรม์</Text> 
-                            </TouchableOpacity>
-                        </View>
+                        {/* <View style={styles.mainBorderStyle}/> */}
+                        
                         <View style={styles.subBorderStyle}/>
-                        <View style={styles.menuSectionStyle}>        
-                            <TouchableOpacity disabled={true} style={styles.menuSubSectionStyle} >
-                                <Image
-                                    source={require('./../source/icons/iconHistoryGray.png')}
-                                    resizeMode='contain'
-                                    style={styles.menuIconStyle}
-                                />
-                                <Text style={styles.menuTitleTextCommingStyle}>ประวัติการใช้งาน</Text>
-                                 
-                            </TouchableOpacity>
-                            <View style={{flex:1,flexDirection: 'row'}}>
-                                <View style={{flex:0.2}}></View>
-                                <Text style={styles.commingSoonStyle}>ใช้งานได้เร็วๆ นี้</Text>
+                        {this.state.user.name != "GUEST" ? <View style={{height: responsiveHeight(43)}}>
+                            <View style={styles.menuSectionStyle}>        
+                                <TouchableOpacity style={styles.menuSubSectionStyle}
+                                onPress={()=>this.gotoMenu("mti.UserInsuranceListScreen")}>
+                                    <Image
+                                        source={require('./../source/icons/iconInsuranceWhite.png')}
+                                        resizeMode='contain'
+                                        style={styles.menuIconStyle}
+                                    />
+                                    <Text style={styles.menuTitleTextStyle}>ข้อมูลกรมธรรม์</Text> 
+                                </TouchableOpacity>
                             </View>
-                        </View>
-                        <View style={styles.subBorderStyle}/>
-                        <View style={styles.menuSectionStyle}>        
-                            <TouchableOpacity  disabled={true}  style={styles.menuSubSectionStyle}>
-                                <Image
-                                    source={require('./../source/icons/iconFavoriteGray.png')}
-                                    resizeMode='contain'
-                                    style={styles.menuIconStyle}
-                                />
-                                <Text style={styles.menuTitleTextCommingStyle}>รายการโปรด</Text> 
-                            </TouchableOpacity>
-                            <View style={{flex:1,flexDirection: 'row'}}>
-                                <View style={{flex:0.2}}></View>
-                                <Text style={styles.commingSoonStyle}>ใช้งานได้เร็วๆ นี้</Text>
+                            <View style={styles.subBorderStyle}/>
+                            <View style={styles.menuSectionStyle}>        
+                                <TouchableOpacity onPress={()=>this.gotoMenu("mti.UsageHistoryScreen")}  style={styles.menuSubSectionStyle} >
+                                    <Image
+                                        source={require('./../source/icons/iconHistoryWhite.png')}
+                                        resizeMode='contain'
+                                        style={styles.menuIconStyle}
+                                    />
+                                    <Text style={styles.menuTitleTextStyle}>ประวัติการใช้งาน</Text>
+                                    
+                                </TouchableOpacity>
                             </View>
-                        </View>
-                        <View style={styles.subBorderStyle}/>
-                        <View style={styles.menuSectionStyle}>        
-                            <TouchableOpacity  disabled={true} style={styles.menuSubSectionStyle}>
-                                <Image
-                                    source={require('./../source/icons/iconNotificationGray.png')}
-                                    resizeMode='contain'
-                                    style={styles.menuIconStyle}
-                                />
-                                <Text style={styles.menuTitleTextCommingStyle}>การแจ้งเตือน</Text> 
-                            </TouchableOpacity>
-                            <View style={{flex:1,flexDirection: 'row'}}>
-                                <View style={{flex:0.2}}></View>
-                                <Text style={styles.commingSoonStyle}>ใช้งานได้เร็วๆ นี้</Text>
+                            <View style={styles.subBorderStyle}/>
+                            <View style={styles.menuSectionStyle}>        
+                                <TouchableOpacity onPress={()=>this.gotoMenu("mti.FavoriteScreen")} style={styles.menuSubSectionStyle}>
+                                    <Image
+                                        source={require('./../source/icons/iconFavoriteWhite.png')}
+                                        resizeMode='contain'
+                                        style={styles.menuIconStyle}
+                                    />
+                                    <Text style={styles.menuTitleTextStyle}>รายการโปรด</Text> 
+                                </TouchableOpacity>
+                                
                             </View>
-                        </View>
+                            <View style={styles.subBorderStyle}/>
+                            <View style={styles.menuSectionStyle}>        
+                                <TouchableOpacity  onPress={()=>this.gotoMenu("mti.NotificationScreen")} style={styles.menuSubSectionStyle}>
+                                    <Image
+                                        source={require('./../source/icons/iconNotificationWhite.png')}
+                                        resizeMode='contain'
+                                        style={styles.menuIconStyle}
+                                    />
+                                    <Text style={styles.menuTitleTextStyle}>การแจ้งเตือน</Text> 
+                                </TouchableOpacity>
+                            </View>
+                        </View>:
+                        <View style={{ height: responsiveHeight(55)}}>
+                           
+                        </View>}
                         {/* <View style={styles.mainBorderStyle}/> */}
                         {/* <View style={styles.menuSectionStyle}>        
                             <TouchableOpacity style={styles.menuSubSectionStyle} 
@@ -145,8 +141,8 @@ export default class MenuScreen extends Component{
                             </TouchableOpacity>
                         </View>
                         <View style={styles.subBorderStyle}/> */}
-                        <View style={styles.subBorderStyle}/>
-                        <View style={styles.menuSectionStyle}>        
+                        {/* <View style={styles.subBorderStyle}/> */}
+                        {/* <View style={styles.menuSectionStyle}>        
                             <TouchableOpacity onPress={()=>this.gotoMenu("mti.ActivityScreen")}  
                             style={styles.menuSubSectionStyle}>
                                 <Image
@@ -156,11 +152,8 @@ export default class MenuScreen extends Component{
                                 />
                                 <Text style={styles.menuTitleTextStyle}>กิจกรรม</Text> 
                             </TouchableOpacity>
-                            {/* <View style={{flex:1,flexDirection: 'row'}}>
-                                <View style={{flex:0.2}}></View>
-                                <Text style={styles.commingSoonStyle}>ใช้งานได้เร็วๆ นี้</Text>
-                            </View> */}
-                        </View>
+                            
+                        </View> */}
                         <View style={styles.subBorderStyle}/>
                         {/* <View style={styles.menuSectionStyle}>        
                             <TouchableOpacity onPress={()=>this.gotoMenu("mti.ServiceScreen")} style={styles.menuSubSectionStyle}>
